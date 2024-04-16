@@ -53,7 +53,7 @@ def set_streaming_room_is_adult(request, room_id):
         return Response({'message': 'Streaming room updated successfully'}, status=200)
     
 
-
+# user_id특정하는 방법 추가해야됨
 @api_view(['POST'])
 def create_streaming_room(request):
     if request.method == 'POST':
@@ -72,6 +72,7 @@ def create_streaming_room(request):
     
 
 
+#S3로 바꿔야됨
 @api_view(['PATCH'])
 def update_streaming_room_thumbnail(request, room_id):
     data = json.loads(request.body)
@@ -93,3 +94,45 @@ def update_streaming_room_thumbnail(request, room_id):
         return Response({'message': 'Streaming room not found'}, status=404)
     except IntegrityError as e:
         return Response({'message': str(e)}, status=400)
+    
+
+
+@api_view(['DELETE'])
+def delete_streaming_room(request, room_id):
+    try:
+        
+        streaming_room = StreamingRoom.objects.get(room_id=room_id)
+    except StreamingRoom.DoesNotExist:
+        
+        return Response({"message": "StreamingRoom does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+    # StreamingRoom 삭제
+    streaming_room.delete()
+
+    return Response({"message": "StreamingRoom deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+@api_view(['PATCH'])
+def update_user_blocked_status(request):
+    
+    data = json.loads(request.body)
+    isBlocked = data.get('isBlocked', None)
+    userId = data.get('userId', None)
+
+    if isBlocked is None or userId is None:
+        return Response({"message": "isBlocked and userId are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        
+        viewer = Viewer.objects.get(viewer_id=userId)
+    except Viewer.DoesNotExist:
+        
+        return Response({"message": "Viewer does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+    # isBlocked 상태 변경
+    viewer.isblocked = isBlocked
+    viewer.save()
+
+    return Response({"message": f"User {userId} isBlocked status updated successfully"}, status=status.HTTP_200_OK)
