@@ -51,6 +51,7 @@ class StreamingRoom(models.Model):
     user = models.ForeignKey('User', models.DO_NOTHING)
     room_name = models.CharField(max_length=50)
     room_age_limit = models.IntegerField(blank=True, null=True)
+    room_thumbnail = models.CharField(max_length=255)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
 

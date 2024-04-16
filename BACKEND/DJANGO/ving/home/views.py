@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from django.db import IntegrityError
 import json
 
 def current_viewer_count(request, room_id):
@@ -50,3 +51,45 @@ def set_streaming_room_is_adult(request, room_id):
         streaming_room.save()
         
         return Response({'message': 'Streaming room updated successfully'}, status=200)
+    
+
+
+@api_view(['POST'])
+def create_streaming_room(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        room_name = data.get('roomName', None)
+        is_adult = data.get('isAdult', None)
+        thumbnail = data.get('thumbnail', None)
+        
+        if room_name is None or is_adult is None or thumbnail is None:
+            return Response({'error': 'roomName, isAdult, thumbnail fields are required'}, status=400)
+        
+        streaming_room = StreamingRoom(room_name=room_name, room_age_limit=is_adult, room_thumbnail=thumbnail)
+        streaming_room.save()
+        
+        return Response({'message': 'Streaming room created successfully', 'room_id': streaming_room.room_id}, status=201)
+    
+
+
+@api_view(['PATCH'])
+def update_streaming_room_thumbnail(request, room_id):
+    data = json.loads(request.body)
+    thumbnail = data.get('thumbnail', None)
+
+    if not thumbnail:
+        return Response({'message': 'Thumbnail is required'}, status=400)
+
+    try:
+        
+        streaming_room = StreamingRoom.objects.get(room_id=room_id)
+        
+        
+        streaming_room.room_thumbnail = thumbnail
+        streaming_room.save()
+
+        return Response({'message': 'Streaming room thumbnail updated successfully'}, status=200)
+    except StreamingRoom.DoesNotExist:
+        return Response({'message': 'Streaming room not found'}, status=404)
+    except IntegrityError as e:
+        return Response({'message': str(e)}, status=400)
