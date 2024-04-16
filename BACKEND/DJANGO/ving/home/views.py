@@ -4,6 +4,7 @@ from .models import Viewer,User,StreamingRoom,Chatting,FixedChatting,RecordedVid
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 import json
 
 def current_viewer_count(request, room_id):
@@ -31,3 +32,21 @@ def set_streaming_room_name(request, room_id):
 
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+
+
+@api_view(['PATCH'])
+def set_streaming_room_is_adult(request, room_id):
+    if request.method == 'PATCH':
+        data = json.loads(request.body)
+        is_adult = data.get('isAdult', None)
+        
+        if is_adult is None:
+            return Response({'error': 'isAdult field is required'}, status=400)
+        
+        streaming_room = get_object_or_404(StreamingRoom, room_id=room_id)
+        streaming_room.room_age_limit = is_adult
+        streaming_room.save()
+        
+        return Response({'message': 'Streaming room updated successfully'}, status=200)
