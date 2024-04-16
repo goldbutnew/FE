@@ -96,7 +96,7 @@ def update_streaming_room_thumbnail(request, room_id):
         return Response({'message': str(e)}, status=400)
     
 
-
+# 영상으로 저장하는 로직 추가해야됨
 @api_view(['DELETE'])
 def delete_streaming_room(request, room_id):
     try:
