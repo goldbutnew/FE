@@ -8,10 +8,32 @@ from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
 import json
 
-def current_viewer_count(request, room_id):
-    viewer_count = Viewer.objects.filter(room_id=room_id).count()
-    return JsonResponse({'current_viewer_count': viewer_count})
-
+@api_view(['GET'])
+def current_top_viewers(request):
+    top_viewer_counts = Viewer.objects.values('room_id').annotate(total=Count('room_id')).order_by('-total')[:7]
+    print(top_viewer_counts)
+    users = []
+    
+    for item in top_viewer_counts:
+        room_id = item['room_id']
+        
+    
+        room = StreamingRoom.objects.get(room_id=room_id)
+       
+       
+        user = User.objects.get(user_id=room.user_id)
+       
+        
+        user_photo = user.user_photo
+        user_nickname = user.user_nickname
+        
+        users.append({
+            'user_id': user.user_id,
+            'user_photo': user_photo,
+            'user_nickname': user_nickname,
+        })
+    
+    return JsonResponse({'users': users})
 
 @api_view(['PATCH'])
 def set_streaming_room_name(request, room_id):
