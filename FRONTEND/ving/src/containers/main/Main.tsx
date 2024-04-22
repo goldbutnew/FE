@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import * as styles from './style.css'
+import * as styles from './index.css'
 
 export default function Main() {
 
