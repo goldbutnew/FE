@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import * as styles from './style.css'
 
 export default function Main() {
 
@@ -11,7 +12,7 @@ export default function Main() {
 
   return (
     <div>
-      <h1>메인 페이지</h1>
+      <h1 className={styles.container}>메인 페이지</h1>
       <button onClick={() => router.push('/setting')}>
         세팅
       </button>
