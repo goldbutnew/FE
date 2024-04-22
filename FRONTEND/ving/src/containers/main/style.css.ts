@@ -3,7 +3,7 @@
 import { style } from '@vanilla-extract/css'
 
 export const container = style({
-  padding: '210px',
+  padding: '20px',
   backgroundColor: 'blue',
   color: 'white',
 })
