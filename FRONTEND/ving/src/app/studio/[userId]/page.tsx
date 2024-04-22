@@ -1,1 +1,1 @@
-export { default } from '@/containers/studio/StudioHome'
+export { default } from '@/containers/studio'

@@ -1,1 +1,1 @@
-export { default } from '@/containers/setting/Setting'
+export { default } from '@/containers/setting'

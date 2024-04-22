@@ -1,1 +1,1 @@
-export { default } from '@/containers/streaming/Streaming'
+export { default } from '@/containers/streaming'

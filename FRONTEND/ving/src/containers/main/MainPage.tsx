@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import * as styles from './index.css'
 
-export default function Main() {
+export default function MainPage() {
 
   const router = useRouter()
   

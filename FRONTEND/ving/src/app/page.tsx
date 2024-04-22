@@ -1,1 +1,1 @@
-export { default } from '@/containers/main/Main'
+export { default } from '@/containers/main'

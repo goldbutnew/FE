@@ -2,7 +2,7 @@
 
 import { useRouter, useParams } from 'next/navigation'
 
-export default function StudioHome() {
+export default function StudioPage() {
 
   const router = useRouter()
   const params = useParams()

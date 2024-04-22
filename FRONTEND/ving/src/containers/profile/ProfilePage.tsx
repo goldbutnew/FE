@@ -2,7 +2,7 @@
 
 import { useRouter, useParams } from 'next/navigation'
 
-export default function ProfileHome() {
+export default function ProfilePage() {
 
   const router = useRouter()
   const params = useParams()
