@@ -4,5 +4,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('stream_hls/<str:stream_id>/', views.stream_hls),
+    path('start_stream/', views.start_stream),
+    path('end_stream/', views.end_stream),
 ]
