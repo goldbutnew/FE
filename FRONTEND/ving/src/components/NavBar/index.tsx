@@ -16,7 +16,7 @@ export default function NavBar() {
       <Link href={`/studio/${userId}`}>내 스튜디오</Link>　|　 
       <Link href={`/streaming/${userId}`}>방송중인 누군가의 방</Link>　|　 
       {/* 로그인 버튼 경로 수정 필요 */}
-      <Link href={`/streaming/${userId}`}>로그인</Link>　|　 
+      <Link href={'/tmp'}>로그인</Link>　|　 
     </nav>
   )
 }
