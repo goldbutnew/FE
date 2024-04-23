@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import useLoginStore from "@/store/LoginStore"
+import useAuthStore from "@/store/AuthStore"
 import logo from '../../../public/images/MainLogo.png'
 import { columnbox, rowbox } from "@/styles/box.css"
 import * as styles from "./index.css"
@@ -11,7 +11,7 @@ import SmallButton from "@/components/Button/SmallButton"
 import { vars } from "@/styles/vars.css"
 
 export default function Login() {
-  const { login } = useLoginStore()
+  const { login } = useAuthStore()
   
   const [userID, setUserID] = useState('')
   const [userPW, setUserPW] = useState('')
@@ -27,11 +27,12 @@ export default function Login() {
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const userData =new URLSearchParams()
-    userData.append('username', userID)
-    userData.append('password', userPW)
+    const data = {
+      'userName': userID,
+      'password': userPW
+    }
 
-    login(userData)
+    login(data)
   }
 
   return (

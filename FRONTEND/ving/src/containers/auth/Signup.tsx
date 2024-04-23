@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react"
-import useLoginStore from "@/store/LoginStore"
+import useAuthStore from "@/store/AuthStore"
 
 export default function Signup() {
   
