@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="kr">
-      <body className={`${pretendard.className} ${styles.body}`}>
+      <body className={pretendard.className}>
         <NavBar />
         <div className={styles.container}>
           {children}

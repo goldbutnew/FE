@@ -1,7 +1,13 @@
 'use client'
 
 import { useState } from "react"
+import Image from "next/image"
 import useLoginStore from "@/store/LoginStore"
+import logo from '../../../public/images/MainLogo.png'
+import { columnbox, rowbox } from "@/styles/box.css"
+import * as styles from "./index.css"
+import LargeButton from "@/components/Button/LargeButton"
+import { vars } from "@/styles/vars.css"
 
 export default function Login() {
   const { login } = useLoginStore()
@@ -28,26 +34,30 @@ export default function Login() {
   }
 
   return (
-    <div>
-      <img src="/images/loginModalTitleImg.png" alt="" />
-      <h2>에 로그인</h2>
-      <form onSubmit={handleLogin}>
-        <label htmlFor="id">아이디</label>
-        <input
-          name="id"
-          value={userID}
-          onChange={handleID}
-        />
-        <label htmlFor="pw">비밀번호</label>
-        <input
-          name="pw"
-          type="password"
-          value={userPW}
-          onChange={handlePW}
-        />
-        <button type="submit">
-          로그인
-        </button>
+    <div className={columnbox}>
+      <div className={rowbox}>
+        <Image src={logo} alt="logo" />
+        <p>에 로그인</p>        
+      </div>
+      <form className={columnbox} onSubmit={handleLogin}>
+        <div className={rowbox}>
+          <label className={styles.labelText} htmlFor="id">아이디</label>
+          <input
+            name="id"
+            value={userID}
+            onChange={handleID}
+          />
+        </div>
+        <div className={rowbox}>
+          <label className={styles.labelText} htmlFor="pw">비밀번호</label>
+          <input
+            name="pw"
+            type="password"
+            value={userPW}
+            onChange={handlePW}
+          />          
+        </div>
+        <LargeButton text="로그인" color={vars.colors.black} />
       </form>
     </div>
   )

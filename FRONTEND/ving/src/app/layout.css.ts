@@ -1,10 +1,19 @@
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
 
-export const body = style({
-  margin: vars.margin.none
+// HTML 및 body에 대한 기본 스타일을 리셋합니다.
+globalStyle('html, body', {
+  padding: vars.space.none,
+  margin: vars.space.none,
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+  lineHeight: 1.5,
+});
+
+// 모든 요소에 대한 box-sizing을 border-box로 설정합니다.
+globalStyle('*, *:before, *:after', {
+  boxSizing: 'border-box'
 })
 
 export const container = style({
-  padding: vars.padding['2x']
+  padding: vars.space['2x']
 })
