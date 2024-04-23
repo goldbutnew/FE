@@ -3,15 +3,19 @@ import { defaultButton } from "./index.css";
 
 type ButtonProps = {
   text: string;
-  color: string;
+  color?: string; 
+  onClick?: () => void;
 };
 
-export default function LargeButton({ text, color }: ButtonProps) {
-  // className에서 smallButton 스타일 적용
+export default function LargeButton({ text, color, onClick }: ButtonProps) {
   return (
     <button
-      className={defaultButton({ size: 'large' })} // 스타일 적용
-      style={{ backgroundColor: color, color: 'white' }} // 동적 컬러 적용
+      className={defaultButton({ size: 'large' })} 
+      style={{ 
+        backgroundColor: color === 'defaultColor' ? 'black' : color || 'black',
+        color: 'white',
+      }}
+      onClick={onClick}
     >
       {text}
     </button>

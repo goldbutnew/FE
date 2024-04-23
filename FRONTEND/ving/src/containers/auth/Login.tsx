@@ -7,6 +7,7 @@ import logo from '../../../public/images/MainLogo.png'
 import { columnbox, rowbox } from "@/styles/box.css"
 import * as styles from "./index.css"
 import LargeButton from "@/components/Button/LargeButton"
+import SmallButton from "@/components/Button/SmallButton"
 import { vars } from "@/styles/vars.css"
 
 export default function Login() {
@@ -57,7 +58,7 @@ export default function Login() {
             onChange={handlePW}
           />          
         </div>
-        <LargeButton text="로그인" color={vars.colors.black} />
+        <LargeButton text="로그인" />
       </form>
     </div>
   )

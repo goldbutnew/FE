@@ -12,7 +12,8 @@ export const defaultButton = recipe({
     padding: `${vars.space['1x']} ${vars.space['1x']}`,
     transition: 'background-color 0.3s ease', 
     ':hover': {
-      backgroundColor: vars.colors.black // 호버 상태에서의 배경색 변경
+      backgroundColor: vars.colors.black,
+      color: vars.colors.white,
     }
   },
   variants: {
