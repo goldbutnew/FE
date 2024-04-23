@@ -21,6 +21,7 @@ const useLoginStore = create((set) => ({
 
     } catch (error) {
       console.error('로그인 실패:', error)
+      console.log(token)
       set({ isLogin: false, user: null })
     }
   },
