@@ -12,6 +12,6 @@ public class GreetingController {
     @GetMapping("/")
     ResponseEntity<?> Greeting()
     {
-        return ResponseEntity.ok().body("Greeting");
+        return ResponseEntity.ok().body( "Greeting");
     }
 }
