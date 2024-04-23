@@ -1,6 +1,24 @@
-'use client'
 import React from 'react'
 import * as styles from './index.css'
+
+interface SocialLinkProps {
+  platform: string
+  link: string
+}
+
+const SocialLink: React.FC<SocialLinkProps> = ({ platform, link }) => {
+  return (
+    <a href={link} className={styles.socialLink}>
+      <span>{platform}</span>
+    </a>
+  )
+}
+
+interface UserInfoBoxProps {
+  username: string
+  userImage: string
+  socialLinks: SocialLinkProps[]
+}
 
 const dummyUserInfo = {
   userImage: 'https://picsum.photos/id/1/200/300',
