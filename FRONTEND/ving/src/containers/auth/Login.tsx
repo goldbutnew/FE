@@ -34,10 +34,10 @@ export default function Login() {
   }
 
   return (
-    <div className={columnbox}>
-      <div className={rowbox}>
-        <Image src={logo} alt="logo" />
-        <p>에 로그인</p>        
+    <div className={`${columnbox} ${styles.modalContainer}`}>
+      <div className={`${styles.modalTitle} ${rowbox}`}>
+        <Image src={logo} alt="logo" className={styles.logo} />
+        에 로그인      
       </div>
       <form className={columnbox} onSubmit={handleLogin}>
         <div className={rowbox}>
