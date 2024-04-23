@@ -3,6 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import Link from 'next/link';
+
+import logo from '../../../public/images/MainLogo.png'
 import * as styles from './index.css'
 
 export default function NavBar() {
@@ -10,7 +12,9 @@ export default function NavBar() {
   
   return (
     <nav className={styles.container}>
-      <Link href='/'>메인</Link>　|　 
+      <Link href='/'>
+        <Image src={logo} alt="main" className={styles.logo} />
+      </Link>　|　 
       <Link href='/setting'>세팅</Link>　|　 
       <Link href={`/profile/${userId}`}>내 채널</Link>　|　 
       <Link href={`/studio/${userId}`}>내 스튜디오</Link>　|　 

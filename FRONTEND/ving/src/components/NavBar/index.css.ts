@@ -6,5 +6,11 @@ export const container = style({
   display: 'flex',
   alignItems: 'center',
   height: 50,
+  padding: `0 ${vars.padding['1x']} 0 ${vars.padding['1x']}`,
   boxShadow: `0 2px 4px ${vars.colors.gray}`,
+})
+
+export const logo = style({
+  width: 'auto',
+  height: 32,
 })
