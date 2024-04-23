@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from "react"
-import useLoginStore from "@/store/LoginStore"
+import useAuthStore from "@/store/AuthStore"
 
 export default function Login() {
-  const { login } = useLoginStore()
+  const { login } = useAuthStore()
   
   const [userID, setUserID] = useState('')
   const [userPW, setUserPW] = useState('')
@@ -20,11 +20,12 @@ export default function Login() {
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const userData =new URLSearchParams()
-    userData.append('username', userID)
-    userData.append('password', userPW)
+    const data = {
+      'userName': userID,
+      'password': userPW
+    }
 
-    login(userData)
+    login(data)
   }
 
   return (
