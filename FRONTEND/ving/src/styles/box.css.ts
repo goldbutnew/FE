@@ -4,7 +4,7 @@ import { flex } from './common.css';
 export const defaultBox = flex({
   direction: 'column',
   align: 'start',
-  justify: 'center',
+  justify: 'start',
 })
 
 export const columnbox = flex({
@@ -18,3 +18,7 @@ export const rowbox = flex({
   align: 'center',
   justify: 'center',
 })
+
+// dsd
+// dfsdfs
+// dssdfdsdfdsfddsfds
