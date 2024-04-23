@@ -6,6 +6,11 @@ export default function () {
   return (
     <div>
       <LoginPage />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <SignupPage />
     </div>
   )
