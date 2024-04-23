@@ -1,7 +1,7 @@
 'use client'
 
-import useLoginStore from "@/store/LoginStore"
 import { useState } from "react"
+import useLoginStore from "@/store/LoginStore"
 
 export default function Login() {
   const { login } = useLoginStore()
@@ -29,12 +29,7 @@ export default function Login() {
 
   return (
     <div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <img src="/images/loginModalTitleImg.png" />
+      <img src="/images/loginModalTitleImg.png" alt="" />
       <h2>에 로그인</h2>
       <form onSubmit={handleLogin}>
         <label htmlFor="id">아이디</label>
@@ -42,7 +37,6 @@ export default function Login() {
           name="id"
           value={userID}
           onChange={handleID}
-          placeholder='15/30'
         />
         <label htmlFor="pw">비밀번호</label>
         <input
@@ -50,7 +44,6 @@ export default function Login() {
           type="password"
           value={userPW}
           onChange={handlePW}
-          placeholder='15/30'
         />
         <button type="submit">
           로그인
