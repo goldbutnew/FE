@@ -22,6 +22,7 @@ export default function Home() {
   }, []);
 
   useLayoutEffect(() => {
+
     const startStreaming = async () => {
       const videoElement = localVideoRef.current;
       
@@ -50,11 +51,15 @@ export default function Home() {
           formData.append('video', new Blob([arrayBuffer], { type: 'video/webm' }));
   
           try {
-            await fetch('http://127.0.0.1:8000/camera_app/upload_video/', {
+            const response = await fetch('http://127.0.0.1:8000/camera_app/upload_video/', {
               method: 'POST',
               body: formData,
             });
-  
+
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+
             // HLS 스트리밍 시작
             if (Hls.isSupported()) {
               hls.current = new Hls();
@@ -81,10 +86,10 @@ export default function Home() {
       mediaRecorder.start();
       timer = setTimeout(() => {
         mediaRecorder.stop();
-      }, 10000);  // 2초 후에 녹화를 종료합니다.
+      }, 8000);  // 2초 후에 녹화를 종료합니다.
     };
   
-    const interval = setInterval(startStreaming, 10000); // 3초마다 스트리밍 업데이트
+    const interval = setInterval(startStreaming, 1000); // 3초마다 스트리밍 업데이트
   
     return () => {
       clearInterval(interval);

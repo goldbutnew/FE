@@ -35,7 +35,7 @@ def get_video_duration(input_path):
 
 def convert_to_hls(input_path, output_path):
     # 비디오의 총 시간을 기반으로 HLS 세그먼트 길이 설정
-    hls_time = 1
+    hls_time = 10
 
     # FFmpeg 명령어
     cmd = [
