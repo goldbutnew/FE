@@ -1,108 +1,117 @@
 "use client"
-import { useEffect, useRef } from 'react';
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
-import 'videojs-contrib-hls';
+import { useEffect, useRef, useLayoutEffect } from 'react';
+import Hls from 'hls.js';
 
-const Home = () => {
-  const videoRef = useRef(null);
+export default function Home() {
+  const localVideoRef = useRef(null);
+  const serverVideoRef = useRef(null);
+  const hls = useRef(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useLayoutEffect(() => {
+    const startCamera = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/hls/');
-        
-      } catch (err) {
-        
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        localVideoRef.current.srcObject = stream;
+        localVideoRef.current.play();
+      } catch (error) {
+        console.error('카메라 접근 오류:', error);
       }
     };
-    const videoElement = videoRef.current;
-    
-    if (videoElement) {
-      const player = videojs(videoElement, {
-        controls: true,
-        autoplay: false,
-        preload: 'auto',
-      });
 
-      player.src({
-        src: 'http://localhost:8000/media/output.m3u8',
-        type: 'application/x-mpegURL',
-      });
-
-      player.play();
-    }
+    startCamera();
   }, []);
+
+  useLayoutEffect(() => {
+    const startStreaming = async () => {
+      const videoElement = localVideoRef.current;
+      
+      const stream = videoElement.srcObject;
+      const mediaRecorder = new MediaRecorder(stream);
+  
+      const chunks = [];
+      mediaRecorder.ondataavailable = event => {
+        if (event.data.size > 0) {
+          chunks.push(event.data);
+        }
+      };
+  
+      let timer;
+  
+      mediaRecorder.onstop = async () => {
+        clearTimeout(timer);  // 타이머 초기화
+  
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        const reader = new FileReader();
+  
+        reader.onload = async (event) => {
+          const arrayBuffer = event.target.result;
+          const formData = new FormData();
+          
+          formData.append('video', new Blob([arrayBuffer], { type: 'video/webm' }));
+  
+          try {
+            await fetch('http://127.0.0.1:8000/camera_app/upload_video/', {
+              method: 'POST',
+              body: formData,
+            });
+  
+            // HLS 스트리밍 시작
+            if (Hls.isSupported()) {
+              hls.current = new Hls();
+  
+              hls.current.on(Hls.Events.ERROR, function(event, data) {
+                console.error('Hls.js 오류 발생:', data);
+              });
+  
+              hls.current.loadSource('http://127.0.0.1:8000/media/output.m3u8');
+              hls.current.attachMedia(serverVideoRef.current);
+  
+              hls.current.on(Hls.Events.MANIFEST_PARSED, function() {
+                serverVideoRef.current.play();
+              });
+            }
+          } catch (error) {
+            console.error('전송 오류:', error);
+          }
+        };
+  
+        reader.readAsArrayBuffer(blob);
+      };
+  
+      mediaRecorder.start();
+      timer = setTimeout(() => {
+        mediaRecorder.stop();
+      }, 10000);  // 2초 후에 녹화를 종료합니다.
+    };
+  
+    const interval = setInterval(startStreaming, 10000); // 3초마다 스트리밍 업데이트
+  
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+  
+  
+  
+
+  const handlePreventDefault = (event) => {
+    event.preventDefault();
+  };
 
   return (
     <div>
-      <video ref={videoRef} id="my-video" className="video-js vjs-default-skin" />
+      <h1>카메라 스트리밍</h1>
+      <div style={{ display: 'flex' }}>
+        <div>
+          <h2>로컬 스트리밍</h2>
+          <video ref={localVideoRef} width="320" height="240" autoPlay muted onLoadedMetadata={handlePreventDefault}></video>
+        </div>
+        <div>
+          <h2>서버 스트리밍</h2>
+          <video ref={serverVideoRef} width="320" height="240" autoPlay muted onLoadedMetadata={handlePreventDefault}></video>
+        </div>
+      </div>
+      
     </div>
   );
-};
-
-//   const videoRef = useRef(null);
-
-//   useEffect(() => {
-//     console.log('useEffect is running');
-
-//     const videoElement = videoRef.current;
-//     console.log('videoElement:', videoElement);
-
-//     if (videoElement && videoElement.parentElement) {
-//       const player = videojs(videoElement, {
-//         controls: true,
-//         autoplay: false,
-//         preload: 'auto',
-//         html5: {
-//           hls: {
-//             overrideNative: true,  // Force Video.js to use HLS
-//           },
-//         },
-//       });
-//       console.log('player:', player);
-
-//       player.src({
-//         src: 'http://localhost:8000/media/output.m3u8',
-//         type: 'application/x-mpegURL',
-//       });
-
-//       player.on('play', () => {
-//         console.log('Video is playing');
-//       });
-
-//       player.on('error', (error) => {
-//         console.error('Video.js error:', error);
-//       });
-
-//       player.on('loadeddata', () => {
-//         console.log('Loaded data:', player.currentTime());
-//       });
-
-//       player.on('loadedmetadata', () => {
-//         console.log('Loaded metadata:', player.duration());
-//         player.play().catch((error) => {
-//           console.error('Auto-play failed:', error);
-//         });
-//       });
-
-//       return () => {
-//         if (player) {
-//           player.dispose();
-//         }
-//       };
-//     }
-//   }, []);
-
-//   console.log('Home component rendered');
-
-//   return (
-//     <div>
-//       <video ref={videoRef} className="video-js vjs-default-skin" />
-//     </div>
-//   );
-// };
-
-export default Home;
-
-
+}

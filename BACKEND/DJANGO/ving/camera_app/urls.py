@@ -4,6 +4,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('start_stream/', views.start_stream),
-    path('end_stream/', views.end_stream),
+    path('convert_to_hls/', views.convert_to_hls),
+    path('upload_video/', views.upload_video),
 ]
