@@ -33,13 +33,15 @@ export const defaultButton = recipe({
 })
 
 export const iconButton = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   border: `1px solid ${vars.colors.black}`,
   outline: 'none',
   backgroundColor: 'inherit',
   cursor: 'pointer',
   borderRadius: vars.borderRadius.full,
-  fontSize: '16px',
-  padding: `${vars.space['1x']} ${vars.space['1x']}`,
+  padding: vars.space['0.5x'],
   transition: 'background-color 0.3s ease', 
   ':hover': {
     backgroundColor: vars.colors.black,
