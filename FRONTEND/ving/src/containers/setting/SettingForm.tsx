@@ -4,7 +4,7 @@ import * as styles from './index.css'
 import SmallButton from "@/components/Button/SmallButton"
 import { columnbox, rowbox } from "@/styles/box.css"
 import Textarea from '@/components/Input/TextArea'
-import Input from '@/components/Input/defaultInput'
+import DefaultInput from '@/components/Input/defaultInput'
 
 export default function SettingForm() {
   const [name, setName] = useState('')
@@ -32,14 +32,13 @@ export default function SettingForm() {
       <div className={`${rowbox}`}>
         <span>닉네임</span>
         <div className={`${rowbox}`}>
-          <Input
+          <DefaultInput
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="황재언안티(엔씨바보)"
             maxLength={30}
           />
-          <div className={styles.charLimit}>{name.length}/30</div>
         </div>
       </div>
       <div className={`${rowbox}`}>
@@ -51,28 +50,25 @@ export default function SettingForm() {
             placeholder="엔씨 짜증 zI대로(한화 짱...!)"
             maxLength={100}
           />
-          <div className={styles.charLimit}>{message.length}/100</div>
         </div>
       </div>
     </form>
     <p className={styles.infoText}>채널 정보</p>
     <form className={styles.formContainer} onSubmit={handleSubmit}>
-      <Input
+      <DefaultInput
         type="text"
         value={name}
         onChange={(e) => setLink(e.target.value)}
         placeholder="링크 제목을 입력해 주세요"
         maxLength={30}
       />
-      <div className={styles.charLimit}>{link.length}/30</div>
-      <Input
+      <DefaultInput
         type="text"
         value={name}
         onChange={(e) => setLink(e.target.value)}
         placeholder="링크 제목을 입력해 주세요"
         maxLength={30}
       />
-      <div className={styles.charLimit}>{link.length}/30</div>
     </form>
       <SmallButton text="취소" color='lightGray'/>
       <SmallButton text="저장" color='black' />
