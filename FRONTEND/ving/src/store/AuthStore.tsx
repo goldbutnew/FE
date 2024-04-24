@@ -1,32 +1,65 @@
 import { create } from 'zustand'
-import axios from 'axios'
+import axios from '../api/axios' 
 
 interface Data {
-  userName: string
+  username: string
   password: string
 }
 
 const useAuthStore = create((set) => ({
   isLogin: false,
-  userData: '',
+  userData: [],
+  isCheck: false,
 
-  // axios 예시 코드 (로그인을 위해서는 수정 필요)
   login: async (data:Data) => {
     try {
+      console.log(data)
       const response = await axios.post('auth/login', data)
 
       // 유저 데이터 저장
       set({ isLogin: true })
-      set({ userData: response.data.data })
-      localStorage.setItem('accessToken', response.data.data.token.accessToken)
-      console.log('유저 데이터입니다', response.data.data)
+      set({ userData: response.data.info })
+      localStorage.setItem('accessToken', response.data.token.accessToken)
+      console.log('유저 데이터입니다', response.data)
 
     } catch (error) {
       console.error('로그인 실패:', error)
-      set({ isLogin: false, userData: '' })
     }
   },
-  
+
+  duplicatedCheck: async (username:string) => {
+    try {
+      console.log(username)
+      const response = await axios.get('auth/isRegistered', { 
+        params : { username },
+      })
+
+      console.log('중복체크 성공', response.data.registered)
+      if (response.data.registered) {
+        set({ isCheck: false })
+      } else {
+        set({ isCheck: true })
+      }
+
+    } catch (error) {
+      console.error('중복체크 실패:', error)
+    }
+  },
+
+  signup: async (data:Data) => {
+    try {
+      console.log(data)
+      const response = await axios.post('auth/signup', data)
+
+      console.log('유저 데이터입니다', response.data)
+      set({ isLogin: true })
+      set({ userData: response.data.info })
+      localStorage.setItem('accessToken', response.data.token.accessToken)
+
+    } catch (error) {
+      console.error('회원가입 실패:', error)
+    }
+  },
 }))
 
 export default useAuthStore

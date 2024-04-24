@@ -1,14 +1,14 @@
 'use client'
 
 import { useState } from "react"
-import Image from "next/image"
 import useAuthStore from "@/store/AuthStore"
-import logo from '../../../public/images/MainLogo.png'
+
+import Image from "next/image"
+import logo from '#/images/MainLogo.png'
+import { vars } from "@/styles/vars.css"
 import { columnbox, rowbox } from "@/styles/box.css"
 import * as styles from "./index.css"
 import LargeButton from "@/components/Button/LargeButton"
-import SmallButton from "@/components/Button/SmallButton"
-import { vars } from "@/styles/vars.css"
 
 export default function Login() {
   const { login } = useAuthStore()
@@ -28,7 +28,7 @@ export default function Login() {
     event.preventDefault()
 
     const data = {
-      'userName': userID,
+      'username': userID,
       'password': userPW
     }
 
