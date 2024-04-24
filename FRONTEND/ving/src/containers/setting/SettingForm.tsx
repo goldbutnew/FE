@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import * as styles from './index.css'
 
 import SmallButton from "@/components/Button/SmallButton"
-import { columnbox, rowbox } from "@/styles/box.css"
+import { columnbox, rowbox, betweenBox } from "@/styles/box.css"
 import Textarea from '@/components/Input/TextArea'
 import DefaultInput from '@/components/Input/defaultInput'
 
@@ -54,7 +54,7 @@ export default function SettingForm() {
       </div>
     </form>
     <p className={styles.infoText}>채널 정보</p>
-    <form className={styles.formContainer} onSubmit={handleSubmit}>
+    <form className={`${betweenBox} ${styles.formContainer}`} onSubmit={handleSubmit}>
       <DefaultInput
         type="text"
         value={name}
