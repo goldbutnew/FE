@@ -4,6 +4,7 @@ import { vars } from '../../styles/vars.css'
 export const container = style({
   backgroundColor: vars.colors.white,
   display: 'flex',
+  flexDirection: 'row',
   alignItems: 'center',
   height: 50,
   padding: `0 ${vars.space['1x']} 0 ${vars.space['1x']}`,
