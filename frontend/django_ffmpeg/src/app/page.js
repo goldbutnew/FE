@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useRef, useLayoutEffect } from 'react';
+import { useEffect, useRef, useLayoutEffect, useState } from 'react';
 import Hls from 'hls.js';
 
 export default function Home() {
@@ -7,6 +7,7 @@ export default function Home() {
   const serverVideoRef = useRef(null);
   const hls = useRef(null);
   const mediaRecorder = useRef(null);  // MediaRecorder를 useRef로 관리
+  const [sequenceNumber, setSequenceNumber] = useState(0);
 
   useLayoutEffect(() => {
     const startCamera = async () => {
@@ -23,6 +24,25 @@ export default function Home() {
     startCamera();
   }, []);
 
+  useEffect(() => {
+    const videoElement = serverVideoRef.current;
+
+    const handleTimeUpdate = () => {
+      const currentTime = videoElement.currentTime;
+      const newSequenceNumber = Math.floor(currentTime / 2);
+
+      if (newSequenceNumber !== sequenceNumber) {
+        setSequenceNumber(newSequenceNumber);
+      }
+    };
+
+    videoElement.addEventListener('timeupdate', handleTimeUpdate);
+
+    return () => {
+      videoElement.removeEventListener('timeupdate', handleTimeUpdate);
+    };
+  }, [sequenceNumber]);
+
   useLayoutEffect(() => {
     const startStreaming = async () => {
       const videoElement = localVideoRef.current;
@@ -37,10 +57,7 @@ export default function Home() {
         }
       };
   
-      let timer;
-  
       mediaRecorder.current.onstop = async () => {
-        clearTimeout(timer);
         const blob = new Blob(chunks, { type: 'video/webm' });
         const reader = new FileReader();
   
@@ -67,7 +84,7 @@ export default function Home() {
                 console.error('Hls.js 오류 발생:', data);
               });
   
-              hls.current.loadSource('http://127.0.0.1:8000/media/output.m3u8');
+              hls.current.loadSource(`http://127.0.0.1:8000/media/output.m3u8`);
               hls.current.attachMedia(serverVideoRef.current);
   
               hls.current.on(Hls.Events.MANIFEST_PARSED, function() {
@@ -85,7 +102,7 @@ export default function Home() {
       // MediaRecorder의 상태 확인
       if (mediaRecorder.current.state === 'inactive') {
         mediaRecorder.current.start();
-        timer = setTimeout(() => {
+        setTimeout(() => {
           mediaRecorder.current.stop();
         }, 2000);
       } else {
@@ -98,8 +115,7 @@ export default function Home() {
     return () => {
       clearInterval(interval);
     };
-  }, []);
-  
+  }, [sequenceNumber]);
 
   const handlePreventDefault = (event) => {
     event.preventDefault();
