@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import useAuthStore from "@/store/AuthStore"
 
 import Image from "next/image"
@@ -10,10 +11,11 @@ import { columnbox, rowbox } from "@/styles/box.css"
 import * as styles from "./index.css"
 import SmallButton from "@/components/Button/SmallButton"
 import LargeButton from "@/components/Button/LargeButton"
+import Input from "@/components/Input/defaultInput"
 
 export default function Signup() {
-  const { isLogin, isCheck, duplicatedCheck, signup } = useAuthStore()
-  
+  const { Token, isCheck, duplicatedCheck, signup } = useAuthStore()
+  const router = useRouter()
   const [userID, setUserID] = useState('')
   const [userPW, setUserPW] = useState('')
   const [userPW2, setUserPW2] = useState('')
@@ -52,6 +54,13 @@ export default function Signup() {
     signup(data)
   }
 
+  useEffect (() => {
+    console.log(Token)
+    if (Token) {
+      router.push('/')
+    }
+  }, [Token])
+
   return (
     <div className={`${columnbox} ${styles.modalContainer}`}>
       <div className={`${styles.modalTitle} ${rowbox}`}>
@@ -61,8 +70,8 @@ export default function Signup() {
       <form className={columnbox}>
         <div className={rowbox}>
           <label className={styles.labelText} htmlFor="id">아이디</label>
-          <input
-            name="id"
+          <Input
+            type="id"
             value={userID}
             onChange={handleID}
           />
@@ -74,8 +83,7 @@ export default function Signup() {
           
         <div className={rowbox}>
           <label className={styles.labelText} htmlFor="pw">비밀번호1</label>
-          <input
-            name="pw"
+          <Input
             type="password"
             value={userPW}
             onChange={handlePW}
@@ -84,8 +92,7 @@ export default function Signup() {
 
         <div className={rowbox}>
           <label className={styles.labelText} htmlFor="pw2">비밀번호2</label>
-          <input
-            name="pw2"
+          <Input
             type="password"
             value={userPW2}
             onChange={handlePW2}
@@ -93,9 +100,9 @@ export default function Signup() {
         </div>
 
         <div className={rowbox}>
-          <label className={styles.labelText} htmlFor="pw2">닉네임</label>
-          <input
-            name="pw2"
+          <label className={styles.labelText} htmlFor="nickname">닉네임</label>
+          <Input
+            type="id"
             value={userNickname}
             onChange={handleNickname}
           />
