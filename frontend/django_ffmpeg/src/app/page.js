@@ -6,11 +6,13 @@ export default function Home() {
   const localVideoRef = useRef(null);
   const serverVideoRef = useRef(null);
   const hls = useRef(null);
+  const mediaRecorder = useRef(null);  // MediaRecorder를 useRef로 관리
 
   useLayoutEffect(() => {
     const startCamera = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true ,audio : true });
+        mediaRecorder.current = new MediaRecorder(stream);  // MediaRecorder 초기화
         localVideoRef.current.srcObject = stream;
         localVideoRef.current.play();
       } catch (error) {
@@ -22,15 +24,14 @@ export default function Home() {
   }, []);
 
   useLayoutEffect(() => {
-
     const startStreaming = async () => {
       const videoElement = localVideoRef.current;
-      
       const stream = videoElement.srcObject;
-      const mediaRecorder = new MediaRecorder(stream);
+  
+      if (!mediaRecorder.current) return;  // MediaRecorder가 초기화되지 않았을 경우 종료
   
       const chunks = [];
-      mediaRecorder.ondataavailable = event => {
+      mediaRecorder.current.ondataavailable = event => {
         if (event.data.size > 0) {
           chunks.push(event.data);
         }
@@ -38,9 +39,8 @@ export default function Home() {
   
       let timer;
   
-      mediaRecorder.onstop = async () => {
-        clearTimeout(timer);  // 타이머 초기화
-  
+      mediaRecorder.current.onstop = async () => {
+        clearTimeout(timer);
         const blob = new Blob(chunks, { type: 'video/webm' });
         const reader = new FileReader();
   
@@ -55,12 +55,11 @@ export default function Home() {
               method: 'POST',
               body: formData,
             });
-
+  
             if (!response.ok) {
               throw new Error('Network response was not ok');
             }
-
-            // HLS 스트리밍 시작
+  
             if (Hls.isSupported()) {
               hls.current = new Hls();
   
@@ -83,20 +82,23 @@ export default function Home() {
         reader.readAsArrayBuffer(blob);
       };
   
-      mediaRecorder.start();
-      timer = setTimeout(() => {
-        mediaRecorder.stop();
-      }, 8000);  // 2초 후에 녹화를 종료합니다.
+      // MediaRecorder의 상태 확인
+      if (mediaRecorder.current.state === 'inactive') {
+        mediaRecorder.current.start();
+        timer = setTimeout(() => {
+          mediaRecorder.current.stop();
+        }, 2000);
+      } else {
+        console.warn('MediaRecorder is already recording');
+      }
     };
   
-    const interval = setInterval(startStreaming, 1000); // 3초마다 스트리밍 업데이트
+    const interval = setInterval(startStreaming, 2000);
   
     return () => {
       clearInterval(interval);
     };
   }, []);
-  
-  
   
 
   const handlePreventDefault = (event) => {
@@ -116,7 +118,6 @@ export default function Home() {
           <video ref={serverVideoRef} width="320" height="240" autoPlay muted onLoadedMetadata={handlePreventDefault}></video>
         </div>
       </div>
-      
     </div>
   );
 }
