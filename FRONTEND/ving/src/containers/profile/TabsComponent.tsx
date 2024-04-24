@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
+import { useRouter, useParams } from 'next/navigation'
 import * as styles from './index.css'
-import { ProfileTabComponent } from './ProfileTabComponent';
+import { ProfileTabComponent } from './ProfileTabComponent'
 
-const TabsComponent: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('home');
+export default function TabsComponent() {
+  const [activeTab, setActiveTab] = useState('home')
+  const router = useRouter()
+  const params = useParams()
 
   return (
     <div>
@@ -18,7 +21,10 @@ const TabsComponent: React.FC = () => {
         <li 
           className={styles.tab} 
           data-active={activeTab === 'video'} 
-          onClick={() => setActiveTab('video')}
+          onClick={() => {
+            setActiveTab('video')
+            router.push(`${params.userId}/video`)}
+          }
         >
           동영상
         </li>
@@ -28,7 +34,5 @@ const TabsComponent: React.FC = () => {
         {activeTab === 'video' && <div>Video content...</div>}
       </div>
     </div>
-  );
-};
-
-export default TabsComponent
+  )
+}
