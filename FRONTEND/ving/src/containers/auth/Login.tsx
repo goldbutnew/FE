@@ -10,6 +10,7 @@ import LargeButton from "@/components/Button/LargeButton"
 import SmallButton from "@/components/Button/SmallButton"
 import { vars } from "@/styles/vars.css"
 import Input from "@/components/Input/defaultInput"
+import Textarea from "@/components/Input/TextArea"
 
 export default function Login() {
   const { login } = useLoginStore()
@@ -63,6 +64,12 @@ export default function Login() {
           </div>          
         </div>
         <LargeButton text="로그인" />
+        <Textarea 
+          type="password"
+          value={userPW}
+          onChange={handlePW}
+          placeholder="비밀번호"
+        />
       </form>
     </div>
   )

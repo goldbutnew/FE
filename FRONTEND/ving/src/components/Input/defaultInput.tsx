@@ -10,17 +10,13 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({ type, value, onChange, placeholder }) => {
   return (
-    <div
-      // className={styles.InputConatiner}
-    >
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className={styles.InputConatiner}
-      />      
-    </div>
+    <input
+      type={type}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className={styles.defaultInput}
+    />      
   );
 }
 

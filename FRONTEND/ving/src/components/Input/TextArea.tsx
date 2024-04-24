@@ -1,4 +1,5 @@
 import React from 'react';
+import * as styles from './index.css'
 
 interface TextareaProps {
   value: string;
@@ -12,7 +13,7 @@ const Textarea: React.FC<TextareaProps> = ({ value, onChange, placeholder }) => 
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      // className="textarea-style"
+      className={styles.TextArea}
     />
   );
 }
