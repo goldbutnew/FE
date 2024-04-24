@@ -22,6 +22,7 @@ export const vars = createGlobalTheme(':root', {
 
   borderRadius: {
     '0x': '0px',
+    '0.5x': '4px',
     '1x': '8px',
     '2x': '16px',
     '3x': '24px',
@@ -51,5 +52,8 @@ export const vars = createGlobalTheme(':root', {
     '3x': '1.75',
     '4x': '2',
     '5x': '2.25',
+    '6x': '2.5',
+    '7x': '2.75',
+    '8x': '3',
   },
 });
