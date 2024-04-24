@@ -18,7 +18,7 @@ const DefaultInput: React.FC<InputProps> = ({ type, value, onChange, placeholder
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        maxength={maxLength}
+        maxLength={maxLength}
         className={styles.defaultInputForm}
       />
       {maxLength && (
