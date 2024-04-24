@@ -9,6 +9,7 @@ const nextConfig = {
   images: {
     domains: ['example.com'],
   },
+  // basePath: '/public',
 }
 
 export default withVanillaExtract(nextConfig)
