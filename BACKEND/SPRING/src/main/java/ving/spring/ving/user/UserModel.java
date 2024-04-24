@@ -32,8 +32,7 @@ public class UserModel {
     private Integer userChoco;
     private Integer userSubscriberCount;
 
-    @Column(nullable = true)
-    private LocalDateTime userRegisteredDate;
+
     @Column(nullable = true)
     private LocalDateTime userLeaveDate;
 

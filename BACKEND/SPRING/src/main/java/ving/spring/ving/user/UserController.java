@@ -26,23 +26,32 @@ import ving.spring.ving.security.dto.LoginRequest;
 import ving.spring.ving.security.dto.LoginResponse;
 import ving.spring.ving.security.dto.UserPrincipal;
 import ving.spring.ving.security.jwt.JwtIssuer;
+import ving.spring.ving.subscription.SubscriptionService;
 import ving.spring.ving.user.dto.FillupDto;
+import ving.spring.ving.user.dto.ProfileDto;
+import ving.spring.ving.video.VideoDto;
+import ving.spring.ving.video.VideoModel;
+import ving.spring.ving.video.VideoService;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhsot:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtIssuer jwtIssuer;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
+    private final VideoService videoService;
     private final AmazonS3Client amazonS3Client;
+    private final SubscriptionService subscriptionService;
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
     @PostMapping("/api/auth/login")
@@ -125,8 +134,36 @@ public class UserController {
                         .build()
         );
     }
+
+    @GetMapping("/api/auth/getProfile")
+    public ResponseEntity<?> getProfile(@RequestParam Integer userId)
+    {
+        UserModel userModel = userService.findByUserId(userId).orElseThrow();
+        List<VideoModel> videoModels = videoService.findVideoModelsByUser(userModel);
+        List<VideoDto.VideoEntity> returnList = new ArrayList<>();
+        for (VideoModel videoModel : videoModels)
+        {
+            returnList.add(
+                    VideoDto.VideoEntity.builder()
+                            .title(videoModel.getVideoName())
+                            .thumbnail(videoModel.getThumbnail())
+                            .videoPlay(videoModel.getVideoplay())
+                            .build()
+            );
+        }
+
+        return ResponseEntity.ok().body(
+                ProfileDto.builder()
+                        .nickname(userModel.getUserNickname())
+                        .followers(subscriptionService.countAllByStreamer(userModel))
+                        .photoUrl(userModel.getUserPhoto())
+                        .videos(returnList)
+                        .build()
+        );
+    }
+
     @PatchMapping("/api/auth/fillup")
-    public ResponseEntity<?> fillup(@ModelAttribute FillupDto fillupDto)
+    public ResponseEntity<?> fillUp(@ModelAttribute FillupDto fillupDto)
     {
         try
         {
@@ -142,7 +179,13 @@ public class UserController {
             String fileUrl = "https://" + bucket +".s3.ap-northeast-2.amazonaws.com" + "/";
             String destinationFileName = RandomStringUtils.randomAlphabetic(5) + "_" + username  + "."
                     + sourceFileNameExtension;
+            userModel.setUserNickname(fillupDto.getNickname());
+            userModel.setUserIntroduction(fillupDto.getIntroduction());
+            String finalUrl = (fileUrl + destinationFileName);
 
+            userModel.setUserPhoto(finalUrl);
+
+            userService.save(userModel);
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(photo.getContentType());
             metadata.setContentLength(photo.getSize());
@@ -150,7 +193,7 @@ public class UserController {
             FillupDto.FillupReturnDto fillupReturnDto = FillupDto.FillupReturnDto.builder()
                     .nickname(nickname)
                     .introduction(introduction)
-                    .photoUrl(fileUrl)
+                    .photoUrl(finalUrl)
                     .build();
 
             return ResponseEntity.ok().body(fillupReturnDto);
