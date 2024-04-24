@@ -17,3 +17,9 @@ export const rowbox = flex({
   align: 'center',
   justify: 'center',
 })
+
+export const betweenBox = flex({
+  direction: 'row',
+  align: 'center',
+  justify: 'between',
+})
