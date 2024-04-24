@@ -11,5 +11,6 @@ globalStyle('input, textarea', {
   color: 'inherit',
   backgroundColor: 'transparent',
   border: 'none',
-  outline: 'none'   
+  outline: 'none',
+  // whiteSpace: 'inherit',
 });

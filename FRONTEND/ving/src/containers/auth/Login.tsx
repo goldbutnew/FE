@@ -9,7 +9,7 @@ import * as styles from "./index.css"
 import LargeButton from "@/components/Button/LargeButton"
 import SmallButton from "@/components/Button/SmallButton"
 import { vars } from "@/styles/vars.css"
-import Input from "@/components/Input/defaultInput"
+import DefaultInput from "@/components/Input/defaultInput"
 import Textarea from "@/components/Input/TextArea"
 
 export default function Login() {
@@ -44,33 +44,25 @@ export default function Login() {
         에 로그인      
       </div>
       <form className={columnbox} onSubmit={handleLogin}>
-        <div className={styles.InputBox}>
-          <div className={rowbox}>
-            <label className={styles.labelText} htmlFor="id">아이디</label>
-            <Input
-              type="id"
-              value={userID}
-              onChange={handleID}
-              placeholder="아이디"
-            />
-          </div>
-          <div className={rowbox}>
-            <label className={styles.labelText} htmlFor="pw">비밀번호</label>
-            <Input
-              type="password"
-              value={userPW}
-              onChange={handlePW}
-              placeholder="비밀번호"
-            />          
-          </div>          
+        <div className={`${styles.modalItem} ${rowbox}`}>
+          <label className={styles.labelText} htmlFor="id">아이디</label>
+          <DefaultInput
+            type="text"
+            value={userID}
+            onChange={handleID}
+            placeholder="아이디"
+          />
         </div>
+        <div className={`${styles.modalItem} ${rowbox}`}>
+          <label className={styles.labelText} htmlFor="pw">비밀번호</label>
+          <DefaultInput
+            type="text"
+            value={userPW}
+            onChange={handlePW}
+            placeholder="비밀번호"
+          />          
+        </div>          
         <LargeButton text="로그인" />
-        <Textarea 
-          type="password"
-          value={userPW}
-          onChange={handlePW}
-          placeholder="비밀번호"
-        />
       </form>
     </div>
   )

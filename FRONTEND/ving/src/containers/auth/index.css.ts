@@ -3,14 +3,13 @@ import { vars } from '@/styles/vars.css';
 
 
 export const modalContainer = style({
-  lineHeight: vars.lineHeight['6x'], 
 });
 
 export const modalTitle = style ({
   margin: `0 0 ${vars.space['1x']}`,
 })
 
-export const InputBox = style({
+export const modalItem = style({
   margin: `0 0 ${vars.space['1x']}`,
 })
 

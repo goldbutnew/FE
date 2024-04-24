@@ -1,23 +1,33 @@
 import React from 'react';
-import * as styles from './index.css'
+import * as styles from './index.css';
+import { rowbox } from '@/styles/box.css';
 
 interface InputProps {
   type: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  maxLength?: number;
 }
 
-const Input: React.FC<InputProps> = ({ type, value, onChange, placeholder }) => {
+const DefaultInput: React.FC<InputProps> = ({ type, value, onChange, placeholder, maxLength }) => {
   return (
-    <input
-      type={type}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      className={styles.defaultInput}
-    />      
+    <div className={`${rowbox} ${styles.defaultInputBox}`}>
+      <input
+        type={type}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        maxength={maxLength}
+        className={styles.defaultInputForm}
+      />
+      {maxLength && (
+        <span className={styles.characterCount}>
+          {value.length} / {maxLength}
+        </span>
+      )}
+    </div>
   );
 }
 
-export default Input;
+export default DefaultInput;
