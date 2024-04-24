@@ -146,3 +146,7 @@ export const videoInfoBox = style({
   flexDirection: 'column',
   padding: '5px 0',
 })
+
+export const rankList = style({
+  listStyleType: 'none',
+})
