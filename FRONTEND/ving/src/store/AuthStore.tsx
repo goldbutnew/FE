@@ -7,7 +7,7 @@ interface Data {
 }
 
 const useAuthStore = create((set) => ({
-  isLogin: false,
+  Token: localStorage.getItem('accessToken'),
   userData: [],
   isCheck: false,
 
@@ -16,14 +16,24 @@ const useAuthStore = create((set) => ({
       console.log(data)
       const response = await axios.post('auth/login', data)
 
-      // 유저 데이터 저장
-      set({ isLogin: true })
       set({ userData: response.data.info })
       localStorage.setItem('accessToken', response.data.token.accessToken)
       console.log('유저 데이터입니다', response.data)
 
     } catch (error) {
       console.error('로그인 실패:', error)
+    }
+  },
+
+  logout: async () => {
+    try {
+      localStorage.removeItem('accessToken')
+      set({ Token: '' })
+      set({ userData: [] })
+      console.log('로그아웃 완료')
+
+    } catch (error) {
+      console.error('로그아웃 실패:', error)
     }
   },
 
@@ -51,10 +61,10 @@ const useAuthStore = create((set) => ({
       console.log(data)
       const response = await axios.post('auth/signup', data)
 
-      console.log('유저 데이터입니다', response.data)
-      set({ isLogin: true })
-      set({ userData: response.data.info })
       localStorage.setItem('accessToken', response.data.token.accessToken)
+      set({ userData: response.data.info })
+      set({ Token: response.data.token.accessToken })
+      console.log('유저 데이터입니다', response.data)
 
     } catch (error) {
       console.error('회원가입 실패:', error)
