@@ -22,4 +22,10 @@ public class LoginResponse {
         private final String accessToken;
         private final String refreshToken;
     }
+    @Builder
+    @Getter
+    public static class isRegistered
+    {
+        private final boolean isRegistered;
+    }
 }

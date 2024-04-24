@@ -45,12 +45,12 @@ public class UserController {
     private final AmazonS3Client amazonS3Client;
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
-    @PostMapping("/auth/login")
+    @PostMapping("/api/auth/login")
     public LoginResponse login(@RequestBody @Validated LoginRequest request) {
-        log.info("Authentication Token 앞");
+
         var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        log.info("Authentication Token 뒤");
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         var principal = (UserPrincipal) authentication.getPrincipal();
         UserModel userModel = userService.findByUserUsername(request.getUsername()).orElseThrow();
@@ -71,11 +71,10 @@ public class UserController {
                                 .nickname(userModel.getUserNickname())
                                 .build()
                 ).build();
-
     }
 
-    @PostMapping("/auth/signup")
-    public ResponseEntity<?> signup(@RequestBody LoginRequest request) {
+    @PostMapping("/api/auth/signup")
+    public ResponseEntity<?> signup(@RequestBody LoginRequest.SignUpRequest request) {
         // TODO: process POST request
         try {
             if (request == null || request.getPassword() == null) {
@@ -85,13 +84,12 @@ public class UserController {
                     .userUsername(request.getUsername())
                     .userPassword(passwordEncoder.encode(request.getPassword()))
                     .userSubscriberCount(0)
-                    .userNickname("NULL")
+                    .userNickname(request.getNickname())
                     .userPhoto("NULL")
                     .userChoco(0)
                     .userIsregistered(1)
                     .build();
-            
-            log.info("좋아쒀");
+
 
             UserModel registerUserModel = userService.create(user);
             var token = jwtIssuer.issue(registerUserModel.getUserId(),
@@ -117,7 +115,17 @@ public class UserController {
                     .body(responseDTO);
         }
     }
-    @PatchMapping("/auth/fillup")
+
+    @GetMapping("/api/auth/isRegistered")
+    public ResponseEntity<?> isRegistered(@RequestParam String username)
+    {
+        return ResponseEntity.ok().body(
+                LoginResponse.isRegistered.builder()
+                        .isRegistered(userService.existsByUserUsername(username))
+                        .build()
+        );
+    }
+    @PatchMapping("/api/auth/fillup")
     public ResponseEntity<?> fillup(@ModelAttribute FillupDto fillupDto)
     {
         try
@@ -151,7 +159,5 @@ public class UserController {
         {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-
     }
 }
