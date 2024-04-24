@@ -7,7 +7,7 @@ type ButtonProps = {
   onClick?: () => void;
 };
 
-export default function LargeButton({ text, color, onClick }: ButtonProps) {
+export default function SmallButton({ text, color, onClick }: ButtonProps) {
   return (
     <button
       className={defaultButton({ size: 'small' })} 
