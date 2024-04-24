@@ -1,9 +1,12 @@
 'use client'
 
+import SettingForm from "./SettingForm"
+
 export default function SettingPage() {
   return (
     <div>
-      <h1>누군가의 세팅 페이지</h1>
+      <h1>채널 관리</h1>
+      <SettingForm />
     </div>
   )
 }
