@@ -2,11 +2,20 @@ import React from 'react';
 
 import * as styles from './index.css'
 
-export default function IconButton({ icon }) {
+
+type ButtonProps = {
+  icon: IconDefinition;
+  onClick?: () => void;
+};
+
+export default function IconButton({ icon, onClick }: ButtonProps) {
   const Icon = icon;
   
   return (
-    <button className={styles.iconButton} >
+    <button 
+      className={styles.iconButton}
+      onClick={onClick}
+    >
       <Icon />
     </button>
   );

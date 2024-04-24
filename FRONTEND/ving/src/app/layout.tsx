@@ -17,7 +17,6 @@ const pretendard = localFont({
   weight: "45 920",
 });
 
-
 export default function RootLayout({
   children,
 }: Readonly<{

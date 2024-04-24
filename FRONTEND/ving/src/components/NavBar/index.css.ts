@@ -9,6 +9,7 @@ export const container = style({
   height: 50,
   padding: `0 ${vars.space['1x']} 0 ${vars.space['1x']}`,
   boxShadow: `0 2px 4px ${vars.colors.gray}`,
+  // overflow: 'visible'
 })
 
 export const logo = style({
