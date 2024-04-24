@@ -4,7 +4,7 @@ import * as styles from './index.css'
 
 
 type ButtonProps = {
-  icon: IconDefinition;
+  icon: any;
   onClick?: () => void;
 };
 
