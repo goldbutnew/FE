@@ -1,4 +1,3 @@
-import { recipe } from '@vanilla-extract/recipes';
 import { flex } from './common.css';
 
 export const defaultBox = flex({
@@ -18,7 +17,3 @@ export const rowbox = flex({
   align: 'center',
   justify: 'center',
 })
-
-// dsd
-// dfsdfs
-// dssdfdsdfdsfddsfds
