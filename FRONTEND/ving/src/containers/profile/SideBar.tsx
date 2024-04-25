@@ -1,5 +1,6 @@
 import React from 'react'
 import * as styles from './index.css'
+import { columnbox, rowbox } from '@/styles/box.css'
 
 export default function SideBar() {
 
@@ -15,19 +16,25 @@ export default function SideBar() {
 
   return (
     <div className="menu">
-      <label for="expand-menu"><div>랭킹</div></label>
+      <label htmlFor="expand-menu"><div>랭킹</div></label>
       <input type="checkbox" id="expand-menu" name="expand-menu" />
-      <ul>
+      <ul className={styles.rankOutBox}>
       {users.map((user) => (
         <li key={user.user_id} className={styles.rankList}>
-          <div>
-            {user.user_id}
-          </div>
-          <div>
-            <a href="#" className="item">
-              <div>프로필
-              </div>
-            </a>
+          <div className={`${rowbox} ${styles.rankListBox}`}>
+            <div className={styles.rankNumber}>
+              {user.user_id}
+            </div>
+            <div>
+              <img src={user.photo} className={styles.rankerImage}></img>
+            </div>
+            <div className={`${columnbox}`}>
+              <a href="#" className="item">
+                <div>
+                  <p>{user.nickname}</p>
+                </div>
+              </a>
+            </div>
           </div>
         </li>
       ))}

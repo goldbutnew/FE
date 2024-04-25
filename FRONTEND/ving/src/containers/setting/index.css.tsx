@@ -79,11 +79,11 @@ export const textAreaInput = style([
     minHeight: '80px', // Minimum height for multi-line text area
     resize: 'vertical', // Allow vertical resize only
   },
-]);
+])
 
 export const charLimit = style({
   fontSize: '12px',
   color: '#aaaaaa',
   textAlign: 'right',
   marginTop: '5px',
-});
+})

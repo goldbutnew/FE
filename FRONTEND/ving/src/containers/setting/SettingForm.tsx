@@ -12,8 +12,7 @@ export default function SettingForm() {
   const [link, setLink] = useState('')
 
   const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    // Handle the form submission logic here
+    event.preventDefault()
     console.log({ name, message })
   }
 
