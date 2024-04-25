@@ -27,13 +27,6 @@ export default function RootLayout({
 
   const initOpenState = true
 
-  // 사이드바 컨텐츠 예시
-  const sideBarContent = (
-    <div>
-      test
-    </div>
-  );
-
   return (
     <html lang="kr">
       <body className={`${styles.layout} ${pretendard.className}`}>
@@ -42,10 +35,11 @@ export default function RootLayout({
           <SideBar
             title="랭킹"
             side="left"
-            content={sideBarContent}
             initOpen={initOpenState}
             width={200}
-          />
+          >
+            시작!
+          </ SideBar>
           <div className={styles.mainContent}>
             {children}
           </div>

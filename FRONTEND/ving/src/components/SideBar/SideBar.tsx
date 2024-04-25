@@ -10,13 +10,13 @@ import { LiaDoorOpenSolid, LiaDoorClosedSolid } from "react-icons/lia";
 interface SidebarProps {
   title: string
   side: 'left' | 'right'
-  content: ReactNode
   initOpen: boolean
   width: number
+  children?: React.ReactNode
 }
 
 // export default function SideBar({ title, side, content, isOpen, setIsOpen }: SidebarProps) {
-export default function SideBar({ title, side, content, initOpen, width }: SidebarProps) {
+export default function SideBar({ title, side, initOpen, width, children }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(initOpen);
   const positionStyle = side === 'left' ? `${styles.leftSidebar}` : `${styles.rightSidebar}`;
 
@@ -64,7 +64,7 @@ export default function SideBar({ title, side, content, initOpen, width }: Sideb
       }
       <hr className={line} />
       <div className={styles.sidebarContent}>
-        {content}
+        {children}
       </div>
     </div>
   );
