@@ -11,7 +11,8 @@ import { columnbox, rowbox } from "@/styles/box.css"
 import * as styles from "./index.css"
 import SmallButton from "@/components/Button/SmallButton"
 import LargeButton from "@/components/Button/LargeButton"
-import Input from "@/components/Input/defaultInput"
+import DefaultInput from "@/components/Input/DefaultInput"
+import Radio from "@/components/Input/Radio"
 
 export default function Signup() {
   const { Token, isCheck, duplicatedCheck, signup } = useAuthStore()
@@ -63,6 +64,9 @@ export default function Signup() {
 
   return (
     <div className={`${columnbox} ${styles.modalContainer}`}>
+      <Radio
+        text="이거 선택할 거임?" 
+      />
       <div className={`${styles.modalTitle} ${rowbox}`}>
         <Image src={logo} alt="logo" className={styles.logo} />
         에 가입하세요!
@@ -70,7 +74,7 @@ export default function Signup() {
       <form className={columnbox}>
         <div className={rowbox}>
           <label className={styles.labelText} htmlFor="id">아이디</label>
-          <Input
+          <DefaultInput
             type="id"
             value={userID}
             onChange={handleID}
@@ -83,7 +87,7 @@ export default function Signup() {
           
         <div className={rowbox}>
           <label className={styles.labelText} htmlFor="pw">비밀번호1</label>
-          <Input
+          <DefaultInput
             type="password"
             value={userPW}
             onChange={handlePW}
@@ -92,7 +96,7 @@ export default function Signup() {
 
         <div className={rowbox}>
           <label className={styles.labelText} htmlFor="pw2">비밀번호2</label>
-          <Input
+          <DefaultInput
             type="password"
             value={userPW2}
             onChange={handlePW2}
@@ -101,7 +105,7 @@ export default function Signup() {
 
         <div className={rowbox}>
           <label className={styles.labelText} htmlFor="nickname">닉네임</label>
-          <Input
+          <DefaultInput
             type="id"
             value={userNickname}
             onChange={handleNickname}

@@ -9,7 +9,7 @@ import * as styles from "./index.css"
 import LargeButton from "@/components/Button/LargeButton"
 import SmallButton from "@/components/Button/SmallButton"
 import { vars } from "@/styles/vars.css"
-import DefaultInput from "@/components/Input/defaultInput"
+import DefaultInput from "@/components/Input/DefaultInput"
 import Textarea from "@/components/Input/TextArea"
 
 export default function Login() {

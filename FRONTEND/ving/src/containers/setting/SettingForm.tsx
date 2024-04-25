@@ -4,7 +4,7 @@ import * as styles from './index.css'
 import SmallButton from "@/components/Button/SmallButton"
 import { columnbox, rowbox, betweenBox } from "@/styles/box.css"
 import Textarea from '@/components/Input/TextArea'
-import DefaultInput from '@/components/Input/defaultInput'
+import DefaultInput from '@/components/Input/DefaultInput'
 
 export default function SettingForm() {
   const [name, setName] = useState('')

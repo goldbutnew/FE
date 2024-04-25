@@ -36,3 +36,19 @@ export const TextAreaForm = style({
   overflowWrap: 'break-word',
   overflow: 'auto'
 })
+
+// Radio.tsx
+export const RadioButton = style({
+  borderRadius: vars.borderRadius.full,
+  border: `1px solid ${vars.colors.black}`,
+  width: '16px',
+  height: '16px',
+  cursor: 'pointer',
+  selectors: {
+    '&:checked': {
+      backgroundColor: '#22d3ee', // 체크 시 내부 원으로 표시될 색상
+      border: `1px solid ${vars.colors.black}`,
+      boxShadow: "0 0 0 1.6px #22d3ee",
+    },
+  },
+});
