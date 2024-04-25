@@ -1,140 +1,67 @@
 'use client'
 
-import { useEffect, useRef, useLayoutEffect, useState } from 'react'
-import Hls from 'hls.js'
+import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 
-export default function StudioStreaming() {
-  const localVideoRef = useRef(null);
-  const serverVideoRef = useRef(null);
-  const hls = useRef(null);
-  const mediaRecorder = useRef(null);  // MediaRecorder를 useRef로 관리
-  const [sequenceNumber, setSequenceNumber] = useState(0);
+import beforeStreaming from '#/images/youtubeLogo.png'
+import SmallButton from '@/components/Button/SmallButton'
 
-  useLayoutEffect(() => {
+export default function StudioStreaming(): JSX.Element {
+  const [ isStreaming, setIsStreaming ] = useState(false)
+
+  // 이 참조를 통해 실시간으로 비디오 스트림을 비디오 컴포넌트에 바인딩할 수 있습니다.
+  const localVideoRef = useRef<HTMLVideoElement>(null)
+
+  // 이 참조는 미디어 스트림을 녹화하는 데 사용됩니다.
+  const mediaRecorder = useRef<MediaRecorder | null>(null)
+
+  useEffect(() => {
+    // 비동기 함수로 카메라 및 마이크에 접근하여 스트림을 가져오는 로직입니다.
     const startCamera = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true ,audio : true });
-        mediaRecorder.current = new MediaRecorder(stream);  // MediaRecorder 초기화
-        localVideoRef.current.srcObject = stream;
-        localVideoRef.current.play();
-      } catch (error) {
-        console.error('카메라 접근 오류:', error);
-      }
-    };
-
-    startCamera();
-  }, []);
-  
-  useEffect(() => {
-    const videoElement = serverVideoRef.current;
-
-    const handleTimeUpdate = () => {
-      const currentTime = videoElement.currentTime;
-      const newSequenceNumber = Math.floor(currentTime / 2);
-
-      if (newSequenceNumber !== sequenceNumber) {
-        setSequenceNumber(newSequenceNumber);
-      }
-    };
-
-    videoElement.addEventListener('timeupdate', handleTimeUpdate);
-
-    return () => {
-      videoElement.removeEventListener('timeupdate', handleTimeUpdate);
-    };
-  }, [sequenceNumber]);
-
-  useLayoutEffect(() => {
-    const startStreaming = async () => {
-      const videoElement = localVideoRef.current;
-      const stream = videoElement.srcObject;
-  
-      if (!mediaRecorder.current) return;  // MediaRecorder가 초기화되지 않았을 경우 종료
-  
-      const chunks = [];
-      mediaRecorder.current.ondataavailable = event => {
-        if (event.data.size > 0) {
-          chunks.push(event.data);
+        // navigator.mediaDevices.getUserMedia를 호출하여 비디오 및 오디오 스트림을 요청합니다.
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        // 스트림을 localVideoRef의 current 속성에 바인딩하여 비디오 컴포넌트에 스트림을 표시합니다.
+        if (localVideoRef.current) {
+          localVideoRef.current.srcObject = stream
         }
-      };
-  
-      mediaRecorder.current.onstop = async () => {
-        const blob = new Blob(chunks, { type: 'video/webm' });
-        const reader = new FileReader();
-  
-        reader.onload = async (event) => {
-          const arrayBuffer = event.target.result;
-          const formData = new FormData();
-          
-          formData.append('video', new Blob([arrayBuffer], { type: 'video/webm' }));
-  
-          try {
-            const response = await fetch('http://127.0.0.1:8000/camera_app/upload_video/', {
-              method: 'POST',
-              body: formData,
-            });
-  
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-  
-            if (Hls.isSupported()) {
-              hls.current = new Hls();
-  
-              hls.current.on(Hls.Events.ERROR, function(event, data) {
-                console.error('Hls.js 오류 발생:', data);
-              });
-  
-              hls.current.loadSource(`http://127.0.0.1:8000/media/output.m3u8`);
-              hls.current.attachMedia(serverVideoRef.current);
-  
-              hls.current.on(Hls.Events.MANIFEST_PARSED, function() {
-                serverVideoRef.current.play();
-              });
-            }
-          } catch (error) {
-            console.error('전송 오류:', error);
-          }
-        };
-  
-        reader.readAsArrayBuffer(blob);
-      };
-  
-      // MediaRecorder의 상태 확인
-      if (mediaRecorder.current.state === 'inactive') {
-        mediaRecorder.current.start();
-        setTimeout(() => {
-          mediaRecorder.current.stop();
-        }, 1000);
-      } else {
-        console.warn('MediaRecorder is already recording');
+        // 스트림을 이용하여 MediaRecorder 인스턴스를 생성하고 mediaRecorder 참조에 저장합니다.
+        mediaRecorder.current = new MediaRecorder(stream)
+      } catch (error) {
+        console.error('카메라 접근 오류:', error)
       }
-    };
-  
-    const interval = setInterval(startStreaming, 2000);
-  
-    return () => {
-      clearInterval(interval);
-    };
-  }, [sequenceNumber]);
+    }
 
-  const handlePreventDefault = (event) => {
-    event.preventDefault();
-  };
+    startCamera()
+
+    // 컴포넌트 언마운트 시 실행되는 클린업 함수입니다.
+    return () => {
+      // localVideoRef에서 스트림을 가져와 각 트랙(비디오, 오디오)을 종료합니다.
+      const tracks = (localVideoRef.current?.srcObject as MediaStream)?.getTracks()
+      tracks?.forEach(track => track.stop())
+    }
+  }, [])
+
+  const handleStreaming = () => {
+    setIsStreaming(!isStreaming)
+  }
 
   return (
     <div>
-      <h1>카메라 스트리밍</h1>
-      <div style={{ display: 'flex' }}>
-        <div>
-          <h2>로컬 스트리밍</h2>
-          <video ref={localVideoRef} width="320" height="240" autoPlay muted onLoadedMetadata={handlePreventDefault}></video>
-        </div>
-        <div>
-          <h2>서버 스트리밍</h2>
-          <video ref={serverVideoRef} width="320" height="240" autoPlay muted onLoadedMetadata={handlePreventDefault}></video>
-        </div>
+      <p>로컬 카메라 스트리밍</p>
+      <div>
+        {isStreaming ?
+          <video ref={localVideoRef} width="320" height="240" controls></video>
+          :
+          <Image src={beforeStreaming} width="320" height="240" alt=""/>
+        }
       </div>
+
+      <SmallButton 
+        text="방송시작"
+        onClick={handleStreaming}
+      />  
     </div>
-  );
+  )
 }
+
