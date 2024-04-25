@@ -28,5 +28,5 @@ export const contentContainer = style({
 
 export const mainContent = style({
   flexGrow: 1,
-  padding: `${vars.space['5x']} 0 0 ${vars.space['2x']}`,
+  padding: `${vars.space['8x']} 0 0 ${vars.space['2x']}`,
 });
