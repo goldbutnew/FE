@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
+import { columnbox } from '@/styles/box.css';
 
 export const baseSidebar = style({
   position: 'sticky',
@@ -9,7 +10,7 @@ export const baseSidebar = style({
   margin: vars.space.none,
   backgroundColor: vars.colors.lightGray,
   padding: `${vars.space['8x']} ${vars.space['1x']} ${vars.space['1x']} ${vars.space['1x']}`,
-  boxShadow: `0 4px 4px rgba(0, 0, 0, 0.2)`,
+  boxShadow: vars.boxShadow['2x'],
   zIndex: 3000,
   transition: '0.3s ease-in-out',
 });
@@ -44,7 +45,10 @@ export const close = style({
   transform: 'translateX(0)',
 });
 
-export const sidebarContent = style({
-  whiteSpace: 'pre-wrap',
-  overflowWrap: 'break-word',
-})
+export const sidebarContent = style([
+  columnbox,
+  {
+    whiteSpace: 'pre-wrap',
+    overflowWrap: 'break-word',
+  }
+])
