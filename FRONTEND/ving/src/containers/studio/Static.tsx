@@ -18,7 +18,7 @@ export default function Static() {
           </Link>
         </div>
         <div className={styles.navItem}>
-          <Link href={`/${params.userId}/static`}>
+          <Link href={`/studio/${params.userId}/streaming`}>
             <div>방송하기</div>
           </Link>
         </div>

@@ -6,8 +6,8 @@ export const container = style({
 })
 
 export const sidebar = style({
-  minWidth: '200px',
-  background: '#F0F0F0',
+  minWidth: 200,
+  background: vars.colors.lightGray,
   height: '100vh',
   padding: '20px',
   boxSizing: 'border-box',
@@ -22,7 +22,7 @@ export const card = style({
   background: '#FFFFFF',
   boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
   transition: '0.3s',
-  borderRadius: '5px',
+  borderRadius: vars.borderRadius['0.5x'],
   padding: '16px',
   margin: '16px 0',
 })
