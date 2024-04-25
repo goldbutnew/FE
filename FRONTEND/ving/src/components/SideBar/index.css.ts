@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
 import { columnbox } from '@/styles/box.css';
+import { bold } from '@/styles/fonts.css';
 
 export const baseSidebar = style({
   position: 'sticky',
@@ -45,10 +46,20 @@ export const close = style({
   transform: 'translateX(0)',
 });
 
+export const sidebarTitle = style([
+  bold,
+  {
+    height: 20,
+    fontSize: vars.fontSize['1.5x']
+  }
+])
+
 export const sidebarContent = style([
   columnbox,
   {
     whiteSpace: 'pre-wrap',
     overflowWrap: 'break-word',
+    overflow: 'hidden', 
+    width: '100%', 
   }
-])
+]);
