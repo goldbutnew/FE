@@ -2,16 +2,16 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
 
 export const baseSidebar = style({
-  position: 'fixed',
+  position: 'sticky',
   top: 0,
   bottom: 0,
-  width: '300px',
+  height: '100vh',
   margin: vars.space.none,
   backgroundColor: vars.colors.lightGray,
-  padding: vars.space['1x'],
+  padding: `${vars.space['8x']} ${vars.space['1x']} ${vars.space['1x']} ${vars.space['1x']}`,
   boxShadow: `0 4px 4px rgba(0, 0, 0, 0.2)`,
-  zIndex: 1000,
-  transition: 'transform 0.3s ease-in-out',
+  zIndex: 3000,
+  transition: '0.3s ease-in-out',
 });
 
 export const leftSidebar = style([
@@ -31,8 +31,6 @@ export const rightSidebar = style([
 ]);
 
 export const toggleButton = style({  
-  background: 'none',
-  border: 'none',
   cursor: 'pointer',
   color: vars.colors.black,
 });
@@ -44,5 +42,9 @@ export const open = style({
 
 export const close = style({
   transform: 'translateX(0)',
-  width: '100px',
 });
+
+export const sidebarContent = style({
+  whiteSpace: 'pre-wrap',
+  overflowWrap: 'break-word',
+})

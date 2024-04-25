@@ -1,10 +1,14 @@
 'use client'
 
+import React, { useState } from "react"
 import useAuthStore from "@/store/AuthStore"
 import SideBar from "@/components/SideBar/SideBar"
 
 export default function MainPage() {
   const { userData } = useAuthStore()
+  const [isLeftOpen, setLeftOpen] = useState(true);
+  const [isRightOpen, setRightOpen] = useState(false);
+
   const sidebarContent = (
     <div>
       {
@@ -19,16 +23,6 @@ export default function MainPage() {
 
   return (
     <div>
-      <SideBar 
-        title="랭킹"
-        side="left" 
-        content={sidebarContent} 
-      />
-      <SideBar 
-        title="채팅"
-        side="right" 
-        content={sidebarContent} 
-      />
       <h1>메인 페이지</h1>
       <p>{userData.nickname}</p>
     </div>

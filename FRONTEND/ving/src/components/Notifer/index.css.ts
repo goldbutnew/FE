@@ -33,3 +33,7 @@ export const closeBtnBox = style([
     width: '100%',
   }
 ]);
+
+export const closeButton = style({
+  cursor: 'pointer',
+})

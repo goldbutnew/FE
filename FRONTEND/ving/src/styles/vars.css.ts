@@ -9,6 +9,9 @@ export const vars = createGlobalTheme(':root', {
     '3x': '24px',
     '4x': '32px',
     '5x': '40px',
+    '6x': '48px',
+    '7x': '56px',
+    '8x': '64px',
   },
 
   colors: {
@@ -56,5 +59,17 @@ export const vars = createGlobalTheme(':root', {
     '6x': '2.5',
     '7x': '2.75',
     '8x': '3',
+  },
+
+  zIndex: {
+    dropdown: '1000',
+    sticky: '1020',
+    fixed: '1030',
+    modalBackdrop: '1040',
+    modal: '1050',
+    popover: '1060',
+    tooltip: '1070',
+    sidebar: '2000',
+    navbar: '3001'
   },
 });

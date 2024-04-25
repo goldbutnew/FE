@@ -1,11 +1,13 @@
 import { recipe } from '@vanilla-extract/recipes';
 import { vars } from '@/styles/vars.css';
 import { style, composeStyles } from '@vanilla-extract/css';
+import { columnbox } from '@/styles/box.css';
 import { buttonEffect } from '@/styles/animation.css';
 
 export const defaultButton = recipe({
   base: composeStyles(
     buttonEffect,
+    columnbox,
     style({
       border: 'none',
       outline: 'none',
