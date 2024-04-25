@@ -2,6 +2,13 @@ import { style, globalStyle } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { vars } from "./vars.css";
 
+export const line = style({
+  margin: `${vars.space['1x']} 0 ${vars.space['1x']} 0`,
+  padding: 0,
+  border: 'none',
+  borderBottom: `1px solid ${vars.colors.darkGray}`,
+})
+
 export const flex = recipe({
   base: {
     display: 'flex'

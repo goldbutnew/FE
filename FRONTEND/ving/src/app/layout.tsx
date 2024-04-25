@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from 'next/font/local';
 import NavBar from "@/components/NavBar";
+import SideBar from "@/components/SideBar/SideBar";
 import * as styles from './layout.css'
 import '../styles/reset.css'
 
@@ -23,14 +24,33 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const initOpenState = true
+
+  // 사이드바 컨텐츠 예시
+  const sideBarContent = (
+    <div>
+      test
+    </div>
+  );
+
   return (
     <html lang="kr">
-      <body className={pretendard.className}>
+      <body className={`${styles.layout} ${pretendard.className}`}>
         <NavBar />
-        <div className={styles.container}>
-          {children}
+        <div className={styles.contentContainer}>
+          <SideBar
+            title="랭킹"
+            side="left"
+            content={sideBarContent}
+            initOpen={initOpenState}
+            width={200}
+          />
+          <div className={styles.mainContent}>
+            {children}
+          </div>
         </div>
-        </body>
+      </body>
     </html>
   );
 }

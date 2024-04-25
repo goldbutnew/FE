@@ -1,6 +1,6 @@
 import { globalStyle } from '@vanilla-extract/css';
 
-globalStyle('input, textarea', {
+globalStyle('input, textarea, button', {
   all: 'unset', 
   boxSizing: 'border-box', 
   fontFamily: 'inherit',
