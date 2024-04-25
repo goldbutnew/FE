@@ -34,7 +34,7 @@ export default function SideBar({ title, side, content, initOpen, width }: Sideb
         <div>
           {side === 'left' ? 
             <div className={betweenBox}>
-              <span>{title}</span>
+              <span className={styles.sidebarTitle}>{title}</span>
               <LiaDoorClosedSolid
                 size={20}
                 className={styles.toggleButton}
@@ -48,7 +48,7 @@ export default function SideBar({ title, side, content, initOpen, width }: Sideb
                   className={styles.toggleButton}
                   onClick={() => setIsOpen(!isOpen)}
                 />
-                <span>{title}</span>                
+                <span className={styles.sidebarTitle}>{title}</span>                
               </div>              
             </div>
           }

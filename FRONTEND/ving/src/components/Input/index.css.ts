@@ -5,7 +5,7 @@ import { vars } from '@/styles/vars.css'
 // common
 export const characterCount = style({
   textAlign: 'right',
-  fontSize: 10,
+  fontSize: vars.fontSize['0x'],
   color: vars.colors.darkGray,
   margin: vars.space['0.5x']
 })
