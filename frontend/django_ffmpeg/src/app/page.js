@@ -23,7 +23,7 @@ export default function Home() {
 
     startCamera();
   }, []);
-
+  
   useEffect(() => {
     const videoElement = serverVideoRef.current;
 
@@ -104,13 +104,13 @@ export default function Home() {
         mediaRecorder.current.start();
         setTimeout(() => {
           mediaRecorder.current.stop();
-        }, 2000);
+        }, 2000);  // 10초 동안 녹화
       } else {
         console.warn('MediaRecorder is already recording');
       }
     };
   
-    const interval = setInterval(startStreaming, 2000);
+    const interval = setInterval(startStreaming, 2000);  // 11초 간격으로 실행
   
     return () => {
       clearInterval(interval);
