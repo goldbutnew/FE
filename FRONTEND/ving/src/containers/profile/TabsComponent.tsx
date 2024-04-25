@@ -3,10 +3,23 @@ import { useRouter, useParams } from 'next/navigation'
 import * as styles from './index.css'
 import { ProfileTabComponent } from './ProfileTabComponent'
 
-export default function TabsComponent() {
-  const [activeTab, setActiveTab] = useState('home')
+export default function TabsComponent({ where }) {
+  const [activeTab, setActiveTab] = useState(where)
   const router = useRouter()
   const params = useParams()
+
+  const move = (tabName) => {
+    if ((tabName) === 'video' ) {
+      console.log('hiiiiii', (tabName))
+      setActiveTab('home')
+      router.push(`/profile/${params.userId}`)
+    } 
+    else {
+      console.log('hi', (tabName))
+      setActiveTab('video')
+      router.push(`${params.userId}/video`)
+    }
+  }
 
   return (
     <div>
@@ -14,7 +27,9 @@ export default function TabsComponent() {
         <li 
           className={styles.tab} 
           data-active={activeTab === 'home'} 
-          onClick={() => setActiveTab('home')}
+          onClick={() => {
+            move('home')
+          }}
         >
           홈
         </li>
@@ -22,16 +37,14 @@ export default function TabsComponent() {
           className={styles.tab} 
           data-active={activeTab === 'video'} 
           onClick={() => {
-            setActiveTab('video')
-            router.push(`${params.userId}/video`)}
-          }
+            move('video')
+          }}
         >
           동영상
         </li>
       </ul>
       <div className={styles.tabPanel}>
         {activeTab === 'home' && <ProfileTabComponent />}
-        {activeTab === 'video' && <div>Video content...</div>}
       </div>
     </div>
   )

@@ -1,4 +1,6 @@
+import { vars } from '@/styles/vars.css'
 import { style } from '@vanilla-extract/css'
+import { flex } from '@/styles/common.css'
 
 export const userInfoBox = style({
   display: 'flex',
@@ -39,7 +41,7 @@ export const tabsContainer = style({
   width: '100%',
   backgroundColor: '#f9f9f9',
   borderRadius: '5px',
-  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
 })
 
 export const tabList = style({
@@ -76,7 +78,7 @@ export const socialLinkContainer = style({
   flexDirection: 'column',
   gap: '5px',
   borderRadius: '20px',
-  boxShadow: '3px 3px 5px 3px #F2F2F2',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
   padding: '25px 20px 25px 20px'
 })
 
@@ -117,7 +119,7 @@ export const representativeBox = style({
   flexDirection: 'column',
   gap: '5px',
   borderRadius: '20px',
-  boxShadow: '3px 3px 5px 3px #eee',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
   padding: '25px 20px 25px 20px'
 })
 
@@ -147,6 +149,26 @@ export const videoInfoBox = style({
   padding: '5px 0',
 })
 
+export const rankListBox = flex({
+  justify: 'start',
+  align: 'start',
+})
+
 export const rankList = style({
   listStyleType: 'none',
+})
+
+export const rankNumber = style({
+  fontSize: `${vars.fontSize['4x']}`
+})
+
+export const rankerImage = style({
+  width: 40,
+  height: 40,
+  borderRadius:  vars.borderRadius.full
+})
+
+export const rankOutBox = style({
+  width: 150,
+  // padding: '0px 0px 0px 5px'
 })

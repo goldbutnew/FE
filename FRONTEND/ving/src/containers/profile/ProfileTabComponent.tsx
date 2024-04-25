@@ -1,6 +1,7 @@
 import React from 'react'
 import * as styles from './index.css'
 import Image from 'next/image'
+import { rowbox } from '@/styles/box.css'
 
 interface SocialLinkProps {
   platform: string
@@ -41,7 +42,7 @@ const SocialLink: React.FC<SocialLinkProps> = ({ platform, link, logo }) => {
   return (
     <>
     <a href={link} className={styles.socialLink}>
-      <Image src={logo} className={styles.socialLogo} width={30} height={30}></Image>
+      <Image src={logo} alt='socialLogo' className={styles.socialLogo} width={30} height={30}></Image>
       <span>{platform}</span>
     </a>
     </>
@@ -59,7 +60,7 @@ export function ProfileTabComponent() {
     <>
       <div className={styles.socialLinkContainer}>
           <div className={styles.socialTitleBox}>
-            <Image src='/images/pin.png' width={40} height={40}></Image>
+            <Image src='/images/pin.png' alt='pinImage' width={40} height={40}></Image>
             <span className={styles.socialTitle}>소셜 링크</span>
           </div>
           {socialLinks.map((link) => (
@@ -68,11 +69,11 @@ export function ProfileTabComponent() {
       </div>
       <div className={styles.representativeBox}>
       <div className={styles.representativeVideoTitleBox}>
-        <Image src='/images/pin.png' width={40} height={40}></Image>
+        <Image src='/images/pin.png' alt='pinImage' width={40} height={40}></Image>
         <span className={styles.representativeVideoTitle}>대표 영상</span>
       </div>
       {representativeVideoInfo.map(video => (
-        <div key={video.title}>
+        <div key={video.title} className={`${rowbox}`}>
           <img src={video.videoThumbnail} width={360} height={250}></img>
           <div className={styles.videoInfoBox}>
             <span>{video.title}</span>
