@@ -65,6 +65,7 @@ export default function Signup() {
   return (
     <div className={`${columnbox} ${styles.modalContainer}`}>
       <Radio
+        onClick={handleCheck}
         text="이거 선택할 거임?" 
       />
       <div className={`${styles.modalTitle} ${rowbox}`}>

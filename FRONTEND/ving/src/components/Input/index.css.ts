@@ -40,15 +40,20 @@ export const TextAreaForm = style({
 // Radio.tsx
 export const RadioButton = style({
   borderRadius: vars.borderRadius.full,
-  border: `1px solid ${vars.colors.black}`,
-  width: '16px',
-  height: '16px',
+  outline: `2px solid ${vars.colors.black}`,
+  width: '12px',
+  height: '12px',
+  margin: `0 ${vars.space['0.5x']} 0 0`,
   cursor: 'pointer',
+  transition: 'background-color 0.3s ease, border-color 0.3s ease',
   selectors: {
+    '&:hover': {
+      animation: `0.5s ease infinite`,
+    },
     '&:checked': {
-      backgroundColor: '#22d3ee', // 체크 시 내부 원으로 표시될 색상
-      border: `1px solid ${vars.colors.black}`,
-      boxShadow: "0 0 0 1.6px #22d3ee",
+      backgroundColor: vars.colors.black, // 체크 시 내부 원으로 표시될 색상
+      border: `2px solid ${vars.colors.white}`,
+      boxShadow: `0 0 0 1px ${vars.colors.black}`,
     },
   },
 });

@@ -1,22 +1,20 @@
 import { recipe } from '@vanilla-extract/recipes';
 import { vars } from '@/styles/vars.css';
-import { style } from '@vanilla-extract/css';
+import { style, composeStyles } from '@vanilla-extract/css';
+import { buttonEffect } from '@/styles/animation.css';
 
 export const defaultButton = recipe({
-  base: {
-    border: 'none',
-    outline: 'none',
-    backgroundColor: 'inherit',
-    cursor: 'pointer',
-    borderRadius: vars.borderRadius['1x'],
-    // fontSize: '16px',
-    padding: `${vars.space['1x']} ${vars.space['1x']}`,
-    transition: 'background-color 0.3s ease', 
-    ':hover': {
-      backgroundColor: vars.colors.black,
-      color: vars.colors.white,
-    }
-  },
+  base: composeStyles(
+    buttonEffect,
+    style({
+      border: 'none',
+      outline: 'none',
+      backgroundColor: 'inherit',
+      cursor: 'pointer',
+      borderRadius: vars.borderRadius['1x'],
+      padding: `${vars.space['1x']} ${vars.space['1x']}`,
+    })
+  ),
   variants: {
     size: {
       small: {
@@ -32,19 +30,17 @@ export const defaultButton = recipe({
   }
 })
 
-export const iconButton = style({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: `1px solid ${vars.colors.black}`,
-  outline: 'none',
-  backgroundColor: 'inherit',
-  cursor: 'pointer',
-  borderRadius: vars.borderRadius.full,
-  padding: vars.space['0.5x'],
-  transition: 'background-color 0.3s ease', 
-  ':hover': {
-    backgroundColor: vars.colors.black,
-    color: vars.colors.white,
-  }
-})
+export const iconButton = composeStyles(
+  buttonEffect,
+  style({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: `1px solid ${vars.colors.black}`,
+    outline: 'none',
+    backgroundColor: 'inherit',
+    cursor: 'pointer',
+    borderRadius: vars.borderRadius.full,
+    padding: vars.space['0.5x'],
+  })
+);
