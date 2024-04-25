@@ -21,7 +21,7 @@ const dummyUserInfo = {
   userIntroduce: '하이 여긴 이우주안티의 개인홈 ><!',
 }
 
-export default function ProfileUserInfoBox({ btnName }) {
+export default function ProfileUserInfoBox() {
 
   const router = useRouter()
   const params = useParams()
@@ -33,17 +33,7 @@ export default function ProfileUserInfoBox({ btnName }) {
         <span className={styles.userName}>이우주안티</span>
         <span className={styles.userIntroduce}>하이 여긴 이우주안티의 개인홈</span>
       </div>
-      <SmallButton text={btnName} color='lightGray' onClick={() => {
-        // 로그인한 사람이랑 userId가 같을 경우
-        if (btnName === '채널 관리') {
-          router.push(`/profile/${params.userId}`)}
-        else {
-        // 로그인한 사람이랑 userId가 다를 경우
-        // 내가 이미 팔로우 했을 경우
-        // 내가 팔로우 하지 않은 사람일 경우
-          router.push(`/profile/${params.userId}`)
-        }
-      }}/>
+      <SmallButton text='채널관리' color='lightGray' />
     </div>
   )
 }
