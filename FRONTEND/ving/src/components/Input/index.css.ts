@@ -53,7 +53,7 @@ export const RadioButton = style({
     '&:checked': {
       backgroundColor: vars.colors.black, // 체크 시 내부 원으로 표시될 색상
       border: `2px solid ${vars.colors.white}`,
-      boxShadow: `0 0 0 1px ${vars.colors.black}`,
+      boxShadow: vars.boxShadow.border,
     },
   },
 });

@@ -14,6 +14,19 @@ globalStyle('*, *:before, *:after', {
   boxSizing: 'border-box'
 })
 
-export const container = style({
-  padding: vars.space['2x']
-})
+export const layout = style({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100vh',
+});
+
+export const contentContainer = style({
+  position: 'fixed',
+  display: 'flex',
+  flexGrow: 1,
+});
+
+export const mainContent = style({
+  flexGrow: 1,
+  padding: `${vars.space['8x']} 0 0 ${vars.space['2x']}`,
+});

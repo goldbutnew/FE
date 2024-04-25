@@ -20,10 +20,11 @@ export default function Notifer() {
           <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
             <div className={styles.closeBtnBox}>
               <span className={bold}>알림함</span>
-              <IconButton
-                icon={IoIosClose}
-                onClick={close}
-              />              
+              <IoIosClose
+                onClick={close} 
+                size="20" 
+                className={styles.closeButton}
+              />
             </div>
             <p>알림모ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㄴ달</p>
           </div>

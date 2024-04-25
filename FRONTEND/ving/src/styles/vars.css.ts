@@ -9,6 +9,9 @@ export const vars = createGlobalTheme(':root', {
     '3x': '24px',
     '4x': '32px',
     '5x': '40px',
+    '6x': '48px',
+    '7x': '56px',
+    '8x': '64px',
   },
 
   colors: {
@@ -56,5 +59,28 @@ export const vars = createGlobalTheme(':root', {
     '6x': '2.5',
     '7x': '2.75',
     '8x': '3',
+  },
+
+  zIndex: {
+    dropdown: '1000',
+    sticky: '1020',
+    fixed: '1030',
+    modalBackdrop: '1040',
+    modal: '1050',
+    popover: '1060',
+    tooltip: '1070',
+    sidebar: '2000',
+    navbar: '3001'
+  },
+
+  boxShadow: {
+    '0x': 'none',
+    '1x': '0px 1px 2px rgba(0, 0, 0, 0.2)',
+    '2x': '0px 2px 4px rgba(0, 0, 0, 0.2)',
+    '3x': '0px 4px 8px rgba(0, 0, 0, 0.)',
+    '4x': '0px 8px 16px rgba(0, 0, 0, 0.2)',
+    '5x': '0px 16px 24px rgba(0, 0, 0, 0.25)',
+    '6x': '0px 24px 32px rgba(0, 0, 0, 0.3)',
+    border : '0 0 0 rgba(0, 0, 0, 1)',
   },
 });

@@ -9,7 +9,7 @@ export const modalBackdrop = style({
   backgroundColor: vars.colors.white,
   borderRadius: vars.borderRadius['1x'],
   zIndex: 1000, 
-  boxShadow: `0 2px 4px ${vars.colors.gray}`,
+  boxShadow: vars.boxShadow['2x'],
 });
 
 export const modalTitle = style({
@@ -33,3 +33,7 @@ export const closeBtnBox = style([
     width: '100%',
   }
 ]);
+
+export const closeButton = style({
+  cursor: 'pointer',
+})
