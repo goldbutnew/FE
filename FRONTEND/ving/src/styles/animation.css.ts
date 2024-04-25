@@ -20,6 +20,7 @@ export const scaleUp = style({
   }
 });
 
+// 버튼 효과
 export const buttonEffect = style({
   padding: `${vars.space['1x']} ${vars.space['1x']}`,
   transition: 'background-color 0.3s ease', 
@@ -27,9 +28,4 @@ export const buttonEffect = style({
     backgroundColor: vars.colors.black,
     color: vars.colors.white,
   }
-  // transition: 'all 0.3s ease-in-out',
-  // ':hover': {
-  //   transform: 'translateY(-2px)',
-  //   boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)'
-  // }
 });
