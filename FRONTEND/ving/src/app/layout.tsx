@@ -41,18 +41,9 @@ export default function RootLayout({
           >
             시작! rka
           </ SideBar>
-
           <div className={styles.mainContent}>
             {children}
           </div>          
-          {/* <SideBar
-            title="채팅"
-            side="right"
-            initOpen={initOpenState}
-            width={300}
-          >
-            시작!
-          </ SideBar> */}
           <Chat />
         </div>
       </body>
