@@ -12,6 +12,8 @@ export const vars = createGlobalTheme(':root', {
     '6x': '48px',
     '7x': '56px',
     '8x': '64px',
+    '9x': '72px',
+    '10x': '80x',
   },
 
   colors: {

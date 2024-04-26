@@ -1,26 +1,37 @@
 import { style } from '@vanilla-extract/css'
 import { recipe } from '@vanilla-extract/recipes'
 import { vars } from '@/styles/vars.css'
+import { columnbox } from '@/styles/box.css'
+import { plainButton } from '@/styles/common.css'
 
 // common
 export const characterCount = style({
   textAlign: 'right',
   fontSize: vars.fontSize['0x'],
   color: vars.colors.darkGray,
-  margin: vars.space['0.5x'],
+  padding: vars.space['1x'],
   whiteSpace: 'nowrap'
 })
+
+export const emojiButton = style([
+  columnbox,
+  plainButton,
+  {
+    padding: `0 ${vars.space['1x']} 0 ${vars.space['1x']}`,
+  }
+])
 
 // defaultInput.tsx
 export const defaultInputBox = style({
   width: '100%',
   border: `2px solid ${vars.colors.gray}`,
   borderRadius: vars.borderRadius['1x'],
+  backgroundColor: vars.colors.white,
 })
 
 export const defaultInputForm = style({
   width: '100%',
-  padding: vars.space['0.5x'],
+  padding: vars.space['1x'],
 })
 
 // TextArea.tsx
@@ -32,7 +43,7 @@ export const TextAreaBox = style({
 
 export const TextAreaForm = style({
   width: '100%',
-  padding: vars.space['0.5x'],
+  padding: vars.space['1x'],
   whiteSpace: 'pre-wrap',
   overflowWrap: 'break-word',
   overflow: 'auto'

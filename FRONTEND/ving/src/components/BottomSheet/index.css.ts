@@ -20,7 +20,7 @@ export const bottomSheet = style({
   borderTopLeftRadius: vars.borderRadius['2x'],
   borderTopRightRadius: vars.borderRadius['2x'],
   boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.1)',
-  padding: `${vars.space['2x']} ${vars.space['2x']} 80px ${vars.space['2x']}`,
+  padding: `${vars.space['2x']} ${vars.space['2x']} 88px ${vars.space['2x']}`,
   maxHeight: '80vh',
   overflowY: 'auto',
   transform: 'translateY(100%)',
@@ -28,5 +28,5 @@ export const bottomSheet = style({
 });
 
 export const slideOut = style({
-  animation: `${slideDown} 300ms ease-out forwards`,
+  // animation: `${slideDown} 300ms ease-out forwards`,
 });

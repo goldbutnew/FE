@@ -13,6 +13,14 @@ export const InputBox = style({
   zIndex: 3001,
 })
 
+export const donationInputBox = style({
+  width: '100%',
+  padding: vars.space['2x'],
+  backgroundColor: vars.colors.darkGray,
+  borderRadius: vars.borderRadius['1x'],
+  zIndex: 3001,
+})
+
 export const sendButtonBox = style([
   endBox,
   {

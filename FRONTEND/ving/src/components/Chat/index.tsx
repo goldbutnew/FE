@@ -13,6 +13,7 @@ import Donation from "./Donation";
 export default function Chat() {
   const [message, setMessage] = useState('')
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+  const [isDonationOpen, setIsDonationOpen] = useState(true)
 
   const handleChange = (e) => {
     setMessage(e.target.value)
@@ -30,6 +31,10 @@ export default function Chat() {
   const handleSendMessage = () => {
     console.log(message);
     setMessage(''); // 메시지 전송 후 입력값 초기화
+  }
+
+  const getInputBoxStyle = () => {
+    return isDonationOpen ? styles.donationInputBox : styles.InputBox;
   };
 
   return (
@@ -57,7 +62,10 @@ export default function Chat() {
         채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
         채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
       </div>
-      <Donation />
+      <Donation 
+        isOpen={isDonationOpen} 
+        setIsOpen={setIsDonationOpen} 
+      />
       <ChatProfile />
       {showEmojiPicker && (
         <div className={styles.emojiPicker}>
@@ -68,7 +76,7 @@ export default function Chat() {
           />
         </div>
       )}
-      <div className={styles.InputBox}>
+      <div className={getInputBoxStyle()}>
         <DefaultInput 
           type="text"
           value={message} 

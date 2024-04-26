@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import * as styles from './index.css';
 import { betweenBox } from '@/styles/box.css';
-import { plainButton } from '@/styles/common.css';
+import { FaRegFaceSmile } from "react-icons/fa6";
 
 const EmojiButton = ({ onClick }) => (
-  <button onClick={onClick} className={plainButton}>
-    😀
-  </button>
+  <div onClick={onClick} className={styles.emojiButton}>
+    <FaRegFaceSmile 
+      size={20}
+    />
+  </div>
 );
 
 interface InputProps {
@@ -37,7 +39,9 @@ const DefaultInput: React.FC<InputProps> = ({ type, value, onChange, onEmojiClic
           {value.length} / {maxLength}
         </span>
       )}
-      {onEmojiClick && <EmojiButton onClick={onEmojiClick} />}
+      {onEmojiClick && 
+        <EmojiButton onClick={onEmojiClick} />
+      }
     </div>
   );
 }
