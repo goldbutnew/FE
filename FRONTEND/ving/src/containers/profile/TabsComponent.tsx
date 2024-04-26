@@ -11,13 +11,13 @@ export default function TabsComponent({ where }) {
   const move = (tabName) => {
     if ((tabName) === 'video' ) {
       console.log('hiiiiii', (tabName))
-      setActiveTab('home')
-      router.push(`/profile/${params.userId}`)
+      setActiveTab('video')
+      router.push(`/profile/${params.userId}/video`)
     } 
     else {
       console.log('hi', (tabName))
-      setActiveTab('video')
-      router.push(`/profile/${params.userId}/video`)
+      setActiveTab('home')
+      router.push(`/profile/${params.userId}`)
     }
   }
 

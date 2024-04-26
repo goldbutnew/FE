@@ -57,11 +57,11 @@ export default function Static() {
           {/* Repeat this div for each streaming item */}
           <div>
             <div>영상</div>
-            <div>설명추가 시사용 필요한문구</div>
+            {/* <div>설명추가시 필요한문구</div>
             <div className={styles.stats}>
               <div className={styles.statItem}>시청 수</div>
               <div className={styles.statItem}>전체 시청자 수</div>
-            </div>
+            </div> */}
           </div>
           {/* ...more streaming items */}
         </div>
