@@ -23,7 +23,8 @@ export const layout = style({
 export const contentContainer = style({
   position: 'fixed',
   display: 'flex',
-  flexGrow: 1,
+  width: '100%',
+  flexDirection: 'row',
 });
 
 export const mainContent = style({

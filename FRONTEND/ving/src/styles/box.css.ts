@@ -19,7 +19,13 @@ export const rowbox = flex({
 })
 
 export const betweenBox = flex({
-  // direction: 'row',
+  direction: 'row',
   align: 'center',
   justify: 'between',
+})
+
+export const endBox = flex({
+  direction: 'row',
+  align: 'center',
+  justify: 'end',
 })

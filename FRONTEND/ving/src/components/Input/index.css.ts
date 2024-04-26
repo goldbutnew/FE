@@ -7,7 +7,8 @@ export const characterCount = style({
   textAlign: 'right',
   fontSize: vars.fontSize['0x'],
   color: vars.colors.darkGray,
-  margin: vars.space['0.5x']
+  margin: vars.space['0.5x'],
+  whiteSpace: 'nowrap'
 })
 
 // defaultInput.tsx
@@ -18,7 +19,7 @@ export const defaultInputBox = style({
 })
 
 export const defaultInputForm = style({
-  // width: '100%',
+  width: '100%',
   padding: vars.space['0.5x'],
 })
 
