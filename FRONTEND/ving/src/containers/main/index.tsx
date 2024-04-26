@@ -8,7 +8,7 @@ export default function Main() {
 
   return (
     <div>
-      <div className={styles.test}>
+      <div>
         <MainPage />       
       </div>
       {/* <Logout /> */}

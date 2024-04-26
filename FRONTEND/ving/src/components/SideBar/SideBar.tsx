@@ -15,7 +15,6 @@ interface SidebarProps {
   children?: React.ReactNode
 }
 
-// export default function SideBar({ title, side, content, isOpen, setIsOpen }: SidebarProps) {
 export default function SideBar({ title, side, initOpen, width, children }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(initOpen);
   const positionStyle = side === 'left' ? `${styles.leftSidebar}` : `${styles.rightSidebar}`;
@@ -36,7 +35,7 @@ export default function SideBar({ title, side, initOpen, width, children }: Side
             <div className={betweenBox}>
               <span className={styles.sidebarTitle}>
                 {title}
-              </span>
+                </span>
               <LiaDoorClosedSolid
                 size={20}
                 className={styles.toggleButton}

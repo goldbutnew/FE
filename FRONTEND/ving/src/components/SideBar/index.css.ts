@@ -1,7 +1,8 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
-import { columnbox } from '@/styles/box.css';
+import { columnbox, defaultBox } from '@/styles/box.css';
 import { bold } from '@/styles/fonts.css';
+import { calc } from '@vanilla-extract/css-utils';
 
 export const baseSidebar = style({
   position: 'sticky',
@@ -55,10 +56,11 @@ export const sidebarTitle = style([
 ])
 
 export const sidebarContent = style([
-  columnbox,
+  defaultBox,
   {
     whiteSpace: 'pre-wrap',
     overflowWrap: 'break-word',
-    width: '100%', 
+    width: '100%',
+    height: calc.subtract(`100% - ${vars.space['5x']}`)
   }
 ]);
