@@ -9,8 +9,7 @@ export default function Main() {
   return (
     <div>
       <div className={styles.test}>
-        <MainPage />
-        <Chat />        
+        <MainPage />       
       </div>
       {/* <Logout /> */}
     </div>

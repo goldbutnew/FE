@@ -59,7 +59,7 @@ export const sidebarContent = style([
   {
     whiteSpace: 'pre-wrap',
     overflowWrap: 'break-word',
-    overflow: 'hidden', 
+    // overflow: 'hidden', 
     width: '100%', 
   }
 ]);
