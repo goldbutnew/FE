@@ -1,13 +1,8 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
-<<<<<<< HEAD
-import { columnbox } from '@/styles/box.css';
-import { bold } from '@/styles/fonts.css';
-=======
 import { columnbox, defaultBox } from '@/styles/box.css';
 import { bold } from '@/styles/fonts.css';
 import { calc } from '@vanilla-extract/css-utils';
->>>>>>> feat/fe/chat
 
 export const baseSidebar = style({
   position: 'sticky',
@@ -56,11 +51,7 @@ export const sidebarTitle = style([
   bold,
   {
     height: 20,
-<<<<<<< HEAD
     fontSize: vars.fontSize['1.5x'],
-=======
-    fontSize: vars.fontSize['1.5x']
->>>>>>> feat/fe/chat
   }
 ])
 
