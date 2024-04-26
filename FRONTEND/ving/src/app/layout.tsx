@@ -5,6 +5,7 @@ import NavBar from "@/components/NavBar";
 import SideBar from "@/components/SideBar/SideBar";
 import * as styles from './layout.css'
 import '../styles/reset.css'
+import Chat from "@/components/Chat";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,11 +39,12 @@ export default function RootLayout({
             initOpen={initOpenState}
             width={200}
           >
-            시작!
+            시작! rka
           </ SideBar>
           <div className={styles.mainContent}>
             {children}
-          </div>
+          </div>          
+          <Chat />
         </div>
       </body>
     </html>

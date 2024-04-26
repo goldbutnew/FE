@@ -2,6 +2,15 @@ import { style, globalStyle } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { vars } from "./vars.css";
 
+
+export const plainButton = style({
+  cursor: 'pointer'
+})
+
+export const topContainer = style({
+  width: '100%',
+})
+
 export const line = style({
   margin: `${vars.space['1x']} 0 ${vars.space['1x']} 0`,
   padding: 0,
