@@ -1,4 +1,5 @@
 import { style, keyframes } from '@vanilla-extract/css';
+import { vars } from '@/styles/vars.css';
 
 const slideUp = keyframes({
   '0%': { transform: 'translateY(100%)' },
@@ -15,11 +16,11 @@ export const bottomSheet = style({
   left: 0,
   right: 0,
   bottom: 0,
-  backgroundColor: 'white',
-  borderTopLeftRadius: '16px',
-  borderTopRightRadius: '16px',
+  backgroundColor: vars.colors.white,
+  borderTopLeftRadius: vars.borderRadius['2x'],
+  borderTopRightRadius: vars.borderRadius['2x'],
   boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.1)',
-  padding: '16px',
+  padding: `${vars.space['2x']} ${vars.space['2x']} 80px ${vars.space['2x']}`,
   maxHeight: '80vh',
   overflowY: 'auto',
   transform: 'translateY(100%)',

@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import * as styles from './index.css';
+import { IoIosClose } from 'react-icons/io';
+import { endBox } from '@/styles/box.css';
+import { plainButton } from '@/styles/common.css';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -18,7 +21,7 @@ export default function BottomSheet({ isOpen, onClose, children }: BottomSheetPr
 
   const handleClose = () => {
     setIsVisible(false);
-    setTimeout(onClose, 300); // 애니메이션 시간에 맞춰서 onClose 호출
+    setTimeout(onClose, 300)
   };
 
   return (
@@ -26,6 +29,11 @@ export default function BottomSheet({ isOpen, onClose, children }: BottomSheetPr
       className={`${styles.bottomSheet} ${!isVisible && styles.slideOut}`}
       onClick={handleClose}
     >
+      <div className={`${plainButton} ${endBox}`}>
+        <IoIosClose
+          size={20} 
+        />
+      </div>
       {children}
     </div>
   );
