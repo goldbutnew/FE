@@ -7,6 +7,12 @@ export const chatBox = style({
   overflow: 'auto',
 })
 
+export const InputBox = style({
+  width: '100%',
+  backgroundColor: vars.colors.white,
+  zIndex: 3001,
+})
+
 export const buttonContainer = style([
   endBox,
   {

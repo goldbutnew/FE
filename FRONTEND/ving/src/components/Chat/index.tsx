@@ -7,6 +7,7 @@ import SmallButton from "../Button/SmallButton";
 import * as styles from "./index.css"
 import { vars } from "@/styles/vars.css";
 import EmojiPicker from "emoji-picker-react";
+import ChatProfile from "./ChatProfile";
 
 export default function Chat() {
   const [message, setMessage] = useState('')
@@ -55,6 +56,7 @@ export default function Chat() {
         채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
         채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
       </div>
+      <ChatProfile />
       {showEmojiPicker && (
         <div className={styles.emojiPicker}>
           <EmojiPicker
@@ -64,19 +66,21 @@ export default function Chat() {
           />
         </div>
       )}
-      <DefaultInput 
-        type="text"
-        value={message} 
-        onEmojiClick={openEmojiPicker}
-        onChange={handleChange}
-        placeholder="채팅을 입력해 주세요"
-      />
-      <div className={styles.buttonContainer}>
-        <SmallButton 
-          text="전송"
-          color={vars.colors.gray}
-          onClick={handleSendMessage}
-        />  
+      <div className={styles.InputBox}>
+        <DefaultInput 
+          type="text"
+          value={message} 
+          onEmojiClick={openEmojiPicker}
+          onChange={handleChange}
+          placeholder="채팅을 입력해 주세요"
+        />
+        <div className={styles.buttonContainer}>
+          <SmallButton 
+            text="전송"
+            color={vars.colors.gray}
+            onClick={handleSendMessage}
+          />  
+        </div>
       </div>
     </SideBar>
   );
