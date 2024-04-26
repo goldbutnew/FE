@@ -15,6 +15,7 @@ export const baseSidebar = style({
   boxShadow: vars.boxShadow['2x'],
   zIndex: 3000,
   transition: '0.3s ease-in-out',
+  overflow: 'hidden',
 });
 
 export const leftSidebar = style([

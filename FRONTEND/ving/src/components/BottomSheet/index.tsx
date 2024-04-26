@@ -27,11 +27,11 @@ export default function BottomSheet({ isOpen, onClose, children }: BottomSheetPr
   return (
     <div
       className={`${styles.bottomSheet} ${!isVisible && styles.slideOut}`}
-      onClick={handleClose}
     >
       <div className={`${plainButton} ${endBox}`}>
         <IoIosClose
-          size={20} 
+          size={20}
+          onClick={handleClose} 
         />
       </div>
       {children}

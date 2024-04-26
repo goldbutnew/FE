@@ -8,6 +8,7 @@ import * as styles from "./index.css"
 import { vars } from "@/styles/vars.css";
 import EmojiPicker from "emoji-picker-react";
 import ChatProfile from "./ChatProfile";
+import Donation from "./Donation";
 
 export default function Chat() {
   const [message, setMessage] = useState('')
@@ -56,6 +57,7 @@ export default function Chat() {
         채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
         채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
       </div>
+      <Donation />
       <ChatProfile />
       {showEmojiPicker && (
         <div className={styles.emojiPicker}>
@@ -74,7 +76,7 @@ export default function Chat() {
           onChange={handleChange}
           placeholder="채팅을 입력해 주세요"
         />
-        <div className={styles.buttonContainer}>
+        <div className={styles.sendButtonBox}>
           <SmallButton 
             text="전송"
             color={vars.colors.gray}

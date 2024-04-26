@@ -20,7 +20,8 @@ export const line = style({
 
 export const flex = recipe({
   base: {
-    display: 'flex'
+    display: 'flex',
+    // width: '100%',
   },
   variants: {
     align: {

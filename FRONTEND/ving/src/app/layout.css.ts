@@ -21,7 +21,6 @@ export const layout = style({
 });
 
 export const contentContainer = style({
-  position: 'fixed',
   display: 'flex',
   width: '100%',
   flexDirection: 'row',
