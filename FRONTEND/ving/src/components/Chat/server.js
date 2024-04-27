@@ -1,23 +1,19 @@
-const http = require('http');
-const Stomp = require('stomp-broker-js');
+const WebSocketServer = require('ws').Server;
+const Stomp = require('stompjs');
 
-const server = http.createServer();
-const stompServer = new Stomp({ server });
+const wss = new WebSocketServer({ port: 8080 });
+const stompServer = Stomp.over(wss);
 
-stompServer.on('connected', function(sessionId) {
-    console.log('A client connected with session:', sessionId);
+stompServer.connect({}, function(frame) {
+    stompServer.subscribe('/topic/messages', function(message) {
+        const body = JSON.parse(message.body);
+        console.log('received message', body);
+        
+        // echo back the message
+        stompServer.send('/topic/messages', {}, message.body);
+    });
+}, function(error) {
+    console.log('STOMP error', error);
 });
 
-stompServer.on('disconnected', function(sessionId) {
-    console.log('A client disconnected with session:', sessionId);
-});
-
-stompServer.subscribe('/topic/messages', function(msg, headers) {
-  var message = JSON.parse(msg.body);
-  console.log('Received message:', message);
-  stompServer.send('/topic/messages', {}, JSON.stringify(message));
-});
-
-server.listen(8080, function() {
-    console.log('Server is listening on port 8080');
-});
+console.log('STOMP server running on port 8080');

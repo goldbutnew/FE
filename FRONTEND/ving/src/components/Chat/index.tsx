@@ -1,65 +1,84 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
-import SockJS from 'sockjs-client';
-import { Stomp } from '@stomp/stompjs';
-import SideBar from "../SideBar/SideBar";
-import DefaultInput from "../Input/DefaultInput";
-import SmallButton from "../Button/SmallButton";
+import React, { useState, useEffect } from "react"
+import SockJS from 'sockjs-client'
+import { Stomp } from '@stomp/stompjs'
+import SideBar from "../SideBar/SideBar"
+import DefaultInput from "../Input/DefaultInput"
+import SmallButton from "../Button/SmallButton"
 import * as styles from "./index.css"
-import { vars } from "@/styles/vars.css";
-import EmojiPicker from "emoji-picker-react";
-import ChatProfile from "./ChatProfile";
-import Donation from "./Donation";
+import { vars } from "@/styles/vars.css"
+import EmojiPicker from "emoji-picker-react"
+import ChatProfile from "./ChatProfile"
+import Donation from "./Donation"
 
 export default function Chat() {
-  const [stompClient, setStompClient] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [stompClient, setStompClient] = useState(null)
+  const [connected, setConnected] = useState(false)
+  const [messages, setMessages] = useState([])
   const [message, setMessage] = useState('')
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 
-  useEffect(() => {
-    // WebSocket 연결 설정
-    const socket = new SockJS('http://localhost:8080')
+  const connect = () => {
+    const socket = new WebSocket('wss://localhost:8080')
     const client = Stomp.over(socket);
 
-    client.connect({}, () => {
-      client.subscribe('/topic/messages', (response) => {
-        // 서버로부터 메시지 수신
-        const newMessage = JSON.parse(response.body);
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
-      });
-    });
-
-    setStompClient(client);
-
-    // 컴포넌트 언마운트 시 연결 해제
-    return () => {
-      client.disconnect();
+    client.debug = function(str) {
+      console.log('STOMP Debug:', str);
     };
-  }, []);
+    
+    client.reconnect_delay = 5000
+
+    client.connect({}, () => {
+      console.log("Connected successfully");
+      setConnected(true);
+  
+      // 구독 설정
+      client.subscribe('/topic/messages', (response) => {
+        console.log("Message received");
+        const newMessage = JSON.parse(response.body);
+        setMessages(prevMessages => [...prevMessages, newMessage]);
+      });
+    }, (error) => {
+      console.error('Connection error:', error);
+      setConnected(false);
+    });
+  
+    // Stomp 클라이언트 상태 업데이트
+    setStompClient(client);
+  };
+  useEffect(() => {
+    connect()
+
+    return () => {
+      if (stompClient) {
+        stompClient.disconnect()
+      }
+    }
+  }, [])
 
   const handleChange = (e) => {
-    setMessage(e.target.value)
+    setMessage(e.target.value);
   };
 
   const openEmojiPicker = () => {
-    setShowEmojiPicker(!showEmojiPicker)
-  }
+    setShowEmojiPicker(!showEmojiPicker);
+  };
 
   const handleEmojiClick = (e) => {
     const emoji = e.emoji
-    setMessage((prevMessage) => prevMessage + emoji)
-  }  
-  
+    setMessage(prevMessage => prevMessage + emoji)
+  }
+
   const handleSendMessage = () => {
-    console.log(message);
-    setMessage(''); // 메시지 전송 후 입력값 초기화
-    if (stompClient && message) {
-      stompClient.send('/app/send', {}, JSON.stringify({ message }));
-      setMessage('');
+    console.log("보낼 메시지 내용:", message)
+    if (stompClient && message && connected) { 
+      stompClient.send('/app/send', {}, JSON.stringify({ message }))
+      setMessage('')
+    } else {
+      console.log("아직 연결 중!")
     }
-  };
+  }
 
   return (
     <SideBar 
@@ -70,22 +89,9 @@ export default function Chat() {
       hidden={true}
     >
       <div className={styles.chatBox}>
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
-        채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
+        {messages.map((msg, index) => (
+          <div key={index}>{msg.message}</div>
+        ))}
       </div>
       
       <ChatProfile />
@@ -116,5 +122,5 @@ export default function Chat() {
         </div>
       </div>
     </SideBar>
-  );
+  )
 }
