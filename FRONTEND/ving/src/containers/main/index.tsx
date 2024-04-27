@@ -5,6 +5,7 @@ import { useState } from 'react';
 import MainPage from './MainPage'
 import Logout from '../auth/Logout'
 import ToggleButton from '@/components/Button/ToggleButton'
+import ChoiceChip from '@/components/Button/ChoiceChip';
 
 export default function Main() {
   const [isActive, setIsActive] = useState(false)
@@ -21,8 +22,13 @@ export default function Main() {
           isActive={isActive}
           onChange={handleToggle}
         />     
+        <ChoiceChip 
+          label='감자'
+        />
+        <ChoiceChip 
+          label='고구마'
+        />
       </div>
-      {/* <Logout /> */}
     </div>
   )
 }
