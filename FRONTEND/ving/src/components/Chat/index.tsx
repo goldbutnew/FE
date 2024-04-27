@@ -38,6 +38,7 @@ export default function Chat() {
       side="right"
       initOpen={true}
       width={300}
+      hidden={true}
     >
       <div className={styles.chatBox}>
         채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트

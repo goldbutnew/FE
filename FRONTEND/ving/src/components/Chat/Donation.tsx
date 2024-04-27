@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BottomSheet from "../BottomSheet";
 import { line } from "@/styles/common.css";
 import EmojiPicker from "emoji-picker-react";
@@ -19,17 +19,32 @@ export default function Donation() {
   const [choco, setChoco] = useState(0)
   const [isAnonym, setIsAnonym] = useState(false)
   const [isTTS, setIsTTS] = useState(false)
-  
+  const initChoco = 3000000
+  const [dummyChoco, setDummyChoco] = useState(initChoco)
 
-  const dummyChoco = 3000000
   const dummyUserName = "나유경바보"
   const [name, setName] = useState(dummyUserName)
 
+  // const sendChoco = (value) => () => {
+  //   setChoco(value);
+  //   console.log(`choco: ${choco}`)
+  //   if (value) {
+  //     setDummyChoco(dummyChoco-value)
+  //   } else {
+  //     setDummyChoco(initChoco)
+  //   }
+  // };  
+  
   const sendChoco = (value) => () => {
     setChoco(value);
-    console.log(`choco: ${choco}`)
-  };  
-  
+    console.log(`choco: ${value}`);
+  };
+
+  useEffect(() => {
+    setDummyChoco(initChoco - choco); // 초코 선택이 변경될 때마다 dummyChoco 초기화
+  }, [choco]);
+
+
   const handleAnonym = (newState: boolean) => {
     setIsAnonym(newState);
     if (newState) {

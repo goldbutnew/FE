@@ -18,6 +18,7 @@ export default function Main() {
     <div>
       <div>
         <MainPage />  
+        <p>🍔이금현 테스트 중🍕</p>
         <ToggleButton 
           isActive={isActive}
           onChange={handleToggle}

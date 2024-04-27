@@ -13,8 +13,6 @@ export const chatBox = style({
 
 export const InputBox = style({
   width: '100%',
-  backgroundColor: vars.colors.white,
-  // zIndex: 3001,
 })
 
 export const sendButtonBox = style([
@@ -26,6 +24,7 @@ export const sendButtonBox = style([
 ])
 
 export const emojiPicker = style({
+  display: 'block',
   width: '100%',
   margin: `0 0 ${vars.space['0.5x']} 0`
 })

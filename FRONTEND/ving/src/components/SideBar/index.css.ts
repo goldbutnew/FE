@@ -48,6 +48,10 @@ export const close = style({
   transform: 'translateX(0)',
 });
 
+export const hidden = style({
+  backgroundColor: 'transparent'
+})
+
 export const sidebarTitle = style([
   bold,
   {
