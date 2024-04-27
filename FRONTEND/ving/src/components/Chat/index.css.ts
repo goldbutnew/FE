@@ -1,6 +1,10 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/vars.css'
-import { betweenBox, defaultBox, endBox, rowbox } from '@/styles/box.css'
+import { betweenBox, defaultBox, endBox } from '@/styles/box.css'
+
+export const topContainer = style({
+  position: 'relative'
+})
 
 export const chatBox = style({
   height: '100%',
@@ -10,15 +14,7 @@ export const chatBox = style({
 export const InputBox = style({
   width: '100%',
   backgroundColor: vars.colors.white,
-  zIndex: 3001,
-})
-
-export const donationInputBox = style({
-  width: '100%',
-  padding: vars.space['2x'],
-  backgroundColor: vars.colors.darkGray,
-  borderRadius: vars.borderRadius['1x'],
-  zIndex: 3001,
+  // zIndex: 3001,
 })
 
 export const sendButtonBox = style([
@@ -63,3 +59,29 @@ export const selectedChocoBox = style([
 export const buttonGroup = style([
   betweenBox
 ])
+
+export const donationInputBox = style([
+  defaultBox,
+  {
+    width: '100%',
+    padding: vars.space['2x'],
+    backgroundColor: vars.colors.darkGray,
+    borderRadius: vars.borderRadius['1x'],
+    zIndex: 3001,
+  }
+])
+
+export const donatorName = style({
+  color: vars.colors.white,
+  margin: `0 0 ${vars.space['0.5x']} 0`,
+})
+
+export const donationEmojiPicker = style({
+  position: 'absolute', 
+  zIndex: 3001, 
+  width: '101%',
+  bottom: '65%', 
+  left: '50%',
+  transform: 'translate(-50%, 50%)',
+  margin: `0 0 ${vars.space['0.5x']} 0`,
+});
