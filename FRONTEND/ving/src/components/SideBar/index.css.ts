@@ -59,7 +59,6 @@ export const hidden = style({
   backgroundColor: 'transparent',
   boxShadow: 'none',
   opacity: 0.3,
-  transition: 'opacity 0.3s ease',
   ':hover': {
     opacity: 1,
   },
