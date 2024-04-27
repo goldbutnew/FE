@@ -50,13 +50,13 @@ export const iconButton = composeStyles(
 
 // ToggleButton.tsx
 
-export const toggleButton = style({
-  cursor: 'pointer',
+export const toggleButton = style({  
   position: 'relative',
-  width: '50px',
-  height: '25px',
-  backgroundColor: '#ccc',
-  borderRadius: '25px',
+  cursor: 'pointer',
+  width: '32px',
+  height: '16px',
+  backgroundColor: vars.colors.gray,
+  borderRadius: vars.borderRadius['2x'],
   transition: 'background-color 0.2s',
 });
 
@@ -64,17 +64,17 @@ export const toggleButtonKnob = style({
   position: 'absolute',
   top: '2px',
   left: '2px',
-  width: '21px',
-  height: '21px',
-  borderRadius: '50%',
+  width: '12px',
+  height: '12px',
+  borderRadius: vars.borderRadius.full,
   backgroundColor: 'white',
   transition: 'transform 0.2s',
 });
 
 export const toggleButtonActive = style({
-  backgroundColor: '#4cd137',
+  backgroundColor: vars.colors.black,
 });
 
 export const toggleButtonKnobActive = style({
-  transform: 'translateX(25px)',
+  transform: 'translateX(16px)',
 });

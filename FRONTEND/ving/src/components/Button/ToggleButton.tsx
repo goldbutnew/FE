@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
-import * as styles from './index.css'; // 스타일 파일 import
+import React from 'react'
+import * as styles from './index.css'
 
 interface ToggleButtonProps {
-  // 필요한 경우 여기에 추가 props를 정의할 수 있습니다.
+  isActive: boolean
+  onChange: (isActive: boolean) => void
 }
 
-const ToggleButton: React.FC<ToggleButtonProps> = () => {
-  const [isActive, setIsActive] = useState(false);
-
+const ToggleButton: React.FC<ToggleButtonProps> = ({ isActive, onChange }) => {
   const toggle = () => {
-    setIsActive(!isActive);
-  };
+    onChange(!isActive)
+  }
 
   return (
     <div
@@ -23,3 +22,4 @@ const ToggleButton: React.FC<ToggleButtonProps> = () => {
 };
 
 export default ToggleButton;
+

@@ -18,10 +18,10 @@ export const InputBox = style({
 })
 
 export const sendButtonBox = style([
-  endBox,
+  betweenBox,
   {
     width: "100%",
-    margin: `${vars.space['0.5x']} 0 0 0`
+    margin: `${vars.space['1x']} 0 0 0`
   }
 ])
 
@@ -50,7 +50,7 @@ export const selectedChocoBox = style([
     color: vars.colors.black,
     backgroundColor: vars.colors.lightGray,
     borderRadius: vars.borderRadius['1x'],
-    margin: `0 0 ${vars.space['0.5x']} 0`,
+    margin: `0 0 ${vars.space['1x']} 0`,
     padding: vars.space['0.5x']
     // padding: `0 ${vars.space['0.5x']} 0 ${vars.space['0.5x']}`,
   }
@@ -73,7 +73,10 @@ export const donationInputBox = style([
 
 export const donatorName = style({
   color: vars.colors.white,
-  margin: `0 0 ${vars.space['0.5x']} 0`,
+  margin: `0 0 ${vars.space['1x']} 0`,
+})
+
+export const toogleBox = style({
 })
 
 export const donationEmojiPicker = style({
@@ -85,3 +88,11 @@ export const donationEmojiPicker = style({
   transform: 'translate(-50%, 50%)',
   margin: `0 0 ${vars.space['0.5x']} 0`,
 });
+
+export const donationSendButtonBox = style([
+  endBox,
+  {
+    width: "100%",
+    margin: `${vars.space['1x']} 0 0 0`
+  }
+])

@@ -9,16 +9,38 @@ import { bold } from "@/styles/fonts.css";
 import SmallButton from "../Button/SmallButton";
 import { vars } from "@/styles/vars.css";
 import DefaultInput from "../Input/DefaultInput";
+import ToggleButton from "../Button/ToggleButton";
+import { betweenBox } from "@/styles/box.css";
 
 export default function Donation() {
   const [message, setMessage] = useState('')
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
   const [choco, setChoco] = useState(0)
+  const [isAnonym, setIsAnonym] = useState(false)
+  const [isTTS, setIsTTS] = useState(false)
+  
+
+  const dummyChoco = 3000000
+  const dummyUserName = "나유경바보"
+  const [name, setName] = useState(dummyUserName)
 
   const sendChoco = (value) => () => {
     setChoco(value);
     console.log(`choco: ${choco}`)
+  };  
+  
+  const handleAnonym = (newState: boolean) => {
+    setIsAnonym(newState);
+    if (newState) {
+      setName("익명의 후원자")
+    } else {
+      setName(dummyUserName)
+    }
+  };
+
+  const handleTTS = (newState: boolean) => {
+    setIsTTS(newState);
   };
 
   const handleChange = (e) => {
@@ -41,13 +63,17 @@ export default function Donation() {
 
   return (
     <div>
-      <button onClick={() => setIsOpen(true)}>후원 test</button>
+      <SmallButton
+        text="🍫" 
+        color={vars.colors.lightGray}
+        onClick={() => setIsOpen(true)}
+      />
       {isOpen && (
         <BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <div className={styles.topContainer}>
             <span className={bold}>후원</span>
             <hr className={line}/>
-            <p>🍫 내 초코: {choco}</p>
+            <p>🍫 내 초코: {dummyChoco}</p>
             <hr className={line}/>
             <div className={styles.selectedChocoBox}>
               <span>🍫 {choco}</span>
@@ -79,9 +105,21 @@ export default function Donation() {
               />
             </div>
             <hr className={line} />
-            <div>
-              <div>채팅 읽어 주기</div>
-              <div>익명으로 후원하기</div>
+            <div className={styles.toogleBox}>
+              <div className={betweenBox}>
+                채팅 읽어 주기
+                <ToggleButton
+                  isActive={isTTS}
+                  onChange={handleTTS}
+                />
+              </div>
+              <div className={betweenBox}>
+                익명으로 후원하기
+                <ToggleButton
+                  isActive={isAnonym}
+                  onChange={handleAnonym}
+                />
+              </div>
             </div>
             <hr className={line}/>
             {showEmojiPicker && (
@@ -94,7 +132,9 @@ export default function Donation() {
               </div>
             )}
             <div className={styles.donationInputBox}>
-              <span className={styles.donatorName}>익명의 후원자</span>
+              <span className={styles.donatorName}>
+                {name}
+              </span>
               <DefaultInput 
                   type="text"
                   value={message} 
@@ -103,7 +143,7 @@ export default function Donation() {
                   placeholder="채팅을 입력해 주세요"
                 />
             </div>
-            <div className={styles.sendButtonBox}>
+            <div className={styles.donationSendButtonBox}>
               <SmallButton 
                 text="전송"
                 color={vars.colors.gray}

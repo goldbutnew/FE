@@ -57,7 +57,7 @@ export default function Chat() {
         채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
         채팅창 테스트 줄바꿈 테스트 온갖 테스트테스트 테스트
       </div>
-      <Donation />
+      
       <ChatProfile />
       {showEmojiPicker && (
         <div className={styles.emojiPicker}>
@@ -77,9 +77,10 @@ export default function Chat() {
           placeholder="채팅을 입력해 주세요"
         />
         <div className={styles.sendButtonBox}>
+          <Donation />
           <SmallButton 
             text="전송"
-            color={vars.colors.gray}
+            color={vars.colors.darkGray}
             onClick={handleSendMessage}
           />  
         </div>
