@@ -39,5 +39,5 @@ export const bottomSheet = style({
 });
 
 export const slideOut = style({
-  // animation: `${slideDown} 300ms ease-out forwards`,
+  animation: `${slideDown} 300ms ease-out forwards`,
 });

@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/vars.css'
-import { betweenBox, defaultBox, endBox } from '@/styles/box.css'
+import { betweenBox, defaultBox, endBox, rowbox } from '@/styles/box.css'
+import { space } from 'postcss/lib/list'
 
 export const topContainer = style({
   position: 'relative'
@@ -44,7 +45,7 @@ export const myChoco = style({
 })
 
 export const selectedChocoBox = style([
-  defaultBox,
+  rowbox,
   {
     color: vars.colors.black,
     backgroundColor: vars.colors.lightGray,
@@ -54,6 +55,11 @@ export const selectedChocoBox = style([
     // padding: `0 ${vars.space['0.5x']} 0 ${vars.space['0.5x']}`,
   }
 ])
+
+export const chocoInputBoxs = style({
+  width: '100%',
+  margin: `0 0 0 ${vars.space['0.5x']}`
+})
 
 export const buttonGroup = style([
   betweenBox

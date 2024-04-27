@@ -91,7 +91,14 @@ export default function Donation() {
             <p>🍫 내 초코: {dummyChoco}</p>
             <hr className={line}/>
             <div className={styles.selectedChocoBox}>
-              <span>🍫 {choco}</span>
+              <span>🍫</span>
+              <input
+                type="number"
+                value={choco}
+                onChange={(e) => setChoco(e.target.value)}
+                placeholder="초코를 입력하세요"
+                className={styles.chocoInputBoxs}
+              />
             </div>
             <div className={styles.buttonGroup}>
               <SmallButton
