@@ -58,6 +58,7 @@ export const hidden = style({
   transform: 'translateX(0)',
   backgroundColor: 'transparent',
   boxShadow: 'none',
+  margin: `0 ${vars.space['0.5x']}`,
   opacity: 0.3,
   ':hover': {
     opacity: 1,
