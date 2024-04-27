@@ -38,7 +38,6 @@ export default function RootLayout({
             side="left"
             initOpen={initOpenState}
             width={200}
-            hidden={true}
           >
             시작! rka
           </ SideBar>
