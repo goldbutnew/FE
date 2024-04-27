@@ -49,8 +49,16 @@ export const close = style({
 });
 
 export const hidden = style({
-  backgroundColor: 'transparent'
-})
+  position: 'fixed',
+  transform: 'translateX(0)',
+  backgroundColor: 'transparent',
+  boxShadow: 'none',
+  opacity: 0.3,
+  transition: 'opacity 0.3s ease',
+  ':hover': {
+    opacity: 1,
+  },
+});
 
 export const sidebarTitle = style([
   bold,

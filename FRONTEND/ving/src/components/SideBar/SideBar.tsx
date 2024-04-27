@@ -24,8 +24,9 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
     const widthStyle = {
       width: isOpen ? `${width}px` : (hidden ? '30px' : '80px'),
     };
+
   return (
-    <div >
+    <div>
       {isOpen ? 
         <div 
           className={`${positionStyle} ${styles.open}`}
@@ -42,10 +43,6 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
                   onClick={() => setIsOpen(!isOpen)}
                 />
               </div>
-              {/* <hr className={line} />     
-              <div className={styles.sidebarContent}>
-                {children}
-              </div>        */}
             </div>
             : 
             <div>
@@ -67,14 +64,23 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
           </div>              
         </div>
         : 
-        <div className={`${positionStyle} ${styles.close}`}>
+        hidden ? (
+          <div className={`${positionStyle} ${styles.hidden}`}>
+            <LiaDoorOpenSolid
+              size={20}
+              className={styles.toggleButton}
+              onClick={() => setIsOpen(!isOpen)}
+            />
+          </div>
+        ) : (
+          <div className={`${positionStyle} ${styles.close}`}>
           <LiaDoorOpenSolid
             size={20}
             className={styles.toggleButton}
             onClick={() => setIsOpen(!isOpen)}
           />
-        </div>        
-      }          
+          </div>
+        )}     
     </div>
   );
 }
