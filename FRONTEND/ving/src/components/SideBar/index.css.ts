@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
-import { columnbox, defaultBox } from '@/styles/box.css';
+import { columnbox, defaultBox, rowbox } from '@/styles/box.css';
 import { bold } from '@/styles/fonts.css';
 import { calc } from '@vanilla-extract/css-utils';
 
@@ -44,9 +44,14 @@ export const open = style({
   backgroundColor: vars.colors.white
 });
 
-export const close = style({
-  transform: 'translateX(0)',
-});
+export const close = style([
+  {
+    transform: 'translateX(0)',
+    display: 'flex',
+    width: "80px",
+    justifyContent: 'center'
+  }
+]);
 
 export const hidden = style({
   position: 'fixed',

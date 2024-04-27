@@ -20,7 +20,7 @@ export default function Chat() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 
   const connect = () => {
-    const socket = new WebSocket('wss://localhost:8080')
+    const socket = new WebSocket('ws://localhost:8080')
     const client = Stomp.over(socket);
 
     client.debug = function(str) {

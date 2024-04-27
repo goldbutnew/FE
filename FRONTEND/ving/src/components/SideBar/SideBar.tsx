@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 import * as styles from './index.css';
 import { defaultBox } from '@/styles/box.css';
 import { line } from '@/styles/common.css';
@@ -20,10 +20,10 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
   const [isOpen, setIsOpen] = useState(initOpen);
   const positionStyle = side === 'left' ? `${styles.leftSidebar}` : `${styles.rightSidebar}`;
 
-    // 사이드바 너비 스타일 동적 생성
-    const widthStyle = {
-      width: isOpen ? `${width}px` : (hidden ? '30px' : '80px'),
-    };
+  // 사이드바 너비 스타일 동적 생성
+  const widthStyle = {
+    width: isOpen ? `${width}px` : (hidden ? '30px' : '80px'),
+  };
 
   return (
     <div>
@@ -65,7 +65,10 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
         </div>
         : 
         hidden ? (
-          <div className={`${positionStyle} ${styles.hidden}`}>
+          <div 
+            className={`${positionStyle} ${styles.hidden}`}
+            style={widthStyle}
+          >
             <LiaDoorOpenSolid
               size={20}
               className={styles.toggleButton}
@@ -73,12 +76,15 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
             />
           </div>
         ) : (
-          <div className={`${positionStyle} ${styles.close}`}>
-          <LiaDoorOpenSolid
-            size={20}
-            className={styles.toggleButton}
-            onClick={() => setIsOpen(!isOpen)}
-          />
+          <div 
+            className={`${positionStyle} ${styles.close}`}
+            style={widthStyle}
+          >
+            <LiaDoorOpenSolid
+              size={20}
+              className={styles.toggleButton}
+              onClick={() => setIsOpen(!isOpen)}
+            />
           </div>
         )}     
     </div>
