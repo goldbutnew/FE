@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from "react"
-import Image from "next/image"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import useAuthStore from "@/store/AuthStore"
+
+import Image from "next/image"
 import logo from '../../../public/images/MainLogo.png'
 import { columnbox, rowbox } from "@/styles/box.css"
 import * as styles from "./index.css"
@@ -13,8 +15,8 @@ import DefaultInput from "@/components/Input/DefaultInput"
 import Textarea from "@/components/Input/TextArea"
 
 export default function Login() {
-  const { login } = useAuthStore()
-  
+  const { Token, login } = useAuthStore()
+  const router = useRouter()
   const [userID, setUserID] = useState('')
   const [userPW, setUserPW] = useState('')
 
@@ -30,12 +32,19 @@ export default function Login() {
     event.preventDefault()
 
     const data = {
-      'userName': userID,
+      'username': userID,
       'password': userPW
     }
 
     login(data)
   }
+
+  useEffect (() => {
+    console.log(Token)
+    if (Token) {
+      router.push('/')
+    }
+  }, [Token])
 
   return (
     <div className={`${columnbox} ${styles.modalContainer}`}>

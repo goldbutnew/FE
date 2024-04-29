@@ -2,6 +2,8 @@
 
 import useAuthStore from "@/store/AuthStore"
 
+import SmallButton from "@/components/Button/SmallButton"
+
 export default function Logout() {
   const { Token, logout } = useAuthStore()
   
@@ -12,9 +14,12 @@ export default function Logout() {
   return (
     <div>
       {Token ? 
-        <button onClick={handleLogout}>로그아웃</button>:
+        <SmallButton 
+          text="로그아웃"
+          onClick={handleLogout}
+        />:
         ''
-      }
+      } 
     </div>
   )
 }
