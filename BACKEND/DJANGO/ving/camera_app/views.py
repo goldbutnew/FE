@@ -152,7 +152,7 @@ def append_to_m3u8(ts_file_path, m3u8_path):
     print('append_to_m3u8')
     print(ts_file_path,m3u8_path)
     with open(m3u8_path, 'a') as f:
-            f.write(f'#EXTINF:10.000,\n{ts_file_path}\n')
+            f.write(f'#EXTINF:2.000,\n{ts_file_path}\n')
     print('writed')
 
 
@@ -171,7 +171,7 @@ def upload_video(request):
         # 기존 M3U8 파일이 없는 경우 생성
         if not os.path.exists(m3u8_path):
             with open(m3u8_path, 'w') as f:
-                f.write('#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-TARGETDURATION:100\n#EXT-X-MEDIA-SEQUENCE:0\n')
+                f.write('#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-TARGETDURATION:2\n#EXT-X-MEDIA-SEQUENCE:0\n')
 
         # 기존 M3U8 파일 읽기
         with open(m3u8_path, 'r') as f:
@@ -190,6 +190,30 @@ def upload_video(request):
         new_m3u8_content = [line if not line.startswith('#EXT-X-MEDIA-SEQUENCE') else f'#EXT-X-MEDIA-SEQUENCE:{current_sequence}\n' for line in m3u8_content]
         with open(m3u8_path, 'w') as f:
             f.writelines(new_m3u8_content)
+        # 이미 재생된 ts파일 지우는거
+        # with open(m3u8_path, 'r') as f:
+        #     lines = f.readlines()
+
+        #     cnt = 0
+        #     modified_lines = []
+
+        #     for line in lines:
+        #         print(line.strip())  # 각 줄을 출력
+                
+        #         if line.startswith('#EXT-X-MEDIA-SEQUENCE'):
+        #             cnt += 1
+        #             modified_lines.append(line)
+        #             continue
+
+        #         if cnt == 1 or cnt == 2:
+        #             line = ''  # 조건을 만족하는 경우 줄을 수정
+        #         modified_lines.append(line)
+
+        # # 수정된 줄을 원래 파일에 다시 쓰기
+        # with open(m3u8_path, 'w') as f:
+        #     for line in modified_lines:
+        #         f.write(line)
+
         
         append_to_m3u8(ts_file_path, m3u8_path)
         return JsonResponse({'status': 'success'})
