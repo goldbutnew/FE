@@ -1,4 +1,4 @@
 package ving.spring.ving.socket;
 
-public record message(String type, String sender, Object data) {
+public record Message(String type, String sender, Object data) {
 }
