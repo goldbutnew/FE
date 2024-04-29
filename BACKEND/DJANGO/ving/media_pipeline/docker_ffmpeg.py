@@ -2,10 +2,11 @@ import subprocess
 
 def convert_stream_to_hls(user_id):
     # 컨테이너 이름
-    container_name = "thirsty_hodgkin"
+    container_name = "ffmpeg"
     
     # RTMP URL과 HLS 출력 경로를 유저 ID에 따라 동적으로 생성
     rtmp_url = f"rtmp://0.0.0.0:1935/live/{user_id}"
+    # output_path = f"/ving/media/{user_id}.m3u8"
     output_path = f"/files/{user_id}.m3u8"
 
     # Docker 내에서 실행할 ffmpeg 명령 구성
