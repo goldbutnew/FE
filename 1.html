@@ -1,11 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Speed Test</title>
 </head>
 <body>
-  <video src="https://videos.pexels.com/video-files/3209828/3209828-uhd_3840_2160_25fps.mp4"></video>
+    <h1>Network Speed Test</h1>
+    <button id="testButton">Run Speed Test</button>
+
+    <script>
+        document.getElementById('testButton').addEventListener('click', function() {
+            runSpeedTest();
+        });
+
+        function runSpeedTest() {
+            var startTime, endTime;
+            var fileSize = 10 * 1024 * 1024; // 10MB file
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    endTime = performance.now();
+                    var duration = (endTime - startTime) / 1000; // in seconds
+                    var speedMbps = (fileSize / duration) * 8 / 1000000; // Mbps
+                    console.log('네트워크 속도: ' + speedMbps.toFixed(2) + ' Mbps');
+                }
+            };
+            xhr.open('GET', 'https://example.com/sample-file.mp4', true); // 대상 파일의 URL로 변경
+            xhr.send();
+            startTime = performance.now();
+        }
+    </script>
 </body>
 </html>
