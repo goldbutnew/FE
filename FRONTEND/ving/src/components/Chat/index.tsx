@@ -20,7 +20,7 @@ export default function Chat() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 
   const connect = () => {
-    const socket = new WebSocket('ws://localhost:8080')
+    const socket = new SockJS('http://localhost:8080/stomp')
     const client = Stomp.over(socket);
 
     client.debug = function(str) {
@@ -30,7 +30,7 @@ export default function Chat() {
     client.reconnect_delay = 5000
 
     client.connect({}, () => {
-      console.log("Connected successfully");
+      console.log("연결 완료");
       setConnected(true);
   
       // 구독 설정

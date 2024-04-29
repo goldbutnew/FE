@@ -19,7 +19,7 @@ export default function Radio({ text }: RadioProps) {
         type="radio"
         className={styles.RadioButton}
         checked={checked}
-        onClick={handleRadioClick}
+        onChange={handleRadioClick}
       />
       {text}
     </div>
