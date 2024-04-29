@@ -21,7 +21,6 @@ export default function Chat() {
   
   const connect = () => {
     console.log("WebSocket 연결 시도 중...");
-    // const socket = new SockJS('http://localhost:8080/ws');
     const socketFactory = () => {
       return new SockJS('http://localhost:8080/');
     };

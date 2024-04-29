@@ -40,17 +40,14 @@ export default function Login({ onLoginSuccess }) {
     }
 
     login(data)
-
-    if (Token) {
-      onLoginSuccess()
-      close()
-    }
   }
 
   useEffect (() => {
     console.log(Token)
     if (Token) {
       router.push('/')
+      onLoginSuccess()
+      close()
     }
   }, [Token])
 
