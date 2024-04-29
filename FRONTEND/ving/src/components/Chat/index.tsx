@@ -107,7 +107,6 @@ export default function Chat() {
           <div key={index}>{msg.message}</div>
         ))}
       </div>
-      
       <ChatProfile />
       {showEmojiPicker && (
         <div className={styles.emojiPicker}>

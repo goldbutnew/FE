@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Notifer from "../Notifer";
 import Signup from "@/containers/auth/Signup";
 import Login from "@/containers/auth/Login";
+import Logout from "@/containers/auth/Logout";
 
 import logo from '../../../public/images/MainLogo.png'
 import * as styles from './index.css'
@@ -32,11 +33,13 @@ export default function NavBar() {
         <Link href={`/profile/${userId}`}>내 채널</Link>　
         <Link href={`/studio/${userId}`}>내 스튜디오</Link>　
         <Link href={`/streaming/${userId}`}>방송중인 누군가의 방</Link>　   
+        <Link href={`/tmp`}>채팅 테스트</Link>　   
       </div>
       <div className={styles.leftNavBox}>
         {isAuthenticated ? (
           <>
-            <Notifer />
+            <Notifer />　
+            <Logout />
           </>
         ) : (
           <>

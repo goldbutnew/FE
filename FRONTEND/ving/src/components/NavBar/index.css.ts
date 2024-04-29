@@ -32,7 +32,10 @@ export const leftNavItem = style({
   margin: `0 0 0 ${vars.space['0.5x']}`
 })
 
-export const logo = style({
-  width: 'auto',
-  height: 32,
-})
+export const logo = style([
+  rowbox,
+  {
+    width: 'auto',
+    height: 32,
+  }
+])
