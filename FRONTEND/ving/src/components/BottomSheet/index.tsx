@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import * as styles from './index.css';
 import { IoIosClose } from 'react-icons/io';
-import { endBox } from '@/styles/box.css';
-import { plainButton } from '@/styles/common.css';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -27,11 +25,11 @@ export default function BottomSheet({ isOpen, onClose, children }: BottomSheetPr
   return (
     <div
       className={`${styles.bottomSheet} ${!isVisible && styles.slideOut}`}
-      onClick={handleClose}
     >
-      <div className={`${plainButton} ${endBox}`}>
+      <div className={styles.closeButtonBox}>
         <IoIosClose
-          size={20} 
+          size={20}
+          onClick={handleClose} 
         />
       </div>
       {children}

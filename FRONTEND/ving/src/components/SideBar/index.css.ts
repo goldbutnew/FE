@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
-import { columnbox, defaultBox } from '@/styles/box.css';
+import { columnbox, defaultBox, rowbox } from '@/styles/box.css';
 import { bold } from '@/styles/fonts.css';
 import { calc } from '@vanilla-extract/css-utils';
 
@@ -15,6 +15,7 @@ export const baseSidebar = style({
   boxShadow: vars.boxShadow['2x'],
   zIndex: 3000,
   transition: '0.3s ease-in-out',
+  overflow: 'hidden',
 });
 
 export const leftSidebar = style([
@@ -43,8 +44,25 @@ export const open = style({
   backgroundColor: vars.colors.white
 });
 
-export const close = style({
+export const close = style([
+  {
+    transform: 'translateX(0)',
+    display: 'flex',
+    width: "80px",
+    justifyContent: 'center'
+  }
+]);
+
+export const hidden = style({
+  position: 'fixed',
   transform: 'translateX(0)',
+  backgroundColor: 'transparent',
+  boxShadow: 'none',
+  margin: `0 ${vars.space['0.5x']}`,
+  opacity: 0.3,
+  ':hover': {
+    opacity: 1,
+  },
 });
 
 export const sidebarTitle = style([

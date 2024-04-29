@@ -21,7 +21,6 @@ export const layout = style({
 });
 
 export const contentContainer = style({
-  position: 'fixed',
   display: 'flex',
   width: '100%',
   flexDirection: 'row',
@@ -29,5 +28,5 @@ export const contentContainer = style({
 
 export const mainContent = style({
   flexGrow: 1,
-  padding: `${vars.space['8x']} 0 0 ${vars.space['2x']}`,
+  padding: `${vars.space['8x']} ${vars.space['2x']} 0 ${vars.space['2x']}`,
 });

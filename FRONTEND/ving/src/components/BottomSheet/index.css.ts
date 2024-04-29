@@ -1,5 +1,7 @@
 import { style, keyframes } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
+import { plainButton } from '@/styles/common.css';
+import { endBox } from '@/styles/box.css';
 
 const slideUp = keyframes({
   '0%': { transform: 'translateY(100%)' },
@@ -11,6 +13,14 @@ const slideDown = keyframes({
   '100%': { transform: 'translateY(100%)' },
 });
 
+export const closeButtonBox = style([
+  plainButton,
+  endBox,
+  {
+    zIndex: 3002,
+  }
+]);
+
 export const bottomSheet = style({
   position: 'fixed',
   left: 0,
@@ -20,7 +30,8 @@ export const bottomSheet = style({
   borderTopLeftRadius: vars.borderRadius['2x'],
   borderTopRightRadius: vars.borderRadius['2x'],
   boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.1)',
-  padding: `${vars.space['2x']} ${vars.space['2x']} 80px ${vars.space['2x']}`,
+  padding: vars.space['2x'],
+  // padding: `${vars.space['2x']} ${vars.space['2x']} 88px ${vars.space['2x']}`,
   maxHeight: '80vh',
   overflowY: 'auto',
   transform: 'translateY(100%)',

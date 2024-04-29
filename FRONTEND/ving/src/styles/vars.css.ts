@@ -5,6 +5,7 @@ export const vars = createGlobalTheme(':root', {
     none: '0',
     '0.5x': '4px',
     '1x': '8px',
+    '1.5x': '12px',
     '2x': '16px',
     '3x': '24px',
     '4x': '32px',
@@ -12,6 +13,8 @@ export const vars = createGlobalTheme(':root', {
     '6x': '48px',
     '7x': '56px',
     '8x': '64px',
+    '9x': '72px',
+    '10x': '80x',
   },
 
   colors: {

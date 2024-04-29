@@ -3,17 +3,18 @@ import { defaultButton } from "./index.css";
 
 type ButtonProps = {
   text: string;
-  color?: string; 
+  color?: string;
+  fontColor?: string; 
   onClick?: () => void;
 };
 
-export default function SmallButton({ text, color, onClick }: ButtonProps) {
+export default function SmallButton({ text, color, fontColor, onClick }: ButtonProps) {
   return (
     <button
       className={defaultButton({ size: 'small' })} 
       style={{ 
         backgroundColor: color === 'defaultColor' ? 'black' : color || 'black',
-        color: 'white',
+        color: color === 'defaultColor' ? 'white' : fontColor || 'white',
       }}
       onClick={onClick}
     >
