@@ -1,17 +1,12 @@
+'use clinet'
 
-import LoginPage from "./LoginPage"
-import SignupPage from "./SignupPage"
+import React from "react";
+import ChatTest from "./ChatTest";
 
-export default function () {
+export default function tmp() {
   return (
     <div>
-      <LoginPage />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <SignupPage />
+      <ChatTest />
     </div>
   )
 }

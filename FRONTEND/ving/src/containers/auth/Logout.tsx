@@ -4,11 +4,12 @@ import useAuthStore from "@/store/AuthStore"
 
 import SmallButton from "@/components/Button/SmallButton"
 
-export default function Logout() {
+export default function Logout({ onLogoutSuccess }) {
   const { Token, logout } = useAuthStore()
   
   const handleLogout = () => {
     logout()
+    onLogoutSuccess()
   }
 
   return (

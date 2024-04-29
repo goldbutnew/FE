@@ -1,15 +1,22 @@
-const WebSocketServer = require('ws').Server;
+const http = require('http');
+const sockjs = require('sockjs');
 const Stomp = require('stompjs');
 
-const wss = new WebSocketServer({ port: 8080 });
-const stompServer = Stomp.over(wss);
+const sockjs_opts = {sockjs_url: 'http://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js'};
+const sockjs_echo = sockjs.createServer(sockjs_opts);
+const server = http.createServer();
 
-stompServer.connect({}, function(frame) {
+sockjs_echo.installHandlers(server, {prefix:'/stomp'});
+server.listen(8080, '0.0.0.0');
+
+const stompServer = Stomp.over(sockjs_echo);
+
+stompServer.connect({}, function(sessionId) {
     stompServer.subscribe('/topic/messages', function(message) {
         const body = JSON.parse(message.body);
-        console.log('received message', body);
-        
-        // echo back the message
+        console.log('Received message:', body);
+
+        // 메시지를 다시 보내기
         stompServer.send('/topic/messages', {}, message.body);
     });
 }, function(error) {
@@ -17,3 +24,4 @@ stompServer.connect({}, function(frame) {
 });
 
 console.log('STOMP server running on port 8080');
+

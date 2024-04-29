@@ -21,19 +21,10 @@ export default function Donation() {
   const [isTTS, setIsTTS] = useState(false)
   const initChoco = 3000000
   const [dummyChoco, setDummyChoco] = useState(initChoco)
+  const [warning, setWarning] = useState('')
 
   const dummyUserName = "나유경바보"
   const [name, setName] = useState(dummyUserName)
-
-  // const sendChoco = (value) => () => {
-  //   setChoco(value);
-  //   console.log(`choco: ${choco}`)
-  //   if (value) {
-  //     setDummyChoco(dummyChoco-value)
-  //   } else {
-  //     setDummyChoco(initChoco)
-  //   }
-  // };  
   
   const sendChoco = (value) => () => {
     setChoco(value);
@@ -41,7 +32,12 @@ export default function Donation() {
   };
 
   useEffect(() => {
-    setDummyChoco(initChoco - choco); // 초코 선택이 변경될 때마다 dummyChoco 초기화
+    if ((initChoco - choco) < 0) {
+      setWarning("초코가 부족합니다!")
+    } else {
+      setWarning("")
+      setDummyChoco(initChoco - choco)
+    }
   }, [choco]);
 
 
@@ -97,7 +93,7 @@ export default function Donation() {
                 value={choco}
                 onChange={(e) => setChoco(e.target.value)}
                 placeholder="초코를 입력하세요"
-                className={styles.chocoInputBoxs}
+                className={styles.chocoInputBox}
               />
             </div>
             <div className={styles.buttonGroup}>
@@ -126,8 +122,11 @@ export default function Donation() {
                 onClick={sendChoco(50000)}   
               />
             </div>
+            <div className={styles.warningBox}>
+              {warning}
+            </div>
             <hr className={line} />
-            <div className={styles.toogleBox}>
+            <div className={styles.toggleBox}>
               <div className={betweenBox}>
                 채팅 읽어 주기
                 <ToggleButton

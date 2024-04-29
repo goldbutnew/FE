@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import useAuthStore from "@/store/AuthStore"
+import { Modal } from "@/components/Modal"
+import useModal from "@/hooks/useModal"
 
 import Image from "next/image"
 import logo from '#/images/MainLogo.png'
@@ -21,6 +23,7 @@ export default function Signup() {
   const [userPW, setUserPW] = useState('')
   const [userPW2, setUserPW2] = useState('')
   const [userNickname, setUserNickname] = useState('')
+  const { isOpen, open, close } = useModal();
 
   const handleID = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserID(event.target.value)
@@ -58,35 +61,36 @@ export default function Signup() {
   useEffect (() => {
     console.log(Token)
     if (Token) {
+      close()
       router.push('/')
     }
   }, [Token])
 
   return (
-    <div className={`${columnbox} ${styles.modalContainer}`}>
-      <Radio
-        onClick={handleCheck}
-        text="이거 선택할 거임?" 
+    <div className={styles.modalContainer}>
+      <SmallButton
+        text="회원가입"
+        onClick={open}
       />
-      <div className={`${styles.modalTitle} ${rowbox}`}>
+      <Modal isOpen={isOpen} onClose={close}>
+      <div className={styles.modalTitle}>
         <Image src={logo} alt="logo" className={styles.logo} />
         에 가입하세요!
       </div>
       <form className={columnbox}>
-        <div className={rowbox}>
+        <div className={styles.modalItem}>
           <label className={styles.labelText} htmlFor="id">아이디</label>
           <DefaultInput
             type="id"
             value={userID}
             onChange={handleID}
           />
-          <SmallButton 
+          {/* <SmallButton 
             text="중복확인"
             onClick={handleCheck}
-          />
+          /> */}
         </div>
-          
-        <div className={rowbox}>
+        <div className={styles.modalItem}>
           <label className={styles.labelText} htmlFor="pw">비밀번호1</label>
           <DefaultInput
             type="password"
@@ -95,7 +99,7 @@ export default function Signup() {
           />
         </div>
 
-        <div className={rowbox}>
+        <div className={styles.modalItem}>
           <label className={styles.labelText} htmlFor="pw2">비밀번호2</label>
           <DefaultInput
             type="password"
@@ -104,7 +108,7 @@ export default function Signup() {
           />
         </div>
 
-        <div className={rowbox}>
+        <div className={styles.modalItem}>
           <label className={styles.labelText} htmlFor="nickname">닉네임</label>
           <DefaultInput
             type="id"
@@ -119,7 +123,7 @@ export default function Signup() {
         {/* 나중에 라지 버튼에 밑에 예시처럼 disabled 넣으면 끝 */}
         {/* <button onClick={handleSignup} disabled={!isCheck}>asdadasdada</button> */}
       </form>
-
+      </Modal>
     </div>
   )
 }
