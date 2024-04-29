@@ -2,11 +2,14 @@ import React from 'react'
 import * as styles from './index.css'
 import Image from 'next/image'
 import { rowbox } from '@/styles/box.css'
+import youtubeLogo from '#/images/youtubeLogo.png'
+import instagramLogo from '#/images/instagramLogo.png'
+import pin from '#/images/pin.png'
 
 interface SocialLinkProps {
   platform: string
   link: string
-  logo: string
+  logo: object
 }
 
 interface representativeVideoProps {
@@ -19,13 +22,13 @@ interface representativeVideoProps {
 const socialLinks: SocialLinkProps[] = [
   {
     platform: '유튜브:',
-    link: 'https://www.youtube.com/user/yourusername', // Replace with your actual YouTube link
-    logo: '/images/youtubeLogo.png'
+    link: 'https://www.youtube.com/user/yourusername',
+    logo: youtubeLogo,
   },
   {
     platform: '인스타그램:',
-    link: 'https://www.instagram.com/yourusername', // Replace with your actual Instagram link
-    logo: '/images/instagramLogo.png'
+    link: 'https://www.instagram.com/yourusername', 
+    logo: instagramLogo
   },
 ]
 
@@ -60,7 +63,7 @@ export function ProfileTabComponent() {
     <>
       <div className={styles.socialLinkContainer}>
           <div className={styles.socialTitleBox}>
-            <Image src='/images/pin.png' alt='pinImage' width={40} height={40}></Image>
+            <Image src={pin} alt='pinImage' width={40} height={40}></Image>
             <span className={styles.socialTitle}>소셜 링크</span>
           </div>
           {socialLinks.map((link) => (
@@ -69,7 +72,7 @@ export function ProfileTabComponent() {
       </div>
       <div className={styles.representativeBox}>
       <div className={styles.representativeVideoTitleBox}>
-        <Image src='/images/pin.png' alt='pinImage' width={40} height={40}></Image>
+        <Image src={pin} alt='pinImage' width={40} height={40}></Image>
         <span className={styles.representativeVideoTitle}>대표 영상</span>
       </div>
       {representativeVideoInfo.map(video => (
