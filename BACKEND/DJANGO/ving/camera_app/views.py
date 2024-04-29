@@ -163,7 +163,8 @@ def upload_video(request):
         input_file_name = video_file.name
         output_dir = 'media'
         m3u8_path = os.path.join('media', 'output.m3u8')
-
+        if not os.path.exists('media'):
+            os.makedirs('media')
         with open(os.path.join('media', input_file_name), 'wb') as f:
             for chunk in video_file.chunks():
                 f.write(chunk)
