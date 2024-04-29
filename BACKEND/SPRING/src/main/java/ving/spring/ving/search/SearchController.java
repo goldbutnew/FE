@@ -4,17 +4,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ving.spring.ving.user.UserModel;
 import ving.spring.ving.user.UserService;
+import ving.spring.ving.user.dto.UserDto;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/search")
 public class SearchController {
 
@@ -23,6 +25,17 @@ public class SearchController {
     @GetMapping("/nickname")
     public ResponseEntity<?> searchNickname(@RequestParam String nickname)
     {
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+
+        List<UserDto.user> users = new ArrayList<UserDto.user>();
+        for (UserModel userModel : userService.findUserModelsByUserNicknameStartingWith(nickname))
+        {
+            users.add(UserDto.user.builder()
+                            .nickname(userModel.getUserNickname())
+                            .photoUrl(userModel.getUserPhoto())
+                    .build());
+        }
+        return ResponseEntity.ok().body(UserDto.builder()
+                        .users(users)
+                .build());
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ving.spring.ving.user.UserRepository;
+
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -26,6 +28,10 @@ public class UserService {
         return Optional.of(userRepository.findByUserUsername(userUserName));
     }
 
+    public List<UserModel> findUserModelsByUserNicknameStartingWith(String userNickname)
+    {
+        return userRepository.findUserModelsByUserNicknameStartingWith(userNickname);
+    }
     public Optional<UserModel> findByUserId(Integer userId)
     {
         return userRepository.findByUserId(userId);

@@ -32,6 +32,7 @@ public class VideoDto {
         private String thumbnail;
         private String title;
         private Integer videoPlay;
+        private Boolean isFixed;
     }
 }
 

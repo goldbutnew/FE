@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +33,7 @@ import ving.spring.ving.user.dto.ProfileDto;
 import ving.spring.ving.video.VideoDto;
 import ving.spring.ving.video.VideoModel;
 import ving.spring.ving.video.VideoService;
+import ving.spring.ving.video.fixedVideo.FixedVideoService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,7 +44,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final PasswordEncoder passwordEncoder;
@@ -52,6 +54,7 @@ public class UserController {
     private final VideoService videoService;
     private final AmazonS3Client amazonS3Client;
     private final SubscriptionService subscriptionService;
+    private final FixedVideoService fixedVideoService;
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
     @PostMapping("/api/auth/login")
@@ -139,6 +142,7 @@ public class UserController {
     public ResponseEntity<?> getProfile(@RequestParam Integer userId)
     {
         UserModel userModel = userService.findByUserId(userId).orElseThrow();
+        UserModel me = userService.findCurrentUser();
         List<VideoModel> videoModels = videoService.findVideoModelsByUser(userModel);
         List<VideoDto.VideoEntity> returnList = new ArrayList<>();
         for (VideoModel videoModel : videoModels)
@@ -148,6 +152,7 @@ public class UserController {
                             .title(videoModel.getVideoName())
                             .thumbnail(videoModel.getThumbnail())
                             .videoPlay(videoModel.getVideoplay())
+                            .isFixed(fixedVideoService.existsByVideoModel(videoModel))
                             .build()
             );
         }
@@ -158,6 +163,7 @@ public class UserController {
                         .followers(subscriptionService.countAllByStreamer(userModel))
                         .photoUrl(userModel.getUserPhoto())
                         .videos(returnList)
+                        .isFollowed(subscriptionService.existsByStreamerAndFollower(userModel, me))
                         .build()
         );
     }

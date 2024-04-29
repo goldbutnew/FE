@@ -1,10 +1,7 @@
 package ving.spring.ving.user.dto;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,6 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDto
 {
     List<user> users;
@@ -23,6 +21,4 @@ public class UserDto
         private String nickname;
         private String photoUrl;
     }
-
-
 }

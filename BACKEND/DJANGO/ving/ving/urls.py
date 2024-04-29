@@ -25,7 +25,7 @@ urlpatterns = [
     path('hls/', include('hls.urls')),
     path('camera_app/', include('camera_app.urls')),
     path('ws/', include(routing.websocket_urlpatterns)),
-    
+    path('media_pipeline/', include('media_pipeline.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
