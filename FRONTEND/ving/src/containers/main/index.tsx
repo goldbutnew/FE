@@ -38,6 +38,8 @@ export default function Main() {
           label='고구마'
         />
       </div>
+      
+      <Logout />
     </div>
   )
 }
