@@ -79,7 +79,7 @@ export default function Login({ onLoginSuccess }) {
           <div className={styles.modalItem}>
             <label className={styles.labelText} htmlFor="pw">비밀번호</label>
             <DefaultInput
-              type="text"
+              type="password"
               value={userPW}
               onChange={handlePW}
               placeholder="비밀번호"
