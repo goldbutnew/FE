@@ -61,6 +61,7 @@ export default function Signup() {
   useEffect (() => {
     console.log(Token)
     if (Token) {
+      close()
       router.push('/')
     }
   }, [Token])

@@ -75,7 +75,7 @@ export const donationInputBox = style([
 export const buttonGroup = style([
   betweenBox,
   {
-    // padding: `0 0 ${vars.space['0.5x']} 0`,
+    padding: `0 0 ${vars.space['0.5x']} 0`,
   }
 ])
 
@@ -83,7 +83,7 @@ export const warningBox = style([
   rowbox,
   {
     color: vars.colors.red,
-    fontSize: vars.fontSize['1.5x']
+    fontSize: vars.fontSize['1.5x'],
   }
 ])
 

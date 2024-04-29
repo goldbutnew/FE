@@ -16,7 +16,7 @@ import { vars } from "@/styles/vars.css"
 import DefaultInput from "@/components/Input/DefaultInput"
 import Textarea from "@/components/Input/TextArea"
 
-export default function Login() {
+export default function Login({ onLoginSuccess }) {
   const { Token, login } = useAuthStore()
   const router = useRouter()
   const [userID, setUserID] = useState('')
@@ -40,6 +40,11 @@ export default function Login() {
     }
 
     login(data)
+
+    if (Token) {
+      onLoginSuccess()
+      close()
+    }
   }
 
   useEffect (() => {

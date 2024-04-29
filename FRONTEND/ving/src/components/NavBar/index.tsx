@@ -22,6 +22,15 @@ export default function NavBar() {
     setIsAuthenticated(!!token);
   }, []);
 
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+  };
+  
+  // 로그아웃 처리 함수
+  const handleLogoutSuccess = () => {
+    setIsAuthenticated(false);
+  };
+
   
   return (
     <nav className={styles.container}>
@@ -36,17 +45,17 @@ export default function NavBar() {
         <Link href={`/tmp`}>채팅 테스트</Link>　   
       </div>
       <div className={styles.leftNavBox}>
-        {isAuthenticated ? (
-          <>
-            <Notifer />　
-            <Logout />
-          </>
-        ) : (
-          <>
-            <Login />　
-            <Signup />
-          </>
-        )}
+      {isAuthenticated ? (
+        <>
+          <Notifer />　
+          <Logout onLogoutSuccess={handleLogoutSuccess} />
+        </>
+      ) : (
+        <>
+          <Login onLoginSuccess={handleLoginSuccess} />　
+          <Signup />
+        </>
+      )}
       </div>
     </nav>
   )
