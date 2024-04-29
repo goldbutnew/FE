@@ -2,19 +2,25 @@
 
 import useAuthStore from "@/store/AuthStore"
 
-export default function Logout() {
+import SmallButton from "@/components/Button/SmallButton"
+
+export default function Logout({ onLogoutSuccess }) {
   const { Token, logout } = useAuthStore()
   
   const handleLogout = () => {
     logout()
+    onLogoutSuccess()
   }
 
   return (
     <div>
       {Token ? 
-        <button onClick={handleLogout}>로그아웃</button>:
+        <SmallButton 
+          text="로그아웃"
+          onClick={handleLogout}
+        />:
         ''
-      }
+      } 
     </div>
   )
 }

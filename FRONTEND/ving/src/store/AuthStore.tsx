@@ -19,8 +19,9 @@ const useAuthStore = create(
           console.log(data)
           const response = await axios.post('auth/login', data)
 
-          set({ userData: response.data.info })
           localStorage.setItem('accessToken', response.data.token.accessToken)
+          set({ userData: response.data.info })
+          set({ Token: response.data.token.accessToken })
           console.log('유저 데이터입니다', response.data)
 
         } catch (error) {

@@ -15,6 +15,7 @@ export const defaultButton = recipe({
       cursor: 'pointer',
       borderRadius: vars.borderRadius['1x'],
       padding: `${vars.space['1x']} ${vars.space['1x']}`,
+      whiteSpace: 'nowrap',
     })
   ),
   variants: {

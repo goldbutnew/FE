@@ -4,14 +4,11 @@ import * as styles from "./index.css";
 
 interface RadioProps {
   text: string;
+  checked: boolean;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function Radio({ text }: RadioProps) {
-  const [checked, setChecked] = useState(false);
-
-  const handleRadioClick = () => {
-    setChecked(!checked);
-  };
+export default function Radio({ text, checked, onChange }: RadioProps) {
 
   return (
     <div className={rowbox}>
@@ -19,7 +16,7 @@ export default function Radio({ text }: RadioProps) {
         type="radio"
         className={styles.RadioButton}
         checked={checked}
-        onClick={handleRadioClick}
+        onChange={onChange}
       />
       {text}
     </div>

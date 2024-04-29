@@ -36,6 +36,7 @@ export const bottomSheet = style({
   overflowY: 'auto',
   transform: 'translateY(100%)',
   animation: `${slideUp} 300ms ease-out forwards`,
+  zIndex: 3001,
 });
 
 export const slideOut = style({
