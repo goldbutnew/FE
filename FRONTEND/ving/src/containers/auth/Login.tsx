@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import useAuthStore from "@/store/AuthStore"
-import logo from '../../../public/images/MainLogo.png'
+import logo from '#/images/MainLogo.png'
 import { columnbox, rowbox } from "@/styles/box.css"
 import * as styles from "./index.css"
 import LargeButton from "@/components/Button/LargeButton"
@@ -56,7 +56,7 @@ export default function Login() {
         <div className={`${styles.modalItem} ${rowbox}`}>
           <label className={styles.labelText} htmlFor="pw">비밀번호</label>
           <DefaultInput
-            type="text"
+            type="password"
             value={userPW}
             onChange={handlePW}
             placeholder="비밀번호"
