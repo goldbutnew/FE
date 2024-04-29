@@ -1,34 +1,40 @@
 'use client'
 
 import { useState, useEffect  } from 'react'
+import useStreamingStore from '@/store/StreamingStore'
+
 import NetworkSpeedTest from '../streaming/Network'
 import Image from 'next/image'
 import logo from '#/images/MainLogo.png'
 import DefaultInput from '@/components/Input/DefaultInput'
-import ToggleButton from '@/components/Button/ToggleButton'
+import Radio from '@/components/Input/Radio'
+import SmallButton from '@/components/Button/SmallButton'
 
-export default function StudioStreaming(): JSX.Element {
-  // const [ isStreaming, setIsStreaming ] = useState(false)
 
-  // const handleStreaming = () => {
-  //   setIsStreaming(!isStreaming)
-  // }
+export default function StudioStreaming() {
+  const { sendStreamTitle, sendStreamThumbnail, sendStreamLimit } = useStreamingStore()
   const [ title, setTitle ] = useState('')
-  const [isActive, setIsActive] = useState(false)
+  const [ thumbnail, setThumbnail ] = useState('')
+  const [ limit, setLimit ] = useState(false)
 
-  const handleToggle = (newState: boolean) => {
-    setIsActive(newState)
+  const submitStreamSetting = () => {
+    sendStreamTitle(title)
+    sendStreamThumbnail(thumbnail)
+    sendStreamLimit(limit)
   }
 
   const handleTitle = (event) => {
     setTitle(event.target.value)
-    console.log('엑시오스 쏘면 됨')
+  }
+
+  const toggleLimit = () => {
+    setLimit(!limit)  // limit 상태를 토글
   }
 
   return (
     <div>
       <div>
-        <video src='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' width="320" height="240" controls></video>
+        <video src='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' controls></video>
       </div>
 
       <div>
@@ -43,13 +49,10 @@ export default function StudioStreaming(): JSX.Element {
 
       <div>
         <p>연령제한</p>
-        <ToggleButton 
-          isActive={isActive}
-          onChange={handleToggle}
-        />
-        <p>시청자를 19세로 제한하겠습니까?</p>
+        <Radio text='시청자를 19세로 제한하겠습니까?' checked={limit} onChange={toggleLimit}/>
       </div>
 
+      <SmallButton text="업데이트" onClick={submitStreamSetting}/>
       <br />
       <br />
       <br />
