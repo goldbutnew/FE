@@ -56,14 +56,10 @@ export const selectedChocoBox = style([
   }
 ])
 
-export const chocoInputBoxs = style({
+export const chocoInputBox = style({
   width: '100%',
   margin: `0 0 0 ${vars.space['0.5x']}`
 })
-
-export const buttonGroup = style([
-  betweenBox
-])
 
 export const donationInputBox = style([
   defaultBox,
@@ -76,12 +72,27 @@ export const donationInputBox = style([
   }
 ])
 
+export const buttonGroup = style([
+  betweenBox,
+  {
+    // padding: `0 0 ${vars.space['0.5x']} 0`,
+  }
+])
+
+export const warningBox = style([
+  rowbox,
+  {
+    color: vars.colors.red,
+    fontSize: vars.fontSize['1.5x']
+  }
+])
+
+export const toggleBox = style({
+})
+
 export const donatorName = style({
   color: vars.colors.white,
   margin: `0 0 ${vars.space['1x']} 0`,
-})
-
-export const toogleBox = style({
 })
 
 export const donationEmojiPicker = style({
