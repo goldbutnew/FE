@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,8 +28,8 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.cors().disable()
-                .csrf().disable()
+        http.cors(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .formLogin().disable()
                 .securityMatcher("/**")
@@ -37,7 +38,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/auth/Oauth2/KakaoToken").permitAll()
                         .requestMatchers("/auth/Oauth2/KakaoLogin").permitAll()
                         .requestMatchers("/api/auth/login", "/api/auth/signup", "/api/auth/isRegistered")
-                        .permitAll().anyRequest().authenticated());
+                        .permitAll().anyRequest().permitAll());
         return http.build();
     }
 
