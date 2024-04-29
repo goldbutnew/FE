@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import * as styles from './index.css'
 import SmallButton from '@/components/Button/SmallButton'
 import { useParams, useRouter } from 'next/navigation'
-import axios from 'axios'
+import useProfileStore from '@/store/ProfileStore'
 
 interface SocialLinkProps {
   platform: string
@@ -15,11 +15,12 @@ interface UserInfoBoxProps {
   socialLinks: SocialLinkProps[]
 }
 
-const dummyUserInfo = {
-  userImage: 'https://picsum.photos/id/1/200/300',
-  userNickname: '이우주안티',
-  userIntroduce: '하이 여긴 이우주안티의 개인홈 ><!',
-}
+// const profileData = {
+//   userImage: 'https://picsum.photos/id/1/200/300',
+//   userNickname: '이우주안티',
+//   userIntroduce: '하이 여긴 이우주안티의 개인홈 ><!',
+//   userSubscriberCount: 100,
+// }
 
 export default function ProfileUserInfoBox() {
 
@@ -32,32 +33,42 @@ export default function ProfileUserInfoBox() {
   const [isFollowed, setIsFollowed] = useState(false)
   const [loading, setLoading] = useState(false)
   const [followList, setFollowList] = useState([2, 3, 4])
+  const { profileData, getUserProfileInfo } = useProfileStore()
+  const [subscriberCount, setSubscriberCount] = useState(profileData.userSubscriberCount)
 
-  const toggleFollow = (userId) => {
+  const toggleFollow = (userId: string) => {
     const userIdNum = parseInt(userId)
     setLoading(true)
+    
+    // const nickname = 'baloo366'
 
     if (followList.includes(userIdNum)) {
       setFollowList(followList.filter(id => id !== userIdNum))
       setIsFollowed(false)
+      setSubscriberCount(subscriberCount - 1)
     } else {
       setFollowList([...followList, userIdNum])
       setIsFollowed(true)
+      setSubscriberCount(subscriberCount + 1)
     }
-    setLoading(false)
+    setLoading(true)
   }
+
+  useEffect(() => {
+    const initData = async () => {
+      await getUserProfileInfo(7)
+      setLoading(false)
+      if (profileData) {
+        setSubscriberCount(profileData.userSubscriberCount)
+      }
+    }
+    initData()
+  }, [getUserProfileInfo, profileData])
 
   useEffect(() => {
     if (params.userId && params.userId !== String(loginUserId)) {
       setLoading(true)
-      // checkFollowStatus(params.userId)
-      // 임시 더미 팔로우 확인용 함수
-      if (followList.includes(parseInt(params.userId))) {
-        setIsFollowed(false)
-      } else {
-        setIsFollowed(true)
-      }
-      setLoading(true)
+      setIsFollowed(followList.includes(parseInt(params.userId)))
     }
   }, [params.userId, followList])
 
@@ -72,27 +83,25 @@ export default function ProfileUserInfoBox() {
   //   }
   // }
 
-
-
-  
-
   return (
     <div className={styles.userInfoBox}>
-      <img src={dummyUserInfo.userImage} className={styles.userImage} alt="User profile" />
+      <img src={profileData.userImage} className={styles.userImage} alt="User profile" />
       <div className={styles.userTextInfoBox}>
-        <span className={styles.userName}>이우주안티</span>
-        <span className={styles.userIntroduce}>하이 여긴 이우주안티의 개인홈</span>
+        <span className={styles.userName}>{profileData.userNickname}</span>
+        <span className={styles.userIntroduce}>{profileData.userIntroduce}</span>
       </div>
-      {`${params.userId}` === String(loginUserId) ? 
-      (<SmallButton text='채널관리' color='lightGray' onClick={() => {
-        router.push('/setting')
-      }} />) :
-      loading && (isFollowed ? <SmallButton text='팔로우 취소' color='lightGray' onClick={() => {
-        toggleFollow(params.userId)
-      }} /> : <SmallButton text='팔로우' color='lightGray' onClick={() => {
-        toggleFollow(params.userId)
-      }} />)
-      }
+      {`${params.userId}` === String(loginUserId) ? (
+        <SmallButton text='채널관리' color='lightGray' onClick={() => router.push('/setting')} />
+      ) : loading && (
+        <div>
+          <SmallButton
+            text={isFollowed ? '팔로우 취소' : '팔로우'}
+            color='lightGray'
+            onClick={() => toggleFollow(params.userId)}
+          />
+          <div>팔로워 {subscriberCount}명</div>
+        </div>
+      )}
     </div>
   )
 }
