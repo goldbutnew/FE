@@ -10,21 +10,21 @@ def convert_stream_to_hls(user_id):
     output_path = f"/files/{user_id}.m3u8"
 
     # Docker 내에서 실행할 ffmpeg 명령 구성
-    command = [
-        'docker', 'exec', container_name, 'ffmpeg',
-        '-listen', '1',
-        '-i', rtmp_url,
-        '-c:v', 'libx264',
-        '-preset', 'fast',
-        '-tune', 'zerolatency',
-        '-c:a', 'aac',
-        '-b:a', '128k',
-        '-f', 'hls',
-        '-hls_time', '10',
-        '-hls_list_size', '10',
-        '-hls_wrap', '10',
-        output_path
-    ]
+    # command = [
+    #     'docker', 'exec', container_name, 'ffmpeg',
+    #     '-listen', '1',
+    #     '-i', rtmp_url,
+    #     '-c:v', 'libx264',
+    #     '-preset', 'fast',
+    #     '-tune', 'zerolatency',
+    #     '-c:a', 'aac',
+    #     '-b:a', '128k',
+    #     '-f', 'hls',
+    #     '-hls_time', '10',
+    #     '-hls_list_size', '10',
+    #     '-hls_wrap', '10',
+    #     output_path
+    # ]
 
     command = [
         'docker', 'exec', container_name, 'ffmpeg',
@@ -36,7 +36,7 @@ def convert_stream_to_hls(user_id):
         '-c:a', 'aac',
         '-b:a', '128k',
         '-f', 'hls',
-        '-hls_time', '10',
+        '-hls_time', '1',
         '-hls_list_size', '10',
         output_path
     ]

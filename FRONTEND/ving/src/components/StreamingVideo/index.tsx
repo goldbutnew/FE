@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 import Hls from 'hls.js'
 
-export default function Home() {
+export default function Streaming() {
   const videoRef = useRef(null)
   const hls = useRef(null)
 
