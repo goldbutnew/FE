@@ -34,7 +34,7 @@ export default function ProfileUserInfoBox() {
   const [loading, setLoading] = useState(false)
   const [followList, setFollowList] = useState([2, 3, 4])
   const { profileData, getUserProfileInfo } = useProfileStore()
-  const [subscriberCount, setSubscriberCount] = useState(profileData.userSubscriberCount)
+  const [subscriberCount, setSubscriberCount] = useState(profileData.followers)
 
   const toggleFollow = (userId: string) => {
     const userIdNum = parseInt(userId)
@@ -54,16 +54,17 @@ export default function ProfileUserInfoBox() {
     setLoading(true)
   }
 
-  useEffect(() => {
-    const initData = async () => {
-      await getUserProfileInfo(7)
-      setLoading(false)
-      if (profileData) {
-        setSubscriberCount(profileData.userSubscriberCount)
-      }
+  const initData = async () => {
+    await getUserProfileInfo(7)
+    setLoading(false)
+    if (profileData) {
+      setSubscriberCount(profileData.userSubscriberCount)
     }
+  }
+
+  useEffect(() => {
     initData()
-  }, [getUserProfileInfo, profileData])
+  }, [])
 
   useEffect(() => {
     if (params.userId && params.userId !== String(loginUserId)) {
@@ -85,9 +86,9 @@ export default function ProfileUserInfoBox() {
 
   return (
     <div className={styles.userInfoBox}>
-      <img src={profileData.userImage} className={styles.userImage} alt="User profile" />
+      <img src={profileData.photoUrl} className={styles.userImage} alt="User profile" />
       <div className={styles.userTextInfoBox}>
-        <span className={styles.userName}>{profileData.userNickname}</span>
+        <span className={styles.userName}>{profileData.nickname}</span>
         <span className={styles.userIntroduce}>{profileData.userIntroduce}</span>
       </div>
       {`${params.userId}` === String(loginUserId) ? (

@@ -30,7 +30,7 @@ export default function Login() {
     event.preventDefault()
 
     const data = {
-      'userName': userID,
+      'username': userID,
       'password': userPW
     }
 
