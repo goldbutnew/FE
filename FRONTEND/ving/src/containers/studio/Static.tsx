@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import * as styles from './static.css'
+import * as styles from './index.css'
 import { useParams, useRouter } from 'next/navigation'
 
 export default function Static() {
@@ -11,23 +11,6 @@ export default function Static() {
     <div>
       <h1>통계 페이지</h1>
       <div className={styles.container}>
-      <div className={styles.sidebar}>
-        <div className={styles.navItem}>
-          <Link href={`/studio/${params.userId}`}>
-            <div>대시보드</div>
-          </Link>
-        </div>
-        <div className={styles.navItem}>
-          <Link href={`/studio/${params.userId}/streaming`}>
-            <div>방송하기</div>
-          </Link>
-        </div>
-        <div className={styles.navItem}>
-        <Link href={`/studio/${params.userId}/static`}>
-            <div>통계/분석</div>
-          </Link>
-        </div>
-      </div>
       <div className={styles.content}>
         {/* Main content here */}
         <div className={styles.card}>

@@ -1,6 +1,6 @@
 import { globalStyle } from '@vanilla-extract/css';
 
-globalStyle('input, textarea, button', {
+globalStyle('input, textarea, button, a', {
   all: 'unset', 
   boxSizing: 'border-box', 
   fontFamily: 'inherit',
@@ -12,5 +12,9 @@ globalStyle('input, textarea, button', {
   backgroundColor: 'transparent',
   border: 'none',
   outline: 'none',
-  // whiteSpace: 'inherit',
+  whiteSpace: 'inherit',
 });
+
+globalStyle('button, a', {
+  cursor: 'pointer',
+})

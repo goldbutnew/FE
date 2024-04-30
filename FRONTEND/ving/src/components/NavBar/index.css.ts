@@ -17,25 +17,41 @@ export const container = style([
 ])
 
 export const rightNavBox = style([
-  rowbox
+  rowbox,
+  {
+    gap: vars.space['1x']
+  }
 ])
 
 export const leftNavBox = style([
-  rowbox
+  rowbox,
+  {
+    gap: vars.space['1x']
+  }
 ])
-
-export const rightNavItem = style([{
-  margin: `0 ${vars.space['0.5x']} 0 0`
-}])
-
-export const leftNavItem = style({
-  margin: `0 0 0 ${vars.space['0.5x']}`
-})
 
 export const logo = style([
   rowbox,
   {
     width: 'auto',
     height: 32,
+  }
+])
+
+
+// studio nav
+
+export const studioNavBox = style([
+  rowbox,
+  {
+    gap: vars.space.none,
+  }
+])
+
+export const textLogo = style([
+  rowbox,
+  {
+    width: 'auto',
+    height: 12,
   }
 ])

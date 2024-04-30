@@ -2,9 +2,18 @@ import { style } from '@vanilla-extract/css'
 import { flex } from '@/styles/common.css'
 import { vars } from '@/styles/vars.css'
 
+export const iconButtonBox = style({
+  display: 'inline-block', // 인라인 블록 요소로 설정하여 가로 너비를 아이콘 버튼 크기에 맞춥니다.
+  width: 'fit-content', // 아이콘 버튼의 크기에 맞추도록 설정
+})
+
+export const iconButton = style({
+  width: 'fit-content',
+})
+
 export const modalBackdrop = style({
-  position: 'fixed',
-  left: 580,
+  position: 'absolute',
+  right: 80,
   top: 40,
   backgroundColor: vars.colors.white,
   borderRadius: vars.borderRadius['1x'],

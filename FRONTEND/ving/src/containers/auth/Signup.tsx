@@ -7,7 +7,7 @@ import { Modal } from "@/components/Modal"
 import useModal from "@/hooks/useModal"
 
 import Image from "next/image"
-import logo from '#/images/MainLogo.png'
+import logo from '#/images/main-logo.png'
 import { vars } from "@/styles/vars.css"
 import { columnbox, rowbox } from "@/styles/box.css"
 import * as styles from "./index.css"

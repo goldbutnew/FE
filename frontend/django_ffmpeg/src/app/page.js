@@ -182,7 +182,9 @@ export default function Home() {
   return (
     <div>
       <h1>HLS Streaming with Next.js</h1>
-      <video ref={videoRef} controls autoPlay></video>
+      {/* <video ref={videoRef} controls autoPlay></video> */}
+      <video ref={videoRef} controls autoPlay muted></video>
+
     </div>
   );
 }

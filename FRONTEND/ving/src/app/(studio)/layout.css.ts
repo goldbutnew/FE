@@ -18,6 +18,7 @@ export const layout = style({
   display: 'flex',
   flexDirection: 'column',
   height: '100vh',
+  overflow: 'auto',
 });
 
 export const contentContainer = style({

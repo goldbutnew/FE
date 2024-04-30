@@ -8,8 +8,10 @@ import Notifer from "../Notifer";
 import Signup from "@/containers/auth/Signup";
 import Login from "@/containers/auth/Login";
 import Logout from "@/containers/auth/Logout";
+import IconButton from "../Button/IconButton";
 
-import logo from '../../../public/images/MainLogo.png'
+import { FaVideo } from "react-icons/fa";
+import logo from '#/images/main-logo.png'
 import * as styles from './index.css'
 
 
@@ -34,28 +36,32 @@ export default function NavBar() {
   
   return (
     <nav className={styles.container}>
-      <div className={styles.rightNavBox}>
+      <div className={styles.leftNavBox}>
         <Link href='/'>
           <Image src={logo} alt="main" className={styles.logo} />
-        </Link>　
-        <Link href='/setting'>세팅</Link>　
-        <Link href={`/profile/${userId}`}>내 채널</Link>　
-        <Link href={`/studio/${userId}`}>내 스튜디오</Link>　
-        <Link href={`/streaming/${userId}`}>방송중인 누군가의 방</Link>　   
-        <Link href={`/tmp`}>채팅 테스트</Link>　   
+        </Link>
+        <Link href='/setting'>세팅</Link>
+        <Link href={`/profile/${userId}`}>내 채널</Link>
+        <Link href={`/streaming/${userId}`}>방송중인 누군가의 방</Link> 
+        <Link href={`/tmp`}>채팅 테스트</Link>
       </div>
-      <div className={styles.leftNavBox}>
-      {isAuthenticated ? (
-        <>
-          <Notifer />　
-          <Logout onLogoutSuccess={handleLogoutSuccess} />
-        </>
-      ) : (
-        <>
-          <Login onLoginSuccess={handleLoginSuccess} />　
-          <Signup />
-        </>
-      )}
+      <div className={styles.rightNavBox}>
+        {isAuthenticated ? (
+          <>
+            <Link href={`/studio/${userId}`}>
+              <IconButton 
+                icon={FaVideo}
+              />
+            </Link>
+            <Notifer />
+            <Logout onLogoutSuccess={handleLogoutSuccess} />
+          </>
+        ) : (
+          <>
+            <Login onLoginSuccess={handleLoginSuccess} />
+            <Signup />
+          </>
+        )}
       </div>
     </nav>
   )

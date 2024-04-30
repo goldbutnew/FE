@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import SockJS from 'sockjs-client'
 import { Stomp } from '@stomp/stompjs'
 import SideBar from "../SideBar/SideBar"
@@ -11,128 +11,149 @@ import { vars } from "@/styles/vars.css"
 import EmojiPicker from "emoji-picker-react"
 import ChatProfile from "./ChatProfile"
 import Donation from "./Donation"
+import useAuthStore from "@/store/AuthStore";
+import { rowbox } from "@/styles/box.css";
 
+interface Message {
+  message: string;
+  senderId: string;
+  senderNickname: string;
+  timestamp: string;
+}
 export default function Chat() {
-  const [stompClient, setStompClient] = useState(null)
-  const [connected, setConnected] = useState(false)
-  const [messages, setMessages] = useState([])
-  const [message, setMessage] = useState('')
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+  const { userData } = useAuthStore()
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [selectedUserData, setSelectedUserData] = useState(null);
+  const [profileKey, setProfileKey] = useState(0)
+  const [stompClient, setStompClient] = useState(null);
+  const [connected, setConnected] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [messageInput, setMessageInput] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const chatBoxRef = useRef(null);
   
+  const roomId = 1;
+
+  // const onMessageReceived = (msg) => {
+  //   const newMessage = JSON.parse(msg.body);
+  //   setMessages(prevMessages => [...prevMessages, newMessage]);
+  // };
+
   const connect = () => {
     console.log("WebSocket 연결 시도 중...");
-    const socketFactory = () => {
-      return new SockJS('http://localhost:8080/');
-    };
-  
-    console.log("STOMP 클라이언트 생성 중...");
-    const client = Stomp.over(socketFactory);
-  
-    // 모든 STOMP 프레임 로깅 활성화
+    const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
+
+    client.reconnect_delay = 5000;
     client.debug = function(str) {
       console.log('STOMP Debug:', str);
     };
-  
-    console.log("STOMP 연결 시도 중...");
-    client.connect({}, () => {
+
+    client.onConnect = () => {
       console.log("연결 완료");
       setConnected(true);
-  
-      console.log("메시지 구독 중...");
-      client.subscribe('/sub/channel/', (response) => {
-        console.log("메시지 수신:", response.body);
-        const newMessage = JSON.parse(response.body);
-        setMessages(prevMessages => [...prevMessages, newMessage]);
+      client.subscribe(`/sub/channel/${roomId}`, onMessageReceived, {
+        id: `sub-${roomId}`,
+        ack: 'client'
       });
-    }, (error) => {
-      console.error('Connection error:', error);
+    };
+
+    client.onDisconnect = () => {
+      console.log("WebSocket 연결 해제 완료");
       setConnected(false);
-    });
-  
-    // WebSocket 이벤트에 대한 로그 추가
-    socketFactory.onopen = () => console.log("WebSocket 연결 성공");
-    socketFactory.onclose = () => console.log("WebSocket 연결 종료");
-    socketFactory.onerror = (error) => console.log("WebSocket 오류:", error);
-  
+    };
+
+    client.activate();
     setStompClient(client);
   };
   
   useEffect(() => {
-    connect()
-  
+    connect();
     return () => {
       if (stompClient) {
         console.log("WebSocket 연결 해제 시도 중...");
-        stompClient.disconnect(() => {
-          console.log("WebSocket 연결 해제 완료");
-        });
+        stompClient.deactivate();
       }
     }
   }, []);
-  
-  const handleChange = (e) => {
-    setMessage(e.target.value);
+
+  const handleChange = (event) => {
+    setMessageInput(event.target.value);
   };
 
   const openEmojiPicker = () => {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
-  const handleEmojiClick = (e) => {
-    const emoji = e.emoji
-    setMessage(prevMessage => prevMessage + emoji)
+  const handleEmojiClick = (emoji) => {
+    setMessageInput(prev => prev + emoji.emoji);
   }
 
-  const handleSendMessage = () => {
-    console.log("보낼 메시지 내용:", message)
-    if (stompClient && message && connected) { 
-      stompClient.send('/pub/message', {}, JSON.stringify({ message }))
-      setMessage('')
+  const handleSendMessage = (event) => {
+    event.preventDefault()
+
+    console.log("보낼 메시지 내용:", messageInput);
+    if (stompClient && messageInput.trim() && connected) {
+      const message = {
+        message: messageInput,
+        senderId: userData.Id,
+        senderNickname: userData.nickname,
+        timestamp: new Date().toISOString()
+      };
+      stompClient.publish({
+        destination: `/pub/message`,
+        body: JSON.stringify(message)
+      });
+      setMessages(prevMessages => [...prevMessages, message]); // 메시지 목록에 추가
+      setMessageInput('');
     } else {
-      console.log("아직 소켓 연결 안 됨")
+      console.log("아직 소켓 연결 안 됨");
     }
-  }
+  };
+
+  useEffect(() => {
+    // 스크롤 항상 아래로 내리기
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+
+  const handleNicknameClick = (user) => {
+    setSelectedUserData(user);
+    setProfileOpen(true);
+    setProfileKey(prevKey => prevKey + 1)
+  };
 
   return (
-    <SideBar 
-      title="채팅" 
-      side="right"
-      initOpen={true}
-      width={300}
-      hidden={true}
-    >
-      <div className={styles.chatBox}>
+    <SideBar title="채팅" side="right" initOpen={true} width={300} hidden={true}>
+      <div className={styles.chatBox} ref={chatBoxRef}>
         {messages.map((msg, index) => (
-          <div key={index}>{msg.message}</div>
+          <div key={index} className={styles.chatItem}>
+            <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
+              {msg.senderNickname}
+            </button>: <span>{msg.message}</span>
+          </div>
         ))}
       </div>
-      <ChatProfile />
-      {showEmojiPicker && (
-        <div className={styles.emojiPicker}>
-          <EmojiPicker
-            width="100%"
-            height={300}
-            onEmojiClick={handleEmojiClick}
-          />
+      <ChatProfile isOpen={profileOpen} onClose={() => setProfileOpen(false)} userData={selectedUserData} />
+      <form className={styles.inputBox} onSubmit={handleSendMessage}>     
+        <div className={styles.emojiBox}>
+          {showEmojiPicker && (
+            <EmojiPicker width="100%" height={300} onEmojiClick={handleEmojiClick} />
+          )}
         </div>
-      )}
-      <div className={styles.InputBox}>
         <DefaultInput 
           type="text"
-          value={message} 
-          onEmojiClick={openEmojiPicker}
+          value={messageInput}
           onChange={handleChange}
           placeholder="채팅을 입력해 주세요"
+          onEmojiClick={openEmojiPicker}
         />
-        <div className={styles.sendButtonBox}>
-          <Donation />
-          <SmallButton 
-            text="전송"
-            color={vars.colors.darkGray}
-            onClick={handleSendMessage}
-          />  
-        </div>
+      </form>
+      <div className={styles.sendButtonBox}>
+        <Donation />
+        <SmallButton text="전송" color={vars.colors.darkGray} onClick={handleSendMessage} />
       </div>
     </SideBar>
-  )
+  );
 }

@@ -5,10 +5,11 @@ import useStreamingStore from '@/store/StreamingStore'
 
 import NetworkSpeedTest from '../streaming/Network'
 import Image from 'next/image'
-import logo from '#/images/MainLogo.png'
+import logo from '#/images/main-logo.png'
 import DefaultInput from '@/components/Input/DefaultInput'
 import Radio from '@/components/Input/Radio'
 import SmallButton from '@/components/Button/SmallButton'
+import Streaming from '@/components/StreamingVideo'
 
 
 export default function StudioStreaming() {
@@ -34,7 +35,8 @@ export default function StudioStreaming() {
   return (
     <div>
       <div>
-        <video src='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' controls></video>
+        <Streaming />
+        {/* <video src='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' controls></video> */}
       </div>
 
       <div>
