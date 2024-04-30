@@ -10,21 +10,21 @@ export default function StudioMenu() {
 
   return (
     <div className={styles.sideMenuContainer}>
-      <div className={styles.menuItem}>
-        <Link href={`/studio/${params.userId}`}>
+      <Link href={`/studio/${params.userId}`}>
+        <div className={styles.menuItem}>
           대시보드
-        </Link>
-      </div>
-      <div className={styles.menuItem}>
-        <Link href={`/studio/${params.userId}/streaming`}>
+        </div>
+      </Link>
+      <Link href={`/studio/${params.userId}/streaming`}>
+        <div className={styles.menuItem}>
           방송하기
-        </Link>
-      </div>
-      <div className={styles.menuItem}>
-        <Link href={`/studio/${params.userId}/static`}>
+        </div>
+      </Link>
+      <Link href={`/studio/${params.userId}/static`}>
+        <div className={styles.menuItem}>
           통계/분석
-        </Link>
-      </div>
+        </div>
+      </Link>
     </div>
   )
 }

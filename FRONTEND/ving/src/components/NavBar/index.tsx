@@ -8,7 +8,9 @@ import Notifer from "../Notifer";
 import Signup from "@/containers/auth/Signup";
 import Login from "@/containers/auth/Login";
 import Logout from "@/containers/auth/Logout";
+import IconButton from "../Button/IconButton";
 
+import { FaVideo } from "react-icons/fa";
 import logo from '#/images/main-logo.png'
 import * as styles from './index.css'
 
@@ -40,22 +42,26 @@ export default function NavBar() {
         </Link>
         <Link href='/setting'>세팅</Link>
         <Link href={`/profile/${userId}`}>내 채널</Link>
-        <Link href={`/studio/${userId}`}>내 스튜디오</Link>
         <Link href={`/streaming/${userId}`}>방송중인 누군가의 방</Link> 
         <Link href={`/tmp`}>채팅 테스트</Link>
       </div>
       <div className={styles.rightNavBox}>
-      {isAuthenticated ? (
-        <>
-          <Notifer />
-          <Logout onLogoutSuccess={handleLogoutSuccess} />
-        </>
-      ) : (
-        <>
-          <Login onLoginSuccess={handleLoginSuccess} />
-          <Signup />
-        </>
-      )}
+        {isAuthenticated ? (
+          <>
+            <Link href={`/studio/${userId}`}>
+              <IconButton 
+                icon={FaVideo}
+              />
+            </Link>
+            <Notifer />
+            <Logout onLogoutSuccess={handleLogoutSuccess} />
+          </>
+        ) : (
+          <>
+            <Login onLoginSuccess={handleLoginSuccess} />
+            <Signup />
+          </>
+        )}
       </div>
     </nav>
   )

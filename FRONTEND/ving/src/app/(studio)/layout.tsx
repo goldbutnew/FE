@@ -4,7 +4,6 @@ import localFont from 'next/font/local';
 import StudioNav from "@/components/NavBar/StudioNav";
 import * as styles from './layout.css'
 import '../../styles/reset.css'
-import Studio from "@/containers/studio";
 import StudioMenu from "@/containers/studio/StudioMenu";
 
 const inter = Inter({ subsets: ["latin"] });

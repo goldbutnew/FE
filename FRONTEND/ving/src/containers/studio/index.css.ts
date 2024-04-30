@@ -19,10 +19,15 @@ export const sideMenuContainer = style({
 export const menuItem = style([
   plainButton,
   {
-    marginBottom: '1rem',
-    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: `0 0 0 ${vars.space['1.5x']}`,
+    height: '50px',
     ':hover': {
-      color: vars.colors.darkGray,
+      backgroundColor: vars.colors.darkGray,
+      color: vars.colors.white,
+      borderRadius: vars.borderRadius['0.5x']
     },
   }
 ])
