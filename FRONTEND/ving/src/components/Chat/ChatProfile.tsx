@@ -7,15 +7,17 @@ import { FaHeart } from "react-icons/fa";
 import { rowbox } from "@/styles/box.css";
 import * as styles from './index.css'
 
-export default function ChatProfile() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function ChatProfile({ isOpen, onClose, userData }) {
+  // const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div>
-      <button onClick={() => setIsOpen(true)}>프로필 test</button>
       {isOpen && (
-        <BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <BottomSheet isOpen={isOpen} onClose={onClose}>
           <div>
+            <span className={styles.chatNickname}>
+              {userData.nickname}
+            </span>
             <hr className={line}/>
             <div className={rowbox}>
               <FaHeart

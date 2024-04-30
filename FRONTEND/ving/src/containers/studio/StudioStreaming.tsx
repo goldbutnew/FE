@@ -5,7 +5,7 @@ import useStreamingStore from '@/store/StreamingStore'
 
 import NetworkSpeedTest from '../streaming/Network'
 import Image from 'next/image'
-import logo from '#/images/MainLogo.png'
+import logo from '#/images/main-logo.png'
 import DefaultInput from '@/components/Input/DefaultInput'
 import Radio from '@/components/Input/Radio'
 import SmallButton from '@/components/Button/SmallButton'

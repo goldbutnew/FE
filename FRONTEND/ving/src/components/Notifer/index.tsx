@@ -13,8 +13,10 @@ export default function Notifer() {
   const { isOpen, open, close } = useModal();
 
   return (
-    <div>
-      <IconButton icon={FaRegBell} onClick={open} />
+    <div className={styles.iconButtonBox}>
+      <div className={styles.iconButton}>
+        <IconButton icon={FaRegBell} onClick={open} />
+      </div>
       {isOpen && (
         <div className={styles.modalBackdrop} onClick={close}>
           <div className={styles.modalContent} onClick={e => e.stopPropagation()}>

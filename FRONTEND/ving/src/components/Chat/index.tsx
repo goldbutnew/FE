@@ -14,8 +14,17 @@ import Donation from "./Donation"
 import useAuthStore from "@/store/AuthStore";
 import { rowbox } from "@/styles/box.css";
 
+interface Message {
+  message: string;
+  senderId: string;
+  senderNickname: string;
+  timestamp: string;
+}
 export default function Chat() {
   const { userData } = useAuthStore()
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [selectedUserData, setSelectedUserData] = useState(null);
+  const [profileKey, setProfileKey] = useState(0)
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -108,16 +117,25 @@ export default function Chat() {
     }
   }, [messages]);
 
+
+  const handleNicknameClick = (user) => {
+    setSelectedUserData(user);
+    setProfileOpen(true);
+    setProfileKey(prevKey => prevKey + 1)
+  };
+
   return (
     <SideBar title="채팅" side="right" initOpen={true} width={300} hidden={true}>
       <div className={styles.chatBox} ref={chatBoxRef}>
         {messages.map((msg, index) => (
           <div key={index} className={styles.chatItem}>
-            <span className={styles.chatNickname}>{userData.nickname}</span>: <span>{msg.message}</span>
+            <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
+              {msg.senderNickname}
+            </button>: <span>{msg.message}</span>
           </div>
         ))}
       </div>
-      <ChatProfile />
+      <ChatProfile isOpen={profileOpen} onClose={() => setProfileOpen(false)} userData={selectedUserData} />
       <form className={styles.inputBox} onSubmit={handleSendMessage}>     
         <div className={styles.emojiBox}>
           {showEmojiPicker && (

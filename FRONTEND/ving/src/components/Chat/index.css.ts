@@ -3,6 +3,7 @@ import { vars } from '@/styles/vars.css'
 import { betweenBox, defaultBox, endBox, rowbox } from '@/styles/box.css'
 import { space } from 'postcss/lib/list'
 import { bold } from '@/styles/fonts.css'
+import { plainButton } from '@/styles/common.css'
 
 const getRandomColor = () => {
   const hue = Math.floor(Math.random() * 360)
@@ -30,6 +31,7 @@ export const chatItem = style({
 
 export const chatNickname = style([
   bold,
+  plainButton,
   {
     color: getRandomColor()
   }
@@ -61,7 +63,7 @@ export const emojiPicker = style({
 export const dateBox = style({
   margin: `0 0 0 ${vars.space['0.5x']}`,
   width: '100%',
-  fontSize: vars.fontSize['1.5x'],
+  fontSize: vars.fontSize['0.5x'],
   color: vars.colors.darkGray,
 })
 
@@ -110,7 +112,7 @@ export const warningBox = style([
   rowbox,
   {
     color: vars.colors.red,
-    fontSize: vars.fontSize['1.5x'],
+    fontSize: vars.fontSize['0.5x'],
   }
 ])
 

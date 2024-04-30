@@ -1,4 +1,5 @@
 'use client'
+
 import React from "react";
 import { useState } from 'react';
 import { useRef, useEffect } from 'react';
@@ -10,8 +11,6 @@ const roomId = 1
 // function onMessageReceived(message: StompJs.Message) {
 //   console.log("씨이이이이이이")
 // }
-
-
 
 export default function ChatTest() {
   const client = useRef<any>({});
@@ -98,12 +97,13 @@ export default function ChatTest() {
       destination: `/pub/message`, // 메시지 발행 주소
       body: JSON.stringify(message),
     });
+    setMessages(prevMessages => [...prevMessages, message]);
     setMessageInput(''); // 입력 값 초기화
   };
 
   return (
     <div>
-      <div style={{ border: "1px solid black", minHeight: 200, }}>
+      <div>
         {messages.map((msg, index) => (
           <div key={index}>
             {msg.message}

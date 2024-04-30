@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from 'next/font/local';
-import NavBar from "@/components/NavBar";
-import SideBar from "@/components/SideBar/SideBar";
+import StudioNav from "@/components/NavBar/StudioNav";
 import * as styles from './layout.css'
 import '../../styles/reset.css'
-import Chat from "@/components/Chat";
+import Studio from "@/containers/studio";
+import StudioMenu from "@/containers/studio/StudioMenu";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,20 +31,12 @@ export default function RootLayout({
   return (
     <html lang="kr">
       <body className={`${styles.layout} ${pretendard.className}`}>
-        {/* <NavBar /> */}
+        <StudioNav />
         <div className={styles.contentContainer}>
-          <SideBar
-            title="랭킹"
-            side="left"
-            initOpen={initOpenState}
-            width={200}
-          >
-            시작! rka
-          </ SideBar>
+          <StudioMenu />
           <div className={styles.mainContent}>
             {children}
           </div>          
-          <Chat />
         </div>
       </body>
     </html>

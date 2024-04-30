@@ -1,7 +1,7 @@
 'use client'
 
 import LargeButton from '@/components/Button/LargeButton'
-import * as styles from './static.css'
+import * as styles from './index.css'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 
@@ -12,25 +12,7 @@ const params = useParams()
 
   return (
     <div>
-      <h1>누군가의 스튜디오 페이지</h1>
       <div className={styles.container}>
-        <div className={styles.sidebar}>
-          <div className={styles.navItem}>
-            <Link href={`/studio/${params.userId}`}>
-              <div>대시보드</div>
-            </Link>
-          </div>
-          <div className={styles.navItem}>
-            <Link href={`/studio/${params.userId}/streaming`}>
-              <div>방송하기</div>
-            </Link>
-          </div>
-          <div className={styles.navItem}>
-          <Link href={`/studio/${params.userId}/static`}>
-              <div>통계/분석</div>
-            </Link>
-          </div>
-        </div>
         <div className={styles.content}>
           <div className={styles.cardContainer}>
           <div className={styles.cardTitle}>환영합니다, 이우주안티 님!</div>
