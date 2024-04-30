@@ -8,7 +8,7 @@ import SockJS from 'sockjs-client';
 const roomId = 1
 
 function onMessageReceived(message: StompJs.Message) {
-  console.log("씨이이이이이이이이잊발")
+  console.log("씨이이이이이이")
 }
 
 
@@ -52,20 +52,7 @@ export default function ChatTest() {
     client.current = StompJs.Stomp.over(function () {
       return new SockJS(`http://localhost:8080/ws`);
     });
-    // client.current = new StompJs.Client({
-    //   brokerURL: "ws://localhost:8080/ws",
-    //   onConnect: () => {
-    //     subscribe();
-    //     Join();
-    //   },
-    //   onDisconnect: () => {
-    //     Disconnect();
-    //   }
-    // })
-    // client.current = StompJs.Stomp.over(function () {
-    //   return new SockJS(`http://localhost:8080/ws`);
-    // });
-    
+
     client.current.onConnect = () => {
       subscribe();
       Join();
