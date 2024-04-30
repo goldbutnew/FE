@@ -4,7 +4,7 @@ import localFont from 'next/font/local';
 import NavBar from "@/components/NavBar";
 import SideBar from "@/components/SideBar/SideBar";
 import * as styles from './layout.css'
-import '../styles/reset.css'
+import '../../styles/reset.css'
 import Chat from "@/components/Chat";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 const pretendard = localFont({
-  src: "../../public/fonts/Pretendard-Regular.woff",
+  src: "../../../public/fonts/Pretendard-Regular.woff",
   display: "swap",
   weight: "45 920",
 });
@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="kr">
       <body className={`${styles.layout} ${pretendard.className}`}>
-        <NavBar />
+        {/* <NavBar /> */}
         <div className={styles.contentContainer}>
           <SideBar
             title="랭킹"
