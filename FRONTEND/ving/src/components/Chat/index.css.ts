@@ -2,18 +2,45 @@ import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/vars.css'
 import { betweenBox, defaultBox, endBox, rowbox } from '@/styles/box.css'
 import { space } from 'postcss/lib/list'
+import { bold } from '@/styles/fonts.css'
+
+const getRandomColor = () => {
+  const hue = Math.floor(Math.random() * 360)
+  const saturation = Math.floor(Math.random() * 10) + 80
+  const lightness = Math.floor(Math.random() * 20) + 70
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`
+}
 
 export const topContainer = style({
   position: 'relative'
 })
 
 export const chatBox = style({
+  width: '100%',
   height: '100%',
   overflow: 'auto',
+  '&::-webkit-scrollbar': {
+    display: 'none',
+  },
 })
 
-export const InputBox = style({
+export const chatItem = style({
+  fontSize: vars.fontSize['0.75x'],
+})
+
+export const chatNickname = style([
+  bold,
+  {
+    color: getRandomColor()
+  }
+])
+
+export const inputBox = style({
   width: '100%',
+})
+
+export const emojiBox = style({
+  margin: `0 0 ${vars.space['1x']} 0`
 })
 
 export const sendButtonBox = style([
