@@ -53,8 +53,10 @@ export default function SettingForm() {
       reader.onload = (event: any) => {
         setPhotoUrl(event.target.result)
         formData.append('photo', file)
+        console.log(file)
       }
       reader.readAsDataURL(file)
+      setFile(file)
     }
     console.log('--------', file)
 
@@ -67,30 +69,31 @@ export default function SettingForm() {
   }
 
   const handleUpdateProfile = () => {
-
-    // 닉네임이 변경되었는지 확인
+    const formData = new FormData();
+  
     if (nickname !== profileData.nickname) {
-      formData.append('nickname', nickname)
-    } else {
-      formData.append('nickname', profileData.nickname)
+      formData.append('nickname', nickname);
     }
-
-    // 자기소개가 변경되었는지 확인
+  
     if (introduction !== profileData.introduction) {
-      formData.append('introduction', introduction)
-    } else {
-      formData.append('introduction', profileData.introduction)
+      formData.append('introduction', introduction);
     }
-
+  
+    if (file) { // file 상태를 직접 사용
+      formData.append('photo', file)
+    }
 
     // if (photoUrl !== profileData.photoUrl) {
     //   formData.append('photoUrl', file, 'profile-image.png')
     // }
-    console.log(formData.getAll('photo'))
+    for (let [key, value] of formData) {
+      console.log(key, value)
+    }
     patchUserProfileInfo(formData)
 
   }
 
+  const [file, setFile] = useState(null)
   const [linkName, setLinkName] = useState('')
   const [linkUrl, setLinkUrl] = useState('')
 

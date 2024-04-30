@@ -38,6 +38,7 @@ const useProfileStore = create((set, get) => ({
       const response = await axios.patch(`auth/fillup`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-type': 'multipart/form-data',
         },
       })
       console.log(response, '프로필 수정 성공')
