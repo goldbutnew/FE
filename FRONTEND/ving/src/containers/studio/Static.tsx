@@ -8,48 +8,39 @@ export default function Static() {
   const params = useParams()
 
   return (
-    <div>
-      <h1>통계 페이지</h1>
-      <div className={styles.container}>
-      <div className={styles.content}>
-        {/* Main content here */}
-        <div className={styles.card}>
-          {/* Statistic cards */}
-          <div className={styles.stats}>
-            <div className={styles.statItem}>
-              <h3>총 방문수</h3>
-              <p>35</p>
+    <div className={styles.container}>
+      <div className={styles.title}>
+        통계/분석
+      </div>
+      <div className={styles.contentBox}>
+        {/* 통계 요약 */}
+        <div className={styles.SummuryContainer}>
+            <div className={styles.SummuryItemBox}>
+              <div className={styles.itemTitle}>총 방문수</div>
+              <div>35</div>
             </div>
-            <div className={styles.statItem}>
-              <h3>전체 시청자 수</h3>
-              <p>3</p>
+            <div className={styles.SummuryItemBox}>
+              <div className={styles.itemTitle}>전체 시청자 수</div>
+              <div>3</div>
             </div>
-            <div className={styles.statItem}>
-              <h3>평균 시청자 수</h3>
-              <p>4</p>
+            <div className={styles.SummuryItemBox}>
+              <div className={styles.itemTitle}>평균 시청자 수</div>
+              <div>4</div>
             </div>
-            <div className={styles.statItem}>
-              <h3>최대 시청자 수</h3>
-              <p>7</p>
+            <div className={styles.SummuryItemBox}>
+              <div className={styles.itemTitle}>최대 시청자 수</div>
+              <div>7</div>
             </div>
-          </div>
         </div>
-        <div className={styles.card}>
-          {/* Streaming list */}
-          <h2>스트리밍</h2>
-          {/* Repeat this div for each streaming item */}
-          <div>
-            <div>영상</div>
-            {/* <div>설명추가시 필요한문구</div>
-            <div className={styles.stats}>
-              <div className={styles.statItem}>시청 수</div>
-              <div className={styles.statItem}>전체 시청자 수</div>
-            </div> */}
+
+        {/* Streaming list */}
+    
+        <div className={styles.contentBox}>
+          <div className={styles.subtitle}>스트리밍</div>
+          <div className={styles.SummuryContainer}>
           </div>
-          {/* ...more streaming items */}
         </div>
       </div>
-    </div>
     </div>
   )
 }

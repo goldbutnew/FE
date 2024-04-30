@@ -69,7 +69,7 @@ export const sidebarTitle = style([
   bold,
   {
     height: 20,
-    fontSize: vars.fontSize['1.5x'],
+    fontSize: vars.fontSize['0.5x'],
   }
 ])
 

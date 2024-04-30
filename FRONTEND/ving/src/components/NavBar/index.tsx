@@ -32,7 +32,6 @@ export default function NavBar() {
   const handleLogoutSuccess = () => {
     setIsAuthenticated(false);
   };
-
   
   return (
     <nav className={styles.container}>
@@ -41,9 +40,9 @@ export default function NavBar() {
           <Image src={logo} alt="main" className={styles.logo} />
         </Link>
         <Link href='/setting'>세팅</Link>
-        <Link href={`/profile/${userId}`}>내 채널</Link>
-        <Link href={`/streaming/${userId}`}>방송중인 누군가의 방</Link> 
-        <Link href={`/tmp`}>채팅 테스트</Link>
+        <Link href={`/profile/${userId}`}>내채널</Link>
+        <Link href={`/streaming/${userId}`}>방송중인누군가의방</Link> 
+        <Link href={`/tmp`}>채팅테스트</Link>
       </div>
       <div className={styles.rightNavBox}>
         {isAuthenticated ? (
