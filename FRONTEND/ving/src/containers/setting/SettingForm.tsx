@@ -45,17 +45,18 @@ export default function SettingForm() {
   }, [profileData])
 
   const formData = new FormData()
+
   const handleImageChange = async (event: any) => {
     const file = event.target.files[0]
     if (file) {
       const reader = new FileReader()
       reader.onload = (event: any) => {
         setPhotoUrl(event.target.result)
+        formData.append('photo', file)
       }
       reader.readAsDataURL(file)
     }
     console.log('--------', file)
-    formData.append('photo', file)
 
     // formData.append('photo', {
     //   name: imageName,
