@@ -15,15 +15,15 @@ const useProfileStore = create((set, get) => ({
 
   profileData: {},
   // 유저 프로필 가져오기
-  getUserProfileInfo: async () => {
+  getUserProfileInfo: async (username:number) => {
     // const token = await AsyncStorage.getItem('accessToken')
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImEiOiJtYWluIiwiZSI6IjEyMyIsImV4cCI6MTcxNDUyNDEwM30.5-tAeSGXPERywlSewtm5kPS8tif3A7y6MSqMjCwxc2g'
+    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImEiOiJtYWluIiwiZSI6IjEyMyIsImV4cCI6MTcxNDUzOTA3Mn0.qpadJf5Elzy1kUl37AUh7b64sindeJug7X6_j3eI5B4'
     try {
       const response = await axios.get(`auth/getProfile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        params: { userId :  7},
+        params: { userId : username},
       })
       set({ profileData: response.data })
     } catch (error) {
@@ -33,7 +33,7 @@ const useProfileStore = create((set, get) => ({
   // 유저 프로필 수정
   patchUserProfileInfo: async (formData: FormData) => {
     // const token = await AsyncStorage.getItem('accessToken')
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImEiOiJtYWluIiwiZSI6IjEyMyIsImV4cCI6MTcxNDUyNDEwM30.5-tAeSGXPERywlSewtm5kPS8tif3A7y6MSqMjCwxc2g'
+    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImEiOiJtYWluIiwiZSI6IjEyMyIsImV4cCI6MTcxNDUzOTA3Mn0.qpadJf5Elzy1kUl37AUh7b64sindeJug7X6_j3eI5B4'
     try {
       const response = await axios.patch(`auth/fillup`, formData, {
         headers: {

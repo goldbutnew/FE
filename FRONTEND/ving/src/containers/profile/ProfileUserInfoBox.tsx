@@ -28,50 +28,52 @@ export default function ProfileUserInfoBox() {
   const params = useParams()
 
   // 임시 로그인 유저
-  const loginUserId = 1
+  const loginUserId = 10
 
-  const [isFollowed, setIsFollowed] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [followList, setFollowList] = useState([2, 3, 4])
   const { profileData, getUserProfileInfo } = useProfileStore()
-  const [subscriberCount, setSubscriberCount] = useState(profileData.followers)
-
-  const toggleFollow = (userId: string) => {
-    const userIdNum = parseInt(userId)
+  const [subscriberCount, setSubscriberCount] = useState(profileData.followers || 0)
+  const [isFollowed, setIsFollowed] = useState(profileData.isFollowed)
+  
+  const toggleFollow = () => {
+    const userIdNum = parseInt(params.userId)
     setLoading(true)
     
     // const nickname = 'baloo366'
 
-    if (followList.includes(userIdNum)) {
-      setFollowList(followList.filter(id => id !== userIdNum))
+    if (isFollowed) {
       setIsFollowed(false)
       setSubscriberCount(subscriberCount - 1)
     } else {
-      setFollowList([...followList, userIdNum])
       setIsFollowed(true)
       setSubscriberCount(subscriberCount + 1)
     }
     setLoading(true)
   }
 
-  const initData = async () => {
-    await getUserProfileInfo(7)
-    setLoading(false)
-    if (profileData) {
-      setSubscriberCount(profileData.userSubscriberCount)
+  useEffect(() => {
+    const initData = async (userIdNum:number) => {
+      await getUserProfileInfo(userIdNum)
+      setLoading(true)
     }
-  }
+    initData(params.userId)
+    console.log('뭔데;;;;;;;')
+  }, [getUserProfileInfo])
 
   useEffect(() => {
-    initData()
-  }, [])
+    if (profileData) {
+      setSubscriberCount(profileData.followers || 0)
+    }
+    console.log('hiiiiiiiiiiiiiiiiiiii')
+  }, [profileData])
 
   useEffect(() => {
     if (params.userId && params.userId !== String(loginUserId)) {
+      console.log('다른 유저네')
       setLoading(true)
-      setIsFollowed(followList.includes(parseInt(params.userId)))
     }
-  }, [params.userId, followList])
+    console.log('뭐냐고;;;;;;;')
+  }, [params.userId, isFollowed])
 
   // 팔로우 여부 관련 api 호출
   // const checkFollowStatus = async (userId:String) => {
@@ -83,7 +85,7 @@ export default function ProfileUserInfoBox() {
   //     console.error(error)
   //   }
   // }
-
+  if (loading) {
   return (
     <div className={styles.userInfoBox}>
       <img src={profileData.photoUrl} className={styles.userImage} alt="User profile" />
@@ -93,7 +95,7 @@ export default function ProfileUserInfoBox() {
       </div>
       {`${params.userId}` === String(loginUserId) ? (
         <SmallButton text='채널관리' color='lightGray' onClick={() => router.push('/setting')} />
-      ) : loading && (
+      ) : (
         <div>
           <SmallButton
             text={isFollowed ? '팔로우 취소' : '팔로우'}
@@ -105,4 +107,5 @@ export default function ProfileUserInfoBox() {
       )}
     </div>
   )
+}
 }
