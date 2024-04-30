@@ -15,21 +15,36 @@ const useProfileStore = create((set, get) => ({
 
   profileData: {},
   // 유저 프로필 가져오기
-  getUserProfileInfo: async (nickname:number) => {
+  getUserProfileInfo: async () => {
     // const token = await AsyncStorage.getItem('accessToken')
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4IiwiYSI6Im1haW4iLCJlIjoiYmFsb28zNjYiLCJleHAiOjE3MTQ0MzUzOTN9.zWwQzKVwUZypAIs_POg5lxOhoHWwe4q2ZJCW6pfI8eo'
+    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImEiOiJtYWluIiwiZSI6IjEyMyIsImV4cCI6MTcxNDUyNDEwM30.5-tAeSGXPERywlSewtm5kPS8tif3A7y6MSqMjCwxc2g'
     try {
-      const response = await axios.get(`auth/getProfile?userId=${nickname}`, {
+      const response = await axios.get(`auth/getProfile`, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
         },
+        params: { userId :  7},
       })
       set({ profileData: response.data })
     } catch (error) {
       console.error(error)
     }
-  }
+  },
+  // 유저 프로필 수정
+  patchUserProfileInfo: async (formData: FormData) => {
+    // const token = await AsyncStorage.getItem('accessToken')
+    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImEiOiJtYWluIiwiZSI6IjEyMyIsImV4cCI6MTcxNDUyNDEwM30.5-tAeSGXPERywlSewtm5kPS8tif3A7y6MSqMjCwxc2g'
+    try {
+      const response = await axios.patch(`auth/fillup`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(response, '프로필 수정 성공')
+    } catch (error) {
+      console.error(error)
+    }
+  },
 }))
 
 export default useProfileStore

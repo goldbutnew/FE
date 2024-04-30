@@ -21,6 +21,21 @@
 //       }
 //     };
 
+//     if (Hls.isSupported()) {
+//       hls.current = new Hls();
+
+//       hls.current.on(Hls.Events.ERROR, function(event, data) {
+//         console.error('Hls.js 오류 발생:', data);
+//       });
+
+//       hls.current.loadSource(`http://127.0.0.1:8000/media/qudtls.m3u8`);
+//       // hls.current.loadSource(`http://127.0.0.1:8000/media/output.m3u8`);
+//       hls.current.attachMedia(videoElement);
+
+//       hls.current.on(Hls.Events.MANIFEST_PARSED, function() {
+//         videoElement.play();
+//       });
+//     }
 //     startCamera();
 //   }, []);
   
@@ -155,7 +170,7 @@ export default function Home() {
         console.error('Hls.js 오류 발생:', data);
       });
 
-      hls.current.loadSource(`http://127.0.0.1:8000/media/output.m3u8`);
+      hls.current.loadSource(`http://127.0.0.1:8000/media/qudtls.m3u8`);
       hls.current.attachMedia(videoElement);
 
       hls.current.on(Hls.Events.MANIFEST_PARSED, function() {

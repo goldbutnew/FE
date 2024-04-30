@@ -1,34 +1,68 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import Image from 'next/image'
+import { useState, useEffect  } from 'react'
+import useStreamingStore from '@/store/StreamingStore'
 
-import beforeStreaming from '#/images/MainLogo.png'
+import NetworkSpeedTest from '../streaming/Network'
+import Image from 'next/image'
+import logo from '#/images/MainLogo.png'
+import DefaultInput from '@/components/Input/DefaultInput'
+import Radio from '@/components/Input/Radio'
 import SmallButton from '@/components/Button/SmallButton'
 
-export default function StudioStreaming(): JSX.Element {
-  const [ isStreaming, setIsStreaming ] = useState(false)
 
-  const handleStreaming = () => {
-    setIsStreaming(!isStreaming)
+export default function StudioStreaming() {
+  const { sendStreamTitle, sendStreamThumbnail, sendStreamLimit } = useStreamingStore()
+  const [ title, setTitle ] = useState('')
+  const [ thumbnail, setThumbnail ] = useState('')
+  const [ limit, setLimit ] = useState(false)
+
+  const submitStreamSetting = () => {
+    sendStreamTitle(title)
+    sendStreamThumbnail(thumbnail)
+    sendStreamLimit(limit)
+  }
+
+  const handleTitle = (event) => {
+    setTitle(event.target.value)
+  }
+
+  const toggleLimit = () => {
+    setLimit(!limit)  // limit 상태를 토글
   }
 
   return (
+    <div>
       <div>
-        {isStreaming ?
-          <video src='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' width="320" height="240" controls></video>
-          :
-          <div>
-          <Image src={beforeStreaming} width="320" height="240" alt=""/>
-          <p>라이브 스트리밍을 시작하려면 스트리밍 소프트웨어를 연결하세요.</p>
-          <p>방송 시작 및 종료는 스트리밍 소프트웨어에서 가능합니다.</p>
-          <SmallButton 
-            text="방송시작"
-            onClick={handleStreaming}
-          />
-          </div>
-        }
+        <video src='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' controls></video>
       </div>
+
+      <div>
+        <label>방송 제목</label>
+        <DefaultInput type='text' value={title} onChange={handleTitle}/>
+      </div>
+
+      <div>
+        <p>미리 보기 이미지</p>
+        <Image src={logo} alt="logo" />
+      </div>
+
+      <div>
+        <p>연령제한</p>
+        <Radio text='시청자를 19세로 제한하겠습니까?' checked={limit} onChange={toggleLimit}/>
+      </div>
+
+      <SmallButton text="업데이트" onClick={submitStreamSetting}/>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <NetworkSpeedTest />
+    </div>
+
   )
 }
-
