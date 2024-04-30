@@ -8,7 +8,7 @@ export const modalBackdrop = style({
   top: 40,
   backgroundColor: vars.colors.white,
   borderRadius: vars.borderRadius['1x'],
-  zIndex: 1000, 
+  // zIndex: 1000, 
   boxShadow: vars.boxShadow['2x'],
 });
 

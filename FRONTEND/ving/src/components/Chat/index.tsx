@@ -18,24 +18,29 @@ export default function Chat() {
   const [messages, setMessages] = useState([])
   const [message, setMessage] = useState('')
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
-
+  
   const connect = () => {
-    const socket = new WebSocket('ws://localhost:8080')
-    const client = Stomp.over(socket);
-
+    console.log("WebSocket 연결 시도 중...");
+    const socketFactory = () => {
+      return new SockJS('http://localhost:8080/');
+    };
+  
+    console.log("STOMP 클라이언트 생성 중...");
+    const client = Stomp.over(socketFactory);
+  
+    // 모든 STOMP 프레임 로깅 활성화
     client.debug = function(str) {
       console.log('STOMP Debug:', str);
     };
-    
-    client.reconnect_delay = 5000
-
+  
+    console.log("STOMP 연결 시도 중...");
     client.connect({}, () => {
-      console.log("Connected successfully");
+      console.log("연결 완료");
       setConnected(true);
   
-      // 구독 설정
-      client.subscribe('/topic/messages', (response) => {
-        console.log("Message received");
+      console.log("메시지 구독 중...");
+      client.subscribe('/sub/channel/', (response) => {
+        console.log("메시지 수신:", response.body);
         const newMessage = JSON.parse(response.body);
         setMessages(prevMessages => [...prevMessages, newMessage]);
       });
@@ -44,19 +49,27 @@ export default function Chat() {
       setConnected(false);
     });
   
-    // Stomp 클라이언트 상태 업데이트
+    // WebSocket 이벤트에 대한 로그 추가
+    socketFactory.onopen = () => console.log("WebSocket 연결 성공");
+    socketFactory.onclose = () => console.log("WebSocket 연결 종료");
+    socketFactory.onerror = (error) => console.log("WebSocket 오류:", error);
+  
     setStompClient(client);
   };
+  
   useEffect(() => {
     connect()
-
+  
     return () => {
       if (stompClient) {
-        stompClient.disconnect()
+        console.log("WebSocket 연결 해제 시도 중...");
+        stompClient.disconnect(() => {
+          console.log("WebSocket 연결 해제 완료");
+        });
       }
     }
-  }, [])
-
+  }, []);
+  
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
@@ -73,10 +86,10 @@ export default function Chat() {
   const handleSendMessage = () => {
     console.log("보낼 메시지 내용:", message)
     if (stompClient && message && connected) { 
-      stompClient.send('/app/send', {}, JSON.stringify({ message }))
+      stompClient.send('/pub/message', {}, JSON.stringify({ message }))
       setMessage('')
     } else {
-      console.log("아직 연결 중!")
+      console.log("아직 소켓 연결 안 됨")
     }
   }
 
@@ -93,7 +106,6 @@ export default function Chat() {
           <div key={index}>{msg.message}</div>
         ))}
       </div>
-      
       <ChatProfile />
       {showEmojiPicker && (
         <div className={styles.emojiPicker}>
