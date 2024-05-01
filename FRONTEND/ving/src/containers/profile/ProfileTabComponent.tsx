@@ -1,15 +1,11 @@
 import React from 'react'
 import * as styles from './index.css'
-import Image from 'next/image'
 import { rowbox } from '@/styles/box.css'
-import youtubeLogo from '#/images/youtubeLogo.png'
-import instagramLogo from '#/images/instagramLogo.png'
-import pin from '#/images/pin.png'
+import { BsFillPinAngleFill, BsYoutube, BsInstagram } from "react-icons/bs"
 
 interface SocialLinkProps {
   platform: string
   link: string
-  logo: object
 }
 
 interface representativeVideoProps {
@@ -21,14 +17,12 @@ interface representativeVideoProps {
 
 const socialLinks: SocialLinkProps[] = [
   {
-    platform: '유튜브:',
+    platform: '유튜브',
     link: 'https://www.youtube.com/user/yourusername',
-    logo: youtubeLogo,
   },
   {
-    platform: '인스타그램:',
+    platform: '인스타그램',
     link: 'https://www.instagram.com/yourusername', 
-    logo: instagramLogo
   },
 ]
 
@@ -41,13 +35,24 @@ const representativeVideoInfo: representativeVideoProps[] = [
   },
 ]
 
-const SocialLink: React.FC<SocialLinkProps> = ({ platform, link, logo }) => {
+const SocialLink: React.FC<SocialLinkProps> = ({ platform, link }) => {
+  const renderIcon = () => {
+    if (platform.toLowerCase() === '인스타그램') {
+      return <BsInstagram size={30} />
+    } else if (platform.toLowerCase() === '유튜브') {
+      return <BsYoutube size={30} />
+    }
+  }
+  
   return (
     <>
-    <a href={link} className={styles.socialLink}>
-      <Image src={logo} alt='socialLogo' className={styles.socialLogo} width={30} height={30}></Image>
-      <span>{platform}</span>
-    </a>
+    <div className={styles.socialLinkBox}>
+      {renderIcon()}
+      <span>{platform}:</span>
+      <a href={link}>
+        <span>{link}</span>
+      </a>
+    </div>
     </>
   )
 }
@@ -63,28 +68,27 @@ export function ProfileTabComponent() {
     <>
       <div className={styles.socialLinkContainer}>
           <div className={styles.socialTitleBox}>
-            <Image src={pin} alt='pinImage' width={40} height={40}></Image>
+            <BsFillPinAngleFill size={32} />
             <span className={styles.socialTitle}>소셜 링크</span>
           </div>
           {socialLinks.map((link) => (
             <SocialLink key={link.platform} {...link} />
           ))}
       </div>
-      <div className={styles.representativeBox}>
-      <div className={styles.representativeVideoTitleBox}>
-        <Image src={pin} alt='pinImage' width={40} height={40}></Image>
-        <span className={styles.representativeVideoTitle}>대표 영상</span>
-      </div>
-      {representativeVideoInfo.map(video => (
-        <div key={video.title} className={`${rowbox}`}>
-          <img src={video.videoThumbnail} width={360} height={250}></img>
-          <div className={styles.videoInfoBox}>
-            <span>{video.title}</span>
-            <span>조회수 {video.viewCount}회</span>
-            <span>{video.day}일 전</span>
-          </div>
+      <div className={styles.representativeContainer}>
+        <div className={styles.representativeVideoTitleBox}>
+          <BsFillPinAngleFill size={32} />
+          <span className={styles.representativeVideoTitle}>대표 영상</span>
         </div>
-          ))}
+        {representativeVideoInfo.map(video => (
+          <div key={video.title} className={styles.representativeVideoInfo}>
+            <img src={video.videoThumbnail} width={360} height={250}></img>
+            <div className={styles.videoInfoBox}>
+              <span>{video.title}</span>
+              <span className={styles.videoAdditionalInfoText} >조회수 {video.viewCount}회 · {video.day}일 전</span>
+            </div>
+          </div>
+            ))}
       </div>
     </>
   )

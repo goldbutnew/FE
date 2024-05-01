@@ -6,6 +6,7 @@ import { columnbox, rowbox, betweenBox } from "@/styles/box.css"
 import Textarea from '@/components/Input/TextArea'
 import DefaultInput from '@/components/Input/DefaultInput'
 import useProfileStore from '@/store/ProfileStore'
+import { FiLink } from "react-icons/fi"
 
 interface Link {
   id: number
@@ -97,13 +98,20 @@ export default function SettingForm() {
   const [linkName, setLinkName] = useState('')
   const [linkUrl, setLinkUrl] = useState('')
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
+  const [links, setLinks] = useState<Link[]>([])
+  const [registerLinks, setRegisterLinks] = useState<Link[]>([{
+    id: 1,
+    name: '인스타 url 이름',
+    url: 'naver.com'
+  }])
+
+  const addLinkField = () => {
+    setLinks([...links, { id: Date.now(), name: '', url: '' }])
   }
 
-  const [links, setLinks] = useState<Link[]>([])
-  const addLinkField = () => {
-    setLinks([...links, { id: Date.now(), name: '', url: '' }]);
+  const addRegisterList = (id: number) => {
+    setRegisterLinks([...registerLinks, { id: Date.now(), name: '', url: '' }])
+    setLinks(links.filter((link) => link.id !== id))
   }
 
   const updateLink = (id: number, field: 'name' | 'url', value: string) => {
@@ -114,6 +122,10 @@ export default function SettingForm() {
 
   const removeLinkField = (id: number) => {
     setLinks(links.filter((link) => link.id !== id))
+  }
+
+  const removeRegisterLinkField = (id: number) => {
+    setRegisterLinks(registerLinks.filter((link) => link.id !== id))
   }
 
   if (isLoading) {
@@ -166,8 +178,24 @@ export default function SettingForm() {
       </div>
     </div>
     <p className={styles.infoText}>채널 정보</p>
+    {registerLinks.map((link, index) => (
+      <div key={link.id} className={`${styles.formContainer}`}>
+        <div className={styles.registerLinkBox}>
+          <div className={styles.registerLinkIcon}>
+            <FiLink />
+          </div>
+          <div className={styles.registerLinkContentBox}>
+            <div className={styles.registerLinkNameUrlBox}>
+              <span>{link.name}</span>
+              <span>{link.url}</span>
+            </div>
+            <SmallButton text='삭제' color='lightGray' onClick={() => removeRegisterLinkField(link.id)} />
+          </div>
+        </div>
+      </div>
+      ))}
     {links.map((link, index) => (
-    <form key={link.id} className={`${styles.formContainer}`} onSubmit={handleSubmit}>
+    <div key={link.id} className={`${styles.formContainer}`}>
         <div className={styles.linkField}>
           <div className={styles.linkEnterField}>
             <div className={styles.linkInputBox}>
@@ -179,7 +207,7 @@ export default function SettingForm() {
                 maxLength={30}
               />
             </div>
-              <SmallButton text='등록' color='lightGray' onClick={() => removeLinkField(link.id)} />
+              <SmallButton text='등록' color='lightGray' onClick={() => addRegisterList(link.id)} />
           </div>
           <div className={styles.linkDeleteField}>
             <div className={styles.linkInputBox}>
@@ -194,9 +222,9 @@ export default function SettingForm() {
               <SmallButton text='삭제' color='lightGray' onClick={() => removeLinkField(link.id)} />
           </div>
         </div>
-      </form>
+      </div>
       ))}
-      {links.length < 3 && (
+      {(registerLinks.length + links.length) < 3 && (
         <SmallButton text='링크 추가' color='lightGray' onClick={addLinkField} />
       )}
         <span className={styles.linkLimitNote}>· 최대 3개까지 등록할 수 있습니다.</span>

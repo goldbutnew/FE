@@ -96,7 +96,7 @@ export default function ProfileUserInfoBox() {
       ) : (
         <div className={styles.followerBox}>
           <SmallButton
-            text={isFollowed ? '팔로우 취소' : '팔로우'}
+            text={isFollowed ? '팔로잉' : '팔로우'}
             color='lightGray'
             onClick={() => toggleFollow(params.userId)}
           />

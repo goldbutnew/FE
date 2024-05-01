@@ -1,11 +1,12 @@
 import { vars } from '@/styles/vars.css'
 import { style } from '@vanilla-extract/css'
 import { flex } from '@/styles/common.css'
-import { betweenBox, defaultBox, endBox, rowbox } from '@/styles/box.css'
+import { betweenBox, columnbox, defaultBox, endBox, rowbox } from '@/styles/box.css'
 
+// ProfileUserInfoBox 관련 style 시작
 export const userInfoBox = style([
   betweenBox, {
-    backgroundColor: '#fff',
+    backgroundColor: vars.colors.white,
     padding: '8px 16px',
 }])
 
@@ -13,45 +14,38 @@ export const userImageNameInfoBox = style([
   rowbox, {
 }])
 
+export const userImage = style({
+  width: 80,
+  height: 80, 
+  borderRadius: vars.borderRadius.full,
+  border: `2.5px solid ${vars.colors.black}`
+})
+
 export const userTextInfoBox = style({
   display: 'flex',
   flexDirection: 'column',
   margin: '0px 0px 0px 10px'
 })
 
-export const userImage = style({
-  width: '80px',
-  height: '80px', 
-  borderRadius: '50%',
-  border: '2.5px solid black'
-})
-
 export const userName = style({
-  color: '#333',
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  padding: '0px 0px 10px 0px'
+  fontSize: vars.fontSize['2x'],
+  padding: '0px 0px 3px 0px'
 })
 
 export const userIntroduce = style({
-  color: '#333',
-  fontSize: '0.8rem',
-  fontWeight: 'bold',
+  fontSize: vars.fontSize['1x'],
 })
-
 
 export const followerBox = style([
   defaultBox, {
     justifySelf: 'flex-end',
 }])
 
+// ProfileUserInfoBox 관련 style 끝
+// TabsComponent 관련 style 시작
+
 export const tabsContainer = style({
-  display: 'flex',
-  flexDirection: 'column',
-  width: '100%',
-  backgroundColor: '#f9f9f9',
-  borderRadius: '5px',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+  padding: 16
 })
 
 export const tabList = style({
@@ -67,27 +61,36 @@ export const tab = style({
   borderBottom: '3px solid transparent',
   selectors: {
     '&:hover': {
-      backgroundColor: '#F2F2F2',
-      borderRadius: '10px'
+      backgroundColor: vars.colors.lightGray,
+      borderRadius: vars.borderRadius['1x']
     },
     '&[data-active="true"]': {
-      backgroundColor: '#F2F2F2',
-      borderRadius: '10px'
+      backgroundColor: vars.colors.lightGray,
+      borderRadius: vars.borderRadius['1x']
     },
   },
 })
 
 export const tabPanel = style({
   margin: '15px 0px 0px 0px',
-  padding: '20px',
-  borderTop: '3px solid #F2F2F2',
+  padding: '20px 0px 20px 0px',
+  borderTop: `3px solid ${vars.colors.lightGray}`,
+})
+
+// TabsComponent 관련 style 끝
+// ProfileTabComponent 관련 style 시작
+export const socialLinkBox = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '5px',
+  padding: '3px 0',
 })
 
 export const socialLinkContainer = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '5px',
-  borderRadius: '20px',
+  borderRadius: vars.borderRadius['1x'],
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
   padding: '25px 20px 25px 20px'
 })
@@ -100,35 +103,16 @@ export const socialTitleBox = style({
 })
 
 export const socialTitle = style({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '5px',
-  color: '#666',
-  textDecoration: 'none',
   margin: '0px 0px 0px 10px',
-  fontSize: '27px'
+  fontSize: vars.fontSize['2x']
 })
 
-export const socialLink = style({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '5px',
-  color: '#666',
-  textDecoration: 'none',
-  padding: '5px 0',
-})
-
-export const socialLogo = style({
-  width: '30px',
-  height: '30px'
-})
-
-export const representativeBox = style({
+export const representativeContainer = style({
   margin: '25px 0px 0px 0px',
   display: 'flex',
   flexDirection: 'column',
   gap: '5px',
-  borderRadius: '20px',
+  borderRadius: vars.borderRadius['1x'],
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
   padding: '25px 20px 25px 20px'
 })
@@ -141,23 +125,73 @@ export const representativeVideoTitleBox = style({
 })
 
 export const representativeVideoTitle = style({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '5px',
-  color: '#666',
-  textDecoration: 'none',
   margin: '0px 0px 0px 10px',
-  fontSize: '27px'
+  fontSize: vars.fontSize['2x']
 })
 
-export const videoInfoBox = style({
-  display: 'flex',
-  alignItems: 'center',
+export const representativeVideoInfo = style([
+  defaultBox, {
+    flexDirection: 'row',
+    alignItems: 'center'
+}])
+
+export const videoInfoBox = style([
+  columnbox, {
+  alignItems: 'flex-start',
   gap: '5px',
-  color: '#666',
-  flexDirection: 'column',
-  padding: '5px 0',
+  padding: '0px 0px 0px 10px',
+}])
+
+export const videoAdditionalInfoText = style({
+  fontSize: vars.fontSize['0.5x']
 })
+
+// ProfileTabComponent 관련 style 끝
+// VideoTabComponent 관련 style 시작
+
+export const videoGrid = style({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+  gap: '15px' /* 모든 그리드 아이템 사이에 15px의 간격 */
+})
+
+export const videoItem = style({
+  position: 'relative',
+  width: '100%',
+  height: 180,
+  margin: '0px 0px 45px 0px'
+  // overflow: 'hidden'
+})
+
+export const pinIcon = style({
+  position: 'absolute',
+  top: '10px',
+  left: '10px',
+  color: 'white',
+})
+
+export const videoThumbnail = style({
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover'
+})
+
+export const videoItemInfoBox = style({
+  fontSize: vars.fontSize['1x'],
+  padding: '4px 8px',
+})
+
+export const videoItemAdditionalInfo = style([
+  columnbox, {
+    alignItems: 'flex-start',
+    padding: '0px 0px 0px 10px'
+}])
+
+export const videoItemAdditionalInfoText = style({
+  fontSize: vars.fontSize['0.5x']
+})
+
+// VideoTabComponent 관련 style 끝
 
 export const rankListBox = flex({
   justify: 'start',
@@ -182,3 +216,8 @@ export const rankOutBox = style({
   width: 150,
   // padding: '0px 0px 0px 5px'
 })
+
+// export const pinIconStyle = style({
+//   width: 60,
+//   height: 60
+// })

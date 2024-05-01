@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/vars.css'
-import { defaultBox, rowbox } from '@/styles/box.css'
+import { columnbox, defaultBox, rowbox } from '@/styles/box.css'
 
 export const formContainer = style({
   display: 'flex',
@@ -176,3 +176,33 @@ export const customFileUpload = style({
 export const fileInputContainer = style({
   margin: '10px 0px 0px 0px'
 })
+
+export const registerLinkBox = style([
+  defaultBox, {
+    flexDirection: 'row',
+    alignItems: 'center'
+}])
+
+export const registerLinkIcon = style({
+  backgroundColor: vars.colors.lightGray, 
+  display: 'inline-flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: vars.borderRadius.full, 
+  padding: 10,
+  width: 40, 
+  height: 40,
+})
+
+export const registerLinkContentBox = style([
+  rowbox, {
+    alignItems: 'center',
+    width: '100%',
+}])
+
+export const registerLinkNameUrlBox = style([
+  columnbox, {
+    alignItems: 'flex-start',
+    width: '100%',
+    padding: '0px 0px 0px 20px'
+}])
