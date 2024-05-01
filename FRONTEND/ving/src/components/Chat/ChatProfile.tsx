@@ -15,7 +15,7 @@ export default function ChatProfile({ isOpen, onClose, userData }) {
       {isOpen && (
         <BottomSheet isOpen={isOpen} onClose={onClose}>
           <div>
-            <span className={styles.chatNickname}>
+            <span>
               {userData.nickname}
             </span>
             <hr className={line}/>

@@ -1,5 +1,5 @@
 
-import StudioPage from "./StudioPage"
+import StudioPage from "./Dashboard"
 
 export default function Studio() {
 
