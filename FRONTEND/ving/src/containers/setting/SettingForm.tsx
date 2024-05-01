@@ -29,7 +29,7 @@ export default function SettingForm() {
   
   useEffect(() => {
     const initData = async () => {
-      await getUserProfileInfo()
+      await getUserProfileInfo(1)
     }
     initData()
     setIsLoading(true)
@@ -69,14 +69,14 @@ export default function SettingForm() {
   }
 
   const handleUpdateProfile = () => {
-    const formData = new FormData();
+    const formData = new FormData()
   
     if (nickname !== profileData.nickname) {
-      formData.append('nickname', nickname);
+      formData.append('nickname', nickname)
     }
   
     if (introduction !== profileData.introduction) {
-      formData.append('introduction', introduction);
+      formData.append('introduction', introduction)
     }
   
     if (file) { // file 상태를 직접 사용
@@ -118,32 +118,34 @@ export default function SettingForm() {
 
   if (isLoading) {
   return (
-    <>
-    <span className={styles.infoText}>기본 정보</span>
-    <form className={styles.formContainer} onSubmit={handleSubmit}>
-      <div className={` ${rowbox} ${styles.profileImageContainer}`}>
+    <div>
+    <p className={styles.infoText}>기본 정보</p>
+    <div className={styles.formContainer}>
+      <div className={styles.profileImageContainer}>
         <span>프로필 이미지</span>
-        <img 
-          src={photoUrl}
-          alt="Profile"
-          className={styles.profileImage}
-        />
-        <div className={styles.fileInputContainer}>
-          <input
-            type="file"
-            id="file"
-            onChange={handleImageChange}
-            style={{ display: 'none' }}
-            accept="image/*"
+        <div className={styles.profileImageContentBox}>
+          <img
+            src={photoUrl}
+            alt="Profile"
+            className={styles.profileImage}
           />
-          <label htmlFor="file" className={styles.customFileUpload}>
-            이미지 수정
-          </label>
+          <div className={styles.fileInputContainer}>
+            <input
+              type="file"
+              id="file"
+              onChange={handleImageChange}
+              style={{ display: 'none' }}
+              accept="image/*"
+            />
+            <label htmlFor="file" className={styles.customFileUpload}>
+              이미지 수정
+            </label>
+          </div>
         </div>
-        </div>
-      <div className={`${rowbox}`}>
-        <span>닉네임</span>
-        <div className={`${rowbox}`}>
+      </div>
+      <div className={styles.profileNicknameContainer}>
+        <span className={styles.profileNicknameText}>닉네임</span>
+        <div className={styles.profileNicknameInputBox}>
           <DefaultInput
             type="text"
             value={nickname || ''}
@@ -152,9 +154,9 @@ export default function SettingForm() {
           />
         </div>
       </div>
-      <div className={`${rowbox}`}>
-        <span>채널 소개</span>
-        <div className={`${rowbox}`}>
+      <div className={styles.profileChannelIntroduceContainer}>
+        <span className={styles.profileChannelIntroduceText}>채널 소개</span>
+        <div className={styles.profileChannelIntroduceInputBox}>
           <Textarea
             value={introduction || ''}
             onChange={(event) => setIntroduction(event.target.value)}
@@ -162,35 +164,39 @@ export default function SettingForm() {
           />
         </div>
       </div>
-    </form>
+    </div>
     <p className={styles.infoText}>채널 정보</p>
     {links.map((link, index) => (
     <form key={link.id} className={`${styles.formContainer}`} onSubmit={handleSubmit}>
         <div className={styles.linkField}>
-          <div className={`${rowbox}`}>
-            <DefaultInput
-              type="text"
-              value={link.name}
-              onChange={(event) => updateLink(link.id, 'name', event.target.value)}
-              placeholder="링크 제목을 입력해 주세요"
-              maxLength={30}
-            />
-            <SmallButton text='등록' color='lightGray' onClick={() => removeLinkField(link.id)} />
+          <div className={styles.linkEnterField}>
+            <div className={styles.linkInputBox}>
+              <DefaultInput
+                type="text"
+                value={link.name}
+                onChange={(event) => updateLink(link.id, 'name', event.target.value)}
+                placeholder="링크 제목을 입력해 주세요"
+                maxLength={30}
+              />
+            </div>
+              <SmallButton text='등록' color='lightGray' onClick={() => removeLinkField(link.id)} />
           </div>
-          <div className={`${rowbox}`}>
-            <DefaultInput
-              type="text"
-              value={link.url}
-              onChange={(event) => updateLink(link.id, 'url', event.target.value)}
-              placeholder="링크 URL을 입력해 주세요"
-              maxLength={30}
-            />
-            <SmallButton text='삭제' color='lightGray' onClick={() => removeLinkField(link.id)} />
+          <div className={styles.linkDeleteField}>
+            <div className={styles.linkInputBox}>
+              <DefaultInput
+                type="text"
+                value={link.url}
+                onChange={(event) => updateLink(link.id, 'url', event.target.value)}
+                placeholder="링크 URL을 입력해 주세요"
+                maxLength={30}
+              />
+            </div>
+              <SmallButton text='삭제' color='lightGray' onClick={() => removeLinkField(link.id)} />
           </div>
         </div>
       </form>
       ))}
-      {links.length < 3 && ( // Limit to 3 links
+      {links.length < 3 && (
         <SmallButton text='링크 추가' color='lightGray' onClick={addLinkField} />
       )}
         <span className={styles.linkLimitNote}>· 최대 3개까지 등록할 수 있습니다.</span>
@@ -200,7 +206,7 @@ export default function SettingForm() {
           handleUpdateProfile()
         }} text="저장" color='black' />
       </div>
-  </>
+  </div>
   )
 }
 }

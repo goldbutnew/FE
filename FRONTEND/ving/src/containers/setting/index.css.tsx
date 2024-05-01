@@ -1,22 +1,32 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/vars.css'
+import { defaultBox, rowbox } from '@/styles/box.css'
 
 export const formContainer = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '10px',
-  backgroundColor: '#fff',
+  gap: 15,
   padding: 20,
   margin: '0px 0px 10px 0px',
   borderRadius: vars.borderRadius['1x'],
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
 })
 
-export const profileImageContainer = style({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'flex-start'
+export const infoText = style({
+  fontSize: `${vars.fontSize['2x']}`,
+  margin: '15px 0px 15px 0px'
 })
+
+export const profileImageContainer = style([rowbox, {
+  alignItems: 'start',
+  justifyContent: 'start',
+  flexDirection: 'row',
+}])
+
+export const profileImageContentBox = style([
+  rowbox, {
+    padding: '0px 0px 0px 30px',
+}])
 
 export const profileImage = style({
   width: 80,
@@ -25,9 +35,37 @@ export const profileImage = style({
   border: `2px solid ${vars.colors.black}`,
 })
 
-export const infoText = style({
-  fontSize: `${vars.fontSize['2x']}`
+export const profileNicknameContainer = style([
+  defaultBox, {
+    flexDirection: 'row'
+}])
+
+export const profileNicknameInputBox = style([
+  rowbox, {
+    padding: '0px 0px 0px 65px',
+    width: '100%'
+}])
+
+export const profileNicknameText = style({
+  fontSize: `${vars.fontSize['1x']}`,
+  width: 60
 })
+
+export const profileChannelIntroduceText = style({
+  fontSize: `${vars.fontSize['1x']}`,
+  width: 90
+})
+
+export const profileChannelIntroduceContainer = style([
+  defaultBox, {
+    flexDirection: 'row',
+}])
+
+export const profileChannelIntroduceInputBox = style([
+  rowbox, {
+    padding: '0px 0px 0px 40px',
+    width: '100%'
+}])
 
 export const inputField = style({
   border: '1px solid #ddd',
@@ -36,6 +74,20 @@ export const inputField = style({
   margin: '10px 0',
   width: '100%',
 })
+
+export const linkEnterField = style([
+  defaultBox, {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: '0px 0px 5px 0px',
+    width: '100%'
+}])
+export const linkDeleteField = style([
+  defaultBox, {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%'
+}])
 
 export const submitButton = style({
   backgroundColor: '#0070f3',
@@ -70,15 +122,15 @@ export const inputStyle = style({
 export const textInput = style([
   inputStyle,
   {
-    height: '40px', // Fixed height for single-line text input
+    height: '40px', 
   },
 ]);
 
 export const textAreaInput = style([
   inputStyle,
   {
-    minHeight: '80px', // Minimum height for multi-line text area
-    resize: 'vertical', // Allow vertical resize only
+    minHeight: '80px', 
+    resize: 'vertical', 
   },
 ])
 
@@ -103,46 +155,24 @@ export const buttonContainer = style({
   marginTop: '20px',
 })
 
-export const container = style({
-  display: 'flex',
+export const linkField = style([
+  defaultBox, {
   flexDirection: 'column',
-  backgroundColor: '#121212', // Dark background
-  color: 'white', // White text color
-  padding: '20px',
-  borderRadius: '8px',
-})
+}])
 
-export const linkField = style({
-  display: 'flex',
-  flexDirection: 'column',
-})
-
-export const input = style({
-  background: 'none',
-  border: '1px solid #333',
-  borderRadius: vars.borderRadius['0x'],
-  padding: '8px 12px',
-  color: 'white',
-  margin: '0px 0px 8px 0px',
+export const linkInputBox = style({
+  width: '100%',
+  padding: '0px 7px 0px 0px',
 })
 
 export const customFileUpload = style({
-  padding: '6px 12px',
+  padding: '4px 8px',
+  margin: '0px 0px 0px 10px',
   cursor: 'pointer',
-  background: vars.colors.white,
-  borderRadius: vars.borderRadius['1x'],
-  border: '1px solid #ccc'
+  border: `2px solid ${vars.colors.lightGray}`,
+  borderRadius: vars.borderRadius['1x']
 })
 
 export const fileInputContainer = style({
   margin: '10px 0px 0px 0px'
 })
-
-// export const linkButton = style({
-//   padding: '5px 10px',
-//   background: '#333',
-//   color: 'white',
-//   border: 'none',
-//   borderRadius: '4px',
-//   cursor: 'pointer',
-// })

@@ -17,7 +17,7 @@ const useProfileStore = create((set, get) => ({
   // 유저 프로필 가져오기
   getUserProfileInfo: async (username:number) => {
     // const token = await AsyncStorage.getItem('accessToken')
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImEiOiJtYWluIiwiZSI6IjEyMyIsImV4cCI6MTcxNDUzOTA3Mn0.qpadJf5Elzy1kUl37AUh7b64sindeJug7X6_j3eI5B4'
+    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImEiOiJtYWluIiwiZSI6IjEyMyIsImV4cCI6MTcxNDYzNTkyMX0.9SDti6Izk0v5ATmboPVPjvO-ergUOy5wVCniF7MQJj0'
     try {
       const response = await axios.get(`auth/getProfile`, {
         headers: {
@@ -33,7 +33,7 @@ const useProfileStore = create((set, get) => ({
   // 유저 프로필 수정
   patchUserProfileInfo: async (formData: FormData) => {
     // const token = await AsyncStorage.getItem('accessToken')
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImEiOiJtYWluIiwiZSI6IjEyMyIsImV4cCI6MTcxNDUzOTA3Mn0.qpadJf5Elzy1kUl37AUh7b64sindeJug7X6_j3eI5B4'
+    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImEiOiJtYWluIiwiZSI6IjEyMyIsImV4cCI6MTcxNDYzNTkyMX0.9SDti6Izk0v5ATmboPVPjvO-ergUOy5wVCniF7MQJj0'
     try {
       const response = await axios.patch(`auth/fillup`, formData, {
         headers: {

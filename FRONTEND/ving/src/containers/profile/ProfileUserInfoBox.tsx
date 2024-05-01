@@ -57,22 +57,18 @@ export default function ProfileUserInfoBox() {
       setLoading(true)
     }
     initData(params.userId)
-    console.log('뭔데;;;;;;;')
   }, [getUserProfileInfo])
 
   useEffect(() => {
     if (profileData) {
       setSubscriberCount(profileData.followers || 0)
     }
-    console.log('hiiiiiiiiiiiiiiiiiiii')
   }, [profileData])
 
   useEffect(() => {
     if (params.userId && params.userId !== String(loginUserId)) {
-      console.log('다른 유저네')
       setLoading(true)
     }
-    console.log('뭐냐고;;;;;;;')
   }, [params.userId, isFollowed])
 
   // 팔로우 여부 관련 api 호출
@@ -88,15 +84,17 @@ export default function ProfileUserInfoBox() {
   if (loading) {
   return (
     <div className={styles.userInfoBox}>
-      <img src={profileData.photoUrl} className={styles.userImage} alt="User profile" />
-      <div className={styles.userTextInfoBox}>
-        <span className={styles.userName}>{profileData.nickname}</span>
-        <span className={styles.userIntroduce}>{profileData.userIntroduce}</span>
+      <div className={styles.userImageNameInfoBox}>
+        <img src={profileData.photoUrl} className={styles.userImage} alt="User profile" />
+        <div className={styles.userTextInfoBox}>
+          <span className={styles.userName}>{profileData.nickname}</span>
+          <span className={styles.userIntroduce}>{profileData.userIntroduce || '안녕하세요 반가워요 이제 안녕히 가세요'}</span>
+        </div>
       </div>
       {`${params.userId}` === String(loginUserId) ? (
         <SmallButton text='채널관리' color='lightGray' onClick={() => router.push('/setting')} />
       ) : (
-        <div>
+        <div className={styles.followerBox}>
           <SmallButton
             text={isFollowed ? '팔로우 취소' : '팔로우'}
             color='lightGray'

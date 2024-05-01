@@ -1,13 +1,17 @@
 import { vars } from '@/styles/vars.css'
 import { style } from '@vanilla-extract/css'
 import { flex } from '@/styles/common.css'
+import { betweenBox, defaultBox, endBox, rowbox } from '@/styles/box.css'
 
-export const userInfoBox = style({
-  display: 'flex',
-  alignItems: 'center',
-  backgroundColor: '#fff',
-  padding: '8px 16px',
-})
+export const userInfoBox = style([
+  betweenBox, {
+    backgroundColor: '#fff',
+    padding: '8px 16px',
+}])
+
+export const userImageNameInfoBox = style([
+  rowbox, {
+}])
 
 export const userTextInfoBox = style({
   display: 'flex',
@@ -23,17 +27,23 @@ export const userImage = style({
 })
 
 export const userName = style({
-  color: '#333', // 여기에 실제 텍스트 색상 코드를 적용하세요.
+  color: '#333',
   fontSize: '1.5rem',
   fontWeight: 'bold',
   padding: '0px 0px 10px 0px'
 })
 
 export const userIntroduce = style({
-  color: '#333', // 여기에 실제 텍스트 색상 코드를 적용하세요.
+  color: '#333',
   fontSize: '0.8rem',
   fontWeight: 'bold',
 })
+
+
+export const followerBox = style([
+  defaultBox, {
+    justifySelf: 'flex-end',
+}])
 
 export const tabsContainer = style({
   display: 'flex',
