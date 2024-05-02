@@ -1,18 +1,31 @@
 package ving.spring.ving.subscription;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
+import org.apache.logging.log4j.util.Base64Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import ving.spring.ving.socket.Message;
+import ving.spring.ving.socket.MessageController;
 import ving.spring.ving.user.UserModel;
 import ving.spring.ving.user.UserService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Base64;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/sub")
 @RequiredArgsConstructor
 public class SubscriptionController {
     private final UserService userService;
     private final SubscriptionService subscriptionService;
+
+    private final MessageController messageController;
     @PostMapping("/subscript")
     public  ResponseEntity<?> subscript(@RequestBody SubscriptionDto.SubscriptRequest subscriptRequest)
     {
@@ -34,6 +47,7 @@ public class SubscriptionController {
                 .notification(1)
                 .donation(0)
                 .build();
+
 
         subscriptionService.create(subscriptionModel);
 
@@ -76,5 +90,52 @@ public class SubscriptionController {
         subscriptionModel.setNotification(Math.abs(subscriptionModel.getNotification() - 1));
         subscriptionService.create(subscriptionModel);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
+    }
+
+    @PatchMapping("/donation")
+    public ResponseEntity<?> donation(@RequestBody SubscriptionDto.DonationRequest donationRequest)
+    {
+        try
+        {
+            UserModel follower = userService.findCurrentUser();
+            UserModel streamer = userService.findByUserUsername(donationRequest.getUserName()).orElseThrow();
+            SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(streamer, follower);
+            subscriptionModel.setDonation(subscriptionModel.getDonation() + donationRequest.getChoco());
+            if (follower.getUserChoco() < donationRequest.getChoco())
+            {
+                throw new BadRequestException("초코가 부족합니다");
+            }
+
+            follower.setUserChoco(follower.getUserChoco() - donationRequest.getChoco());
+            streamer.setUserChoco(streamer.getUserChoco() + donationRequest.getChoco());
+            String strBase64Encode = Base64.getEncoder().encodeToString(donationRequest.getUserName().getBytes());
+            log.info(strBase64Encode);
+            userService.save(follower);
+            userService.save(streamer);
+            subscriptionService.create(subscriptionModel);
+
+            LocalDateTime now = LocalDateTime.now();
+            // 원하는 날짜/시간 포맷을 정의합니다.
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            // LocalDateTime 객체를 포맷터를 사용하여 문자열로 변환합니다.
+            String formattedDate = now.format(formatter);
+
+            Message.ChatMessage chatMessage = Message.ChatMessage.builder()
+                    .userName(follower.getUserUsername())
+                    .nickname(follower.getUserNickname())
+                    .donation(donationRequest.getChoco())
+                    .timeStamp(formattedDate)
+                    .isTts(donationRequest.getIsTts())
+                    .text(donationRequest.getMessage())
+                    .build();
+            messageController.donation(chatMessage, strBase64Encode);
+            return ResponseEntity.ok(HttpStatus.OK);
+        }
+
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 }

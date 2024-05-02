@@ -6,12 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ving.spring.ving.user.UserModel;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface SubscriptionRepository extends JpaRepository<SubscriptionModel, Integer> {
 
 
+    List<SubscriptionModel> findSubscriptionModelsByFollowerAndNotification(UserModel follower, Integer notification);
+    List<SubscriptionModel> findSubscriptionModelsByStreamerAndNotification(UserModel streamer, Integer notifications);
     @Transactional
     public void deleteByFollowerAndStreamer(UserModel follower, UserModel streamer);
 
