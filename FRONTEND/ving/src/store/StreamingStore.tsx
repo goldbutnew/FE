@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import axios from '../api/axios'
+// import axios from '../api/axios'
+import axios from 'axios'
 
 const useStreamingStore = create((set) => ({
 
@@ -8,7 +9,7 @@ const useStreamingStore = create((set) => ({
   openPort: async (tmp) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('url', {
+      const response = await axios.patch('http://k10a203.p.ssafy.io:3000/api/stream/createRoom', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -26,7 +27,7 @@ const useStreamingStore = create((set) => ({
   sendStreamTitle: async (roomName) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('url', {
+      const response = await axios.patch('http://k10a203.p.ssafy.io:3000/home/set_streaming_room_name/int:room_id/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -43,7 +44,7 @@ const useStreamingStore = create((set) => ({
   sendStreamThumbnail: async (thumbNail) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('url', {
+      const response = await axios.patch('http://k10a203.p.ssafy.io:3000/update_streaming_room_thumbnail/int:room_id/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -60,7 +61,7 @@ const useStreamingStore = create((set) => ({
   sendStreamLimit: async (isAdult) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('url', {
+      const response = await axios.patch('http://k10a203.p.ssafy.io:3000/home/set_streaming_room_is_adult/int:room_id/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

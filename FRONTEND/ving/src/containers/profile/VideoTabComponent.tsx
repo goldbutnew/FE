@@ -2,7 +2,9 @@ import useProfileStore from '@/store/ProfileStore'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import * as styles from './index.css'
-import { BsFillPinAngleFill } from "react-icons/bs"
+import { BsFillPinAngleFill  } from "react-icons/bs"
+import { HiEllipsisVertical } from "react-icons/hi2"
+import SmallButton from '@/components/Button/SmallButton'
 
 export default function VideoTabComponent() {
 
@@ -74,8 +76,13 @@ export default function VideoTabComponent() {
             </div>
               <img src={video.thumbnail} alt={video.title} className={styles.videoThumbnail} />
               <div className={styles.videoItemAdditionalInfo}>
-                <span>{video.title}</span>
-                <span className={styles.videoItemAdditionalInfoText}>조회수 {video.videoPlay}회</span>
+                <div className={styles.videoItemAdditionalTextInfo}>
+                  <span>{video.title}</span>
+                  <span className={styles.videoItemAdditionalInfoText}>조회수 {video.videoPlay}회</span>
+                </div>
+                <div className={styles.videoItemellipsisIcon}>
+                  <HiEllipsisVertical size={20}/>
+                </div>
               </div>
             </div>
           ))}

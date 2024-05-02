@@ -182,13 +182,33 @@ export const videoItemInfoBox = style({
 })
 
 export const videoItemAdditionalInfo = style([
+  rowbox, {
+    alignItems: 'center',
+    padding: '0px 0px 0px 3px'
+}])
+
+export const videoItemAdditionalTextInfo = style([
   columnbox, {
     alignItems: 'flex-start',
-    padding: '0px 0px 0px 10px'
+    padding: '0px 0px 0px 10px',
+    width: '100%'
 }])
 
 export const videoItemAdditionalInfoText = style({
   fontSize: vars.fontSize['0.5x']
+})
+
+export const videoItemellipsisIcon = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+  borderRadius: vars.borderRadius['0.5x'],
+  selectors: {
+    '&:hover': {
+      backgroundColor: vars.colors.lightGray
+    }
+  }
 })
 
 // VideoTabComponent 관련 style 끝
