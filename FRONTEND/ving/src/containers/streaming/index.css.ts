@@ -6,8 +6,3 @@ export const contentContainer = style({
   width: '100%',
   flexDirection: 'row',
 });
-
-export const mainContent = style({
-  flexGrow: 1,
-  padding: `${vars.space['8x']} ${vars.space['2x']} 0 ${vars.space['2x']}`,
-});
