@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/vars.css';
 import { bold } from '@/styles/fonts.css';
-import { betweenBox, endBox, rowbox } from '@/styles/box.css';
+import { betweenBox, columnbox, endBox, rowbox, startBox } from '@/styles/box.css';
 
 export const contentContainer = style({
   display: 'flex',
@@ -27,14 +27,34 @@ export const userInfoContainer = style([
   betweenBox,
   {
     padding: vars.space['2x'],
+  }
+])
+
+export const leftBoxContainer = style([
+  rowbox,
+  {
     gap: 10,
   }
 ])
 
 export const leftBox = style([
-  rowbox,
+  columnbox,
   {
-    
+    // gap: 10,
+  }
+])
+
+export const rightBox = style([
+  columnbox,
+  {
+    gap: 10,
+  }
+])
+
+export const leftBoxItem = style([
+  startBox,
+  {
+    height: '100%',
   }
 ])
 
@@ -45,7 +65,7 @@ export const rightBoxItme = style([
   }
 ])
 
-export const stremerImage = style({
+export const streamerImage = style({
   width: 80,
   height: 80, 
   borderRadius: vars.borderRadius.full,
@@ -55,11 +75,14 @@ export const stremerImage = style({
 export const streamingTitle = style([
   bold,
   {
-    fontSize: vars.fontSize['3x']
+    fontSize: vars.fontSize['2x']
   }
 ])
 
-export const stremerName = style({
-  fontSize: vars.fontSize['1.5x']
+export const streamerName = style({
+  fontSize: vars.fontSize['1x']
 })
 
+export const stremingInfo = style({
+  fontSize: vars.fontSize['0.5x']
+})
