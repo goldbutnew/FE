@@ -52,12 +52,33 @@ class StreamingRoom(models.Model):
     room_name = models.CharField(max_length=50)
     room_age_limit = models.IntegerField(blank=True, null=True)
     room_thumbnail = models.CharField(max_length=255)
+    is_end = models.IntegerField(null=False)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
+
 
     class Meta:
         managed = False
         db_table = 'streaming_room'
+
+
+
+
+class Notice(models.Model):
+    notice_id = models.AutoField(primary_key=True)
+    follow_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    class Status(models.TextChoices):
+        STREAMING = 'streaming', 'Streaming'
+        RECORDING = 'recording', 'Recording'
+    notice_content = models.CharField(
+        max_length=10,
+        choices=Status.choices,
+        default=Status.STREAMING,
+    )
+    class Meta:
+        managed = False
+        db_table = 'notice'
+
 
 
 class User(models.Model):
@@ -94,3 +115,5 @@ class Viewer(models.Model):
     class Meta:
         managed = False
         db_table = 'viewer'
+
+

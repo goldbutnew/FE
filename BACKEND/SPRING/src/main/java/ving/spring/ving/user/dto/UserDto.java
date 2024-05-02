@@ -21,4 +21,13 @@ public class UserDto
         private String nickname;
         private String photoUrl;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class choco
+    {
+        private Integer choco;
+    }
 }
