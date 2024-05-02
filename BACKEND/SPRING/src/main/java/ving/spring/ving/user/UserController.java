@@ -30,6 +30,7 @@ import ving.spring.ving.security.jwt.JwtIssuer;
 import ving.spring.ving.subscription.SubscriptionService;
 import ving.spring.ving.user.dto.FillupDto;
 import ving.spring.ving.user.dto.ProfileDto;
+import ving.spring.ving.user.dto.UserDto;
 import ving.spring.ving.video.VideoDto;
 import ving.spring.ving.video.VideoModel;
 import ving.spring.ving.video.VideoService;
@@ -128,6 +129,15 @@ public class UserController {
         }
     }
 
+    @PatchMapping("/api/auth/choco")
+    public ResponseEntity<?> choco(@RequestBody UserDto.choco choco)
+    {
+        UserModel userModel = userService.findCurrentUser();
+        userModel.setUserChoco(choco.getChoco() + userModel.getUserChoco());
+        userService.save(userModel);
+        return ResponseEntity.ok().body("충전 완료");
+    }
+
     @GetMapping("/api/auth/isRegistered")
     public ResponseEntity<?> isRegistered(@RequestParam String username)
     {
@@ -190,8 +200,9 @@ public class UserController {
             String finalUrl = (fileUrl + destinationFileName);
 
             userModel.setUserPhoto(finalUrl);
-
             userService.save(userModel);
+
+
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(photo.getContentType());
             metadata.setContentLength(photo.getSize());

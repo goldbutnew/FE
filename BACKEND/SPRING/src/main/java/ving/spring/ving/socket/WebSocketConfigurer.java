@@ -1,7 +1,10 @@
 package ving.spring.ving.socket;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -9,8 +12,10 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 // Socket 메세지 브로커의 설정을 담당하는 내용
 // messageController 의 Bean인 simpMessageSendingOperations가 영향을 받을듯
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSocketMessageBroker
-public class WebSocketConfigurer implements WebSocketMessageBrokerConfigurer {
+public class WebSocketConfigurer implements WebSocketMessageBrokerConfigurer, ChannelInterceptor {
+    private final StompHandler stompHandler;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -28,5 +33,12 @@ public class WebSocketConfigurer implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws")
                 .setAllowedOrigins("http://localhost:3000")
                 .withSockJS();
+    }
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration)
+    {
+        registration.interceptors(stompHandler);
+
     }
 }

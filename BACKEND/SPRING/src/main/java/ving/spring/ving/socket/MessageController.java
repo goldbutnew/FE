@@ -8,6 +8,8 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import ving.spring.ving.socket.chat.ChatModelService;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -15,11 +17,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class MessageController {
 
     private final SimpMessageSendingOperations simpMessageSendingOperations;
-
+    private final ChatModelService chatModelService;
     // 메세지는 말그대로 메세지, channelId 방일 것,
-    @MessageMapping("/room/{channelId}")
-    public void message(Message message, @DestinationVariable("channelId") String channelId) {
+    @MessageMapping("/channel/{channelId}")
+    public void message(Message.ChatMessage message, @DestinationVariable("channelId") String channelId) {
         // 메세지를 받으면 convert해서 보내기
+        chatModelService.toChatModel(message, channelId);
+        simpMessageSendingOperations.convertAndSend("/sub/channel/" + channelId, message);
+    }
+
+
+    public void donation(Message.ChatMessage message, String channelId)
+    {
+        chatModelService.toChatModel(message, channelId);
         simpMessageSendingOperations.convertAndSend("/sub/channel/" + channelId, message);
     }
 }
