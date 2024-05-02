@@ -15,11 +15,13 @@ import useAuthStore from "@/store/AuthStore";
 import { rowbox } from "@/styles/box.css";
 
 interface Message {
-  message: string;
-  senderId: string;
-  senderNickname: string;
+  userName: string;
+  nickname: string;
   timestamp: string;
+  isDonation : boolean;
+  text: string;
 }
+
 export default function Chat() {
   const { userData } = useAuthStore()
   const [profileOpen, setProfileOpen] = useState(false);
@@ -88,21 +90,28 @@ export default function Chat() {
     setMessageInput(prev => prev + emoji.emoji);
   }
 
+  const currentDate = new Date();
+  const timezoneOffset = currentDate.getTimezoneOffset();
+  const localDate = new Date(currentDate.getTime() - (timezoneOffset * 60000)); // UTC 시간을 로컬 시간으로 변환
+  const formattedTimestamp = localDate.toISOString().slice(0, 19).replace('T', ' '); // "2024-05-01 18:05:36" 형식으로 변환
+
   const handleSendMessage = (event) => {
     event.preventDefault()
 
     console.log("보낼 메시지 내용:", messageInput);
     if (stompClient && messageInput.trim() && connected) {
-      const message = {
-        message: messageInput,
-        senderId: userData.Id,
-        senderNickname: userData.nickname,
-        timestamp: new Date().toISOString()
+      const message : Message = {
+        userName: userData.Id,
+        nickname: userData.nickname,
+        timestamp: formattedTimestamp,
+        isDonation : false,
+        text: messageInput,
       };
       stompClient.publish({
         destination: `/pub/message`,
         body: JSON.stringify(message)
       });
+      console.log("메시지 객체", message)
       setMessages(prevMessages => [...prevMessages, message]); // 메시지 목록에 추가
       setMessageInput('');
     } else {
@@ -130,8 +139,8 @@ export default function Chat() {
         {messages.map((msg, index) => (
           <div key={index} className={styles.chatItem}>
             <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
-              {msg.senderNickname}
-            </button>: <span>{msg.message}</span>
+              {msg.nickname}
+            </button>: <span>{msg.text}</span>
           </div>
         ))}
       </div>
