@@ -36,5 +36,4 @@ public class StreamRoomModel {
             createdAt = LocalDateTime.now();
         }
     }
-
 }

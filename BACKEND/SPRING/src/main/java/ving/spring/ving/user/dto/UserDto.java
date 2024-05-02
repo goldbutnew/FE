@@ -18,6 +18,7 @@ public class UserDto
     @Getter
     public static class user
     {
+        private String username;
         private String nickname;
         private String photoUrl;
     }
