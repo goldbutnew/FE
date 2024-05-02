@@ -1,5 +1,6 @@
 package ving.spring.ving.search;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ public class SearchController {
         for (UserModel userModel : userService.findUserModelsByUserNicknameStartingWith(nickname))
         {
             users.add(UserDto.user.builder()
+                            .username(userModel.getUserUsername())
                             .nickname(userModel.getUserNickname())
                             .photoUrl(userModel.getUserPhoto())
                     .build());
@@ -37,5 +39,11 @@ public class SearchController {
         return ResponseEntity.ok().body(UserDto.builder()
                         .users(users)
                 .build());
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> searchAll()
+    {
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 }

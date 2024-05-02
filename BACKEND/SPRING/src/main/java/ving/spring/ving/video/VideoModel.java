@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import ving.spring.ving.user.UserModel;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Data
 @Getter
@@ -32,5 +34,12 @@ public class VideoModel {
 
 
 
-
+    @Column(nullable = true, updatable = false) // 변경 불가능하도록 설정
+    private LocalDateTime createdAt;
+    @PrePersist
+    protected void onCreate() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
 }
