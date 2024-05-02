@@ -15,7 +15,7 @@ export default function UserStreaming() {
       <div className={styles.videoPlayer}>
         <StreamingVideo />
       </div>
-      <div className={styles.userInfoContainer}>
+      <div className={styles.streamerInfoContainer}>
         <div className={styles.leftBoxContainer}>
           <Image src={dummy} className={styles.streamerImage} alt="User profile" />
           <div className={styles.leftBox}>

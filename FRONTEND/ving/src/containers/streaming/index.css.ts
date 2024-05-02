@@ -23,7 +23,7 @@ export const videoPlayer = style({
   // backgroundColor: vars.colors.black,
 })
 
-export const userInfoContainer = style([
+export const streamerInfoContainer = style([
   betweenBox,
   {
     padding: vars.space['2x'],
