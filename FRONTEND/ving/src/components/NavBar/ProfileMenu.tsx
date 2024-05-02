@@ -18,7 +18,7 @@ export default function ProfileMenu({ onLogout }) {
       </button>
       {isOpen && (
         <div className={styles.dropdownMenu}>
-          <Link href="/setting" className={styles.dropdownItem}>
+          <Link href={`/setting/${userId}`} className={styles.dropdownItem}>
             세팅
           </Link>
           <Link href={`/profile/${userId}`} className={styles.dropdownItem}>

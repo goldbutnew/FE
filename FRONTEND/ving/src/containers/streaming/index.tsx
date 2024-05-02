@@ -1,8 +1,18 @@
+'use client'
 
-import StreamingPage from "./StreamingPage"
+import Chat from "@/components/Chat"
+import * as styles from "./index.css"
+import Container from "@/components/Container"
 
 export default function Streaming() {
   return (
-    <StreamingPage />
+    <Container>
+      <div className={styles.contentContainer}>
+        <div className={styles.mainContent}>
+          
+        </div>   
+        <Chat />
+      </div>
+    </Container>
   )
 }
