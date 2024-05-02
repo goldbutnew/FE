@@ -1,43 +1,38 @@
-"use client"
+'use client'
 
-import React, { useEffect, useRef } from 'react'
-import videojs from 'video.js'
-import 'video.js/dist/video-js.css'
+import React, { useState } from 'react'
+import ReactPlayer from 'react-player'
 
-export default function StreamingVideo() {
+export default function StreamingVideo () {
+  const [url, setUrl] = useState('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')
 
-  const videoJsOptions = {
-    autoplay: true,
-    controls: true,
-    sources: [{
-      src: 'http://example.com/live-stream.m3u8',
-      type: 'application/x-mpegURL'
-    }]
+  const handleSetQuality = (quality: string) => {
+    switch (quality) {
+      case 'high':
+        setUrl('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')
+        break
+      case 'medium':
+        setUrl('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4')
+        break
+      case 'low':
+        setUrl('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4')
+        break
+      default:
+        setUrl('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')
+    }
   }
 
-  const videoRef = useRef()
-
-  useEffect(() => {
-    const videoElement = videoRef.current
-    let player
-    if (videoElement) {
-      player = videojs(videoElement, videoJsOptions)
-
-      player.on('ready', () => {
-        console.log('Player is ready')
-      })
-    }
-
-    return () => {
-      if (player) {
-        player.dispose()
-      }
-    }
-  }, [videoJsOptions])
-
   return (
-    <div data-vjs-player>
-      <video ref={videoRef} className="video-js"></video>
+    <div>
+      <ReactPlayer url={url} controls={true} playing={true} />
+      <div>
+        <button onClick={() => handleSetQuality('high')}>High</button>
+        <button onClick={() => handleSetQuality('medium')}>Medium</button>
+        <button onClick={() => handleSetQuality('low')}>Low</button>
+      </div>
     </div>
   )
 }
+
+  // src: 'http://example.com/live-stream.m3u8',
+  // type: 'application/x-mpegURL'
