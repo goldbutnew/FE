@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import * as styles from './index.css'
 
 import SmallButton from "@/components/Button/SmallButton"
-import { columnbox, rowbox, betweenBox } from "@/styles/box.css"
 import Textarea from '@/components/Input/TextArea'
 import DefaultInput from '@/components/Input/DefaultInput'
 import useProfileStore from '@/store/ProfileStore'
@@ -54,19 +53,10 @@ export default function SettingForm() {
       reader.onload = (event: any) => {
         setPhotoUrl(event.target.result)
         formData.append('photo', file)
-        console.log(file)
       }
       reader.readAsDataURL(file)
       setFile(file)
     }
-    console.log('--------', file)
-
-    // formData.append('photo', {
-    //   name: imageName,
-    //   type: imageType,
-    //   uri: imageUri,
-    //   // uri: 'http://www.foodsafetykorea.go.kr/uploadimg/20141118/20141118102019_1416273619379.jpg',
-    // })
   }
 
   const handleUpdateProfile = () => {
