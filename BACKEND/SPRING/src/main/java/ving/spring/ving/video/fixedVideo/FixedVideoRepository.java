@@ -3,12 +3,15 @@ package ving.spring.ving.video.fixedVideo;
 import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 import ving.spring.ving.user.UserModel;
 import ving.spring.ving.video.VideoModel;
 
 @Repository
+@Configuration
+@EnableJpaRepositories(basePackages = "com.example.myapp.jpa.repository")
 public interface FixedVideoRepository extends JpaRepository<FixedVideoModel, Integer> {
 
     public boolean existsByUserModel(UserModel userModel);
