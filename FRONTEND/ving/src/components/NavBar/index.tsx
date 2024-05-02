@@ -44,7 +44,6 @@ export default function NavBar() {
         <Link href='/'>
           <Image src={logo} alt="main" className={styles.logo} />
         </Link>
-        <Link href={`/tmp`}>test</Link>
       </div>
       <div className={styles.centerBox}>
         <SearchBar />

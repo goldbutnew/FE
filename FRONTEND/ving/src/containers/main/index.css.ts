@@ -4,5 +4,7 @@ export const test = style({
   backgroundColor: 'black',
   width: 200,
   aspectRatio: "4/3",
-  color: "white"
+  color: "white",
+  textAlign: 'center',
+  padding: '20px',
 })
