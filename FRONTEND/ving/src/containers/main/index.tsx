@@ -4,11 +4,12 @@
 import { useState } from 'react';
 import MainPage from './MainPage'
 import ChoiceChip from '@/components/Button/ChoiceChip';
+import Container from '@/components/Container';
 
 export default function Main() {
 
   return (
-    <div>
+    <Container>
       <div>
         <MainPage />  
         <p>🍔이금현 테스트 중🍕</p>
@@ -22,6 +23,6 @@ export default function Main() {
           label='고구마'
         />
       </div>
-    </div>
+    </Container>
   )
 }

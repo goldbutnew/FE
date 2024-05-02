@@ -4,11 +4,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ving.spring.ving.user.UserModel;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SubscriptionService {
 
     private final SubscriptionRepository subscriptionRepository;
+
+    public List<SubscriptionModel> findSubscriptionModelsByStreamerAndNotification(UserModel streamer)
+    {
+        return subscriptionRepository.findSubscriptionModelsByStreamerAndNotification(streamer, 1);
+    }
+
+    public List<SubscriptionModel> findSubscriptionModelsByFollowerAndNotification(UserModel follower)
+    {
+        return subscriptionRepository.findSubscriptionModelsByFollowerAndNotification(follower, 1);
+    }
 
     public SubscriptionModel create(SubscriptionModel subscriptionModel)
     {

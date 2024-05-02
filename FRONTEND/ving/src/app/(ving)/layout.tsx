@@ -44,7 +44,7 @@ export default function RootLayout({
           <div className={styles.mainContent}>
             {children}
           </div>          
-          <Chat />
+          {/* <Chat /> */}
         </div>
       </body>
     </html>
