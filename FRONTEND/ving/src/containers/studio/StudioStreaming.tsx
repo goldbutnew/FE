@@ -6,17 +6,25 @@ import useStreamingStore from '@/store/StreamingStore'
 import NetworkSpeedTest from '../streaming/Network'
 import Image from 'next/image'
 import logo from '#/images/main-logo.png'
-import DefaultInput from '@/components/Input/DefaultInput'
+import DefaultInput from '@/components/Input/defaultInput'
 import Radio from '@/components/Input/Radio'
 import SmallButton from '@/components/Button/SmallButton'
-import Streaming from '@/components/StreamingVideo'
+import StreamingVideo from '@/components/StreamingVideo'
 
 
 export default function StudioStreaming() {
-  const { sendStreamTitle, sendStreamThumbnail, sendStreamLimit } = useStreamingStore()
+  const { openPort, closePort, sendStreamTitle, sendStreamThumbnail, sendStreamLimit } = useStreamingStore()
+  const [ isOnline, setIsOnline ] = useState(false)
   const [ title, setTitle ] = useState('')
   const [ thumbnail, setThumbnail ] = useState('')
   const [ limit, setLimit ] = useState(false)
+
+  useEffect (() => {
+    openPort()
+    return () => {
+      // closePort()
+    }
+  }, [])
 
   const submitStreamSetting = () => {
     sendStreamTitle(title)
@@ -35,7 +43,7 @@ export default function StudioStreaming() {
   return (
     <div>
       <div>
-        <Streaming />
+        <StreamingVideo />
         {/* <video src='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' controls></video> */}
       </div>
 

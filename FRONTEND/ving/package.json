@@ -28,6 +28,7 @@
     "sockjs-client": "^1.6.1",
     "stomp-broker-js": "^1.3.0",
     "stompjs": "^2.3.3",
+    "video.js": "^8.12.0",
     "websocket": "^1.0.34",
     "zustand": "^4.5.2"
   },

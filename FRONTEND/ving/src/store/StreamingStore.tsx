@@ -4,6 +4,25 @@ import axios from '../api/axios'
 const useStreamingStore = create((set) => ({
 
   streamData:'',
+
+  openPort: async (tmp) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.patch('url', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: {
+          tmp
+        }
+      })
+      console.log('방송 시작 요청', response.data)
+
+    } catch (error) {
+      console.error('방송 시작 요청 실패:', error)
+    }
+  },
+
   sendStreamTitle: async (roomName) => {
     const token = localStorage.getItem('accessToken')
     try {

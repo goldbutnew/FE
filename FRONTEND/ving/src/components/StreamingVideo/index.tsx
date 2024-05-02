@@ -1,35 +1,43 @@
 "use client"
 
-import { useEffect, useRef } from 'react'
-import Hls from 'hls.js'
+import React, { useEffect, useRef } from 'react'
+import videojs from 'video.js'
+import 'video.js/dist/video-js.css'
 
-export default function Streaming() {
-  const videoRef = useRef(null)
-  const hls = useRef(null)
+export default function StreamingVideo() {
+
+  const videoJsOptions = {
+    autoplay: true,
+    controls: true,
+    sources: [{
+      src: 'http://example.com/live-stream.m3u8',
+      type: 'application/x-mpegURL'
+    }]
+  }
+
+  const videoRef = useRef()
 
   useEffect(() => {
-    const videoElement = videoRef.current;
+    const videoElement = videoRef.current
+    let player
+    if (videoElement) {
+      player = videojs(videoElement, videoJsOptions)
 
-    if (Hls.isSupported()) {
-      hls.current = new Hls()
-
-      hls.current.on(Hls.Events.ERROR, function(event, data) {
-        console.error('Hls.js 오류 발생:', data)
-      })
-
-      hls.current.loadSource(`http://127.0.0.1:8000/media/qudtls.m3u8`)
-      hls.current.attachMedia(videoElement);
-
-      hls.current.on(Hls.Events.MANIFEST_PARSED, function() {
-        videoElement.play()
+      player.on('ready', () => {
+        console.log('Player is ready')
       })
     }
-  }, [])
+
+    return () => {
+      if (player) {
+        player.dispose()
+      }
+    }
+  }, [videoJsOptions])
 
   return (
-    <div>
-      <h1>HLS Streaming with Next.js</h1>
-      <video ref={videoRef} controls autoPlay></video>
+    <div data-vjs-player>
+      <video ref={videoRef} className="video-js"></video>
     </div>
   )
 }
