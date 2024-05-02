@@ -28,10 +28,10 @@ export default function ProfileUserInfoBox() {
   const params = useParams()
 
   // 임시 로그인 유저
-  const loginUserId = 10
+  const loginUserId = 1
 
   const [loading, setLoading] = useState(false)
-  const { profileData, getUserProfileInfo } = useProfileStore()
+  const { profileData, getUserProfileInfo, doFollowUser, doUnFollowUser } = useProfileStore()
   const [subscriberCount, setSubscriberCount] = useState(profileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(profileData.isFollowed)
   
@@ -44,9 +44,11 @@ export default function ProfileUserInfoBox() {
     if (isFollowed) {
       setIsFollowed(false)
       setSubscriberCount(subscriberCount - 1)
+      doUnFollowUser(params.userId)
     } else {
       setIsFollowed(true)
       setSubscriberCount(subscriberCount + 1)
+      doFollowUser(params.userId)
     }
     setLoading(true)
   }
@@ -97,7 +99,7 @@ export default function ProfileUserInfoBox() {
         <div className={styles.followerBox}>
           <SmallButton
             text={isFollowed ? '팔로잉' : '팔로우'}
-            color='lightGray'
+            color={isFollowed ? 'lightGray' : 'black'}
             onClick={() => toggleFollow(params.userId)}
           />
           <div>팔로워 {subscriberCount}명</div>

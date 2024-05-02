@@ -7,8 +7,10 @@ import Link from 'next/link';
 import Notifer from "../Notifer";
 import Signup from "@/containers/auth/Signup";
 import Login from "@/containers/auth/Login";
+import ProfileMenu from "./ProfileMenu";
 import Logout from "@/containers/auth/Logout";
 import IconButton from "../Button/IconButton";
+import SearchBar from "@/containers/profile/SearchBar";
 
 import { FaVideo } from "react-icons/fa";
 import logo from '#/images/main-logo.png'
@@ -42,10 +44,9 @@ export default function NavBar() {
         <Link href='/'>
           <Image src={logo} alt="main" className={styles.logo} />
         </Link>
-        <Link href='/setting'>세팅</Link>
-        <Link href={`/profile/${userId}`}>내채널</Link>
-        <Link href={`/streaming/${userId}`}>방송중인누군가의방</Link> 
-        <Link href={`/tmp`}>채팅테스트</Link>
+      </div>
+      <div className={styles.centerBox}>
+        <SearchBar />
       </div>
       <div className={styles.rightNavBox}>
         {isAuthenticated ? (
@@ -56,7 +57,7 @@ export default function NavBar() {
               />
             </Link>
             <Notifer />
-            <Logout onLogoutSuccess={handleLogoutSuccess} />
+            <ProfileMenu onLogout={handleLogoutSuccess} />
           </>
         ) : (
           <>
