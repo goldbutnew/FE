@@ -8,16 +8,16 @@ export const iconButtonBox = style({
 })
 
 export const iconButton = style({
+  position: 'relative',
   width: 'fit-content',
 })
 
 export const modalBackdrop = style({
   position: 'absolute',
-  right: 80,
-  top: 40,
+  right: 40,
+  top: '100%',
   backgroundColor: vars.colors.white,
   borderRadius: vars.borderRadius['1x'],
-  // zIndex: 1000, 
   boxShadow: vars.boxShadow['2x'],
 });
 
