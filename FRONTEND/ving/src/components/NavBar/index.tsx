@@ -14,8 +14,11 @@ import { FaVideo } from "react-icons/fa";
 import logo from '#/images/main-logo.png'
 import * as styles from './index.css'
 
+import useAuthStore from "@/store/AuthStore"
 
 export default function NavBar() {
+  const { userData } = useAuthStore()
+  // const userId = btoa(userData.username)
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const userId = 1
 
