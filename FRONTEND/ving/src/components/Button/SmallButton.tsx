@@ -5,7 +5,7 @@ type ButtonProps = {
   text: string;
   color?: string;
   fontColor?: string; 
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export default function SmallButton({ text, color, fontColor, onClick }: ButtonProps) {

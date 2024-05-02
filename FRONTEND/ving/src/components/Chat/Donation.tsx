@@ -11,9 +11,13 @@ import { vars } from "@/styles/vars.css";
 import DefaultInput from "../Input/DefaultInput";
 import ToggleButton from "../Button/ToggleButton";
 import { betweenBox } from "@/styles/box.css";
+import useChatStore from "@/store/ChatStore";
+import useAuthStore from "@/store/AuthStore";
+import { getFormattedTimestamp } from "@/utils/dateUtils";
 
 export default function Donation() {
-  const [message, setMessage] = useState('')
+  const { userData } = useAuthStore()
+  const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
   const [choco, setChoco] = useState(0)
@@ -22,10 +26,15 @@ export default function Donation() {
   const initChoco = 3000000
   const [dummyChoco, setDummyChoco] = useState(initChoco)
   const [warning, setWarning] = useState('')
-
-  const dummyUserName = "나유경바보"
-  const [name, setName] = useState(dummyUserName)
+  const addMessage = useChatStore(state => state.addMessage)
+  const [name, setName] = useState('')
   
+  useEffect(() => {
+    if (userData.nickname) {
+      setName(userData.nickname);
+    }
+  }, [userData.nickname]);
+
   const sendChoco = (value) => () => {
     setChoco(value);
     console.log(`choco: ${value}`);
@@ -40,13 +49,12 @@ export default function Donation() {
     }
   }, [choco]);
 
-
   const handleAnonym = (newState: boolean) => {
     setIsAnonym(newState);
     if (newState) {
       setName("익명의 후원자")
     } else {
-      setName(dummyUserName)
+      setName(userData.nickname)
     }
   };
 
@@ -55,7 +63,7 @@ export default function Donation() {
   };
 
   const handleChange = (e) => {
-    setMessage(e.target.value)
+    setMessageInput(e.target.value)
   };
 
   const openEmojiPicker = () => {
@@ -64,12 +72,25 @@ export default function Donation() {
 
   const handleEmojiClick = (e) => {
     const emoji = e.emoji
-    setMessage((prevMessage) => prevMessage + emoji)
+    setMessageInput((prevMessage) => prevMessage + emoji)
   }  
-  
-  const handleSendMessageWithChoco = () => {
-    console.log(message);
-    setMessage(''); // 메시지 전송 후 입력값 초기화
+
+  const handleSendMessageWithChoco = (e) => {
+    e.preventDefault()
+    const formattedTimestamp = getFormattedTimestamp()
+
+    const message = {
+      userName: userData.Id,
+      nickname: name,
+      timestamp: formattedTimestamp,
+      donation : choco,
+      isTts: isTTS,
+      text: messageInput,
+    };
+
+    console.log("메시지 형식:", message)
+    addMessage(message);
+    setMessageInput('');
   };
 
   return (
@@ -158,7 +179,7 @@ export default function Donation() {
               </span>
               <DefaultInput 
                   type="text"
-                  value={message} 
+                  value={messageInput} 
                   onEmojiClick={openEmojiPicker}
                   onChange={handleChange}
                   placeholder="채팅을 입력해 주세요"
