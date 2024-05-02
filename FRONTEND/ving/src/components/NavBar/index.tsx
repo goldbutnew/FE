@@ -44,8 +44,7 @@ export default function NavBar() {
         <Link href='/'>
           <Image src={logo} alt="main" className={styles.logo} />
         </Link>
-        <Link href={`/streaming/${userId}`}>방송중인누군가의방</Link> 
-        <Link href={`/tmp`}>테스트페이지</Link>
+        <Link href={`/tmp`}>test</Link>
       </div>
       <div className={styles.centerBox}>
         <SearchBar />
