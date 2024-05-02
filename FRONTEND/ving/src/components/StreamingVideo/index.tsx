@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import ReactPlayer from 'react-player'
+import * as styles from './index.css'
 
 export default function StreamingVideo () {
   const [url, setUrl] = useState('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')
@@ -24,11 +25,19 @@ export default function StreamingVideo () {
 
   return (
     <div>
-      <ReactPlayer url={url} controls={true} playing={true} />
+      <ReactPlayer
+        // ref={playerRef}
+        url={url}
+        width='100%'
+        height='100%'
+        playing={true}
+        controls={false} // 내장 컨트롤 비활성화
+        light={false}
+      />
       <div>
-        <button onClick={() => handleSetQuality('high')}>High</button>
+        {/* <button onClick={() => handleSetQuality('high')}>High</button>
         <button onClick={() => handleSetQuality('medium')}>Medium</button>
-        <button onClick={() => handleSetQuality('low')}>Low</button>
+        <button onClick={() => handleSetQuality('low')}>Low</button> */}
       </div>
     </div>
   )

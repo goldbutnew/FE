@@ -5,7 +5,6 @@ import * as styles from './index.css'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import useAuthStore from '@/store/AuthStore'
-import Container from '@/components/Container'
 
 export default function Studio() {
   const { userData } = useAuthStore()
@@ -14,7 +13,6 @@ export default function Studio() {
   const params = useParams()
 
   return (
-    <Container>
       <div>
         <div className={styles.dashboardContainer}>
           <div className={styles.leftBox}>
@@ -56,6 +54,5 @@ export default function Studio() {
           </div>
         </div>
       </div>
-    </Container>
   )
 }
