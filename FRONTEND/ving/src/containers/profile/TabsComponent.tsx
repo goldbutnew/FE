@@ -13,12 +13,12 @@ export default function TabsComponent({ where }) {
     if ((tabName) === 'video' ) {
       console.log('hiiiiii', (tabName))
       setActiveTab('video')
-      router.push(`/profile/${params.userId}/video`)
+      router.push(`/profile/${params.username}/video`)
     } 
     else {
       console.log('hi', (tabName))
       setActiveTab('home')
-      router.push(`/profile/${params.userId}`)
+      router.push(`/profile/${params.username}`)
     }
   }
 

@@ -7,7 +7,7 @@ import * as styles from './index.css'
 
 export default function MainPage() {
   const { userData } = useAuthStore()
-  const userId = 1
+  const username = btoa(userData.username)
 
   return (
     <div>
@@ -17,7 +17,7 @@ export default function MainPage() {
       <div>//////// 테스트 페이지로 이동////////</div>
       <Link href={`/tmp`}>test</Link>
       <div className={styles.test}>
-        <Link href={`/streaming/${userId}`}>방송중인누군가의방</Link> 
+        <Link href={`/streaming/${username }`}>방송중인누군가의방</Link> 
       </div>
       <hr />
     </div>
