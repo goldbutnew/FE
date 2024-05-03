@@ -1,6 +1,4 @@
-'use client'
-
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import * as styles from './index.css'
 import { FaUserCircle } from 'react-icons/fa';
@@ -24,8 +22,8 @@ export default function ProfileMenu({ onLogout }) {
         <MenuItem>
           <Link href={`/profile/${username}`}>내 채널</Link>
         </MenuItem>
-        <MenuItem onLogout={onLogout}>
-          <Logout />
+        <MenuItem>
+          <Logout onLogoutSuccess={onLogout} />
         </MenuItem>
       </DropdownMenu>
     </div>

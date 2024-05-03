@@ -26,12 +26,8 @@ export default function Logout({ onLogoutSuccess }) {
       >
         로그아웃
       </button>
-        // <SmallButton 
-        //   text="로그아웃"
-        //   onClick={handleLogout}
-        // />
-        :
-        ''
+      :
+      ''
       } 
     </div>
   )

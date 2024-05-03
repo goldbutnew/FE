@@ -16,8 +16,9 @@ export const modalBackdrop = style({
   right: 0,
   top: '100%',
   backgroundColor: vars.colors.white,
-  borderRadius: vars.borderRadius['1x'],
   boxShadow: vars.boxShadow['2x'],
+  borderRadius: vars.borderRadius['1x'],
+  padding: vars.space['1x'],
   zIndex: 100,
 });
 
@@ -26,10 +27,10 @@ export const modalTitle = style({
 })
 
 export const modalContent = style({
-  borderRadius: '10px',
   width: '100%', 
-  padding: vars.space['2x'],
-  boxSizing: 'border-box' 
+  padding: vars.space['1x'],
+  boxSizing: 'border-box',
+  whiteSpace: 'nowrap',
 });
 
 export const closeBtnBox = style([

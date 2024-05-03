@@ -10,6 +10,7 @@ export const dropdownMenu = style({
   boxShadow: vars.boxShadow['2x'],
   borderRadius: vars.borderRadius['1x'],
   padding: vars.space['1x'],
+  // opacity: 0.8,
   zIndex: 100,
 });
 

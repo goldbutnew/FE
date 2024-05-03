@@ -4,13 +4,12 @@ import React from "react";
 import { FaRegBell } from "react-icons/fa";
 import IconButton from "../Button/IconButton";
 import useModal from "@/hooks/useModal";
-import SmallButton from "../Button/SmallButton";
 import { IoIosClose } from "react-icons/io";
 import * as styles from './index.css'
 import { bold } from "@/styles/fonts.css";
 
 export default function Notifer() {
-  const { isOpen, open, close } = useModal();
+  const { isOpen, open, close, modalRef } = useModal();
 
   return (
     <div className={styles.iconButtonBox}>
@@ -18,7 +17,7 @@ export default function Notifer() {
         <IconButton icon={FaRegBell} onClick={open} />
       </div>
       {isOpen && (
-        <div className={styles.modalBackdrop} onClick={close}>
+        <div ref={modalRef} className={styles.modalBackdrop} onClick={close}>
           <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
             <div className={styles.closeBtnBox}>
               <span className={bold}>알림함</span>
