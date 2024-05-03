@@ -197,7 +197,7 @@ export const videoItemAdditionalInfoText = style({
   fontSize: vars.fontSize['0.5x']
 })
 
-export const videoItemellipsisIcon = style({
+export const videoItemellipsisButton = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',

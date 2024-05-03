@@ -47,7 +47,7 @@ const useProfileStore = create((set, get) => ({
   doFollowUser: async (userId:number) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.post(`/api/sub/subscript`, {
+      const response = await axios.post(`sub/subscript`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -61,12 +61,40 @@ const useProfileStore = create((set, get) => ({
   doUnFollowUser: async (userId:number) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.delete(`/api/sub/unSubscript`, {
+      const response = await axios.delete(`sub/unSubscript`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       console.log(response, '팔로우 취소 성공')
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 상단 고정 /api/sub/subscript
+  doFixVideo: async (videoId:number) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.post(`video/doFix`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(response, '상단 고정 성공')
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 상단 고정 취소 /api/sub/subscript
+  doUnFixVideo: async (videoId:number) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.delete(`video/undoFix`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(response, '상단 고정 취소 성공')
     } catch (error) {
       console.error(error)
     }
