@@ -2,6 +2,8 @@ package ving.spring.ving.video;
 
 import lombok.*;
 
+import java.util.List;
+
 @Builder
 @Getter
 @Setter

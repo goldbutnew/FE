@@ -14,3 +14,4 @@ import java.util.Optional;
 public interface StreamRoomRepository extends JpaRepository<StreamRoomModel, Integer> {
     public Optional<StreamRoomModel> findStreamRoomModelByStreamerAndIsEnd(UserModel streamer, Boolean isEnd);
 }
+ 
