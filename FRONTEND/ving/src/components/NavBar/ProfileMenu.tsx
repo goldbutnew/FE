@@ -6,6 +6,7 @@ import * as styles from './index.css'
 import { FaUserCircle } from 'react-icons/fa';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import MenuItem from '../DropdownMenu/MenuItem';
+import Logout from '@/containers/auth/Logout';
 
 export default function ProfileMenu({ onLogout }) {
   const userId = 1
@@ -22,7 +23,9 @@ export default function ProfileMenu({ onLogout }) {
         <MenuItem>
           <Link href={`/profile/${userId}`}>내 채널</Link>
         </MenuItem>
-        <MenuItem onClick={onLogout}>로그아웃</MenuItem>
+        <MenuItem onLogout={onLogout}>
+          <Logout />
+        </MenuItem>
       </DropdownMenu>
     </div>
   );
