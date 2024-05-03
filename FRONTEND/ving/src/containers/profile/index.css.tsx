@@ -171,8 +171,8 @@ export const pinIcon = style({
 })
 
 export const videoThumbnail = style({
-  width: '100%',
-  height: '100%',
+  width: "100%",
+  aspectRatio: "16/9",
   objectFit: 'cover'
 })
 
@@ -184,7 +184,6 @@ export const videoItemInfoBox = style({
 export const videoItemAdditionalInfo = style([
   rowbox, {
     alignItems: 'center',
-    padding: '0px 0px 0px 3px'
 }])
 
 export const videoItemAdditionalTextInfo = style([
