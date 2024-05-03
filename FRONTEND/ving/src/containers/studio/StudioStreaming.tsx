@@ -59,7 +59,12 @@ export default function StudioStreaming() {
 
       <div>
         <p>연령제한</p>
-        <Radio text='시청자를 19세로 제한하겠습니까?' checked={limit} onChange={toggleLimit}/>
+        <Radio 
+          text='시청자를 19세로 제한하겠습니까?'
+          isActive={limit} 
+          // checked={limit} 
+          onChange={toggleLimit}
+        />
       </div>
 
       <SmallButton text="업데이트" onClick={submitStreamSetting}/>

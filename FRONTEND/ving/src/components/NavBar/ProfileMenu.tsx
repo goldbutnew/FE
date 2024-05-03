@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import * as styles from './index.css'
 import { FaUserCircle } from 'react-icons/fa';
+import DropdownMenu from '../DropdownMenu/DropdownMenu';
+import MenuItem from '../DropdownMenu/MenuItem';
 
 export default function ProfileMenu({ onLogout }) {
   const userId = 1
@@ -17,17 +19,17 @@ export default function ProfileMenu({ onLogout }) {
         <FaUserCircle size={32} />
       </button>
       {isOpen && (
-        <div className={styles.dropdownMenu}>
-          <Link href={`/setting/${userId}`} className={styles.dropdownItem}>
-            세팅
-          </Link>
-          <Link href={`/profile/${userId}`} className={styles.dropdownItem}>
-            내 채널
-          </Link>
-          <button onClick={onLogout} className={styles.dropdownItem}>
-            로그아웃
-          </button>
-        </div>
+        <DropdownMenu>
+          <MenuItem>
+            <Link href={`/setting/${userId}`}>
+              세팅
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link href={`/profile/${userId}`}>내 채널</Link>
+          </MenuItem>
+          <MenuItem onClick={onLogout}>로그아웃</MenuItem>
+        </DropdownMenu>
       )}
     </div>
   );

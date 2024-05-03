@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '../../styles/vars.css';
+import { defaultBox } from '@/styles/box.css';
 
 export const dropdownMenu = style({
   position: 'absolute',
@@ -12,11 +13,15 @@ export const dropdownMenu = style({
   zIndex: 100,
 });
 
-export const dropdownItem = style({
-  padding: '8px 16px',
-  display: 'block',
-  whiteSpace: 'nowrap',
-  ':hover': {
-    backgroundColor: vars.colors.gray
+export const dropdownItem = style([
+  defaultBox,
+  {
+    width: '100%',
+    padding: '8px 16px',
+    display: 'block',
+    whiteSpace: 'nowrap',
+    ':hover': {
+      backgroundColor: vars.colors.gray
+    }
   }
-});
+]);
