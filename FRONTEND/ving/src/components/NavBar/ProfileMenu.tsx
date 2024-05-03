@@ -9,8 +9,6 @@ import MenuItem from '../DropdownMenu/MenuItem';
 
 export default function ProfileMenu({ onLogout }) {
   const userId = 1
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
     <div className={styles.profileMenuContainer}>
