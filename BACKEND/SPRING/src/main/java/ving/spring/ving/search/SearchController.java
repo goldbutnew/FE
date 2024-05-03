@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ving.spring.ving.user.UserModel;
 import ving.spring.ving.user.UserService;
+import ving.spring.ving.user.dto.ProfileDto;
 import ving.spring.ving.user.dto.UserDto;
 
 import java.sql.Array;
@@ -44,6 +45,17 @@ public class SearchController {
     @GetMapping("/all")
     public ResponseEntity<?> searchAll()
     {
+        List<SearchDto.SemiProfile> semiProfiles = new ArrayList<>();
+        List<UserModel> userModels = userService.findAllUser();
+        userModels.forEach( x ->
+                semiProfiles.add(
+                SearchDto.SemiProfile.builder()
+                        .username(x.getUserUsername())
+                        .nickname(x.getUserNickname())
+                        .thumbnail(x.getUserPhoto())
+                        .build()
+                )
+        );
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 }

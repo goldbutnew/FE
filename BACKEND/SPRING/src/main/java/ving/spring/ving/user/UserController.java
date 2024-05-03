@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +33,9 @@ import ving.spring.ving.subscription.SubscriptionService;
 import ving.spring.ving.user.dto.FillupDto;
 import ving.spring.ving.user.dto.ProfileDto;
 import ving.spring.ving.user.dto.UserDto;
+import ving.spring.ving.user.link.LinkDto;
+import ving.spring.ving.user.link.LinkModel;
+import ving.spring.ving.user.link.LinkService;
 import ving.spring.ving.video.VideoDto;
 import ving.spring.ving.video.VideoModel;
 import ving.spring.ving.video.VideoService;
@@ -51,6 +55,7 @@ public class UserController {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtIssuer jwtIssuer;
+    private final LinkService linkService;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final VideoService videoService;
@@ -83,6 +88,7 @@ public class UserController {
                 )
                 .info(
                         LoginResponse.info.builder()
+                                .username(userModel.getUserUsername())
                                 .nickname(userModel.getUserNickname())
                                 .build()
                 ).build();
@@ -150,6 +156,41 @@ public class UserController {
         );
     }
 
+    @PostMapping("/api/auth/postLink")
+    ResponseEntity<?> postLinks(@RequestBody LinkDto linkDto)
+    {
+        try
+        {
+            UserModel userModel = userService.findCurrentUser();
+            LinkModel linkModel = LinkModel.builder()
+                    .userModel(userModel)
+                    .url(linkDto.getUrl())
+                    .build();
+            linkService.save(linkModel);
+            return ResponseEntity.ok(HttpStatus.CREATED);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("api/auth/deleteLink")
+    ResponseEntity<?> deleteLink(@RequestBody LinkDto linkDto)
+    {
+        try
+        {
+            UserModel userModel = userService.findCurrentUser();
+            LinkModel linkModel = linkService.findLinkModelByUrlAndUserModel(linkDto.getUrl(), userModel);
+            linkService.delete(linkModel);
+            return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/api/auth/getProfile")
     public ResponseEntity<?> getProfile(@RequestParam String username)
     {
@@ -157,6 +198,10 @@ public class UserController {
         UserModel me = userService.findCurrentUser();
         List<VideoModel> videoModels = videoService.findVideoModelsByUser(userModel);
         List<VideoDto.VideoEntity> returnList = new ArrayList<>();
+        List<String> links = new ArrayList<>();
+        linkService.findLinkModelsByUserModel(userModel).forEach(
+                x -> links.add(x.getUrl())
+        );
         for (VideoModel videoModel : videoModels)
         {
             returnList.add(
@@ -178,6 +223,7 @@ public class UserController {
                         .followers(subscriptionService.countAllByStreamer(userModel))
                         .photoUrl(userModel.getUserPhoto())
                         .videos(returnList)
+                        .links(links)
                         .isFollowed(subscriptionService.existsByStreamerAndFollower(userModel, me))
                         .build()
         );
@@ -206,8 +252,6 @@ public class UserController {
 
             userModel.setUserPhoto(finalUrl);
             userService.save(userModel);
-
-
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(photo.getContentType());
             metadata.setContentLength(photo.getSize());
