@@ -14,23 +14,16 @@ export default function ProfileMenu({ onLogout }) {
 
   return (
     <div className={styles.profileMenuContainer}>
-      <button onClick={toggleMenu} className={styles.avatarButton}>
-        {/* <IconButton icon={FaUserCircle} /> */}
-        <FaUserCircle size={32} />
-      </button>
-      {isOpen && (
-        <DropdownMenu>
-          <MenuItem>
-            <Link href={`/setting/${userId}`}>
-              세팅
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link href={`/profile/${userId}`}>내 채널</Link>
-          </MenuItem>
-          <MenuItem onClick={onLogout}>로그아웃</MenuItem>
-        </DropdownMenu>
-      )}
+      <DropdownMenu 
+        button={<button className={styles.avatarButton}><FaUserCircle size={32} /></button>}>
+        <MenuItem>
+          <Link href={`/setting/${userId}`}>세팅</Link>
+        </MenuItem>
+        <MenuItem>
+          <Link href={`/profile/${userId}`}>내 채널</Link>
+        </MenuItem>
+        <MenuItem onClick={onLogout}>로그아웃</MenuItem>
+      </DropdownMenu>
     </div>
   );
 }

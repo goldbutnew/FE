@@ -17,11 +17,11 @@ export const dropdownItem = style([
   defaultBox,
   {
     width: '100%',
-    padding: '8px 16px',
+    padding: vars.space['1x'],
     display: 'block',
     whiteSpace: 'nowrap',
     ':hover': {
-      backgroundColor: vars.colors.gray
+      backgroundColor: vars.colors.lightGray
     }
   }
 ]);
