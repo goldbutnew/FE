@@ -6,7 +6,7 @@ def convert_stream_to_hls(user_id):
     
     # RTMP URL과 HLS 출력 경로를 유저 ID에 따라 동적으로 생성
     rtmp_url = f"rtmp://0.0.0.0:1935/live/{user_id}"
-    # output_path = f"/ving/media/{user_id}.m3u8"
+    
     output_path = f"/files/{user_id}.m3u8"
 
     # Docker 내에서 실행할 ffmpeg 명령 구성
@@ -41,7 +41,7 @@ def convert_stream_to_hls(user_id):
         output_path
     ]
     # subprocess를 사용하여 비동기로 ffmpeg 명령 실행
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # 로그 출력 (예시로 stderr만 출력)
     stdout, stderr = process.communicate()
