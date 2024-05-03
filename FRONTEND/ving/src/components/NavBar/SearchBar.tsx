@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as styles from './index.css'
 import axios from 'axios'
 import { FiSearch } from "react-icons/fi"
+import useProfileStore from '@/store/ProfileStore'
 
 interface User {
   user_id: number
@@ -13,6 +14,7 @@ export default function SearchBar() {
   const [nickname, setNickname] = useState('')
   const [users, setUsers] = useState<User[]>([])
   const [message, setMessage] = useState('')
+  const { getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData } = useProfileStore()
   
   const handleSearch = async () => {
     setUsers(users => [
@@ -24,6 +26,13 @@ export default function SearchBar() {
       }
     ])
   }
+
+  useEffect(() => {
+    getUserNicknameSearch()
+  }, [getUserNicknameSearch])
+
+
+  
   
   //   try {
   //     const response = await axios.post('/api/search/nickname', { nickname })

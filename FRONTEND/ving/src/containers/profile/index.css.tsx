@@ -211,38 +211,6 @@ export const videoItemellipsisButton = style({
 })
 
 // VideoTabComponent 관련 style 끝
-// SeachBar 관련 style 시작
-
-export const SearchBarContainer = style([
-  rowbox, {
-
-}])
-
-export const SearchBarInputBox = style({
-  width: '100%',
-  border: `1px solid ${vars.colors.gray}`,
-  padding: '4px 8px',
-  borderRadius: vars.borderRadius['0.5x'],
-})
-
-export const input = style({
-  flex: 1,
-  border: 'none',
-  outline: 'none',
-  padding: '8px',
-})
-
-export const searchIcon = style({
-  backgroundColor: vars.colors.lightGray,
-  borderRadius: vars.borderRadius['0.5x'],
-  border: 'none',
-  cursor: 'pointer',
-  margin: '0px 0px 0px 3px',
-  padding: '8px',
-  fontSize: vars.fontSize['2x'],
-})
-
-// SeachBar 관련 style 끝
 
 export const rankListBox = flex({
   justify: 'start',

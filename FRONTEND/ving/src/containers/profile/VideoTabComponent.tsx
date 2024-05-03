@@ -13,9 +13,8 @@ export default function VideoTabComponent() {
 
   const router = useRouter()
   const params = useParams()
-  const { profileData, getUserProfileInfo } = useProfileStore()
+  const { profileData, getUserProfileInfo, doFixVideo, unDoFixVideo } = useProfileStore()
   const [isOpen, setIsOpen] = useState({})
-  const dropdownRefs = useRef({})
 
   const toggleMenu = (videoId:number) => {
     setIsOpen(prev => ({
@@ -54,11 +53,18 @@ export default function VideoTabComponent() {
     },  
   ])
 
-  const togglePin = (videoTitle:string) => {
+  const togglePin = (videoId:number) => {
     setVideos(videos.map(video => {
-      if (video.title === videoTitle) {
+      // 상단 고정이 안 된 비디오
+      if (video.videoId === videoId) {
+        doFixVideo(videoId)
+        console.log('상단 고정')
         return { ...video, isFixed: !video.isFixed }
-      } else if (video.isFixed) {
+      }
+      // 상단 고정이 된 비디오 
+      else if (video.isFixed) {
+        unDoFixVideo(videoId)
+        console.log('상단 고정 취소')
         return { ...video, isFixed: false }
       }
       return video
@@ -76,27 +82,6 @@ export default function VideoTabComponent() {
     console.log('gggg')
   }, [getUserProfileInfo. videos])
 
-  useEffect(() => {
-    const handleClickOutside = (event:any) => {
-      Object.keys(isOpen).forEach(videoId => {
-        if (isOpen[videoId] && dropdownRefs.current[videoId] && !dropdownRefs.current[videoId].contains(event.target)) {
-          setIsOpen(prev => ({
-            ...prev,
-            [videoId]: false
-          }))
-        }
-      })
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isOpen])
-  // useEffect(() => {
-  //   if (profileData) {
-  //     setVideos(profileData.videos || [])
-  //   }
-  // }, [profileData])
-
   return (
     <div>
       {videos && videos.length > 0 ? (
@@ -112,24 +97,20 @@ export default function VideoTabComponent() {
                   <span>{video.title}</span>
                   <span className={styles.videoItemAdditionalInfoText}>조회수 {video.videoPlay}회</span>
                 </div>
-                <button onClick={() => toggleMenu(video.videoId)} className={styles.videoItemellipsisButton}>
-                  <HiEllipsisVertical size={20}/>
-                </button>
-                {isOpen[video.videoId] && (
-                  <div ref={el => dropdownRefs.current[video.videoId] = el}>
-                    <DropdownMenu>
-                      <MenuItem>
-                        <div onClick={() => togglePin(video.title)}>
-                        {video.isFixed ? '상단 고정 취소' : '상단 고정'}</div>
-                      </MenuItem>
-                      <MenuItem>
-                        <span>삭제</span>
-                      </MenuItem>
-                    </DropdownMenu>
-                  </div>
-                )}
+                  <DropdownMenu 
+                    button={<button onClick={() => toggleMenu(video.videoId)} className={styles.videoItemellipsisButton}>
+                      <HiEllipsisVertical size={20} />
+                    </button>}>
+                    <MenuItem>
+                      <div onClick={() => togglePin(video.videoId)}>
+                      {video.isFixed ? '상단 고정 취소' : '상단 고정'}</div>
+                    </MenuItem>
+                    <MenuItem>
+                      <span>삭제</span>
+                    </MenuItem>
+                  </DropdownMenu>
+                </div>
               </div>
-            </div>
           ))}
         </div>
       ) : (
