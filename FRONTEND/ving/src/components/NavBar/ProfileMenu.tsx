@@ -4,31 +4,27 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import * as styles from './index.css'
 import { FaUserCircle } from 'react-icons/fa';
+import DropdownMenu from '../DropdownMenu/DropdownMenu';
+import MenuItem from '../DropdownMenu/MenuItem';
+
+import useAuthStore from '@/store/AuthStore'
 
 export default function ProfileMenu({ onLogout }) {
-  const userId = 1
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const { userData } = useAuthStore()
+  const username = btoa(userData.username)
 
   return (
     <div className={styles.profileMenuContainer}>
-      <button onClick={toggleMenu} className={styles.avatarButton}>
-        {/* <IconButton icon={FaUserCircle} /> */}
-        <FaUserCircle size={32} />
-      </button>
-      {isOpen && (
-        <div className={styles.dropdownMenu}>
-          <Link href={`/setting/${userId}`} className={styles.dropdownItem}>
-            세팅
-          </Link>
-          <Link href={`/profile/${userId}`} className={styles.dropdownItem}>
-            내 채널
-          </Link>
-          <button onClick={onLogout} className={styles.dropdownItem}>
-            로그아웃
-          </button>
-        </div>
-      )}
+      <DropdownMenu 
+        button={<button className={styles.avatarButton}><FaUserCircle size={32} /></button>}>
+        <MenuItem>
+          <Link href={`/setting/${username}`}>세팅</Link>
+        </MenuItem>
+        <MenuItem>
+          <Link href={`/profile/${username}`}>내 채널</Link>
+        </MenuItem>
+        <MenuItem onClick={onLogout}>로그아웃</MenuItem>
+      </DropdownMenu>
     </div>
   );
 }

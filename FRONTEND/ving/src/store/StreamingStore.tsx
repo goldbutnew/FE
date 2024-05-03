@@ -9,7 +9,7 @@ const useStreamingStore = create((set) => ({
   openPort: async (tmp) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('http://k10a203.p.ssafy.io:3000/api/stream/createRoom', {
+      const response = await axios.patch('http://localhost:8000/api/stream/createRoom', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -24,15 +24,15 @@ const useStreamingStore = create((set) => ({
     }
   },
 
-  sendStreamTitle: async (roomName) => {
+  sendStreamTitle: async (new_name) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('http://k10a203.p.ssafy.io:3000/home/set_streaming_room_name/int:room_id/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await axios.patch('http://localhost:8000/home/set_streaming_room_name/int:room_id/', {
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
         body: {
-          roomName
+          new_name
         }
       })
       console.log('제목 수정 완료', response.data)
@@ -44,7 +44,7 @@ const useStreamingStore = create((set) => ({
   sendStreamThumbnail: async (thumbNail) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('http://k10a203.p.ssafy.io:3000/update_streaming_room_thumbnail/int:room_id/', {
+      const response = await axios.patch('http://localhost:8000/update_streaming_room_thumbnail/int:room_id/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -61,7 +61,7 @@ const useStreamingStore = create((set) => ({
   sendStreamLimit: async (isAdult) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('http://k10a203.p.ssafy.io:3000/home/set_streaming_room_is_adult/int:room_id/', {
+      const response = await axios.patch('http://localhost:8000/home/set_streaming_room_is_adult/int:room_id/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

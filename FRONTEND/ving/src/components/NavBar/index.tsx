@@ -20,9 +20,8 @@ import useAuthStore from "@/store/AuthStore"
 
 export default function NavBar() {
   const { userData } = useAuthStore()
-  // const userId = btoa(userData.username)
+  const username = btoa(userData.username)
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const userId = 1
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -51,7 +50,7 @@ export default function NavBar() {
       <div className={styles.rightNavBox}>
         {isAuthenticated ? (
           <>
-            <Link href={`/studio/${userId}`}>
+            <Link href={`/studio/${username}`}>
               <IconButton 
                 icon={FaVideo}
               />

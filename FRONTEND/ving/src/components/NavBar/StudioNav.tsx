@@ -12,8 +12,7 @@ import useAuthStore from "@/store/AuthStore"
 
 export default function StudioNav() {
   const { userData } = useAuthStore()
-  // const userId = btoa(userData.username)
-  const userId = 1
+  const username = btoa(userData.username)
 
   return (
     <nav className={styles.container}>
@@ -21,7 +20,7 @@ export default function StudioNav() {
         <Link href='/'>
           <Image src={logo} alt="main" className={styles.logo} />
         </Link>
-        <Link href={`/studio/${userId}`}>
+        <Link href={`/studio/${username}`}>
           <Image src={textLogo} alt="main" className={styles.textLogo} />
         </Link>
       </div>
