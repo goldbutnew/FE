@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ving.spring.ving.global.dto.DateTimeFormmer;
 import ving.spring.ving.global.dto.ResponseDTO;
 import ving.spring.ving.security.dto.LoginRequest;
 import ving.spring.ving.security.dto.LoginResponse;
@@ -56,6 +57,7 @@ public class UserController {
     private final AmazonS3Client amazonS3Client;
     private final SubscriptionService subscriptionService;
     private final FixedVideoService fixedVideoService;
+    private final DateTimeFormmer dateTimeFormmer;
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
     @PostMapping("/api/auth/login")
@@ -149,9 +151,9 @@ public class UserController {
     }
 
     @GetMapping("/api/auth/getProfile")
-    public ResponseEntity<?> getProfile(@RequestParam Integer userId)
+    public ResponseEntity<?> getProfile(@RequestParam String username)
     {
-        UserModel userModel = userService.findByUserId(userId).orElseThrow();
+        UserModel userModel = userService.findByUserUsername(username).orElseThrow();
         UserModel me = userService.findCurrentUser();
         List<VideoModel> videoModels = videoService.findVideoModelsByUser(userModel);
         List<VideoDto.VideoEntity> returnList = new ArrayList<>();
@@ -160,8 +162,10 @@ public class UserController {
             returnList.add(
                     VideoDto.VideoEntity.builder()
                             .title(videoModel.getVideoName())
+                            .videoId(videoModel.getVideoId())
                             .thumbnail(videoModel.getThumbnail())
                             .videoPlay(videoModel.getVideoplay())
+                            .createdAt(dateTimeFormmer.transform(videoModel.getCreatedAt()))
                             .isFixed(fixedVideoService.existsByVideoModel(videoModel))
                             .build()
             );
@@ -170,6 +174,7 @@ public class UserController {
         return ResponseEntity.ok().body(
                 ProfileDto.builder()
                         .nickname(userModel.getUserNickname())
+                        .introduction(userModel.getUserIntroduction())
                         .followers(subscriptionService.countAllByStreamer(userModel))
                         .photoUrl(userModel.getUserPhoto())
                         .videos(returnList)
