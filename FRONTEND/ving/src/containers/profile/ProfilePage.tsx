@@ -12,7 +12,6 @@ export default function ProfilePage() {
     <Container>
       <ProfileUserInfoBox />
       <TabsComponent where='home'/>
-      {/* <ProfileTabComponent /> */}
     </Container>
   )
 }
