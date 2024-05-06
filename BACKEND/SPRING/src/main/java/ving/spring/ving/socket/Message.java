@@ -19,7 +19,7 @@ public class Message {
         private String timeStamp;
         private Integer donation;
         private String text;
-        private boolean isTts;
+        private Boolean isTts;
         // private String type;
         // private String sender;
         // private Object data;

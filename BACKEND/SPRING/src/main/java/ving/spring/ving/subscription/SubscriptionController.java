@@ -3,11 +3,9 @@ package ving.spring.ving.subscription;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
-import org.apache.logging.log4j.util.Base64Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import ving.spring.ving.socket.Message;
 import ving.spring.ving.socket.MessageController;
 import ving.spring.ving.user.UserModel;
@@ -95,10 +93,11 @@ public class SubscriptionController {
     @PatchMapping("/donation")
     public ResponseEntity<?> donation(@RequestBody SubscriptionDto.DonationRequest donationRequest)
     {
+        log.info(donationRequest.getUsername());
         try
         {
-            UserModel follower = userService.findCurrentUser();
-            UserModel streamer = userService.findByUserUsername(donationRequest.getUserName()).orElseThrow();
+            UserModel follower = userService.findCudnbrrentUser();
+            UserModel streamer = userService.findByUserUsername(donationRequest.getUsername()).orElseThrow();
             SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(streamer, follower);
             subscriptionModel.setDonation(subscriptionModel.getDonation() + donationRequest.getChoco());
             if (follower.getUserChoco() < donationRequest.getChoco())
@@ -108,7 +107,7 @@ public class SubscriptionController {
 
             follower.setUserChoco(follower.getUserChoco() - donationRequest.getChoco());
             streamer.setUserChoco(streamer.getUserChoco() + donationRequest.getChoco());
-            String strBase64Encode = Base64.getEncoder().encodeToString(donationRequest.getUserName().getBytes());
+            String strBase64Encode = Base64.getEncoder().encodeToString(donationRequest.getUsername().getBytes());
             log.info(strBase64Encode);
             userService.save(follower);
             userService.save(streamer);

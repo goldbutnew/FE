@@ -50,7 +50,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     private final PasswordEncoder passwordEncoder;
@@ -66,6 +66,7 @@ public class UserController {
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
     @PostMapping("/api/auth/login")
+
     public LoginResponse login(@RequestBody @Validated LoginRequest request) {
 
         var authentication = authenticationManager.authenticate(

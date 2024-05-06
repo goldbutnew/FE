@@ -14,7 +14,7 @@ const useProfileStore = create((set, get) => ({
   // }
   profileData: {},
   // 유저 프로필 가져오기
-  getUserProfileInfo: async (username:number) => {
+  getUserProfileInfo: async (username:String) => {
     const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.get(`auth/getProfile`, {
