@@ -25,7 +25,7 @@ interface Message {
   isTts : Boolean;
   text: string;
 }
-
+// 방은 만들어져있지않으면 몽고 저장이 안돼서 문제생김 방은 axios로 만들 수 있음 
 export default function Chat() {
   const { userData } = useAuthStore()
   const [profileOpen, setProfileOpen] = useState(false);
@@ -39,6 +39,8 @@ export default function Chat() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
   
+
+  // 1. 이거 동적라우팅으로 바꿔야함
   const roomId = "a2FueWV3ZXN0";
 
   const onMessageReceived = (msg) => {
@@ -101,7 +103,8 @@ export default function Chat() {
 
     if (stompClient && messageInput.trim() && connected) {
       const message : Message = {
-        userName: userData.Id,
+         // 2. userData에 Id속성 없음
+        userName: userData.username,
         nickname: userData.nickname,
         timeStamp: formattedTimestamp,
         donation : 0,
@@ -119,7 +122,7 @@ export default function Chat() {
       console.log("아직 소켓 연결 안 됨");
     }
   };
-
+  
   useEffect(() => {
     // 스크롤 항상 아래로 내리기
     if (chatBoxRef.current) {
