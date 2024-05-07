@@ -40,6 +40,7 @@ export default function Chat() {
   const chatBoxRef = useRef(null);
   
   const roomId = "a2FueWV3ZXN0";
+  // const roomId = "dGVzdDE%3D"
 
   const onMessageReceived = (msg) => {
     const newMessage = JSON.parse(msg.body);
