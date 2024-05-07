@@ -120,10 +120,15 @@ def update_streaming_room_thumbnail(request, room_id):
     
 
 # 영상으로 저장하는 로직 추가해야됨
-@api_view(['PATCh'])
-def delete_streaming_room(request, user_id):
+@api_view(['PATCH'])
+def delete_streaming_room(request):
+    decoded_data = json.loads(request.body.decode('utf-8'))
+    print(decoded_data)
+    user_name = decoded_data.get('username')
+    print(user_name)
     try:
-        
+        user = User.objects.get(user_username = user_name)
+        user_id = user.user_id
         streaming_room = StreamingRoom.objects.get(user_id=user_id)
     except StreamingRoom.DoesNotExist:
         
