@@ -37,4 +37,25 @@ public class StreamRoomDto {
     {
         private String streamer;
     }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class FindAllResponse
+    {
+        List<StreamRoom> streamRooms;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class StreamRoom
+    {
+        private String thumbnail;
+        private String username;
+        private String title;
+        private Integer viewers;
+    }
 }
