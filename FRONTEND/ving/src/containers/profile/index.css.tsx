@@ -41,6 +41,70 @@ export const followerBox = style([
     justifySelf: 'flex-end',
 }])
 
+export const followerNotification = style([
+  rowbox, {
+  }
+])
+
+export const alarmIcon = style({
+  display: 'flex',
+  borderRadius: vars.borderRadius.full,
+  backgroundColor: vars.colors.lightGray,
+  justifyContent: 'center',
+  alignItems: 'center',
+  border: 'none',
+  cursor: 'pointer',
+  margin: '0px 0px 0px 5px',
+  padding: 3,
+  // selectors: {
+  //   '&:hover .tooltip': {
+  //     visibility: 'visible',
+  //     opacity: 1,
+  //   }
+  // }
+})
+
+export const notificationHoverText = style({
+  position: 'relative',
+  selectors: {
+    '&::before': { 
+      content: 'attr(data-hover)',  
+      visibility: 'hidden',
+      opacity: 0,
+      width: 'max-content',
+      backgroundColor: 'black',
+      color: '#fff',
+      textAlign: 'center',
+      borderRadius: '5px',
+      padding: '5px',
+      transition: 'opacity 1s ease-in-out',
+      position: 'absolute',
+      zIndex: 1,
+      left: 0,
+      top: '110%',
+    },
+    '&:hover::before': {  
+      opacity: 1,
+      visibility: 'visible',
+    }
+  }
+})
+
+// export const tooltipStyle = style({
+//   position: 'absolute',
+//   backgroundColor: 'black',
+//   color: 'white',
+//   padding: '5px 10px',
+//   borderRadius: '4px',
+//   visibility: 'hidden',
+//   opacity: 0,
+//   transition: 'visibility 0s, opacity 0.5s linear',
+//   bottom: '100%',
+//   left: '50%',
+//   transform: 'translateX(-50%)',
+//   whiteSpace: 'nowrap',
+// })
+
 // ProfileUserInfoBox 관련 style 끝
 // TabsComponent 관련 style 시작
 

@@ -55,16 +55,22 @@ export default function VideoTabComponent() {
 
   const togglePin = (videoId:number) => {
     setVideos(videos.map(video => {
-      // 상단 고정이 안 된 비디오
+      // 클릭한 비디오일 경우, 상단 고정 반대로 함.
       if (video.videoId === videoId) {
-        doFixVideo(videoId)
-        console.log('상단 고정')
+        if (video.isFixed) {
+          unDoFixVideo(videoId)
+          console.log('상단고정해제')
+        } 
+        else {
+          doFixVideo(videoId)
+          console.log('상단 고정')
+        }
         return { ...video, isFixed: !video.isFixed }
       }
-      // 상단 고정이 된 비디오 
+      // 클릭한 비디오가 아닐 경우, 만약 상단 고정된 비디오일 경우,
+      // false로 한다.
       else if (video.isFixed) {
-        unDoFixVideo(videoId)
-        console.log('상단 고정 취소')
+        console.log('다른 비디오 상단 고정 해제')
         return { ...video, isFixed: false }
       }
       return video
@@ -79,7 +85,6 @@ export default function VideoTabComponent() {
     initData(params.userId)
     const sortedVideos = [...videos].sort((a, b) => b.isFixed - a.isFixed)
     setVideos(sortedVideos)
-    console.log('gggg')
   }, [getUserProfileInfo. videos])
 
   return (

@@ -4,6 +4,7 @@ import SmallButton from '@/components/Button/SmallButton'
 import { useParams, useRouter } from 'next/navigation'
 import useProfileStore from '@/store/ProfileStore'
 import useAuthStore from '@/store/AuthStore'
+import { MdNotifications, MdNotificationsOff } from "react-icons/md"
 
 interface SocialLinkProps {
   platform: string
@@ -36,32 +37,44 @@ export default function ProfileUserInfoBox() {
   const { userData } = useAuthStore()
   const [subscriberCount, setSubscriberCount] = useState(profileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(profileData.isFollowed)
-  
+  const [isAlarmed, setIsAlarmed] = useState(false)
+  const alarmText = isAlarmed ? "알림 켜기" : "알림 끄기"
+
   // const username = btoa(userData.username)
-  const loginUserName = btoa(userData.username)
+  const loginUserName = userData.username
   const profileUserName = atob(params.username)
+  const searchProfileUserName = btoa(params.username)
 
   const toggleFollow = () => {
     setLoading(true)
     
+    console.log(userData.username)
+    console.log(profileUserName)
     // const nickname = 'baloo366'
 
     if (isFollowed) {
       setIsFollowed(false)
       setSubscriberCount(subscriberCount - 1)
-      unDoFollowUser(profileUserName)
+      // unDoFollowUser(profileUserName)
+      unDoFollowUser(2)
     } else {
       setIsFollowed(true)
       setSubscriberCount(subscriberCount + 1)
-      doFollowUser(profileUserName)
+      // doFollowUser(profileUserName)
+      doFollowUser(2)
     }
     setLoading(true)
   }
 
+  const toggleAlarm = () => {
+    if (isFollowed) {
+      setIsAlarmed(!isAlarmed)
+    }
+  }
+
   useEffect(() => {
     console.log(params.username)
-    console.log(atob(params.username))
-
+    console.log(atob(params.username), profileUserName)
     getUserNicknameSearch()
     const initData = async (profileUserName:string) => {
       await getUserProfileInfo(profileUserName)
@@ -99,18 +112,27 @@ export default function ProfileUserInfoBox() {
         <img src={profileData.photoUrl} className={styles.userImage} alt="User profile" />
         <div className={styles.userTextInfoBox}>
           <span className={styles.userName}>{profileData.nickname}</span>
-          <span className={styles.userIntroduce}>{profileData.userIntroduce || '안녕하세요 반가워요 이제 안녕히 가세요'}</span>
+          <span className={styles.userIntroduce}>{profileData.introduction || '안녕하세요 반가워요 이제 안녕히 가세요'}</span>
         </div>
       </div>
-      {`${profileUserName}` === String(loginUserName) ? (
-        <SmallButton text='채널관리' color='lightGray' onClick={() => router.push('/setting')} />
+      {`${profileUserName}` === loginUserName ? (
+        <SmallButton text='채널관리' color='lightGray' onClick={() => router.push(`/setting/${loginUserName}`)} />
       ) : (
         <div className={styles.followerBox}>
-          <SmallButton
-            text={isFollowed ? '팔로잉' : '팔로우'}
-            color={isFollowed ? 'lightGray' : 'black'}
-            onClick={() => toggleFollow()}
-          />
+          <div className={styles.followerNotification}>
+            <SmallButton
+              text={isFollowed ? '팔로잉' : '팔로우'}
+              color={isFollowed ? 'lightGray' : 'black'}
+              onClick={() => toggleFollow()}
+            />
+            {isFollowed && (
+            <div className={styles.notificationHoverText} data-hover={alarmText}>
+              <div className={styles.alarmIcon} onClick={toggleAlarm}>
+                {isAlarmed ? <MdNotificationsOff size={20}/> : <MdNotifications size={20} /> }
+              </div>
+            </div>
+            )}
+          </div>
           <div>팔로워 {subscriberCount}명</div>
         </div>
       )}
