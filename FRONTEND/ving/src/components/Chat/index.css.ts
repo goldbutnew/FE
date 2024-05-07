@@ -1,7 +1,6 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/vars.css'
 import { betweenBox, defaultBox, endBox, rowbox } from '@/styles/box.css'
-import { space } from 'postcss/lib/list'
 import { bold } from '@/styles/fonts.css'
 import { plainButton } from '@/styles/common.css'
 
@@ -64,8 +63,6 @@ export const donationChatItemChoco = style([
     backgroundColor: vars.colors.gray,
   }
 ])
-
-
 
 export const inputBox = style({
   width: '100%',
@@ -166,6 +163,38 @@ export const donationEmojiPicker = style({
 });
 
 export const donationSendButtonBox = style([
+  endBox,
+  {
+    width: "100%",
+    margin: `${vars.space['1x']} 0 0 0`
+  }
+])
+
+
+// StudioChat.ts
+export const studioChatContainer = style([
+  defaultBox,
+  {
+    backgroundColor: vars.colors.white,
+    whiteSpace: 'pre-wrap',
+    overflowWrap: 'break-word',
+    width: '100%',
+    height: '50vh',
+    // transform: 'translateX(0)',
+    padding: `0 ${vars.space['1x']} ${vars.space['1x']} ${vars.space['1x']}`,
+  }
+])
+
+export const studioChatBox = style({
+  width: '100%',
+  height: '100%',
+  overflow: 'auto',
+  '&::-webkit-scrollbar': {
+    display: 'none',
+  },
+})
+
+export const studioChatSendButtonBox = style([
   endBox,
   {
     width: "100%",

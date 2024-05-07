@@ -10,6 +10,7 @@ import DefaultInput from '@/components/Input/defaultInput'
 import Radio from '@/components/Input/Radio'
 import SmallButton from '@/components/Button/SmallButton'
 import StreamingVideo from '@/components/StreamingVideo'
+import * as styles from './index.css'
 
 
 export default function StudioStreaming() {
@@ -41,42 +42,35 @@ export default function StudioStreaming() {
   }
 
   return (
-    <div>
+    <div className={styles.studioStreamingContainer}>
       <div>
         <StreamingVideo />
         {/* <video src='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' controls></video> */}
       </div>
 
-      <div>
-        <label>방송 제목</label>
-        <DefaultInput type='text' value={title} onChange={handleTitle}/>
-      </div>
+      <div className={styles.streamingInfoContainer}>
+        <div className={styles.streamingInfoItem}>
+          <label className={styles.streamingInfoTitle}>방송 제목</label>
+          <DefaultInput type='text' value={title} onChange={handleTitle}/>
+        </div>
 
-      <div>
-        <p>미리 보기 이미지</p>
-        <Image src={logo} alt="logo" />
-      </div>
+        <div className={styles.streamingInfoItem}>
+          <label className={styles.streamingInfoTitle}>미리 보기 이미지</label>
+          <Image src={logo} alt="logo" />
+        </div>
 
-      <div>
-        <p>연령제한</p>
-        <Radio 
-          text='시청자를 19세로 제한하겠습니까?'
-          isActive={limit} 
-          // checked={limit} 
-          onChange={toggleLimit}
-        />
+        <div className={styles.streamingInfoItem}>
+          <label className={styles.streamingInfoTitle}>연령제한</label>
+          <Radio 
+            text='시청자를 19세로 제한하겠습니까?'
+            isActive={limit} 
+            onChange={toggleLimit}
+          />
+        </div>
+        <div className={styles.updateButtonBox}>
+          <SmallButton text="업데이트" onClick={submitStreamSetting}/>
+        </div>
       </div>
-
-      <SmallButton text="업데이트" onClick={submitStreamSetting}/>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <NetworkSpeedTest />
     </div>
   )
 }

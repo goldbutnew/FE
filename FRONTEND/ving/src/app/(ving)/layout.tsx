@@ -5,7 +5,6 @@ import NavBar from "@/components/NavBar";
 import SideBar from "@/components/SideBar/SideBar";
 import * as styles from './layout.css'
 import '../../styles/reset.css'
-import Chat from "@/components/Chat";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,8 +42,7 @@ export default function RootLayout({
           </ SideBar>
           <div className={styles.mainContent}>
             {children}
-          </div>          
-          {/* <Chat /> */}
+          </div>
         </div>
       </body>
     </html>
