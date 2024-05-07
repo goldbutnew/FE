@@ -36,7 +36,7 @@ def current_top_viewers(request):
     return JsonResponse({'users': users})
 
 @api_view(['PATCH'])
-def set_streaming_room_name(request, room_id):
+def set_streaming_room_name(request, user_id):
     try:
         data = json.loads(request.body)
         new_name = data.get('new_name')
@@ -44,7 +44,7 @@ def set_streaming_room_name(request, room_id):
         if not new_name:
             return Response({'error': 'New room name is required'}, status=status.HTTP_400_BAD_REQUEST)
 
-        room = StreamingRoom.objects.get(room_id=room_id)
+        room = StreamingRoom.objects.get(user_id=user_id)
         room.room_name = new_name
         room.save()
 

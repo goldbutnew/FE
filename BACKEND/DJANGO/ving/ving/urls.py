@@ -21,9 +21,10 @@ from django.conf.urls.static import static
 from camera_app import routing 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', include('home.urls')),
+    path('api/home/', include('home.urls')),
     path('hls/', include('hls.urls')),
     path('camera_app/', include('camera_app.urls')),
+    path('statistic/', include('statistic.urls')),
     path('ws/', include(routing.websocket_urlpatterns)),
     
     path('media_pipeline/', include('media_pipeline.urls')),
