@@ -164,6 +164,7 @@ export const streamingInfoContainer = style({
 export const streamingInfoItem = style([
   rowbox,
   {
+    // alignItems: 'flex-start',
     padding: `${vars.space['1x']} 0`
   }
 ])
