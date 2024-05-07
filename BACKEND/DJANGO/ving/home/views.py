@@ -120,18 +120,20 @@ def update_streaming_room_thumbnail(request, room_id):
     
 
 # 영상으로 저장하는 로직 추가해야됨
-@api_view(['DELETE'])
-def delete_streaming_room(request, room_id):
+@api_view(['PATCh'])
+def delete_streaming_room(request, user_id):
     try:
         
-        streaming_room = StreamingRoom.objects.get(room_id=room_id)
+        streaming_room = StreamingRoom.objects.get(user_id=user_id)
     except StreamingRoom.DoesNotExist:
         
         return Response({"message": "StreamingRoom does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
     # StreamingRoom 삭제
-    streaming_room.delete()
-
+    streaming_room.is_end = 1
+    streaming_room.room_name = ''
+    streaming_room.room_age_limit = 0
+    streaming_room.room_thumbnail = ''
     return Response({"message": "StreamingRoom deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 
