@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ving.spring.ving.user.link.LinkDto;
 import ving.spring.ving.video.VideoDto;
 import java.util.List;
 
@@ -18,8 +19,8 @@ public class ProfileDto {
     private Integer followers;
     private List<VideoDto.VideoEntity> videos;
     private Boolean isFollowed;
-    private List<String> links;
-
+    private List<LinkDto> links;
+    private Boolean isAlarmed;
 
 
 
