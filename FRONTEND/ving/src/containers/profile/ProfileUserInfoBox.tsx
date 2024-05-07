@@ -3,6 +3,7 @@ import * as styles from './index.css'
 import SmallButton from '@/components/Button/SmallButton'
 import { useParams, useRouter } from 'next/navigation'
 import useProfileStore from '@/store/ProfileStore'
+import useAuthStore from '@/store/AuthStore'
 
 interface SocialLinkProps {
   platform: string
@@ -28,15 +29,19 @@ export default function ProfileUserInfoBox() {
   const params = useParams()
 
   // 임시 로그인 유저
-  const loginUserId = 1
+
 
   const [loading, setLoading] = useState(false)
-  const { profileData, getUserProfileInfo, doFollowUser, doUnFollowUser } = useProfileStore()
+  const { profileData, getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData } = useProfileStore()
+  const { userData } = useAuthStore()
   const [subscriberCount, setSubscriberCount] = useState(profileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(profileData.isFollowed)
   
+  // const username = btoa(userData.username)
+  const loginUserName = btoa(userData.username)
+  const profileUserName = atob(params.username)
+
   const toggleFollow = () => {
-    const userIdNum = parseInt(params.userId)
     setLoading(true)
     
     // const nickname = 'baloo366'
@@ -44,21 +49,25 @@ export default function ProfileUserInfoBox() {
     if (isFollowed) {
       setIsFollowed(false)
       setSubscriberCount(subscriberCount - 1)
-      doUnFollowUser(params.userId)
+      unDoFollowUser(profileUserName)
     } else {
       setIsFollowed(true)
       setSubscriberCount(subscriberCount + 1)
-      doFollowUser(params.userId)
+      doFollowUser(profileUserName)
     }
     setLoading(true)
   }
 
   useEffect(() => {
-    const initData = async (userIdNum:number) => {
-      await getUserProfileInfo(userIdNum)
+    console.log(params.username)
+    console.log(atob(params.username))
+
+    getUserNicknameSearch()
+    const initData = async (profileUserName:string) => {
+      await getUserProfileInfo(profileUserName)
       setLoading(true)
     }
-    initData(params.userId)
+    initData(profileUserName)
   }, [getUserProfileInfo])
 
   useEffect(() => {
@@ -68,10 +77,10 @@ export default function ProfileUserInfoBox() {
   }, [profileData])
 
   useEffect(() => {
-    if (params.userId && params.userId !== String(loginUserId)) {
+    if (profileUserName && profileUserName !== String(loginUserName)) {
       setLoading(true)
     }
-  }, [params.userId, isFollowed])
+  }, [profileUserName, isFollowed])
 
   // 팔로우 여부 관련 api 호출
   // const checkFollowStatus = async (userId:String) => {
@@ -93,14 +102,14 @@ export default function ProfileUserInfoBox() {
           <span className={styles.userIntroduce}>{profileData.userIntroduce || '안녕하세요 반가워요 이제 안녕히 가세요'}</span>
         </div>
       </div>
-      {`${params.userId}` === String(loginUserId) ? (
+      {`${profileUserName}` === String(loginUserName) ? (
         <SmallButton text='채널관리' color='lightGray' onClick={() => router.push('/setting')} />
       ) : (
         <div className={styles.followerBox}>
           <SmallButton
             text={isFollowed ? '팔로잉' : '팔로우'}
             color={isFollowed ? 'lightGray' : 'black'}
-            onClick={() => toggleFollow(params.userId)}
+            onClick={() => toggleFollow()}
           />
           <div>팔로워 {subscriberCount}명</div>
         </div>

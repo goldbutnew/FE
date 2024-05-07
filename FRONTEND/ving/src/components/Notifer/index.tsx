@@ -1,15 +1,21 @@
 'use client'
 
-import React from "react";
+import React, { useEffect } from "react";
 import { FaRegBell } from "react-icons/fa";
 import IconButton from "../Button/IconButton";
 import useModal from "@/hooks/useModal";
 import { IoIosClose } from "react-icons/io";
 import * as styles from './index.css'
 import { bold } from "@/styles/fonts.css";
+import useNotiferStore from "./Store";
 
 export default function Notifer() {
   const { isOpen, open, close, modalRef } = useModal();
+  const { myAlarm, getAlarm } = useNotiferStore()
+
+  useEffect(() => {
+    getAlarm()
+  }, [])
 
   return (
     <div className={styles.iconButtonBox}>
@@ -27,7 +33,13 @@ export default function Notifer() {
                 className={styles.closeButton}
               />
             </div>
-            <p>알림모ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㄴ달</p>
+            {myAlarm.length > 0 ? (
+              myAlarm.map((alarm, index) => (
+                <p key={index}>{alarm.message}</p> // 알림 메시지 출력
+              ))
+            ) : (
+              <p>알림이 없습니다.</p>
+            )}
           </div>
         </div>
       )}

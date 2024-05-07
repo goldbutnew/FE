@@ -10,7 +10,7 @@ import Login from "@/containers/auth/Login";
 import ProfileMenu from "./ProfileMenu";
 import Logout from "@/containers/auth/Logout";
 import IconButton from "../Button/IconButton";
-import SearchBar from "@/containers/profile/SearchBar";
+import SearchBar from "@/components/NavBar/SearchBar";
 
 import { FaVideo } from "react-icons/fa";
 import logo from '#/images/main-logo.png'

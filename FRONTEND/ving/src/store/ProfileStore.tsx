@@ -13,17 +13,33 @@ const useProfileStore = create((set, get) => ({
   //   } 
   // }
   profileData: {},
+  searchData: {},
   // 유저 프로필 가져오기
-  getUserProfileInfo: async (username:String) => {
+  getUserProfileInfo: async (username:string) => {
     const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.get(`auth/getProfile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        params: { userId : username},
+        params: { username : username},
       })
       set({ profileData: response.data })
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 유저 검색 자동완성
+  getUserNicknameSearch: async () => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.get(`search/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      set({ searchData: response.data.users })
+      console.log('-------------', response.data)
     } catch (error) {
       console.error(error)
     }
@@ -58,7 +74,7 @@ const useProfileStore = create((set, get) => ({
     }
   },
   // 팔로우 취소 /api/sub/subscript
-  doUnFollowUser: async (userId:number) => {
+  unDoFollowUser: async (userId:number) => {
     const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.delete(`sub/unSubscript`, {
@@ -86,7 +102,7 @@ const useProfileStore = create((set, get) => ({
     }
   },
   // 상단 고정 취소 /api/sub/subscript
-  doUnFixVideo: async (videoId:number) => {
+  unDoFixVideo: async (videoId:number) => {
     const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.delete(`video/undoFix`, {

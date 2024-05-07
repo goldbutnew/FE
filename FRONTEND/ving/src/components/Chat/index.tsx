@@ -41,11 +41,19 @@ export default function Chat() {
   
   const roomId = "a2FueWV3ZXN0";
 
+  // const onMessageReceived = (msg) => {
+  //   const newMessage = JSON.parse(msg.body);
+  //   console.log(newMessage);
+  //   addMessage(newMessage)
+  //   // setMessages(prevMessages => [...prevMessages, newMessage]);
+  // };
+
   const onMessageReceived = (msg) => {
     const newMessage = JSON.parse(msg.body);
-    console.log(newMessage);
-    addMessage(newMessage)
-    // setMessages(prevMessages => [...prevMessages, newMessage]);
+    if (!messages.find(m => m.id === newMessage.id)) {  // 메시지 ID로 중복 검사
+      console.log(newMessage);
+      addMessage(newMessage);
+    }
   };
 
   const connect = () => {

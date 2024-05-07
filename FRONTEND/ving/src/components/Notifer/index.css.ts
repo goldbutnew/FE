@@ -28,6 +28,7 @@ export const modalTitle = style({
 
 export const modalContent = style({
   width: '100%', 
+  minWidth: '300px',
   padding: vars.space['1x'],
   boxSizing: 'border-box',
   whiteSpace: 'nowrap',
