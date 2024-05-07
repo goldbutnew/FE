@@ -19,8 +19,8 @@ import * as styles from './index.css'
 import useAuthStore from "@/store/AuthStore"
 
 export default function NavBar() {
-  const { userData } = useAuthStore()
-  const username = btoa(userData.username)
+  const { userData, code } = useAuthStore()
+  // const username = btoa(userData.username)
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function NavBar() {
       <div className={styles.rightNavBox}>
         {isAuthenticated ? (
           <>
-            <Link href={`/studio/${username}`}>
+            <Link href={`/studio/${code}`}>
               <IconButton 
                 icon={FaVideo}
               />

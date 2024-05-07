@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 import ving.spring.ving.user.UserModel;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -13,5 +14,6 @@ import java.util.Optional;
 @EnableJpaRepositories(basePackages = "com.example.myapp.jpa.repository")
 public interface StreamRoomRepository extends JpaRepository<StreamRoomModel, Integer> {
     public Optional<StreamRoomModel> findStreamRoomModelByStreamerAndIsEnd(UserModel streamer, Boolean isEnd);
+    public List<StreamRoomModel> findStreamRoomModelsByIsEnd(Boolean isEnd);
 }
  

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import * as styles from './index.css'
-import axios from 'axios'
 import { FiSearch } from "react-icons/fi"
 import useProfileStore from '@/store/ProfileStore'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 interface User {

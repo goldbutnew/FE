@@ -3,15 +3,13 @@ import axios from '../api/axios'
 
 
 const useMainStore = create((set) => ({
-  onAirData: [],
+  streamData: [],
 
-  getOnAirInfo: async (username) => {
+  getStreamInfo: async () => {
     try {
-      const response = await axios.get('/stream/getOnAir', { 
-        params : { username },
-      })
+      const response = await axios.get('stream/findAll')
       console.log('생방송 목록 가져오기 성공', response.data)
-      set({ onAirData: response.data.videos })
+      set({ streamData: response.data.streamRooms })
 
     } catch (error) {
       console.error('생방송 목록 가져오기 실패:', error)

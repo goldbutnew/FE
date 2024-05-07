@@ -5,6 +5,7 @@ import * as styles from './index.css';
 import { line } from '@/styles/common.css';
 import { betweenBox, columnbox } from '@/styles/box.css';
 import { LiaDoorOpenSolid, LiaDoorClosedSolid } from "react-icons/lia";
+import RankingUser from './RankingUser';
 
 interface SidebarProps {
   title: string

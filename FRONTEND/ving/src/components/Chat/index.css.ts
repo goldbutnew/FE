@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/vars.css'
-import { betweenBox, defaultBox, endBox, rowbox } from '@/styles/box.css'
+import { betweenBox, columnbox, defaultBox, endBox, rowbox } from '@/styles/box.css'
 import { bold } from '@/styles/fonts.css'
 import { plainButton } from '@/styles/common.css'
 
@@ -173,21 +173,39 @@ export const donationSendButtonBox = style([
 
 // StudioChat.ts
 export const studioChatContainer = style([
+  columnbox,
+  {
+    width: '100%',
+    height: '50vh',
+    padding: `0 ${vars.space['1x']} ${vars.space['1x']} ${vars.space['1x']}`,
+    backgroundColor: vars.colors.white,
+    overflow: 'hidden'
+  }
+])
+
+export const studioChatContent = style([
   defaultBox,
   {
-    backgroundColor: vars.colors.white,
     whiteSpace: 'pre-wrap',
     overflowWrap: 'break-word',
     width: '100%',
-    height: '50vh',
-    // transform: 'translateX(0)',
-    padding: `0 ${vars.space['1x']} ${vars.space['1x']} ${vars.space['1x']}`,
+    height: '100%',
+    overflow: 'auto',
+  }
+])
+
+export const title = style([
+  bold,
+  {
+    height: 20,
+    fontSize: vars.fontSize['0.5x'],
   }
 ])
 
 export const studioChatBox = style({
   width: '100%',
   height: '100%',
+  flexGrow: 1,
   overflow: 'auto',
   '&::-webkit-scrollbar': {
     display: 'none',
@@ -199,5 +217,6 @@ export const studioChatSendButtonBox = style([
   {
     width: "100%",
     margin: `${vars.space['1x']} 0 0 0`
+    // margin: `${vars.space['1x']} 0 ${vars.space['4x']} 0`
   }
 ])
