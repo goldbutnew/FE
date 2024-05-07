@@ -116,4 +116,28 @@ export const searchIcon = style({
   fontSize: vars.fontSize['2x'],
 })
 
+export const autocompleteList = style({
+  position: 'absolute',
+  backgroundColor: vars.colors.white,
+  // 테두리 주니까 밑줄 모양이 남음.. 일단 보류
+  // border: `1px solid ${vars.colors.gray}`,
+  maxHeight: 200,
+  width: 243,
+  overflowY: 'auto',
+  zIndex: 100,
+})
+
+export const searchUserImage = style({
+  width: 45,
+  height: 45, 
+  borderRadius: vars.borderRadius.full,
+  border: `2.5px solid ${vars.colors.black}`,
+  margin: '0px 5px 0px 0px'
+})
+
+export const autocompleteItem = style([
+  rowbox, {
+  margin: '5px 0px 5px 0px'
+  }
+])
 // SeachBar 관련 style 끝

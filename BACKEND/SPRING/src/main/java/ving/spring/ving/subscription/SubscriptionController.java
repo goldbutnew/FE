@@ -27,7 +27,7 @@ public class SubscriptionController {
     @PostMapping("/subscript")
     public  ResponseEntity<?> subscript(@RequestBody SubscriptionDto.SubscriptRequest subscriptRequest)
     {
-        UserModel streamer = userService.findByUserId(subscriptRequest.getUserId()).orElseThrow();
+        UserModel streamer = userService.findByUserUsername(subscriptRequest.getUsername()).orElseThrow();
         UserModel follower = userService.findCurrentUser();
 
         if (streamer.equals(follower))
@@ -52,7 +52,7 @@ public class SubscriptionController {
 
         return ResponseEntity.ok(
                 SubscriptionDto.SubscriptResponse.builder()
-                        .userId(subscriptRequest.getUserId())
+                        .username(subscriptRequest.getUsername())
                         .build()
         );
 
@@ -61,7 +61,7 @@ public class SubscriptionController {
     @DeleteMapping("/unSubscript")
     public ResponseEntity<?> unSubscript(@RequestBody SubscriptionDto.SubscriptRequest subscriptRequest)
     {
-        UserModel streamer = userService.findByUserId(subscriptRequest.getUserId()).orElseThrow();
+        UserModel streamer = userService.findByUserUsername(subscriptRequest.getUsername()).orElseThrow();
         UserModel follower = userService.findCurrentUser();
 
 
@@ -76,7 +76,7 @@ public class SubscriptionController {
     @PatchMapping("/changeAlarm")
     public ResponseEntity<?> changeAlarm(@RequestBody SubscriptionDto.SubscriptRequest subscriptRequest)
     {
-        UserModel streamer = userService.findByUserId(subscriptRequest.getUserId()).orElseThrow();
+        UserModel streamer = userService.findByUserUsername(subscriptRequest.getUsername()).orElseThrow();
         UserModel follower = userService.findCurrentUser();
         if (streamer.equals(follower))
         {
@@ -96,7 +96,7 @@ public class SubscriptionController {
         log.info(donationRequest.getUsername());
         try
         {
-            UserModel follower = userService.findCudnbrrentUser();
+            UserModel follower = userService.findCurrentUser();
             UserModel streamer = userService.findByUserUsername(donationRequest.getUsername()).orElseThrow();
             SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(streamer, follower);
             subscriptionModel.setDonation(subscriptionModel.getDonation() + donationRequest.getChoco());

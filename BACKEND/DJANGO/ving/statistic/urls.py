@@ -4,5 +4,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('play_count/', views.main),
+    path('play_count/', views.play_count),
 ]

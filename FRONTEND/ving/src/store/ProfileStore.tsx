@@ -63,24 +63,28 @@ const useProfileStore = create((set, get) => ({
   doFollowUser: async (userId:number) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.post(`sub/subscript`, {
+      const response = await axios.post(`sub/subscript`,  {
         headers: {
+          "Content-Type" : "application/json",
           Authorization: `Bearer ${token}`,
         },
+        data: { userId: userId }
       })
       console.log(response, '팔로우 신청 성공')
     } catch (error) {
       console.error(error)
     }
   },
-  // 팔로우 취소 /api/sub/subscript
+  // 팔로우 취소 /api/sub/unSubscript
   unDoFollowUser: async (userId:number) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.delete(`sub/unSubscript`, {
+      const response = await axios.delete(`sub/unSubscript`,  {
         headers: {
+          "Content-Type" : "application/json",
           Authorization: `Bearer ${token}`,
         },
+        data: { userId: userId }
       })
       console.log(response, '팔로우 취소 성공')
     } catch (error) {
@@ -95,6 +99,7 @@ const useProfileStore = create((set, get) => ({
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        data: { videoId: videoId }
       })
       console.log(response, '상단 고정 성공')
     } catch (error) {
@@ -109,6 +114,7 @@ const useProfileStore = create((set, get) => ({
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        data: { videoId: videoId }
       })
       console.log(response, '상단 고정 취소 성공')
     } catch (error) {

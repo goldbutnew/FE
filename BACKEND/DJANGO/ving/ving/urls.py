@@ -22,12 +22,12 @@ from camera_app import routing
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/home/', include('home.urls')),
-    path('hls/', include('hls.urls')),
-    path('camera_app/', include('camera_app.urls')),
-    path('statistic/', include('statistic.urls')),
-    path('ws/', include(routing.websocket_urlpatterns)),
+    path('api/hls/', include('hls.urls')),
+    path('api/camera_app/', include('camera_app.urls')),
+    path('api/statistic/', include('statistic.urls')),
+    path('api/ws/', include(routing.websocket_urlpatterns)),
     
-    path('media_pipeline/', include('media_pipeline.urls')),
+    path('api/media_pipeline/', include('media_pipeline.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

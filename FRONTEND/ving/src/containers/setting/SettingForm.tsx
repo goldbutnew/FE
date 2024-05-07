@@ -6,6 +6,8 @@ import Textarea from '@/components/Input/TextArea'
 import DefaultInput from '@/components/Input/DefaultInput'
 import useProfileStore from '@/store/ProfileStore'
 import { FiLink } from "react-icons/fi"
+import useAuthStore from '@/store/AuthStore'
+import useSettingStore from '@/store/SettingStore'
 
 interface Link {
   id: number
@@ -26,15 +28,17 @@ export default function SettingForm() {
   const [introduction, setIntroduction] = useState('')
   const [photoUrl, setPhotoUrl] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const { userData } = useAuthStore()
+  const loginUserName = userData.username
   
   useEffect(() => {
     const initData = async () => {
-      await getUserProfileInfo(1)
+      await getUserProfileInfo(userData.username)
     }
     initData()
     setIsLoading(true)
     console.log(profileData)
-  }, [getUserProfileInfo])
+  }, [getUserProfileInfo, loginUserName])
 
   useEffect(() => {
     if (profileData) {
@@ -43,7 +47,6 @@ export default function SettingForm() {
       setIntroduction(profileData.introduction || '')
     }
   }, [profileData])
-
   const formData = new FormData()
 
   const handleImageChange = async (event: any) => {
@@ -94,14 +97,16 @@ export default function SettingForm() {
     name: '인스타 url 이름',
     url: 'naver.com'
   }])
+  const {doAddLink, doDeleteLink} = useSettingStore()
 
   const addLinkField = () => {
     setLinks([...links, { id: Date.now(), name: '', url: '' }])
   }
 
-  const addRegisterList = (id: number) => {
+  const addRegisterList = ({ linkId, linkUrl }: { linkId: number, linkUrl: string }) => {
     setRegisterLinks([...registerLinks, { id: Date.now(), name: '', url: '' }])
-    setLinks(links.filter((link) => link.id !== id))
+    setLinks(links.filter((link) => link.id !== linkId))
+    doAddLink(linkUrl)
   }
 
   const updateLink = (id: number, field: 'name' | 'url', value: string) => {
@@ -114,8 +119,9 @@ export default function SettingForm() {
     setLinks(links.filter((link) => link.id !== id))
   }
 
-  const removeRegisterLinkField = (id: number) => {
-    setRegisterLinks(registerLinks.filter((link) => link.id !== id))
+  const removeRegisterLinkField = ({ linkId, linkUrl }: { linkId: number, linkUrl: string }) => {
+    setRegisterLinks(registerLinks.filter((link) => link.id !== linkId))
+    doDeleteLink(linkUrl)
   }
 
   if (isLoading) {
@@ -179,7 +185,7 @@ export default function SettingForm() {
               <span>{link.name}</span>
               <span>{link.url}</span>
             </div>
-            <SmallButton text='삭제' color='lightGray' onClick={() => removeRegisterLinkField(link.id)} />
+            <SmallButton text='삭제' color='lightGray' onClick={() => removeRegisterLinkField({linkId: link.id, linkUrl: link.url})} />
           </div>
         </div>
       </div>
@@ -197,7 +203,7 @@ export default function SettingForm() {
                 maxLength={30}
               />
             </div>
-              <SmallButton text='등록' color='lightGray' onClick={() => addRegisterList(link.id)} />
+              <SmallButton text='등록' color='lightGray' onClick={() => addRegisterList({linkId: link.id, linkUrl: link.url})} />
           </div>
           <div className={styles.linkDeleteField}>
             <div className={styles.linkInputBox}>
