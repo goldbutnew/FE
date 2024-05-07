@@ -166,7 +166,17 @@ export default function StudioChat() {
         <form className={styles.inputBox} onSubmit={handleSendMessage}>     
           <div className={styles.emojiBox}>
             {showEmojiPicker && (
-              <EmojiPicker width="100%" height={300} onEmojiClick={handleEmojiClick} />
+              <EmojiPicker 
+                width="100%" 
+                searchDisabled={true} 
+                height={180} 
+                previewConfig={{
+                  defaultEmoji: "1f60a",
+                  defaultCaption: "What's your mood?",
+                  showPreview: false
+                }}
+              onEmojiClick={handleEmojiClick} 
+            />
             )}
           </div>
           <DefaultInput 
