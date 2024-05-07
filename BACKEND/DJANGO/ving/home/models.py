@@ -55,6 +55,7 @@ class StreamingRoom(models.Model):
     is_end = models.IntegerField(null=False)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
+    is_end = models.IntegerField(null=False)
 
 
     class Meta:
