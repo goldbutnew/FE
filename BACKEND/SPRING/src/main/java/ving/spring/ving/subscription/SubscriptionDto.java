@@ -14,7 +14,7 @@ public class SubscriptionDto {
     @AllArgsConstructor
     public static class SubscriptRequest
     {
-        private Integer userId;
+        private String username;
     }
 
     @Builder
@@ -24,7 +24,7 @@ public class SubscriptionDto {
     @NoArgsConstructor
     public static class SubscriptResponse
     {
-        private Integer userId;
+        private String username;
     }
 
 
