@@ -145,7 +145,6 @@ export const startStreamingRightBox = style([
     position: 'sticky',
     top: 0,
     bottom: 0,
-    // padding: `55px 0 0 0`,
     padding: `${vars.space['8x']} 0 0 0`,
     margin: vars.space.none,
     boxShadow: vars.boxShadow['2x'],
