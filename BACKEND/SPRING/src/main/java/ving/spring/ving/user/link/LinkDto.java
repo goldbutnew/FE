@@ -9,4 +9,5 @@ import lombok.*;
 @Getter
 public class LinkDto {
     private String url;
+    private String title;
 }

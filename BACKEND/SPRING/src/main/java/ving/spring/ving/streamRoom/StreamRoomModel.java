@@ -24,7 +24,6 @@ public class StreamRoomModel {
 
     private String roomName;
     private String roomThumbnail;
-
     private Boolean roomAgeLimit;
     private Boolean isEnd;
     @Column(nullable = true, updatable = false) // 변경 불가능하도록 설정

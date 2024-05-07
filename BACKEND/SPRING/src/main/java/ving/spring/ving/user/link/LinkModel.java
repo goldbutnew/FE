@@ -19,5 +19,7 @@ public class LinkModel {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserModel userModel;
+
     private String url;
+    private String title;
 }
