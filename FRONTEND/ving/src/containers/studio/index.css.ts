@@ -1,10 +1,8 @@
-import { betweenBox, columnbox, rowbox } from '@/styles/box.css'
+import { betweenBox, columnbox, defaultBox, endBox, rowbox } from '@/styles/box.css'
 import { plainButton } from '@/styles/common.css'
 import { bold } from '@/styles/fonts.css'
 import { vars } from '@/styles/vars.css'
 import { style } from '@vanilla-extract/css'
-
-
 
 // common.tsx
 export const container = style({
@@ -76,7 +74,6 @@ export const menuItem = style([
   }
 ])
 
-
 // Dashboard.tsx
 
 export const dashboardContainer = style([
@@ -132,6 +129,67 @@ export const dashboardOrderCf = style({
 })
 
 
+// StartStreaming.tsx
+
+export const contentContainer = style({
+  display: 'flex',
+  width: '100%',
+  flexDirection: 'row',
+});
+
+export const startStreamingRightBox = style([
+  columnbox,
+  {
+    height: '100vh',
+    width: 500,
+    position: 'sticky',
+    top: 0,
+    bottom: 0,
+    // padding: `55px 0 0 0`,
+    padding: `${vars.space['8x']} 0 0 0`,
+    margin: vars.space.none,
+  }
+])
+
+export const studioStreamingContainer = style({
+  flexGrow: 1,
+})
+
+// StudioStreaming.tsx
+export const streamingInfoContainer = style({
+  width: '100%',
+  padding: vars.space['2x']
+})
+
+export const streamingInfoItem = style([
+  rowbox,
+  {
+    padding: `${vars.space['1x']} 0`
+  }
+])
+
+export const streamingInfoTitle = style([
+  bold,
+  defaultBox,
+  {
+    flex: '0 0 30%', // flex-grow, flex-shrink, flex-basis
+  }
+])
+
+export const streamingInfoContent = style([
+  defaultBox,
+  {
+    flex: '0 0 70%',
+  }
+]);
+
+
+export const updateButtonBox = style([
+  endBox,
+  {
+    padding: `${vars.space['1x']} 0`
+  }
+])
 
 // Static.tsx
 
