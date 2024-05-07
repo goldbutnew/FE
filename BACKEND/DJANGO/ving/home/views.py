@@ -47,6 +47,7 @@ def set_streaming_room_name(request, user_id):
         room = StreamingRoom.objects.get(user_id=user_id)
         room.room_name = new_name
         room.save()
+        print(1)
 
         return Response({'message': 'Streaming room name updated successfully'}, status=status.HTTP_200_OK)
 
