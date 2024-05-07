@@ -144,22 +144,11 @@ export default function StudioChat() {
               key={index} 
               className={styles.chatItem}
             >
-              {msg.donation ? 
-                <div className={styles.donationChatItem}>
-                  <button className={styles.DontaionchatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
-                    {msg.nickname}
-                  </button>
-                  <div>{msg.text}</div>
-                  <hr className={line} />
-                  <div className={styles.donationChatItemChoco}>🍫 {msg.donation}</div>
-                </div>
-              : 
                 <div>
                   <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
-                    {msg.nickname}
+                  👑{msg.nickname}
                   </button>: <span>{msg.text}</span>
                 </div>
-              }
             </div>
           ))}
         </div>
