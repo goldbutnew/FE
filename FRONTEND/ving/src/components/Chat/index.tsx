@@ -12,14 +12,20 @@ import EmojiPicker from "emoji-picker-react"
 import ChatProfile from "./ChatProfile"
 import Donation from "./Donation"
 import useAuthStore from "@/store/AuthStore";
-import { rowbox } from "@/styles/box.css";
+import useChatStore from "@/store/ChatStore";
+import { getFormattedTimestamp } from "@/utils/dateUtils";
+import { style } from "@vanilla-extract/css";
+import { line } from "@/styles/common.css";
 
 interface Message {
-  message: string;
-  senderId: string;
-  senderNickname: string;
-  timestamp: string;
+  userName: string;
+  nickname: string;
+  timeStamp: string;
+  donation : number;
+  isTts : Boolean;
+  text: string;
 }
+
 export default function Chat() {
   const { userData } = useAuthStore()
   const [profileOpen, setProfileOpen] = useState(false);
@@ -27,17 +33,18 @@ export default function Chat() {
   const [profileKey, setProfileKey] = useState(0)
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const messages = useChatStore(state => state.messages)
+  const addMessage = useChatStore(state => state.addMessage)
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
   
-  const roomId = 1;
+  const roomId = "a2FueWV3ZXN0";
 
-  // const onMessageReceived = (msg) => {
-  //   const newMessage = JSON.parse(msg.body);
-  //   setMessages(prevMessages => [...prevMessages, newMessage]);
-  // };
+  const onMessageReceived = (msg) => {
+    const newMessage = JSON.parse(msg.body);
+    console.log(newMessage);
+  };
 
   const connect = () => {
     console.log("WebSocket 연결 시도 중...");
@@ -90,20 +97,23 @@ export default function Chat() {
 
   const handleSendMessage = (event) => {
     event.preventDefault()
+    const formattedTimestamp = getFormattedTimestamp()
 
-    console.log("보낼 메시지 내용:", messageInput);
     if (stompClient && messageInput.trim() && connected) {
-      const message = {
-        message: messageInput,
-        senderId: userData.Id,
-        senderNickname: userData.nickname,
-        timestamp: new Date().toISOString()
+      const message : Message = {
+        userName: userData.Id,
+        nickname: userData.nickname,
+        timeStamp: formattedTimestamp,
+        donation : 0,
+        isTts: false,
+        text: messageInput,
       };
       stompClient.publish({
-        destination: `/pub/message`,
+        destination: `/pub/channel/${roomId}`,
         body: JSON.stringify(message)
       });
-      setMessages(prevMessages => [...prevMessages, message]); // 메시지 목록에 추가
+      console.log("메시지 형식:", message)
+      addMessage(message);
       setMessageInput('');
     } else {
       console.log("아직 소켓 연결 안 됨");
@@ -128,10 +138,26 @@ export default function Chat() {
     <SideBar title="채팅" side="right" initOpen={true} width={300} hidden={true}>
       <div className={styles.chatBox} ref={chatBoxRef}>
         {messages.map((msg, index) => (
-          <div key={index} className={styles.chatItem}>
-            <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
-              {msg.senderNickname}
-            </button>: <span>{msg.message}</span>
+          <div 
+            key={index} 
+            className={styles.chatItem}
+          >
+            {msg.donation ? 
+              <div className={styles.donationChatItem}>
+                <button className={styles.DontaionchatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
+                  {msg.nickname}
+                </button>
+                <div>{msg.text}</div>
+                <hr className={line} />
+                <div className={styles.donationChatItemChoco}>🍫 {msg.donation}</div>
+              </div>
+            : 
+              <div>
+                <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
+                  {msg.nickname}
+                </button>: <span>{msg.text}</span>
+              </div>
+            }
           </div>
         ))}
       </div>

@@ -2,6 +2,8 @@ package ving.spring.ving.video;
 
 import lombok.*;
 
+import java.util.List;
+
 @Builder
 @Getter
 @Setter
@@ -30,9 +32,11 @@ public class VideoDto {
     public static class VideoEntity
     {
         private String thumbnail;
+        private Integer videoId;
         private String title;
         private Integer videoPlay;
         private Boolean isFixed;
+        private String createdAt;
     }
 }
 

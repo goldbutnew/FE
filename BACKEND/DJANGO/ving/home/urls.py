@@ -12,4 +12,5 @@ urlpatterns = [
     path('update_streaming_room_thumbnail/<int:room_id>/' , views.update_streaming_room_thumbnail),
     path('delete_streaming_room/<int:room_id>/' , views.delete_streaming_room),
     path('update_user_blocked_status/' , views.update_user_blocked_status),
+    path('create_stream', views.create_streaming_room)
 ]

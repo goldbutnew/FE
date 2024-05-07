@@ -65,7 +65,7 @@ const SocialLink: React.FC<SocialLinkProps> = ({ platform, link }) => {
 
 export function ProfileTabComponent() {
   return (
-    <>
+    <div>
       <div className={styles.socialLinkContainer}>
           <div className={styles.socialTitleBox}>
             <BsFillPinAngleFill size={32} />
@@ -90,6 +90,6 @@ export function ProfileTabComponent() {
           </div>
             ))}
       </div>
-    </>
+    </div>
   )
 }

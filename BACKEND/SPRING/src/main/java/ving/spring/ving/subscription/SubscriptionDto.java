@@ -26,4 +26,17 @@ public class SubscriptionDto {
     {
         private Integer userId;
     }
+
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DonationRequest
+    {
+        private String username;
+        private Integer choco;
+        private Boolean isTts;
+        private String message;
+    }
 }

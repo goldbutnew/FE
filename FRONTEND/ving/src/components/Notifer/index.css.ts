@@ -3,22 +3,23 @@ import { flex } from '@/styles/common.css'
 import { vars } from '@/styles/vars.css'
 
 export const iconButtonBox = style({
-  display: 'inline-block', // 인라인 블록 요소로 설정하여 가로 너비를 아이콘 버튼 크기에 맞춥니다.
-  width: 'fit-content', // 아이콘 버튼의 크기에 맞추도록 설정
+  position: 'relative',
 })
 
 export const iconButton = style({
+  position: 'relative',
   width: 'fit-content',
 })
 
 export const modalBackdrop = style({
   position: 'absolute',
-  right: 80,
-  top: 40,
+  right: 0,
+  top: '100%',
   backgroundColor: vars.colors.white,
-  borderRadius: vars.borderRadius['1x'],
-  // zIndex: 1000, 
   boxShadow: vars.boxShadow['2x'],
+  borderRadius: vars.borderRadius['1x'],
+  padding: vars.space['1x'],
+  zIndex: 100,
 });
 
 export const modalTitle = style({
@@ -26,10 +27,11 @@ export const modalTitle = style({
 })
 
 export const modalContent = style({
-  borderRadius: '10px',
-  width: 'auto', 
-  padding: vars.space['2x'],
-  boxSizing: 'border-box' 
+  width: '100%', 
+  minWidth: '300px',
+  padding: vars.space['1x'],
+  boxSizing: 'border-box',
+  whiteSpace: 'nowrap',
 });
 
 export const closeBtnBox = style([

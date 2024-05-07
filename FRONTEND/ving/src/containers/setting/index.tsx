@@ -1,8 +1,15 @@
+'use client'
 
-import SettingPage from "./SettingPage"
+import Container from "@/components/Container"
+import SettingForm from "./SettingForm"
 
 export default function Setting() {
   return (
-    <SettingPage />
+    <Container>
+      <div>
+        <h1>채널 관리</h1>
+        <SettingForm />
+      </div>
+    </Container>
   )
 }

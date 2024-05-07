@@ -4,19 +4,22 @@ import * as styles from "./index.css";
 
 interface RadioProps {
   text: string;
-  checked: boolean;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isActive: boolean;
+  onChange: (isActive: boolean) => void;
 }
 
-export default function Radio({ text, checked, onChange }: RadioProps) {
+export default function Radio({ text, isActive, onChange }: RadioProps) {
+
+  const handleClick = () => {
+    onChange(!isActive);
+  };
 
   return (
-    <div className={rowbox}>
+    <div className={rowbox} onClick={handleClick}>
       <input
         type="radio"
         className={styles.RadioButton}
-        checked={checked}
-        onChange={onChange}
+        checked={isActive}
       />
       {text}
     </div>

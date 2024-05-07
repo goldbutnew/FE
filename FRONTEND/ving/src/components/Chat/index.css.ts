@@ -7,7 +7,7 @@ import { plainButton } from '@/styles/common.css'
 
 const getRandomColor = () => {
   const hue = Math.floor(Math.random() * 360)
-  const saturation = Math.floor(Math.random() * 10) + 80
+  const saturation = Math.floor(Math.random() * 10) + 70
   const lightness = Math.floor(Math.random() * 20) + 70
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`
 }
@@ -37,6 +37,36 @@ export const chatNickname = style([
   }
 ])
 
+export const donationChatItem = style({
+  fontSize: vars.fontSize['0.75x'],
+  backgroundColor: vars.colors.lightGray,
+  borderRadius: vars.borderRadius['1x'],
+  padding: vars.space['1.5x'],
+  margin: `${vars.space['1x']} 0`
+})
+
+export const DontaionchatNickname = style([
+  bold,
+  plainButton,
+  {
+    color: getRandomColor()
+  }
+])
+
+export const donationChatItemChoco = style([
+  bold,
+  {
+    display: 'inline',
+    padding: `${vars.space['0.5x']} ${vars.space['1x']}`,
+    fontSize: vars.fontSize['0.5x'],
+    borderRadius: vars.borderRadius['2x'],
+    color: vars.colors.white,
+    backgroundColor: vars.colors.gray,
+  }
+])
+
+
+
 export const inputBox = style({
   width: '100%',
 })
@@ -58,6 +88,7 @@ export const emojiPicker = style({
   width: '100%',
   margin: `0 0 ${vars.space['0.5x']} 0`
 })
+
 
 // chatProfile.tsx
 export const dateBox = style({

@@ -7,17 +7,21 @@ import Link from 'next/link';
 import Notifer from "../Notifer";
 import Signup from "@/containers/auth/Signup";
 import Login from "@/containers/auth/Login";
+import ProfileMenu from "./ProfileMenu";
 import Logout from "@/containers/auth/Logout";
 import IconButton from "../Button/IconButton";
+import SearchBar from "@/components/NavBar/SearchBar";
 
 import { FaVideo } from "react-icons/fa";
 import logo from '#/images/main-logo.png'
 import * as styles from './index.css'
 
+import useAuthStore from "@/store/AuthStore"
 
 export default function NavBar() {
+  const { userData } = useAuthStore()
+  const username = btoa(userData.username)
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const userId = 1
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -39,21 +43,20 @@ export default function NavBar() {
         <Link href='/'>
           <Image src={logo} alt="main" className={styles.logo} />
         </Link>
-        <Link href='/setting'>세팅</Link>
-        <Link href={`/profile/${userId}`}>내채널</Link>
-        <Link href={`/streaming/${userId}`}>방송중인누군가의방</Link> 
-        <Link href={`/tmp`}>채팅테스트</Link>
+      </div>
+      <div className={styles.centerBox}>
+        <SearchBar />
       </div>
       <div className={styles.rightNavBox}>
         {isAuthenticated ? (
           <>
-            <Link href={`/studio/${userId}`}>
+            <Link href={`/studio/${username}`}>
               <IconButton 
                 icon={FaVideo}
               />
             </Link>
             <Notifer />
-            <Logout onLogoutSuccess={handleLogoutSuccess} />
+            <ProfileMenu onLogout={handleLogoutSuccess} />
           </>
         ) : (
           <>

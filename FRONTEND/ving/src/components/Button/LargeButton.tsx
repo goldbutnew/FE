@@ -4,7 +4,7 @@ import { defaultButton } from "./index.css";
 type ButtonProps = {
   text: string;
   color?: string; 
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export default function LargeButton({ text, color, onClick }: ButtonProps) {

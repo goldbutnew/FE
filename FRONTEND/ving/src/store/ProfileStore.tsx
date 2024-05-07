@@ -12,28 +12,41 @@ const useProfileStore = create((set, get) => ({
   //     console.error(error)
   //   } 
   // }
-
   profileData: {},
+  searchData: {},
   // 유저 프로필 가져오기
-  getUserProfileInfo: async (username:number) => {
-    // const token = await AsyncStorage.getItem('accessToken')
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImEiOiJtYWluIiwiZSI6IjEyMyIsImV4cCI6MTcxNDYzNTkyMX0.9SDti6Izk0v5ATmboPVPjvO-ergUOy5wVCniF7MQJj0'
+  getUserProfileInfo: async (username:string) => {
+    const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.get(`auth/getProfile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        params: { userId : username},
+        params: { username : username},
       })
       set({ profileData: response.data })
     } catch (error) {
       console.error(error)
     }
   },
+  // 유저 검색 자동완성
+  getUserNicknameSearch: async () => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.get(`search/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      set({ searchData: response.data.users })
+      console.log('-------------', response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  },
   // 유저 프로필 수정
   patchUserProfileInfo: async (formData: FormData) => {
-    // const token = await AsyncStorage.getItem('accessToken')
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsImEiOiJtYWluIiwiZSI6IjEyMyIsImV4cCI6MTcxNDYzNTkyMX0.9SDti6Izk0v5ATmboPVPjvO-ergUOy5wVCniF7MQJj0'
+    const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.patch(`auth/fillup`, formData, {
         headers: {
@@ -42,6 +55,62 @@ const useProfileStore = create((set, get) => ({
         },
       })
       console.log(response, '프로필 수정 성공')
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 팔로우 신청 /api/sub/subscript
+  doFollowUser: async (userId:number) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.post(`sub/subscript`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(response, '팔로우 신청 성공')
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 팔로우 취소 /api/sub/subscript
+  unDoFollowUser: async (userId:number) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.delete(`sub/unSubscript`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(response, '팔로우 취소 성공')
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 상단 고정 /api/sub/subscript
+  doFixVideo: async (videoId:number) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.post(`video/doFix`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(response, '상단 고정 성공')
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 상단 고정 취소 /api/sub/subscript
+  unDoFixVideo: async (videoId:number) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.delete(`video/undoFix`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(response, '상단 고정 취소 성공')
     } catch (error) {
       console.error(error)
     }

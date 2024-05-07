@@ -1,35 +1,57 @@
-"use client"
 
-import { useEffect, useRef } from 'react'
-import Hls from 'hls.js'
+'use client'
 
-export default function Streaming() {
-  const videoRef = useRef(null)
-  const hls = useRef(null)
-
-  useEffect(() => {
-    const videoElement = videoRef.current;
-
-    if (Hls.isSupported()) {
-      hls.current = new Hls()
-
-      hls.current.on(Hls.Events.ERROR, function(event, data) {
-        console.error('Hls.js 오류 발생:', data)
-      })
-
-      hls.current.loadSource(`http://127.0.0.1:8000/media/qudtls.m3u8`)
-      hls.current.attachMedia(videoElement);
-
-      hls.current.on(Hls.Events.MANIFEST_PARSED, function() {
-        videoElement.play()
-      })
-    }
-  }, [])
+import Video from 'next-video'
+ 
+export default function StreamingVideo() {
 
   return (
-    <div>
-      <h1>HLS Streaming with Next.js</h1>
-      <video ref={videoRef} controls autoPlay></video>
-    </div>
+    <Video src='http://127.0.0.1:8000/media/qudtls_720p.m3u8' />
   )
 }
+
+// import React, { useState } from 'react'
+// import ReactPlayer from 'react-player'
+// import * as styles from './index.css'
+
+// export default function StreamingVideo () {
+//   const [url, setUrl] = useState('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')
+
+//   const handleSetQuality = (quality: string) => {
+//     switch (quality) {
+//       case 'high':
+//         setUrl('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')
+//         break
+//       case 'medium':
+//         setUrl('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4')
+//         break
+//       case 'low':
+//         setUrl('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4')
+//         break
+//       default:
+//         setUrl('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')
+//     }
+//   }
+
+//   return (
+//     <div>
+//       <ReactPlayer
+//         // ref={playerRef}
+//         url={url}
+//         width='100%'
+//         height='100%'
+//         playing={true}
+//         controls={false} // 내장 컨트롤 비활성화
+//         light={false}
+//       />
+//       <div>
+//         {/* <button onClick={() => handleSetQuality('high')}>High</button>
+//         <button onClick={() => handleSetQuality('medium')}>Medium</button>
+//         <button onClick={() => handleSetQuality('low')}>Low</button> */}
+//       </div>
+//     </div>
+//   )
+// }
+
+//   // src: 'http://example.com/live-stream.m3u8',
+//   // type: 'application/x-mpegURL'

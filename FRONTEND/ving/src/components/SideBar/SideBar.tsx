@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import * as styles from './index.css';
-import { defaultBox } from '@/styles/box.css';
 import { line } from '@/styles/common.css';
 import { betweenBox, columnbox } from '@/styles/box.css';
 import { LiaDoorOpenSolid, LiaDoorClosedSolid } from "react-icons/lia";

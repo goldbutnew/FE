@@ -1,18 +1,38 @@
 import { create } from 'zustand'
-import axios from '../api/axios'
+// import axios from '../api/axios'
+import axios from 'axios'
 
 const useStreamingStore = create((set) => ({
 
   streamData:'',
-  sendStreamTitle: async (roomName) => {
+
+  openPort: async (tmp) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('url', {
+      const response = await axios.patch('http://localhost:8000/api/stream/createRoom', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
         body: {
-          roomName
+          tmp
+        }
+      })
+      console.log('방송 시작 요청', response.data)
+
+    } catch (error) {
+      console.error('방송 시작 요청 실패:', error)
+    }
+  },
+
+  sendStreamTitle: async (new_name) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.patch('http://localhost:8000/home/set_streaming_room_name/int:room_id/', {
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
+        body: {
+          new_name
         }
       })
       console.log('제목 수정 완료', response.data)
@@ -24,7 +44,7 @@ const useStreamingStore = create((set) => ({
   sendStreamThumbnail: async (thumbNail) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('url', {
+      const response = await axios.patch('http://localhost:8000/update_streaming_room_thumbnail/int:room_id/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -41,7 +61,7 @@ const useStreamingStore = create((set) => ({
   sendStreamLimit: async (isAdult) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('url', {
+      const response = await axios.patch('http://localhost:8000/home/set_streaming_room_is_adult/int:room_id/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

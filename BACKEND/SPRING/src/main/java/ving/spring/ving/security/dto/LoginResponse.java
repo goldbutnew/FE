@@ -15,6 +15,7 @@ public class LoginResponse {
     public static class info
     {
         private final String nickname;
+        private final String username;
     }
     @Builder
     @Getter

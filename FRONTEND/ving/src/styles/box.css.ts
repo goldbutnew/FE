@@ -8,20 +8,29 @@ export const defaultBox = flex({
 
 export const columnbox = flex({
   direction: 'column',
-  align: 'center',
   justify: 'center',
 });
 
 export const rowbox = flex({
   direction: 'row',
   align: 'center',
+})
+
+export const centerbox = flex({
   justify: 'center',
+  align: 'center',
 })
 
 export const betweenBox = flex({
   direction: 'row',
   align: 'center',
   justify: 'between',
+})
+
+export const startBox = flex({
+  direction: 'row',
+  align: 'center',
+  justify: 'start',
 })
 
 export const endBox = flex({

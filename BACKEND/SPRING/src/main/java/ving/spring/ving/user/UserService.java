@@ -28,6 +28,10 @@ public class UserService {
         return Optional.of(userRepository.findByUserUsername(userUserName));
     }
 
+    public List<UserModel> findAllUser()
+    {
+        return userRepository.findAll();
+    }
     public List<UserModel> findUserModelsByUserNicknameStartingWith(String userNickname)
     {
         return userRepository.findUserModelsByUserNicknameStartingWith(userNickname);

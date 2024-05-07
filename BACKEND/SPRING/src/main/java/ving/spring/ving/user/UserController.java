@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ving.spring.ving.global.dto.DateTimeFormmer;
 import ving.spring.ving.global.dto.ResponseDTO;
 import ving.spring.ving.security.dto.LoginRequest;
 import ving.spring.ving.security.dto.LoginResponse;
@@ -30,6 +32,10 @@ import ving.spring.ving.security.jwt.JwtIssuer;
 import ving.spring.ving.subscription.SubscriptionService;
 import ving.spring.ving.user.dto.FillupDto;
 import ving.spring.ving.user.dto.ProfileDto;
+import ving.spring.ving.user.dto.UserDto;
+import ving.spring.ving.user.link.LinkDto;
+import ving.spring.ving.user.link.LinkModel;
+import ving.spring.ving.user.link.LinkService;
 import ving.spring.ving.video.VideoDto;
 import ving.spring.ving.video.VideoModel;
 import ving.spring.ving.video.VideoService;
@@ -44,20 +50,23 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtIssuer jwtIssuer;
+    private final LinkService linkService;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final VideoService videoService;
     private final AmazonS3Client amazonS3Client;
     private final SubscriptionService subscriptionService;
     private final FixedVideoService fixedVideoService;
+    private final DateTimeFormmer dateTimeFormmer;
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
     @PostMapping("/api/auth/login")
+
     public LoginResponse login(@RequestBody @Validated LoginRequest request) {
 
         var authentication = authenticationManager.authenticate(
@@ -80,6 +89,7 @@ public class UserController {
                 )
                 .info(
                         LoginResponse.info.builder()
+                                .username(userModel.getUserUsername())
                                 .nickname(userModel.getUserNickname())
                                 .build()
                 ).build();
@@ -128,6 +138,15 @@ public class UserController {
         }
     }
 
+    @PatchMapping("/api/auth/choco")
+    public ResponseEntity<?> choco(@RequestBody UserDto.choco choco)
+    {
+        UserModel userModel = userService.findCurrentUser();
+        userModel.setUserChoco(choco.getChoco() + userModel.getUserChoco());
+        userService.save(userModel);
+        return ResponseEntity.ok().body("충전 완료");
+    }
+
     @GetMapping("/api/auth/isRegistered")
     public ResponseEntity<?> isRegistered(@RequestParam String username)
     {
@@ -138,20 +157,61 @@ public class UserController {
         );
     }
 
-    @GetMapping("/api/auth/getProfile")
-    public ResponseEntity<?> getProfile(@RequestParam Integer userId)
+    @PostMapping("/api/auth/postLink")
+    ResponseEntity<?> postLinks(@RequestBody LinkDto linkDto)
     {
-        UserModel userModel = userService.findByUserId(userId).orElseThrow();
+        try
+        {
+            UserModel userModel = userService.findCurrentUser();
+            LinkModel linkModel = LinkModel.builder()
+                    .userModel(userModel)
+                    .url(linkDto.getUrl())
+                    .build();
+            linkService.save(linkModel);
+            return ResponseEntity.ok(HttpStatus.CREATED);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("api/auth/deleteLink")
+    ResponseEntity<?> deleteLink(@RequestBody LinkDto linkDto)
+    {
+        try
+        {
+            UserModel userModel = userService.findCurrentUser();
+            LinkModel linkModel = linkService.findLinkModelByUrlAndUserModel(linkDto.getUrl(), userModel);
+            linkService.delete(linkModel);
+            return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/api/auth/getProfile")
+    public ResponseEntity<?> getProfile(@RequestParam String username)
+    {
+        UserModel userModel = userService.findByUserUsername(username).orElseThrow();
         UserModel me = userService.findCurrentUser();
         List<VideoModel> videoModels = videoService.findVideoModelsByUser(userModel);
         List<VideoDto.VideoEntity> returnList = new ArrayList<>();
+        List<String> links = new ArrayList<>();
+        linkService.findLinkModelsByUserModel(userModel).forEach(
+                x -> links.add(x.getUrl())
+        );
         for (VideoModel videoModel : videoModels)
         {
             returnList.add(
                     VideoDto.VideoEntity.builder()
                             .title(videoModel.getVideoName())
+                            .videoId(videoModel.getVideoId())
                             .thumbnail(videoModel.getThumbnail())
                             .videoPlay(videoModel.getVideoplay())
+                            .createdAt(dateTimeFormmer.transform(videoModel.getCreatedAt()))
                             .isFixed(fixedVideoService.existsByVideoModel(videoModel))
                             .build()
             );
@@ -160,9 +220,11 @@ public class UserController {
         return ResponseEntity.ok().body(
                 ProfileDto.builder()
                         .nickname(userModel.getUserNickname())
+                        .introduction(userModel.getUserIntroduction())
                         .followers(subscriptionService.countAllByStreamer(userModel))
                         .photoUrl(userModel.getUserPhoto())
                         .videos(returnList)
+                        .links(links)
                         .isFollowed(subscriptionService.existsByStreamerAndFollower(userModel, me))
                         .build()
         );
@@ -190,7 +252,6 @@ public class UserController {
             String finalUrl = (fileUrl + destinationFileName);
 
             userModel.setUserPhoto(finalUrl);
-
             userService.save(userModel);
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(photo.getContentType());

@@ -5,6 +5,7 @@ import useAuthStore from "@/store/AuthStore"
 import { useRouter } from "next/navigation"
 
 import SmallButton from "@/components/Button/SmallButton"
+import { plainButton } from "@/styles/common.css"
 
 export default function Logout({ onLogoutSuccess }) {
   const { Token, logout } = useAuthStore()
@@ -19,11 +20,14 @@ export default function Logout({ onLogoutSuccess }) {
   return (
     <div>
       {Token ? 
-        <SmallButton 
-          text="로그아웃"
-          onClick={handleLogout}
-        />:
-        ''
+      <button
+        onClick={handleLogout}
+        className={plainButton}
+      >
+        로그아웃
+      </button>
+      :
+      ''
       } 
     </div>
   )
