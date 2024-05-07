@@ -16,7 +16,7 @@ export const baseSidebar = style({
   zIndex: 3000,
   transition: '0.3s ease-in-out',
   overflow: 'hidden',
-});
+})
 
 export const leftSidebar = style([
   baseSidebar,
