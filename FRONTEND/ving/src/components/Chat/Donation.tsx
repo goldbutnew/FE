@@ -14,7 +14,8 @@ import { betweenBox } from "@/styles/box.css";
 import useChatStore from "@/store/ChatStore";
 import useAuthStore from "@/store/AuthStore";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
-
+// import axios from "axios";
+import axios from '../../api/axios'
 export default function Donation() {
   const { userData } = useAuthStore()
   const [messageInput, setMessageInput] = useState('');
@@ -88,6 +89,45 @@ export default function Donation() {
       text: messageInput,
     };
 
+    interface DonationRequest {
+      username: string;
+      choco: number;
+      isTts: boolean;
+      message: string;
+    }
+    
+    const donationRequest : DonationRequest = 
+    {
+      username: "kanyewest",
+      choco : Number(choco),
+      isTts: isTTS,
+      message: messageInput
+    } 
+    const doDonations = async (donationData: DonationRequest) => {
+      console.log("도네이션 데이터", donationData)
+      const token = localStorage.getItem('accessToken')
+      if (!token) {
+        console.error('Access token is missing');
+        return;
+      }
+      try {
+        const response = await axios.patch(`sub/donation`, donationData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        return response.data
+      {
+        console.log(message)
+      }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    doDonations(donationRequest).then((msg) => {
+      console.log(msg)
+    })
     console.log("메시지 형식:", message)
     addMessage(message);
     setMessageInput('');

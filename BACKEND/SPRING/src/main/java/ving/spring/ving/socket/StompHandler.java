@@ -30,22 +30,34 @@ public class StompHandler implements ChannelInterceptor {
 
         if (StompCommand.CONNECT.equals(command))
         {
-            log.info(accessor.getFirstNativeHeader("Authorization"));
+            // log.info(accessor.getFirstNativeHeader("Authorization"));
         }
         else if (StompCommand.SUBSCRIBE.equals(command) || StompCommand.SEND.equals(command))
         {
-            log.info(accessor.getMessage());
+
             String destination = accessor.getDestination();
             if (destination != null)
             {
-                String channelId = antPathMatcher.extractUriTemplateVariables(DEFAULT_PATH, destination).get("channelId");
+                log.info(destination);
+                String definedPath = "";
+                if (StompCommand.SUBSCRIBE.equals(command))
+                {
+                    definedPath = "/sub" + DEFAULT_PATH;
+                }
+                else
+                {
+                    definedPath = "/pub" + DEFAULT_PATH;
+                }
+                log.info(definedPath);
+                String channelId = antPathMatcher.extractUriTemplateVariables(definedPath, destination).get("channelId");
                 String username = new String(Base64.getDecoder().decode(channelId));
-
+                log.info("UserName은 " + username);
 
                 if (StompCommand.SEND.equals(command)) {
                     try {
                         Message.ChatMessage chatMessage = objectMapper.readValue((byte[]) message.getPayload(), Message.ChatMessage.class);
                         log.info("Received message with type: " + chatMessage.getNickname());
+                        log.info("메시지 내용은 " + chatMessage.getText());
                         chatModelService.toChatModel(chatMessage, channelId);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -53,7 +65,6 @@ public class StompHandler implements ChannelInterceptor {
                 }
             }
         }
-
         return message;
     }
 }

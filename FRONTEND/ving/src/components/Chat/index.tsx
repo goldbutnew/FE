@@ -20,7 +20,7 @@ import { line } from "@/styles/common.css";
 interface Message {
   userName: string;
   nickname: string;
-  timestamp: string;
+  timeStamp: string;
   donation : number;
   isTts : Boolean;
   text: string;
@@ -34,17 +34,17 @@ export default function Chat() {
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
   const messages = useChatStore(state => state.messages)
-   const addMessage = useChatStore(state => state.addMessage)
+  const addMessage = useChatStore(state => state.addMessage)
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
   
-  const roomId = 1;
+  const roomId = "a2FueWV3ZXN0";
 
-  // const onMessageReceived = (msg) => {
-  //   const newMessage = JSON.parse(msg.body);
-  //   setMessages(prevMessages => [...prevMessages, newMessage]);
-  // };
+  const onMessageReceived = (msg) => {
+    const newMessage = JSON.parse(msg.body);
+    console.log(newMessage);
+  };
 
   const connect = () => {
     console.log("WebSocket 연결 시도 중...");
@@ -103,13 +103,13 @@ export default function Chat() {
       const message : Message = {
         userName: userData.Id,
         nickname: userData.nickname,
-        timestamp: formattedTimestamp,
+        timeStamp: formattedTimestamp,
         donation : 0,
         isTts: false,
         text: messageInput,
       };
       stompClient.publish({
-        destination: `/pub/message`,
+        destination: `/pub/channel/${roomId}`,
         body: JSON.stringify(message)
       });
       console.log("메시지 형식:", message)

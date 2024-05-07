@@ -36,7 +36,7 @@ def current_top_viewers(request):
     return JsonResponse({'users': users})
 
 @api_view(['PATCH'])
-def set_streaming_room_name(request, room_id):
+def set_streaming_room_name(request, user_id):
     try:
         data = json.loads(request.body)
         new_name = data.get('new_name')
@@ -44,9 +44,10 @@ def set_streaming_room_name(request, room_id):
         if not new_name:
             return Response({'error': 'New room name is required'}, status=status.HTTP_400_BAD_REQUEST)
 
-        room = StreamingRoom.objects.get(room_id=room_id)
+        room = StreamingRoom.objects.get(user_id=user_id)
         room.room_name = new_name
         room.save()
+        print(1)
 
         return Response({'message': 'Streaming room name updated successfully'}, status=status.HTTP_200_OK)
 
@@ -119,18 +120,20 @@ def update_streaming_room_thumbnail(request, room_id):
     
 
 # 영상으로 저장하는 로직 추가해야됨
-@api_view(['DELETE'])
-def delete_streaming_room(request, room_id):
+@api_view(['PATCh'])
+def delete_streaming_room(request, user_id):
     try:
         
-        streaming_room = StreamingRoom.objects.get(room_id=room_id)
+        streaming_room = StreamingRoom.objects.get(user_id=user_id)
     except StreamingRoom.DoesNotExist:
         
         return Response({"message": "StreamingRoom does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
     # StreamingRoom 삭제
-    streaming_room.delete()
-
+    streaming_room.is_end = 1
+    streaming_room.room_name = ''
+    streaming_room.room_age_limit = 0
+    streaming_room.room_thumbnail = ''
     return Response({"message": "StreamingRoom deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 

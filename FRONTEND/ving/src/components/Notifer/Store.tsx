@@ -1,5 +1,5 @@
 import {create} from 'zustand'
-import axios from 'axios'
+import axios from '../../api/axios'
 
 const useNotiferStore = create((set, get) => ({
   myAlarm: [],
@@ -11,7 +11,7 @@ const useNotiferStore = create((set, get) => ({
       return;
     }
     try {
-      const response = await axios.get(`http://localhost:8080/api/stream/getAlarm`, { // baseURL 확인
+      const response = await axios.get(`stream/getAlarm`, { // baseURL 확인
         headers: {
           Authorization: `Bearer ${token}`,
         },

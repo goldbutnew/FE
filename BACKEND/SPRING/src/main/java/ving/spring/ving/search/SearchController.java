@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/search")
 public class SearchController {
 
@@ -56,6 +56,9 @@ public class SearchController {
                         .build()
                 )
         );
-        return ResponseEntity.ok(HttpStatus.CREATED);
+
+        return ResponseEntity.ok(SearchDto.SearchAll.builder()
+                .users(semiProfiles)
+                .build());
     }
 }
