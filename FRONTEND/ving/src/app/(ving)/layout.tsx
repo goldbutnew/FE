@@ -44,8 +44,7 @@ export default function RootLayout({
           </ SideBar>
           <div className={styles.mainContent}>
             {children}
-          </div>          
-          {/* <Chat /> */}
+          </div>
         </div>
       </body>
     </html>

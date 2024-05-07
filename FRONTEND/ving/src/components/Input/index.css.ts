@@ -55,7 +55,7 @@ export const RadioButton = style({
   outline: `2px solid ${vars.colors.black}`,
   width: '12px',
   height: '12px',
-  margin: `0 ${vars.space['0.5x']} 0 0`,
+  margin: `0 ${vars.space['0.5x']} 0 ${vars.space['0.5x']}`,
   cursor: 'pointer',
   transition: 'background-color 0.3s ease, border-color 0.3s ease',
   selectors: {

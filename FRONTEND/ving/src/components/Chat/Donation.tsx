@@ -209,6 +209,12 @@ export default function Donation() {
                 <EmojiPicker
                   width="100%"
                   height={200}
+                  searchDisabled={true} 
+                  previewConfig={{
+                    defaultEmoji: "1f60a",
+                    defaultCaption: "What's your mood?",
+                    showPreview: false
+                  }}
                   onEmojiClick={handleEmojiClick}
                 />
               </div>

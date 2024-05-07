@@ -9,12 +9,9 @@ import SmallButton from "../Button/SmallButton"
 import * as styles from "./index.css"
 import { vars } from "@/styles/vars.css"
 import EmojiPicker from "emoji-picker-react"
-import ChatProfile from "./ChatProfile"
-import Donation from "./Donation"
 import useAuthStore from "@/store/AuthStore";
 import useChatStore from "@/store/ChatStore";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
-import { style } from "@vanilla-extract/css";
 import { line } from "@/styles/common.css";
 
 interface Message {
@@ -26,7 +23,7 @@ interface Message {
   text: string;
 }
 
-export default function Chat() {
+export default function StudioChat() {
   const { userData } = useAuthStore()
   const [profileOpen, setProfileOpen] = useState(false);
   const [selectedUserData, setSelectedUserData] = useState(null);
@@ -135,61 +132,54 @@ export default function Chat() {
   };
 
   return (
-    <SideBar title="채팅" side="right" initOpen={true} width={300} hidden={true}>
-      <div className={styles.chatBox} ref={chatBoxRef}>
-        {messages.map((msg, index) => (
-          <div 
-            key={index} 
-            className={styles.chatItem}
-          >
-            {msg.donation ? 
-              <div className={styles.donationChatItem}>
-                <button className={styles.DontaionchatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
-                  {msg.nickname}
-                </button>
-                <div>{msg.text}</div>
-                <hr className={line} />
-                <div className={styles.donationChatItemChoco}>🍫 {msg.donation}</div>
-              </div>
-            : 
-              <div>
-                <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
-                  {msg.nickname}
-                </button>: <span>{msg.text}</span>
-              </div>
-            }
-          </div>
-        ))}
+    <div className={styles.studioChatContainer}>
+      <div className={styles.title}>
+        채팅
       </div>
-      <ChatProfile isOpen={profileOpen} onClose={() => setProfileOpen(false)} userData={selectedUserData} />
-      <form className={styles.inputBox} onSubmit={handleSendMessage}>     
-        <div className={styles.emojiBox}>
-          {showEmojiPicker && (
-            <EmojiPicker 
-              width="100%" 
-              height={300} 
-              searchDisabled={true} 
-              previewConfig={{
-                defaultEmoji: "1f60a",
-                defaultCaption: "What's your mood?",
-                showPreview: false
-              }}
+      <hr className={line} />
+      <div className={styles.studioChatContent}>
+        <div className={styles.studioChatBox} ref={chatBoxRef}>
+          {messages.map((msg, index) => (
+            <div 
+              key={index} 
+              className={styles.chatItem}
+            >
+                <div>
+                  <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
+                  👑{msg.nickname}
+                  </button>: <span>{msg.text}</span>
+                </div>
+            </div>
+          ))}
+        </div>
+        <form className={styles.inputBox} onSubmit={handleSendMessage}>     
+          <div className={styles.emojiBox}>
+            {showEmojiPicker && (
+              <EmojiPicker 
+                width="100%" 
+                searchDisabled={true} 
+                height={180} 
+                previewConfig={{
+                  defaultEmoji: "1f60a",
+                  defaultCaption: "What's your mood?",
+                  showPreview: false
+                }}
               onEmojiClick={handleEmojiClick} 
             />
-          )}
+            )}
+          </div>
+          <DefaultInput 
+            type="text"
+            value={messageInput}
+            onChange={handleChange}
+            placeholder="채팅을 입력해 주세요"
+            onEmojiClick={openEmojiPicker}
+          />
+        </form>
+        <div className={styles.studioChatSendButtonBox}>
+          <SmallButton text="전송" color={vars.colors.darkGray} onClick={handleSendMessage} />
         </div>
-        <DefaultInput 
-          type="text"
-          value={messageInput}
-          onChange={handleChange}
-          placeholder="채팅을 입력해 주세요"
-          onEmojiClick={openEmojiPicker}
-        />
-      </form>
-      <div className={styles.sendButtonBox}>
-        <Donation />
-        <SmallButton text="전송" color={vars.colors.darkGray} onClick={handleSendMessage} />
       </div>
-    </SideBar>
+    </div>
   );
 }
