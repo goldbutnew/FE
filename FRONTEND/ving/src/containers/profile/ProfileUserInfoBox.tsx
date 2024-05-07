@@ -38,30 +38,34 @@ export default function ProfileUserInfoBox() {
   const [isFollowed, setIsFollowed] = useState(profileData.isFollowed)
   
   // const username = btoa(userData.username)
-  const loginUserName = btoa(userData.username)
+  const loginUserName = userData.username
   const profileUserName = atob(params.username)
+  const searchProfileUserName = btoa(params.username)
 
   const toggleFollow = () => {
     setLoading(true)
     
+    console.log(userData.username)
+    console.log(profileUserName)
     // const nickname = 'baloo366'
 
     if (isFollowed) {
       setIsFollowed(false)
       setSubscriberCount(subscriberCount - 1)
-      unDoFollowUser(profileUserName)
+      // unDoFollowUser(profileUserName)
+      unDoFollowUser(2)
     } else {
       setIsFollowed(true)
       setSubscriberCount(subscriberCount + 1)
-      doFollowUser(profileUserName)
+      // doFollowUser(profileUserName)
+      doFollowUser(2)
     }
     setLoading(true)
   }
 
   useEffect(() => {
     console.log(params.username)
-    console.log(atob(params.username))
-
+    console.log(atob(params.username), profileUserName)
     getUserNicknameSearch()
     const initData = async (profileUserName:string) => {
       await getUserProfileInfo(profileUserName)
@@ -99,11 +103,11 @@ export default function ProfileUserInfoBox() {
         <img src={profileData.photoUrl} className={styles.userImage} alt="User profile" />
         <div className={styles.userTextInfoBox}>
           <span className={styles.userName}>{profileData.nickname}</span>
-          <span className={styles.userIntroduce}>{profileData.userIntroduce || '안녕하세요 반가워요 이제 안녕히 가세요'}</span>
+          <span className={styles.userIntroduce}>{profileData.introduction || '안녕하세요 반가워요 이제 안녕히 가세요'}</span>
         </div>
       </div>
-      {`${profileUserName}` === String(loginUserName) ? (
-        <SmallButton text='채널관리' color='lightGray' onClick={() => router.push('/setting')} />
+      {`${profileUserName}` === loginUserName ? (
+        <SmallButton text='채널관리' color='lightGray' onClick={() => router.push(`/setting/${loginUserName}`)} />
       ) : (
         <div className={styles.followerBox}>
           <SmallButton
