@@ -26,7 +26,7 @@ const useStreamingStore = create((set) => ({
   closePort: async (username) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.delete('stream/createRoom', {
+      const response = await axios.delete('home/delete_streaming_room/int:room_id/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
