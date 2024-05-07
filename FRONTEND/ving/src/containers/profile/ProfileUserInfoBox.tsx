@@ -33,7 +33,7 @@ export default function ProfileUserInfoBox() {
 
 
   const [loading, setLoading] = useState(false)
-  const { profileData, getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData } = useProfileStore()
+  const { profileData, getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData, doChangeAlarm } = useProfileStore()
   const { userData } = useAuthStore()
   const [subscriberCount, setSubscriberCount] = useState(profileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(profileData.isFollowed)
@@ -56,19 +56,21 @@ export default function ProfileUserInfoBox() {
       setIsFollowed(false)
       setSubscriberCount(subscriberCount - 1)
       // unDoFollowUser(profileUserName)
-      unDoFollowUser(2)
+      unDoFollowUser(profileUserName)
     } else {
       setIsFollowed(true)
       setSubscriberCount(subscriberCount + 1)
       // doFollowUser(profileUserName)
-      doFollowUser(2)
+      doFollowUser(profileUserName)
+      setIsAlarmed(true)
     }
     setLoading(true)
   }
-
+  
   const toggleAlarm = () => {
     if (isFollowed) {
       setIsAlarmed(!isAlarmed)
+      doChangeAlarm(profileUserName)
     }
   }
 
@@ -86,6 +88,14 @@ export default function ProfileUserInfoBox() {
   useEffect(() => {
     if (profileData) {
       setSubscriberCount(profileData.followers || 0)
+      setIsFollowed(profileData.isFollowed || false)
+
+      // 팔로우가 된 상태라면
+      // 맨 처음에 팔로우 안 되어 있으면 자동으로 false
+      if (profileData.isFollowed) {
+
+      }
+      setIsAlarmed(profileData.isAlarmed || false)
     }
   }, [profileData])
 
@@ -128,7 +138,7 @@ export default function ProfileUserInfoBox() {
             {isFollowed && (
             <div className={styles.notificationHoverText} data-hover={alarmText}>
               <div className={styles.alarmIcon} onClick={toggleAlarm}>
-                {isAlarmed ? <MdNotificationsOff size={20}/> : <MdNotifications size={20} /> }
+                {isAlarmed ? <MdNotifications size={20} /> : <MdNotificationsOff size={20} /> }
               </div>
             </div>
             )}

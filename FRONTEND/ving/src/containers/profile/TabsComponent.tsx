@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import * as styles from './index.css'
-import { ProfileTabComponent } from './ProfileTabComponent'
+import ProfileTabComponent from './ProfileTabComponent'
 import VideoTabComponent from './VideoTabComponent'
 
 export default function TabsComponent({ where }) {

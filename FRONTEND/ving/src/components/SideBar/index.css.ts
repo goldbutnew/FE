@@ -82,3 +82,59 @@ export const sidebarContent = style([
     height: calc.subtract(`100% - ${vars.space['5x']}`)
   }
 ]);
+
+// 사이드 랭킹 관련 스타일 시작
+
+export const SearchBarContainer = style([
+  rowbox, {
+
+}])
+
+export const SearchBarInputBox = style({
+  width: '100%',
+  border: `1px solid ${vars.colors.gray}`,
+  padding: '4px 8px',
+  borderRadius: vars.borderRadius['0.5x'],
+})
+
+export const input = style({
+  flex: 1,
+  border: 'none',
+  outline: 'none',
+  padding: '8px',
+})
+
+export const searchIcon = style({
+  backgroundColor: vars.colors.lightGray,
+  borderRadius: vars.borderRadius['0.5x'],
+  border: 'none',
+  cursor: 'pointer',
+  margin: '0px 0px 0px 3px',
+  padding: '8px',
+  fontSize: vars.fontSize['2x'],
+})
+
+export const autocompleteList = style({
+  position: 'absolute',
+  backgroundColor: vars.colors.white,
+  // 테두리 주니까 밑줄 모양이 남음.. 일단 보류
+  // border: `1px solid ${vars.colors.gray}`,
+  maxHeight: 200,
+  width: 243,
+  overflowY: 'auto',
+  zIndex: 100,
+})
+
+export const searchUserImage = style({
+  width: 45,
+  height: 45, 
+  borderRadius: vars.borderRadius.full,
+  border: `2.5px solid ${vars.colors.black}`,
+  margin: '0px 5px 0px 0px'
+})
+
+export const autocompleteItem = style([
+  rowbox, {
+  margin: '5px 0px 5px 0px'
+  }
+])

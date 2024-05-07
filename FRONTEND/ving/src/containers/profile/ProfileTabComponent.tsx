@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import * as styles from './index.css'
-import { rowbox } from '@/styles/box.css'
 import { BsFillPinAngleFill, BsYoutube, BsInstagram } from "react-icons/bs"
+import useProfileStore from '@/store/ProfileStore'
+import { useParams } from 'next/navigation'
+import { FiLink } from "react-icons/fi"
 
 interface SocialLinkProps {
-  platform: string
-  link: string
+  title: string
+  url: string
 }
 
 interface representativeVideoProps {
@@ -14,17 +16,6 @@ interface representativeVideoProps {
   viewCount: number
   day: number
 }
-
-const socialLinks: SocialLinkProps[] = [
-  {
-    platform: '유튜브',
-    link: 'https://www.youtube.com/user/yourusername',
-  },
-  {
-    platform: '인스타그램',
-    link: 'https://www.instagram.com/yourusername', 
-  },
-]
 
 const representativeVideoInfo: representativeVideoProps[] = [
   {
@@ -35,35 +26,58 @@ const representativeVideoInfo: representativeVideoProps[] = [
   },
 ]
 
-const SocialLink: React.FC<SocialLinkProps> = ({ platform, link }) => {
+const SocialLink:React.FC<SocialLinkProps> = ({ url }) => {
   const renderIcon = () => {
-    if (platform.toLowerCase() === '인스타그램') {
+    if (url.toLowerCase().includes('www.instagram.com')) {
       return <BsInstagram size={30} />
-    } else if (platform.toLowerCase() === '유튜브') {
+    } else if (url.toLowerCase().includes('www.youtube.com')) {
       return <BsYoutube size={30} />
     }
+    return <FiLink size={30} />
   }
-  
+
+  const platformName = () => {
+    if (url.toLowerCase().includes('www.instagram.com')) {
+      return '인스타그램'
+    } else if (url.toLowerCase().includes('www.youtube.com')) {
+      return '유튜브'
+    }
+    return '기타'
+  }
+
   return (
-    <>
     <div className={styles.socialLinkBox}>
       {renderIcon()}
-      <span>{platform}:</span>
-      <a href={link}>
-        <span>{link}</span>
+      <span>{platformName()}:</span>
+      <a href={url}>
+        <span>{url}</span>
       </a>
     </div>
-    </>
   )
 }
 
-// interface UserInfoBoxProps {
-//   username: string
-//   userImage: string
-//   socialLinks: SocialLinkProps[]
-// }
+export default function ProfileTabComponent() {
 
-export function ProfileTabComponent() {
+  const params = useParams()
+
+  const { profileData, getUserProfileInfo } = useProfileStore()
+  const profileUserName = atob(params.username)
+  const [links, setLinks] = useState(profileData.links || [])
+
+  useEffect(() => {
+    const initData = async () => {
+      await getUserProfileInfo(profileUserName)
+    }
+    initData()
+    console.log(profileData)
+  }, [getUserProfileInfo])
+
+  useEffect(() => {
+    if (profileData) {
+      setLinks(profileData.links || [])
+    }
+  }, [profileData])
+
   return (
     <div>
       <div className={styles.socialLinkContainer}>
@@ -71,8 +85,8 @@ export function ProfileTabComponent() {
             <BsFillPinAngleFill size={32} />
             <span className={styles.socialTitle}>소셜 링크</span>
           </div>
-          {socialLinks.map((link) => (
-            <SocialLink key={link.platform} {...link} />
+          {links.map((link) => (
+            <SocialLink key={link.title} {...link} />
           ))}
       </div>
       <div className={styles.representativeContainer}>

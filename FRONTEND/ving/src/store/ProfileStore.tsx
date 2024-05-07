@@ -60,15 +60,16 @@ const useProfileStore = create((set, get) => ({
     }
   },
   // 팔로우 신청 /api/sub/subscript
-  doFollowUser: async (userId:number) => {
+  doFollowUser: async (username:string) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.post(`sub/subscript`,  {
+      const response = await axios.post(`sub/subscript`,   
+      { username },
+      {
         headers: {
           "Content-Type" : "application/json",
           Authorization: `Bearer ${token}`,
         },
-        data: { userId: userId }
       })
       console.log(response, '팔로우 신청 성공')
     } catch (error) {
@@ -76,7 +77,7 @@ const useProfileStore = create((set, get) => ({
     }
   },
   // 팔로우 취소 /api/sub/unSubscript
-  unDoFollowUser: async (userId:number) => {
+  unDoFollowUser: async (username:string) => {
     const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.delete(`sub/unSubscript`,  {
@@ -84,9 +85,26 @@ const useProfileStore = create((set, get) => ({
           "Content-Type" : "application/json",
           Authorization: `Bearer ${token}`,
         },
-        data: { userId: userId }
+        data: { username: username }
       })
       console.log(response, '팔로우 취소 성공')
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 알림 켜고 끄기
+  doChangeAlarm: async (username:string) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.patch(`sub/changeAlarm`, 
+      { username }, 
+      {
+        headers: {
+          "Content-Type" : "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(response, '알림 켜고 끄기 성공')
     } catch (error) {
       console.error(error)
     }
@@ -95,11 +113,12 @@ const useProfileStore = create((set, get) => ({
   doFixVideo: async (videoId:number) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.post(`video/doFix`, {
+      const response = await axios.post(`video/doFix`, 
+      { videoId },
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        data: { videoId: videoId }
       })
       console.log(response, '상단 고정 성공')
     } catch (error) {

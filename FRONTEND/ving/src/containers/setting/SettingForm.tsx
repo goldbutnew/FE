@@ -11,7 +11,7 @@ import useSettingStore from '@/store/SettingStore'
 
 interface Link {
   id: number
-  name: string
+  title: string
   url: string
 }
 
@@ -45,8 +45,10 @@ export default function SettingForm() {
       setPhotoUrl(profileData.photoUrl || '')
       setNickname(profileData.nickname || '')
       setIntroduction(profileData.introduction || '')
+      setRegisterLinks(profileData.links || [])
     }
   }, [profileData])
+  
   const formData = new FormData()
 
   const handleImageChange = async (event: any) => {
@@ -88,28 +90,24 @@ export default function SettingForm() {
   }
 
   const [file, setFile] = useState(null)
-  const [linkName, setLinkName] = useState('')
+  const [linkTitle, setLinkTitle] = useState('')
   const [linkUrl, setLinkUrl] = useState('')
 
   const [links, setLinks] = useState<Link[]>([])
-  const [registerLinks, setRegisterLinks] = useState<Link[]>([{
-    id: 1,
-    name: '인스타 url 이름',
-    url: 'naver.com'
-  }])
+  const [registerLinks, setRegisterLinks] = useState<Link[]>(profileData.links || [])
   const {doAddLink, doDeleteLink} = useSettingStore()
 
-  const addLinkField = () => {
-    setLinks([...links, { id: Date.now(), name: '', url: '' }])
+  const addLinkField = ({ url, title }: { linkId: number, url: string, title: string  }) => {
+    setLinks([...links, { id: Date.now(), title: title, url: url }])
   }
 
-  const addRegisterList = ({ linkId, linkUrl }: { linkId: number, linkUrl: string }) => {
-    setRegisterLinks([...registerLinks, { id: Date.now(), name: '', url: '' }])
+  const addRegisterList = ({ linkId, url, title }: { linkId: number, url: string, title: string  }) => {
+    setRegisterLinks([...registerLinks, { id: Date.now(), title: title, url: url }])
     setLinks(links.filter((link) => link.id !== linkId))
-    doAddLink(linkUrl)
+    doAddLink(url, title)
   }
 
-  const updateLink = (id: number, field: 'name' | 'url', value: string) => {
+  const updateLink = (id: number, field: 'title' | 'url', value: string) => {
     setLinks(
       links.map((link) => (link.id === id ? { ...link, [field]: value } : link))
     )
@@ -119,9 +117,9 @@ export default function SettingForm() {
     setLinks(links.filter((link) => link.id !== id))
   }
 
-  const removeRegisterLinkField = ({ linkId, linkUrl }: { linkId: number, linkUrl: string }) => {
-    setRegisterLinks(registerLinks.filter((link) => link.id !== linkId))
-    doDeleteLink(linkUrl)
+  const removeRegisterLinkField = ({ linkId, url, title }: { linkId: number, url: string, title: string }) => {
+    setRegisterLinks(registerLinks.filter((link) => link.title !== title))
+    doDeleteLink(url, title)
   }
 
   if (isLoading) {
@@ -182,10 +180,10 @@ export default function SettingForm() {
           </div>
           <div className={styles.registerLinkContentBox}>
             <div className={styles.registerLinkNameUrlBox}>
-              <span>{link.name}</span>
+              <span>{link.title}</span>
               <span>{link.url}</span>
             </div>
-            <SmallButton text='삭제' color='lightGray' onClick={() => removeRegisterLinkField({linkId: link.id, linkUrl: link.url})} />
+            <SmallButton text='삭제' color='lightGray' onClick={() => removeRegisterLinkField({linkId: link.id, url: link.url, title: link.title})} />
           </div>
         </div>
       </div>
@@ -197,13 +195,13 @@ export default function SettingForm() {
             <div className={styles.linkInputBox}>
               <DefaultInput
                 type="text"
-                value={link.name}
-                onChange={(event) => updateLink(link.id, 'name', event.target.value)}
+                value={link.title}
+                onChange={(event) => updateLink(link.id, 'title', event.target.value)}
                 placeholder="링크 제목을 입력해 주세요"
                 maxLength={30}
               />
             </div>
-              <SmallButton text='등록' color='lightGray' onClick={() => addRegisterList({linkId: link.id, linkUrl: link.url})} />
+              <SmallButton text='등록' color='lightGray' onClick={() => addRegisterList({linkId: link.id, url: link.url, title: link.title})} />
           </div>
           <div className={styles.linkDeleteField}>
             <div className={styles.linkInputBox}>
@@ -221,7 +219,7 @@ export default function SettingForm() {
       </div>
       ))}
       {(registerLinks.length + links.length) < 3 && (
-        <SmallButton text='링크 추가' color='lightGray' onClick={addLinkField} />
+        <SmallButton text='링크 추가' color='lightGray' onClick={() => addLinkField({ url: '', title: '' })} />
       )}
         <span className={styles.linkLimitNote}>· 최대 3개까지 등록할 수 있습니다.</span>
         <div className={styles.buttonContainer}>
