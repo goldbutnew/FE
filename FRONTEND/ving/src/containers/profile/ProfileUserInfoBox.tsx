@@ -4,6 +4,7 @@ import SmallButton from '@/components/Button/SmallButton'
 import { useParams, useRouter } from 'next/navigation'
 import useProfileStore from '@/store/ProfileStore'
 import useAuthStore from '@/store/AuthStore'
+import { MdNotifications, MdNotificationsOff } from "react-icons/md"
 
 interface SocialLinkProps {
   platform: string
@@ -36,7 +37,9 @@ export default function ProfileUserInfoBox() {
   const { userData } = useAuthStore()
   const [subscriberCount, setSubscriberCount] = useState(profileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(profileData.isFollowed)
-  
+  const [isAlarmed, setIsAlarmed] = useState(false)
+  const alarmText = isAlarmed ? "알림 켜기" : "알림 끄기"
+
   // const username = btoa(userData.username)
   const loginUserName = userData.username
   const profileUserName = atob(params.username)
@@ -61,6 +64,12 @@ export default function ProfileUserInfoBox() {
       doFollowUser(2)
     }
     setLoading(true)
+  }
+
+  const toggleAlarm = () => {
+    if (isFollowed) {
+      setIsAlarmed(!isAlarmed)
+    }
   }
 
   useEffect(() => {
@@ -110,11 +119,20 @@ export default function ProfileUserInfoBox() {
         <SmallButton text='채널관리' color='lightGray' onClick={() => router.push(`/setting/${loginUserName}`)} />
       ) : (
         <div className={styles.followerBox}>
-          <SmallButton
-            text={isFollowed ? '팔로잉' : '팔로우'}
-            color={isFollowed ? 'lightGray' : 'black'}
-            onClick={() => toggleFollow()}
-          />
+          <div className={styles.followerNotification}>
+            <SmallButton
+              text={isFollowed ? '팔로잉' : '팔로우'}
+              color={isFollowed ? 'lightGray' : 'black'}
+              onClick={() => toggleFollow()}
+            />
+            {isFollowed && (
+            <div className={styles.notificationHoverText} data-hover={alarmText}>
+              <div className={styles.alarmIcon} onClick={toggleAlarm}>
+                {isAlarmed ? <MdNotificationsOff size={20}/> : <MdNotifications size={20} /> }
+              </div>
+            </div>
+            )}
+          </div>
           <div>팔로워 {subscriberCount}명</div>
         </div>
       )}
