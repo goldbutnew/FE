@@ -134,6 +134,7 @@ def delete_streaming_room(request, user_id):
     streaming_room.room_name = ''
     streaming_room.room_age_limit = 0
     streaming_room.room_thumbnail = ''
+    streaming_room.save()
     return Response({"message": "StreamingRoom deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 
