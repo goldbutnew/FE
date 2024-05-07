@@ -96,7 +96,7 @@ public class SubscriptionController {
         log.info(donationRequest.getUsername());
         try
         {
-            UserModel follower = userService.findCudnbrrentUser();
+            UserModel follower = userService.findCurrentUser();
             UserModel streamer = userService.findByUserUsername(donationRequest.getUsername()).orElseThrow();
             SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(streamer, follower);
             subscriptionModel.setDonation(subscriptionModel.getDonation() + donationRequest.getChoco());

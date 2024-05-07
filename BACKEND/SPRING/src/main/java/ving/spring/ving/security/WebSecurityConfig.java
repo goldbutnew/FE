@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,9 +32,9 @@ public class WebSecurityConfig {
     public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.cors(c -> c.configurationSource(corsConfigurationSource()))
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .formLogin().disable()
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(manage -> manage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .formLogin(AbstractHttpConfigurer::disable)
                 .securityMatcher("/**")
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/").permitAll()
@@ -52,11 +53,19 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
+        http.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(customUserDetailService)
-                .passwordEncoder(passwordEncoder())
-                .and().build();
+                .passwordEncoder(passwordEncoder());
+        return http.getSharedObject(AuthenticationManagerBuilder.class).build();
     }
+//    @Bean
+//    public AuthenticationManager authenticationManagerBean(AuthenticationManagerBuilder builder) throws Exception {
+//        builder
+//                .userDetailsService(customUserDetailService)
+//                .passwordEncoder(passwordEncoder());
+//        return builder
+//                .build();
+//    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
