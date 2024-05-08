@@ -64,7 +64,7 @@ import subprocess
 
 def convert_stream_to_hls(user_id):
     container_name = "thirsty_hodgkin"
-    rtmp_url = f"rtmp://0.0.0.0:1935/live/{user_id}"
+    rtmp_url = f"rtmp://0.0.0.0:1935/{user_id}"
     output_path_1080 = f"/files/1080/{user_id}.m3u8"
     output_path_720 = f"/files/720/{user_id}.m3u8"
     output_path_480 = f"/files/480/{user_id}.m3u8"

@@ -150,6 +150,7 @@ public class StreamRoomController {
                     alarms.add(
                             StreamRoomDto.Alarm.builder()
                                     .streamer(subscriptionModel.getStreamer().getUserNickname())
+                                    .type(alarmModel.getNoticeContent().toString())
                                     .build()
                     );
                 }
