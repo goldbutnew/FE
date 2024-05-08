@@ -4,6 +4,7 @@ import { BsFillPinAngleFill, BsYoutube, BsInstagram } from "react-icons/bs"
 import useProfileStore from '@/store/ProfileStore'
 import { useParams } from 'next/navigation'
 import { FiLink } from "react-icons/fi"
+import Card from '@/components/Card'
 
 interface SocialLinkProps {
   title: string
@@ -80,7 +81,7 @@ export default function ProfileTabComponent() {
 
   return (
     <div>
-      <div className={styles.socialLinkContainer}>
+      <Card>
           <div className={styles.socialTitleBox}>
             <BsFillPinAngleFill size={32} />
             <span className={styles.socialTitle}>소셜 링크</span>
@@ -88,8 +89,8 @@ export default function ProfileTabComponent() {
           {links.map((link) => (
             <SocialLink key={link.title} {...link} />
           ))}
-      </div>
-      <div className={styles.representativeContainer}>
+      </Card>
+      <Card>
         <div className={styles.representativeVideoTitleBox}>
           <BsFillPinAngleFill size={32} />
           <span className={styles.representativeVideoTitle}>대표 영상</span>
@@ -103,7 +104,7 @@ export default function ProfileTabComponent() {
             </div>
           </div>
             ))}
-      </div>
+      </Card>
     </div>
   )
 }

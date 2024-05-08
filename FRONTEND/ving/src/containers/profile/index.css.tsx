@@ -122,7 +122,6 @@ export const tabList = style({
 export const tab = style({
   padding: '10px 20px',
   cursor: 'pointer',
-  borderBottom: '3px solid transparent',
   selectors: {
     '&:hover': {
       backgroundColor: vars.colors.lightGray,
@@ -138,7 +137,6 @@ export const tab = style({
 export const tabPanel = style({
   margin: '15px 0px 0px 0px',
   padding: '20px 0px 20px 0px',
-  borderTop: `3px solid ${vars.colors.lightGray}`,
 })
 
 // TabsComponent 관련 style 끝
@@ -167,7 +165,7 @@ export const socialTitleBox = style({
 })
 
 export const socialTitle = style({
-  margin: '0px 0px 0px 10px',
+  margin: `0px 0px 0px ${vars.space['1x']}`,
   fontSize: vars.fontSize['2x']
 })
 
