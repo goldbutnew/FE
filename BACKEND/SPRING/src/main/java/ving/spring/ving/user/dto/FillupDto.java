@@ -2,6 +2,7 @@ package ving.spring.ving.user.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
@@ -9,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FillupDto {
     private final String nickname;
     private final String introduction;
+    @Nullable
     private final MultipartFile photo;
 
     @Builder
