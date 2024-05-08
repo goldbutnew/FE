@@ -15,7 +15,7 @@ export default function SearchBar() {
   const [username, setUsername] = useState('')
   const [users, setUsers] = useState<User[]>([])
   const [message, setMessage] = useState('')
-  const { getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData } = useProfileStore()
+  const { profileUserName, getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData } = useProfileStore()
   const router = useRouter()
 
   const filterUsers = (searchTerm: string) => {
@@ -44,7 +44,9 @@ export default function SearchBar() {
   }, [getUserNicknameSearch])
 
   const moveSearchUser = (username:string) => {
-    router.push(`/profile/${username}`)
+    getUserProfileInfo(username)
+    console.log('이동 전에 데이터 담는다')
+    router.push(`/profile/${btoa(username)}`)
   }
   
   
@@ -76,7 +78,7 @@ export default function SearchBar() {
             onChange={handleInputChange}
           />
         </div>
-        <button className={styles.searchIcon} onClick={() => moveSearchUser(btoa(username))}>
+        <button className={styles.searchIcon} onClick={() => moveSearchUser(username)}>
           <FiSearch size={20}/>
         </button>
       </div>

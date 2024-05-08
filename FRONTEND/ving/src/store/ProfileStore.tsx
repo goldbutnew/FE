@@ -13,7 +13,9 @@ const useProfileStore = create((set, get) => ({
   //   } 
   // }
   profileData: {},
-  searchData: {},
+  searchData: [],
+  currentTopViewersData: [],
+  profileUserName: '',
   // 유저 프로필 가져오기
   getUserProfileInfo: async (username:string) => {
     const token = localStorage.getItem('accessToken')
@@ -24,7 +26,9 @@ const useProfileStore = create((set, get) => ({
         },
         params: { username : username},
       })
-      set({ profileData: response.data })
+      set({ profileData: response.data,
+        profileUserName: username
+      })
     } catch (error) {
       console.error(error)
     }
@@ -39,6 +43,21 @@ const useProfileStore = create((set, get) => ({
         }
       })
       set({ searchData: response.data.users })
+      console.log('-------------', response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 현재 시청자 수 랭킹 가져오기
+  getCurrentTopViewers: async () => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.get(`search/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      set({ currentTopViewersData: response.data.users })
       console.log('-------------', response.data)
     } catch (error) {
       console.error(error)
@@ -136,6 +155,23 @@ const useProfileStore = create((set, get) => ({
         data: { videoId: videoId }
       })
       console.log(response, '상단 고정 취소 성공')
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 비디오 삭제 
+  doDeleteVideo: async (videoId:number) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.delete(`video/delete`, 
+      {
+        headers: {
+          "Content-Type" : "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        data: { videoId: videoId }
+      })
+      console.log(response, '비디오 삭제 성공')
     } catch (error) {
       console.error(error)
     }

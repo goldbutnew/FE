@@ -12,7 +12,13 @@ import useProfileStore from '@/store/ProfileStore';
 
 export default function ProfileMenu({ onLogout }) {
   const { userData } = useAuthStore()
+  const { profileUserName, getUserProfileInfo } = useProfileStore()
   const username = btoa(userData.username)
+
+  const handleMyChannel = () => {
+    getUserProfileInfo(userData.username)
+    console.log(userData.username)
+  }
   const { profileData } = useProfileStore()
 
   return (
@@ -29,7 +35,7 @@ export default function ProfileMenu({ onLogout }) {
           <Link href={`/setting/${username}`}>세팅</Link>
         </MenuItem>
         <MenuItem>
-          <Link href={`/profile/${username}`}>내 채널</Link>
+          <Link href={`/profile/${username}`} onClick={() => handleMyChannel()}>내 채널</Link>
         </MenuItem>
         <MenuItem>
           <Logout onLogoutSuccess={onLogout} />
