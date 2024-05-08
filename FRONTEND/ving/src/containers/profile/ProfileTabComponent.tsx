@@ -61,7 +61,7 @@ export default function ProfileTabComponent() {
   const params = useParams()
 
   const { profileData, getUserProfileInfo } = useProfileStore()
-  const profileUserName = atob(params.username)
+  const profileUserName = params.username
   const [links, setLinks] = useState(profileData.links || [])
 
   useEffect(() => {

@@ -33,7 +33,7 @@ export default function ProfileUserInfoBox() {
 
 
   const [loading, setLoading] = useState(false)
-  const { profileData, getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData, doChangeAlarm } = useProfileStore()
+  const { profileData, profileUserName, getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData, doChangeAlarm } = useProfileStore()
   const { userData } = useAuthStore()
   const [subscriberCount, setSubscriberCount] = useState(profileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(profileData.isFollowed)
@@ -42,14 +42,14 @@ export default function ProfileUserInfoBox() {
 
   // const username = btoa(userData.username)
   const loginUserName = userData.username
-  const profileUserName = atob(params.username)
-  const searchProfileUserName = btoa(params.username)
+  // const profileUserName = params.username
+  // const searchProfileUserName = btoa(params.username)
 
   const toggleFollow = () => {
     setLoading(true)
     
     console.log(userData.username)
-    console.log(profileUserName)
+    // console.log(profileUserName)
     // const nickname = 'baloo366'
 
     if (isFollowed) {
@@ -75,9 +75,9 @@ export default function ProfileUserInfoBox() {
   }
 
   useEffect(() => {
-    console.log(params.username)
-    console.log(atob(params.username), profileUserName)
-    getUserNicknameSearch()
+    // console.log(params.username)
+    // console.log(atob(params.username), profileUserName)
+    // getUserNicknameSearch()
     const initData = async (profileUserName:string) => {
       await getUserProfileInfo(profileUserName)
       setLoading(true)
@@ -86,6 +86,9 @@ export default function ProfileUserInfoBox() {
   }, [getUserProfileInfo])
 
   useEffect(() => {
+    console.log(profileData)
+    console.log(profileUserName, loginUserName)
+    setLoading(true)
     if (profileData) {
       setSubscriberCount(profileData.followers || 0)
       setIsFollowed(profileData.isFollowed || false)
