@@ -40,5 +40,4 @@ no/*
 !no/*.json
 !no/*.js
 !no/*.ts
-!no/*.css.ts
 public/_next-video
