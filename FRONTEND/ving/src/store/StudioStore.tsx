@@ -7,12 +7,11 @@ const useStudioStore = create((set, get) => ({
     playCount: 0,
     totalViewer: 0,
     averageViewer: 0,
-    averageViewer: 0,
+    maxViewer: 0,
   },
   // 유저 프로필 가져오기
   getStaticPlayCount: async (userName: string) => {
-    // const token = await AsyncStorage.getItem('accessToken')
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4IiwiYSI6Im1haW4iLCJlIjoiYmFsb28zNjYiLCJleHAiOjE3MTQ0MzUzOTN9.zWwQzKVwUZypAIs_POg5lxOhoHWwe4q2ZJCW6pfI8eo'
+    const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.get(`auth/getProfile`, {
         params: { userName },
@@ -23,8 +22,7 @@ const useStudioStore = create((set, get) => ({
     }
   },
   getStaticTotalViewer: async (userName: string) => {
-    // const token = await AsyncStorage.getItem('accessToken')
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4IiwiYSI6Im1haW4iLCJlIjoiYmFsb28zNjYiLCJleHAiOjE3MTQ0MzUzOTN9.zWwQzKVwUZypAIs_POg5lxOhoHWwe4q2ZJCW6pfI8eo'
+    const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.get(`auth/getProfile`, {
         params: { userName },
@@ -35,8 +33,7 @@ const useStudioStore = create((set, get) => ({
     }
   },
   getStaticAverageViewer: async (userName: string) => {
-    // const token = await AsyncStorage.getItem('accessToken')
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4IiwiYSI6Im1haW4iLCJlIjoiYmFsb28zNjYiLCJleHAiOjE3MTQ0MzUzOTN9.zWwQzKVwUZypAIs_POg5lxOhoHWwe4q2ZJCW6pfI8eo'
+    const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.get(`auth/getProfile`, {
         params: { userName },
@@ -47,8 +44,7 @@ const useStudioStore = create((set, get) => ({
     }
   },
   getStaticMaxViewer: async (userName: string) => {
-    // const token = await AsyncStorage.getItem('accessToken')
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4IiwiYSI6Im1haW4iLCJlIjoiYmFsb28zNjYiLCJleHAiOjE3MTQ0MzUzOTN9.zWwQzKVwUZypAIs_POg5lxOhoHWwe4q2ZJCW6pfI8eo'
+    const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.get(`auth/getProfile`, {
         params: { userName },
