@@ -1,14 +1,17 @@
 import { vars } from '@/styles/vars.css'
 import { style } from '@vanilla-extract/css'
 import { flex } from '@/styles/common.css'
-import { betweenBox, columnbox, defaultBox, endBox, rowbox } from '@/styles/box.css'
+import { betweenBox, columnbox, defaultBox, rowbox } from '@/styles/box.css'
+import { bold } from '@/styles/fonts.css'
 
-// ProfileUserInfoBox 관련 style 시작
+// ProfileUserInfoBox.tsx
 export const userInfoBox = style([
-  betweenBox, {
+  betweenBox, 
+  {
     backgroundColor: vars.colors.white,
-    padding: '8px 16px',
-}])
+    padding: `${vars.space['1x']} ${vars.space['2x']}`,
+  }
+])
 
 export const userImageNameInfoBox = style([
   rowbox, {
@@ -72,11 +75,11 @@ export const notificationHoverText = style({
       visibility: 'hidden',
       opacity: 0,
       width: 'max-content',
-      backgroundColor: 'black',
-      color: '#fff',
+      backgroundColor: vars.colors.black,
+      color: vars.colors.white,
       textAlign: 'center',
-      borderRadius: '5px',
-      padding: '5px',
+      borderRadius: vars.borderRadius['1x'],
+      padding: vars.borderRadius['0.5x'],
       transition: 'opacity 1s ease-in-out',
       position: 'absolute',
       zIndex: 1,
@@ -105,22 +108,23 @@ export const notificationHoverText = style({
 //   whiteSpace: 'nowrap',
 // })
 
-// ProfileUserInfoBox 관련 style 끝
-// TabsComponent 관련 style 시작
+
+// TabsComponent.tsx
 
 export const tabsContainer = style({
-  padding: 16
+  padding: vars.space['2x']
 })
 
 export const tabList = style({
   display: 'flex',
   listStyle: 'none',
+  gap: vars.space['1x'],
   margin: 0,
   padding: 0,
 })
 
 export const tab = style({
-  padding: '10px 20px',
+  padding: `${vars.space['1x']} ${vars.space['2x']}`,
   cursor: 'pointer',
   selectors: {
     '&:hover': {
@@ -135,63 +139,60 @@ export const tab = style({
 })
 
 export const tabPanel = style({
-  margin: '15px 0px 0px 0px',
-  padding: '20px 0px 20px 0px',
-  borderTop: `3px solid ${vars.colors.lightGray}`,
 })
 
-// TabsComponent 관련 style 끝
-// ProfileTabComponent 관련 style 시작
-export const socialLinkBox = style({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '5px',
-  padding: '3px 0',
-})
 
-export const socialTitleBox = style({
-  display: 'flex',
-  alignItems: 'center',
-  flexDirection: 'row',
-  margin: '0px 0px 15px 0px'
-})
+// ProfileTabComponent.tsx
 
-export const socialTitle = style({
-  margin: '0px 0px 0px 10px',
-  fontSize: vars.fontSize['2x']
-})
+export const socialLinkBox = style([
+  rowbox,
+  {
+  gap: vars.space['0.5x'],
+  padding: `${vars.space['0.5x']} 0`,
+  fontSize: vars.fontSize['0.75x']  
+  }
+])
 
-export const representativeVideoTitleBox = style({
-  display: 'flex',
-  alignItems: 'center',
-  flexDirection: 'row',
-  margin: '0px 0px 15px 0px'
-})
+export const profileTabItemTitleBox = style([
+  rowbox,
+  {
+    margin: `0 0 ${vars.space['1x']} 0`
+  }
+])
 
-export const representativeVideoTitle = style({
-  margin: '0px 0px 0px 10px',
-  fontSize: vars.fontSize['2x']
-})
+export const profileTabItemTitle = style([
+  bold,
+  {
+    margin: `0 0 0 ${vars.space['1x']}`,
+    fontSize: vars.fontSize['1.5x']
+  }
+])
 
 export const representativeVideoInfo = style([
-  defaultBox, {
-    flexDirection: 'row',
-    alignItems: 'center'
-}])
+  rowbox, 
+  {
+  }
+])
+
+export const videoThumnail = style({
+  width: 200,
+  aspectRatio: "4/3",
+})
 
 export const videoInfoBox = style([
-  columnbox, {
-  alignItems: 'flex-start',
-  gap: '5px',
-  padding: '0px 0px 0px 10px',
-}])
+  columnbox, 
+  {
+    gap: vars.space['1x'],
+    margin: `0 0 0 ${vars.space['1x']}`,
+  }
+])
 
 export const videoAdditionalInfoText = style({
   fontSize: vars.fontSize['0.5x']
 })
 
-// ProfileTabComponent 관련 style 끝
-// VideoTabComponent 관련 style 시작
+
+// VideoTabComponent.tsx
 
 export const videoGrid = style({
   display: 'grid',

@@ -30,11 +30,11 @@ const representativeVideoInfo: representativeVideoProps[] = [
 const SocialLink:React.FC<SocialLinkProps> = ({ url }) => {
   const renderIcon = () => {
     if (url.toLowerCase().includes('www.instagram.com')) {
-      return <BsInstagram size={30} />
+      return <BsInstagram size={16} />
     } else if (url.toLowerCase().includes('www.youtube.com')) {
-      return <BsYoutube size={30} />
+      return <BsYoutube size={16} />
     }
-    return <FiLink size={30} />
+    return <FiLink size={16} />
   }
 
   const platformName = () => {
@@ -49,7 +49,7 @@ const SocialLink:React.FC<SocialLinkProps> = ({ url }) => {
   return (
     <div className={styles.socialLinkBox}>
       {renderIcon()}
-      <span>{platformName()}:</span>
+      <span className={styles.socialLinkItemTitle}>{platformName()}:</span>
       <a href={url}>
         <span>{url}</span>
       </a>
@@ -82,22 +82,23 @@ export default function ProfileTabComponent() {
   return (
     <div>
       <Card>
-          <div className={styles.socialTitleBox}>
-            <BsFillPinAngleFill size={32} />
-            <span className={styles.socialTitle}>소셜 링크</span>
+          <div className={styles.profileTabItemTitleBox}>
+            <BsFillPinAngleFill size={24} />
+            <span className={styles.profileTabItemTitle}>소셜 링크</span>
           </div>
           {links.map((link) => (
             <SocialLink key={link.title} {...link} />
           ))}
       </Card>
+
       <Card>
-        <div className={styles.representativeVideoTitleBox}>
-          <BsFillPinAngleFill size={32} />
-          <span className={styles.representativeVideoTitle}>대표 영상</span>
+        <div className={styles.profileTabItemTitleBox}>
+          <BsFillPinAngleFill size={24} />
+          <span className={styles.profileTabItemTitle}>대표 영상</span>
         </div>
         {representativeVideoInfo.map(video => (
           <div key={video.title} className={styles.representativeVideoInfo}>
-            <img src={video.videoThumbnail} width={360} height={250}></img>
+            <img src={video.videoThumbnail} className={styles.videoThumnail}></img>
             <div className={styles.videoInfoBox}>
               <span>{video.title}</span>
               <span className={styles.videoAdditionalInfoText} >조회수 {video.viewCount}회 · {video.day}일 전</span>

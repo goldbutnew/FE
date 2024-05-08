@@ -5,6 +5,8 @@ import { useParams, useRouter } from 'next/navigation'
 import useProfileStore from '@/store/ProfileStore'
 import useAuthStore from '@/store/AuthStore'
 import { MdNotifications, MdNotificationsOff } from "react-icons/md"
+import { vars } from '@/styles/vars.css'
+import ProfileImage from '@/components/ProfileImg'
 
 interface SocialLinkProps {
   platform: string
@@ -16,13 +18,6 @@ interface UserInfoBoxProps {
   userImage: string
   socialLinks: SocialLinkProps[]
 }
-
-// const profileData = {
-//   userImage: 'https://picsum.photos/id/1/200/300',
-//   userNickname: '이우주안티',
-//   userIntroduce: '하이 여긴 이우주안티의 개인홈 ><!',
-//   userSubscriberCount: 100,
-// }
 
 export default function ProfileUserInfoBox() {
 
@@ -118,14 +113,18 @@ export default function ProfileUserInfoBox() {
   return (
     <div className={styles.userInfoBox}>
       <div className={styles.userImageNameInfoBox}>
-        <img src={profileData.photoUrl} className={styles.userImage} alt="User profile" />
+        <ProfileImage 
+          url={profileData.photoUrl} 
+          width={80}
+          alt="User profile" 
+        />
         <div className={styles.userTextInfoBox}>
           <span className={styles.userName}>{profileData.nickname}</span>
-          <span className={styles.userIntroduce}>{profileData.introduction || '안녕하세요 반가워요 이제 안녕히 가세요'}</span>
+          <span className={styles.userIntroduce}>{profileData.introduction || '자기 소개를 입력해 주세요!'}</span>
         </div>
       </div>
       {`${profileUserName}` === loginUserName ? (
-        <SmallButton text='채널관리' color='lightGray' onClick={() => router.push(`/setting/${loginUserName}`)} />
+        <SmallButton text='채널관리' color={vars.colors.gray} onClick={() => router.push(`/setting/${loginUserName}`)} />
       ) : (
         <div className={styles.followerBox}>
           <div className={styles.followerNotification}>
