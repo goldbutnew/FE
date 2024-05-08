@@ -6,15 +6,14 @@ import ProfileUserInfoBox from './ProfileUserInfoBox'
 import ProfileTabComponent from './ProfileTabComponent'
 import TabsComponent from './TabsComponent'
 import Container from '@/components/Container'
+import * as styles from './index.css'
 
 export default function Profile() {
 
   return (
     <Container>
-      <div>
-        <ProfileUserInfoBox />
-        <TabsComponent where='home'/>
-      </div>
+      <ProfileUserInfoBox />
+      <TabsComponent where='home'/>
     </Container>
   )
 }

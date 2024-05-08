@@ -97,10 +97,10 @@ export default function VideoTabComponent() {
                 {video.isFixed && <BsFillPinAngleFill color='white' size={24} />}
               </div>
               <img src={video.thumbnail} alt={video.title} className={styles.videoThumbnail} />
-              <div className={styles.videoItemAdditionalInfo}>
-                <div className={styles.videoItemAdditionalTextInfo}>
+              <div className={styles.videoInfoContainer}>
+                <div className={styles.videoInfoBox}>
                   <span>{video.title}</span>
-                  <span className={styles.videoItemAdditionalInfoText}>조회수 {video.videoPlay}회</span>
+                  <span className={styles.videoInfoText}>조회수 {video.videoPlay}회</span>
                 </div>
                   <DropdownMenu 
                     button={<button onClick={() => toggleMenu(video.videoId)} className={styles.videoItemellipsisButton}>
