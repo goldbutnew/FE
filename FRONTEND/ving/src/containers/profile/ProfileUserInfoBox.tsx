@@ -31,7 +31,6 @@ export default function ProfileUserInfoBox() {
 
   // 임시 로그인 유저
 
-
   const [loading, setLoading] = useState(false)
   const { profileData, getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData, doChangeAlarm } = useProfileStore()
   const { userData } = useAuthStore()
