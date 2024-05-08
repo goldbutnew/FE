@@ -120,28 +120,26 @@ export default function ProfileUserInfoBox() {
         />
         <div className={styles.userTextInfoBox}>
           <span className={styles.userName}>{profileData.nickname}</span>
+          <span className={styles.followerText}>팔로워 {subscriberCount}명</span>
           <span className={styles.userIntroduce}>{profileData.introduction || '자기 소개를 입력해 주세요!'}</span>
         </div>
       </div>
       {`${profileUserName}` === loginUserName ? (
         <SmallButton text='채널관리' color={vars.colors.gray} onClick={() => router.push(`/setting/${loginUserName}`)} />
       ) : (
-        <div className={styles.followerBox}>
-          <div className={styles.followerNotification}>
+        <div className={styles.followerBox}>             
             <SmallButton
               text={isFollowed ? '팔로잉' : '팔로우'}
               color={isFollowed ? 'lightGray' : 'black'}
               onClick={() => toggleFollow()}
             />
             {isFollowed && (
-            <div className={styles.notificationHoverText} data-hover={alarmText}>
-              <div className={styles.alarmIcon} onClick={toggleAlarm}>
-                {isAlarmed ? <MdNotifications size={20} /> : <MdNotificationsOff size={20} /> }
+              <div className={styles.notificationHoverText} data-hover={alarmText}>
+                <div className={styles.alarmIcon} onClick={toggleAlarm}>
+                  {isAlarmed ? <MdNotifications size={20} /> : <MdNotificationsOff size={20} /> }
+                </div>
               </div>
-            </div>
             )}
-          </div>
-          <div>팔로워 {subscriberCount}명</div>
         </div>
       )}
     </div>

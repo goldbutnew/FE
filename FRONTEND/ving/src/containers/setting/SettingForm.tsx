@@ -78,10 +78,7 @@ export default function SettingForm() {
     if (file) { // file 상태를 직접 사용
       formData.append('photo', file)
     }
-
-    // if (photoUrl !== profileData.photoUrl) {
-    //   formData.append('photoUrl', file, 'profile-image.png')
-    // }
+    
     for (let [key, value] of formData) {
       console.log(key, value)
     }
