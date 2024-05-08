@@ -65,19 +65,19 @@ export default function ProfileTabComponent() {
   const profileUserName = params.username
   const [links, setLinks] = useState(profileData.links || [])
 
-  useEffect(() => {
-    const initData = async () => {
-      await getUserProfileInfo(profileUserName)
-    }
-    initData()
-    console.log(profileData)
-  }, [getUserProfileInfo])
+  // useEffect(() => {
+  //   const initData = async () => {
+  //     await getUserProfileInfo(atob(profileUserName))
+  //   }
+  //   initData()
+  //   console.log(profileData)
+  // }, [getUserProfileInfo])
 
-  useEffect(() => {
-    if (profileData) {
-      setLinks(profileData.links || [])
-    }
-  }, [profileData])
+  // useEffect(() => {
+  //   if (profileData) {
+  //     setLinks(profileData.links || [])
+  //   }
+  // }, [profileData])
 
   return (
     <div>

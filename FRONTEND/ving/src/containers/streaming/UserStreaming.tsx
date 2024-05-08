@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react";
+import React, { useEffect } from "react";
 import * as styles from './index.css'
 import Container from "@/components/Container";
 import Image from "next/image";
@@ -8,8 +8,32 @@ import dummy from '#/images/dummy-profile-img.jpg'
 import SmallButton from "@/components/Button/SmallButton";
 import StreamingVideo from "@/components/StreamingVideo";
 import { rowbox } from "@/styles/box.css";
+import { useParams } from "next/navigation";
+import useProfileStore from "@/store/ProfileStore";
 
 export default function UserStreaming() {
+
+  // const { getCurrentTopViewers, currentTopViewersData, getUserProfileInfo, getUserNicknameSearch, searchData } = useProfileStore()
+  // const [subscriberCount, setSubscriberCount] = useState(profileData.followers || 0)
+  // const [isFollowed, setIsFollowed] = useState(profileData.isFollowed)
+
+  // const params = useParams()
+
+  // useEffect(() => {
+  //   let encodedUsername = params.username
+  //   encodedUsername = String(encodedUsername).replace("%3D", '')
+  //   const decodedUsername = atob(encodedUsername)
+  //   if (!profileUserName) {
+  //     // decodedUsername이 null인 경우만 initData를 호출
+  //     const initData = async () => {
+  //       console.log('-----------왜 안 되는데', decodedUsername)
+  //       await getUserProfileInfo(decodedUsername)
+  //       setLoading(true)
+  //     }
+  //     initData()
+  //   }
+  // }, [getUserProfileInfo, params.username])
+
   return (
     <div className={styles.container}>
       <div className={styles.videoPlayer}>

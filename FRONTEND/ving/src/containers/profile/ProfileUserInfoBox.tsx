@@ -17,13 +17,6 @@ interface UserInfoBoxProps {
   socialLinks: SocialLinkProps[]
 }
 
-// const profileData = {
-//   userImage: 'https://picsum.photos/id/1/200/300',
-//   userNickname: '이우주안티',
-//   userIntroduce: '하이 여긴 이우주안티의 개인홈 ><!',
-//   userSubscriberCount: 100,
-// }
-
 export default function ProfileUserInfoBox() {
 
   const router = useRouter()
@@ -74,29 +67,27 @@ export default function ProfileUserInfoBox() {
   }
 
   useEffect(() => {
-    // console.log(params.username)
-    // console.log(atob(params.username), profileUserName)
-    // getUserNicknameSearch()
-    const initData = async (profileUserName:string) => {
-      await getUserProfileInfo(profileUserName)
-      setLoading(true)
+    let encodedUsername = params.username
+    encodedUsername = String(encodedUsername).replace("%3D", '')
+    const decodedUsername = atob(encodedUsername)
+    if (!profileUserName) {
+      // decodedUsername이 null인 경우만 initData를 호출
+      const initData = async () => {
+        console.log('-----------왜 안 되는데', decodedUsername)
+        await getUserProfileInfo(decodedUsername)
+        setLoading(true)
+      }
+      initData()
     }
-    initData(profileUserName)
-  }, [getUserProfileInfo])
+  }, [getUserProfileInfo, params.username])
 
   useEffect(() => {
-    console.log(profileData)
-    console.log(profileUserName, loginUserName)
     setLoading(true)
     if (profileData) {
       setSubscriberCount(profileData.followers || 0)
       setIsFollowed(profileData.isFollowed || false)
-
       // 팔로우가 된 상태라면
       // 맨 처음에 팔로우 안 되어 있으면 자동으로 false
-      if (profileData.isFollowed) {
-
-      }
       setIsAlarmed(profileData.isAlarmed || false)
     }
   }, [profileData])

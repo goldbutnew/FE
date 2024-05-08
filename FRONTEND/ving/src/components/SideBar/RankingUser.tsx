@@ -13,24 +13,35 @@ interface User {
 }
 
 export default function RankingUser() {
-  const { getUserProfileInfo, getUserNicknameSearch, searchData } = useProfileStore()
-  const [users, setUsers] = useState<User[]>([])
+  const { getCurrentTopViewers, currentTopViewersData, getUserProfileInfo, getUserNicknameSearch, searchData } = useProfileStore()
+  const [users, setUsers] = useState<User[]>(currentTopViewersData || [])
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    getUserNicknameSearch()
-    if (Array.isArray(searchData)) {
-      setUsers(searchData)
-    } else {
-      console.error('Expected an array for searchData, received:', searchData)
+    const initData = async () => {
+      await getCurrentTopViewers()
     }
-  }, [getUserNicknameSearch])
+    initData()
+    console.log('유저 랭킹 가져오기')
+  }, [getCurrentTopViewers])
+
+  useEffect(() => {
+    if (currentTopViewersData) {
+      setUsers(currentTopViewersData || [])
+    }
+    console.log('뭔데---------')
+    setLoading(true)
+  }, [currentTopViewersData])
+  
 
   const moveSearchUser = (username: string) => {
+    getUserProfileInfo(username)
+    console.log('이동 전에 데이터 담는다')
     router.push(`/profile/${btoa(username)}`)
   }
 
-  console.log(users)
+  console.log(currentTopViewersData)
   return (
     <div>
       <div className={styles.autocompleteList}>
@@ -39,7 +50,7 @@ export default function RankingUser() {
             <div className={styles.autocompleteItem}>
               <img 
                 className={styles.searchUserImage} 
-                src={user.thumbnail || 'path_to_default_image.png'} // Provide a default thumbnail if none exists
+                src={user.thumbnail || 'path_to_default_image.png'}
                 alt={user.nickname}
               />
               <span>{user.nickname}</span>

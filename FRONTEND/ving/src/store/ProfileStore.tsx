@@ -13,7 +13,8 @@ const useProfileStore = create((set, get) => ({
   //   } 
   // }
   profileData: {},
-  searchData: {},
+  searchData: [],
+  currentTopViewersData: [],
   profileUserName: '',
   // 유저 프로필 가져오기
   getUserProfileInfo: async (username:string) => {
@@ -42,6 +43,21 @@ const useProfileStore = create((set, get) => ({
         }
       })
       set({ searchData: response.data.users })
+      console.log('-------------', response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 현재 시청자 수 랭킹 가져오기
+  getCurrentTopViewers: async () => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.get(`search/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      set({ currentTopViewersData: response.data.users })
       console.log('-------------', response.data)
     } catch (error) {
       console.error(error)
