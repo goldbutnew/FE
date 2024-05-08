@@ -24,7 +24,7 @@ export default function TabsComponent({ where }) {
   }
 
   return (
-    <div className={styles.tabsContainer}>
+    <div>
       <ul className={styles.tabList}>
         <li 
           className={styles.tab} 

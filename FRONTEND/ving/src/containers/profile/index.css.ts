@@ -5,11 +5,11 @@ import { betweenBox, centerbox, columnbox, defaultBox, endBox, rowbox } from '@/
 import { bold } from '@/styles/fonts.css'
 
 // ProfileUserInfoBox.tsx
+
 export const userInfoBox = style([
   betweenBox, 
   {
-    backgroundColor: vars.colors.white,
-    padding: `${vars.space['1x']} ${vars.space['2x']}`,
+    margin: `0 0 ${vars.space['2x']} 0`
   }
 ])
 
@@ -116,10 +116,6 @@ export const notificationHoverText = style({
 
 
 // TabsComponent.tsx
-
-export const tabsContainer = style({
-  padding: vars.space['2x']
-})
 
 export const tabList = style({
   display: 'flex',

@@ -8,6 +8,8 @@ import useProfileStore from '@/store/ProfileStore'
 import { FiLink } from "react-icons/fi"
 import useAuthStore from '@/store/AuthStore'
 import useSettingStore from '@/store/SettingStore'
+import Card from '@/components/Card'
+import ProfileImage from '@/components/ProfileImg'
 
 interface Link {
   id: number
@@ -78,7 +80,7 @@ export default function SettingForm() {
     if (file) { // file 상태를 직접 사용
       formData.append('photo', file)
     }
-    
+
     for (let [key, value] of formData) {
       console.log(key, value)
     }
@@ -122,33 +124,37 @@ export default function SettingForm() {
   if (isLoading) {
   return (
     <div>
-    <p className={styles.infoText}>기본 정보</p>
-    <div className={styles.formContainer}>
-      <div className={styles.profileImageContainer}>
-        <span>프로필 이미지</span>
-        <div className={styles.profileImageContentBox}>
-          <img
-            src={photoUrl}
-            alt="Profile"
-            className={styles.profileImage}
-          />
-          <div className={styles.fileInputContainer}>
-            <input
-              type="file"
-              id="file"
-              onChange={handleImageChange}
-              style={{ display: 'none' }}
-              accept="image/*"
+    <span className={styles.settingSubtitle}>기본 정보</span>
+    <Card>
+      <div className={styles.CardContentContainer}>
+        <div className={styles.defaultSettingItemBox}>
+          <span className={styles.defaultSettingItemTitle}>
+            프로필 이미지
+          </span>
+          <div className={styles.defaultSettingItemContent}>
+            <ProfileImage
+              url={photoUrl}
+              width={80}
+              alt="Profile"
             />
-            <label htmlFor="file" className={styles.customFileUpload}>
-              이미지 수정
-            </label>
+            <div className={styles.fileInputContainer}>
+              <input
+                type="file"
+                id="file"
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+                accept="image/*"
+              />
+              <label htmlFor="file" className={styles.customFileUpload}>
+                이미지 수정
+              </label>
+            </div>
           </div>
         </div>
-      </div>
-      <div className={styles.profileNicknameContainer}>
-        <span className={styles.profileNicknameText}>닉네임</span>
-        <div className={styles.profileNicknameInputBox}>
+        <div className={styles.defaultSettingItemBox}>
+          <span className={styles.defaultSettingItemTitle}>
+            닉네임
+          </span>
           <DefaultInput
             type="text"
             value={nickname || ''}
@@ -156,76 +162,85 @@ export default function SettingForm() {
             maxLength={30}
           />
         </div>
-      </div>
-      <div className={styles.profileChannelIntroduceContainer}>
-        <span className={styles.profileChannelIntroduceText}>채널 소개</span>
-        <div className={styles.profileChannelIntroduceInputBox}>
+        <div className={styles.defaultSettingItemBox}>
+          <span className={styles.defaultSettingItemTitle}>
+            채널 소개
+          </span>
           <Textarea
             value={introduction || ''}
             onChange={(event) => setIntroduction(event.target.value)}
             maxLength={100}
           />
+        </div>        
+      </div>
+    </Card>
+
+    <span className={styles.settingSubtitle}>채널 정보</span>
+    <Card>
+      <div className={styles.channelSettingItemBox}> 
+        <span className={styles.channelSettingItemTitle}>
+          소셜 링크
+        </span>
+        <div className={styles.channelSettingItemContent}>
+          {registerLinks.map((link, index) => (
+            <div key={link.id} className={styles.socailLinkItemContainer}>
+              <div className={styles.registerLinkBox}>
+                <div className={styles.registerLinkIcon}>
+                  <FiLink />
+                </div>
+                <div className={styles.registerLinkContentBox}>
+                  <div className={styles.registerLinkNameUrlBox}>
+                    <span>{link.title}</span>
+                    <span>{link.url}</span>
+                  </div>
+                  <SmallButton text='삭제' color='lightGray' onClick={() => removeRegisterLinkField({linkId: link.id, url: link.url, title: link.title})} />
+                </div>
+              </div>
+            </div>
+          ))}
+          {links.map((link, index) => (
+            <div key={link.id} className={`${styles.CardContentContainer}`}>
+              <div className={styles.linkField}>
+                <div className={styles.linkEnterField}>
+                  <DefaultInput
+                    type="text"
+                    value={link.title}
+                    onChange={(event) => updateLink(link.id, 'title', event.target.value)}
+                    placeholder="링크 제목을 입력해 주세요"
+                    maxLength={30}
+                  />
+                </div>
+                <div className={styles.linkDeleteField}>
+                  <DefaultInput
+                    type="text"
+                    value={link.url}
+                    onChange={(event) => updateLink(link.id, 'url', event.target.value)}
+                    placeholder="링크 URL을 입력해 주세요"
+                    maxLength={30}
+                  />
+                </div>
+                <SmallButton text='등록' color='lightGray' onClick={() => addRegisterList({linkId: link.id, url: link.url, title: link.title})} />
+                <SmallButton text='취소' color='lightGray' onClick={() => removeLinkField(link.id)} />
+              </div>
+            </div>
+          ))}
+          <div className={styles.addLinkButtonContainer}>
+            {(registerLinks.length + links.length) < 3 && (
+              <SmallButton text='링크 추가' color='lightGray' onClick={() => addLinkField({ url: '', title: '' })} />
+            )}
+          </div>
+          <span className={styles.linkLimitNote}>· 최대 3개까지 등록할 수 있습니다.</span>
         </div>
       </div>
+    </Card> 
+
+    <div className={styles.buttonContainer}>
+      <SmallButton text="취소" color='lightGray' />
+      <SmallButton 
+        onClick={() => {handleUpdateProfile()}} 
+        text="저장" 
+        color='black' 
+      />
     </div>
-    <p className={styles.infoText}>채널 정보</p>
-    {registerLinks.map((link, index) => (
-      <div key={link.id} className={`${styles.formContainer}`}>
-        <div className={styles.registerLinkBox}>
-          <div className={styles.registerLinkIcon}>
-            <FiLink />
-          </div>
-          <div className={styles.registerLinkContentBox}>
-            <div className={styles.registerLinkNameUrlBox}>
-              <span>{link.title}</span>
-              <span>{link.url}</span>
-            </div>
-            <SmallButton text='삭제' color='lightGray' onClick={() => removeRegisterLinkField({linkId: link.id, url: link.url, title: link.title})} />
-          </div>
-        </div>
-      </div>
-      ))}
-    {links.map((link, index) => (
-    <div key={link.id} className={`${styles.formContainer}`}>
-        <div className={styles.linkField}>
-          <div className={styles.linkEnterField}>
-            <div className={styles.linkInputBox}>
-              <DefaultInput
-                type="text"
-                value={link.title}
-                onChange={(event) => updateLink(link.id, 'title', event.target.value)}
-                placeholder="링크 제목을 입력해 주세요"
-                maxLength={30}
-              />
-            </div>
-              <SmallButton text='등록' color='lightGray' onClick={() => addRegisterList({linkId: link.id, url: link.url, title: link.title})} />
-          </div>
-          <div className={styles.linkDeleteField}>
-            <div className={styles.linkInputBox}>
-              <DefaultInput
-                type="text"
-                value={link.url}
-                onChange={(event) => updateLink(link.id, 'url', event.target.value)}
-                placeholder="링크 URL을 입력해 주세요"
-                maxLength={30}
-              />
-            </div>
-              <SmallButton text='삭제' color='lightGray' onClick={() => removeLinkField(link.id)} />
-          </div>
-        </div>
-      </div>
-      ))}
-      {(registerLinks.length + links.length) < 3 && (
-        <SmallButton text='링크 추가' color='lightGray' onClick={() => addLinkField({ url: '', title: '' })} />
-      )}
-        <span className={styles.linkLimitNote}>· 최대 3개까지 등록할 수 있습니다.</span>
-        <div className={styles.buttonContainer}>
-        <SmallButton text="취소" color='lightGray' />
-        <SmallButton onClick={() => {
-          handleUpdateProfile()
-        }} text="저장" color='black' />
-      </div>
   </div>
-  )
-}
-}
+)}}
