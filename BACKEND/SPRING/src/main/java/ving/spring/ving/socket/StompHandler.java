@@ -58,6 +58,7 @@ public class StompHandler implements ChannelInterceptor {
                         Message.ChatMessage chatMessage = objectMapper.readValue((byte[]) message.getPayload(), Message.ChatMessage.class);
                         log.info("Received message with type: " + chatMessage.getNickname());
                         log.info("메시지 내용은 " + chatMessage.getText());
+                        log.info("왜 안찾아지는거지? " + chatMessage.getUserName());
                         chatModelService.toChatModel(chatMessage, channelId);
                     } catch (Exception e) {
                         e.printStackTrace();

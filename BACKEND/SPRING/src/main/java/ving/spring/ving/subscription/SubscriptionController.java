@@ -8,9 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ving.spring.ving.socket.Message;
 import ving.spring.ving.socket.MessageController;
+import ving.spring.ving.streamRoom.StreamRoomModel;
+import ving.spring.ving.streamRoom.StreamRoomService;
 import ving.spring.ving.user.UserModel;
 import ving.spring.ving.user.UserService;
 
+import javax.swing.text.View;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
@@ -22,6 +25,7 @@ import java.util.Base64;
 public class SubscriptionController {
     private final UserService userService;
     private final SubscriptionService subscriptionService;
+    private final StreamRoomService streamRoomService;
 
     private final MessageController messageController;
     @PostMapping("/subscript")
@@ -56,6 +60,39 @@ public class SubscriptionController {
                         .build()
         );
 
+    }
+
+
+    @GetMapping("/tmpAlarm")
+    public ResponseEntity<?> tmpAlarm(@RequestParam String streamer, @RequestParam String viewer)
+    {
+        UserModel Streamer = userService.findByUserUsername(streamer).orElseThrow();
+        UserModel Viewer = userService.findByUserUsername(viewer).orElseThrow();
+
+
+        if (subscriptionService.existsByStreamerAndFollower(Streamer, Viewer) )
+        {
+            subscriptionService.findByStreamerAndFollower(Streamer, Viewer).setNotification(1);
+        }
+        else
+        {
+            SubscriptionModel subscriptionModel = SubscriptionModel.builder()
+                    .donation(0)
+                    .follower(Viewer)
+                    .streamer(Streamer)
+                    .notification(1)
+                    .build();
+            subscriptionService.create(subscriptionModel);
+        }
+        StreamRoomModel streamRoomModel = StreamRoomModel.builder()
+                .streamer(Streamer)
+                .roomThumbnail("https://vingving.s3.ap-northeast-2.amazonaws.com/WwGSt_모두 모여라.png")
+                .roomName("tmptmp")
+                .isEnd(false)
+                .build();
+
+
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/unSubscript")
