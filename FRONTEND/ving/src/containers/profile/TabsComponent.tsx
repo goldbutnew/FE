@@ -3,6 +3,7 @@ import { useRouter, useParams } from 'next/navigation'
 import * as styles from './index.css'
 import ProfileTabComponent from './ProfileTabComponent'
 import VideoTabComponent from './VideoTabComponent'
+import { line } from '@/styles/common.css'
 
 export default function TabsComponent({ where }) {
   const [activeTab, setActiveTab] = useState(where)
@@ -44,6 +45,7 @@ export default function TabsComponent({ where }) {
           동영상
         </li>
       </ul>
+      <hr className={line} />
       <div className={styles.tabPanel}>
         {activeTab === 'home' && <ProfileTabComponent />}
         {activeTab === 'video' && <VideoTabComponent />}

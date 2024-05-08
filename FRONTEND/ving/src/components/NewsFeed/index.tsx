@@ -92,14 +92,14 @@ export default function NewsFeed() {
     //     ))}
     //   </div>
     // </div>
-    <div >
-      <div>
+    <div className={styles.newsFeedContainer}>
+      <div className={styles.title}>
         뉴스피드
       </div>
       <hr className={line} />
-      <div >
+      <div className={styles.newsFeedContent}>
         {events.map((event, index) => (
-          <div key={index} >
+          <div key={index} className={styles.newfeedItem}>
             {event.isDonation === 0 && `🎉 ${event.user} 님이 팔로우했습니다.`}
             {event.isDonation !== 0 && `🍫 ${event.user} 님이 ${event.choco} 초코를 후원했습니다.`}
           </div>

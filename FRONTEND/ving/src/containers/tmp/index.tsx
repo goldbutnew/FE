@@ -4,9 +4,9 @@ import React, { useRef, useEffect } from 'react'
 import ChatTest from "./ChatTest";
 import VideoPlayer from "@/components/StreamingVideo/Player"
 
-import useStreamingStore from "@/store/StreamingStore";
+import useStreamingStore from '@/store/StreamingStore'
 
-export default function tmp() {
+export default function Tmp() {
   const { closePort } = useStreamingStore()
 
   useEffect (() => {
