@@ -7,13 +7,13 @@ export const videoContainer = style({
   width: '100%',
   maxWidth: '640px',
   margin: 'auto',
-  marginBottom: vars.space['2x'],
+  marginBottom: vars.space['2x']
 })
 
 // 비디오 플레이어 스타일
 export const videoPlayer = style({
   width: '100%',
-  height: 'auto',
+  height: 'auto'
 })
 
 // 컨트롤러 패널 스타일
@@ -21,11 +21,11 @@ export const controls = style({
   position: 'absolute',
   bottom: '10px',
   width: '100%',
-  background: 'rgba(0, 0, 0, 0.8)',
+  background: 'transparent',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-around',
-  padding: '5px',
+  padding: '5px'
 })
 
 // 버튼 스타일
@@ -40,5 +40,11 @@ export const button = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  borderRadius: '50%',
+  borderRadius: '50%'
+})
+
+// 슬라이더 스타일
+export const slider = style({
+  width: '200px',
+  cursor: 'pointer'
 })
