@@ -1,6 +1,7 @@
 package ving.spring.ving.socket.chat;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ving.spring.ving.socket.Message;
 import ving.spring.ving.streamRoom.StreamRoomModel;
@@ -16,6 +17,7 @@ import java.util.Base64;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ChatModelService {
     private final ChatModelRepository chatModelRepository;
@@ -31,6 +33,7 @@ public class ChatModelService {
     {
         String username = new String(Base64.getDecoder().decode(chatRoom));
         UserModel streamer = userService.findByUserUsername(username).orElseThrow();
+        log.info(streamer.getUserUsername() + " 입니다잉");
         StreamRoomModel streamRoomModel =  streamRoomService.findStreamRoomModelByStreamerAndIsEnd(streamer);
         LocalDateTime createdAt = streamRoomModel.getCreatedAt();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

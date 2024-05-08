@@ -25,11 +25,21 @@ public class MessageController {
         chatModelService.toChatModel(message, channelId);
         simpMessageSendingOperations.convertAndSend("/sub/channel/" + channelId, message);
     }
+    @MessageMapping("/streamer/{channelId}")
+    public void newsFeed(Message.NewsFeed message, @DestinationVariable("channelId") String channelId) {
+        // 메세지를 받으면 convert해서 보내기
+        simpMessageSendingOperations.convertAndSend("/sub/streamer/" + channelId, message);
+    }
 
 
-    public void donation(Message.ChatMessage message, String channelId)
+    public void donation(Message.ChatMessage message, Message.NewsFeed newsFeed,  String channelId)
     {
-        chatModelService.toChatModel(message, channelId);
+        simpMessageSendingOperations.convertAndSend("/sub/streamer/" + channelId, newsFeed);
         simpMessageSendingOperations.convertAndSend("/sub/channel/" + channelId, message);
+    }
+
+    public void follow(Message.NewsFeed newsFeed, String channelId)
+    {
+        simpMessageSendingOperations.convertAndSend("/sub/streamer/" + channelId, newsFeed);
     }
 }
