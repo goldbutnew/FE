@@ -17,22 +17,16 @@ export const userImageNameInfoBox = style([
   rowbox, {
 }])
 
-export const userImage = style({
-  width: 80,
-  height: 80, 
-  borderRadius: vars.borderRadius.full,
-  border: `2.5px solid ${vars.colors.black}`
-})
-
-export const userTextInfoBox = style({
-  display: 'flex',
-  flexDirection: 'column',
-  margin: '0px 0px 0px 10px'
-})
+export const userTextInfoBox = style([
+  columnbox,
+  {
+    margin: `0 0 0 ${vars.space['1x']}`
+  }
+])
 
 export const userName = style({
   fontSize: vars.fontSize['2x'],
-  padding: '0px 0px 3px 0px'
+  padding: `0 0 ${vars.space['0.5x']} 0`
 })
 
 export const userIntroduce = style({
@@ -40,9 +34,10 @@ export const userIntroduce = style({
 })
 
 export const followerBox = style([
-  defaultBox, {
+  defaultBox, 
+  {
     justifySelf: 'flex-end',
-}])
+  }])
 
 export const followerNotification = style([
   rowbox, {
