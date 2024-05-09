@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect  } from 'react'
-import useStreamingStore from '@/store/StreamingStore'
+import useStudioStore from '../Store'
 
 import Image from 'next/image'
 import logo from '#/images/main-logo.png'
@@ -9,11 +9,11 @@ import DefaultInput from '@/components/Input/DefaultInput'
 import Radio from '@/components/Input/Radio'
 import SmallButton from '@/components/Button/SmallButton'
 import StreamingVideo from '@/components/StreamingVideo'
-import * as styles from './index.css'
+import * as styles from '../index.css'
 
 
 export default function StudioStreaming() {
-  const { openPort, startStreaming, sendStreamTitle, sendStreamThumbnail, sendStreamLimit } = useStreamingStore()
+  const { openPort, startStreaming, sendStreamTitle, sendStreamThumbnail, sendStreamLimit } = useStudioStore()
   const [ isOnline, setIsOnline ] = useState(false)
   const [ title, setTitle ] = useState('')
   const [ limit, setLimit ] = useState(false)

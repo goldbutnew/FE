@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation"
 import * as styles from './index.css'
 import SmallButton from "@/components/Button/SmallButton";
 import useAuthStore from "@/store/AuthStore";
-import useMainStore from "@/store/MainStore";
+import useMainStore from "@/store/StreamingStore";
 import useProfileStore from "@/store/ProfileStore";
 import ProfileImage from "@/components/ProfileImg";
 import { vars } from "@/styles/vars.css";

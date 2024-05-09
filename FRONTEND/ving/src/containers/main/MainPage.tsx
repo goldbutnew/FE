@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import useAuthStore from "@/store/AuthStore"
-import useMainStore from "@/store/MainStore"
+import useStreamingStore from "@/store/StreamingStore"
 
 import Link from 'next/link'
 import * as styles from './index.css'
@@ -10,7 +10,7 @@ import * as styles from './index.css'
 
 export default function MainPage() {
   const { userData, code } = useAuthStore()
-  const { streamData, getStreamInfo, setStreamRoomTitle } = useMainStore()
+  const { streamData, getStreamInfo, setStreamRoomTitle } = useStreamingStore()
 
   const handleTitleChange = (title:string) => {
     setStreamRoomTitle(title)

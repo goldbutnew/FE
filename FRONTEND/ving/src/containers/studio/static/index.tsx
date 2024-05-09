@@ -1,7 +1,6 @@
 'use client'
 
-import Link from 'next/link'
-import * as styles from './index.css'
+import * as styles from '../index.css'
 import { useParams, useRouter } from 'next/navigation'
 import Container from '@/components/Container'
 
