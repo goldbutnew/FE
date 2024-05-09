@@ -1,6 +1,4 @@
 import { style } from '@vanilla-extract/css'
-import { vars } from '../../styles/vars.css'
-
 
 export const videoResize = style({
   width: "100%",

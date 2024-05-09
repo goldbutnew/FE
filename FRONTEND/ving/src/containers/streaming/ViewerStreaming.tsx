@@ -2,16 +2,12 @@
 
 import React, { useEffect } from "react";
 import * as styles from './index.css'
-import Container from "@/components/Container";
 import Image from "next/image";
 import dummy from '#/images/dummy-profile-img.jpg'
 import SmallButton from "@/components/Button/SmallButton";
 import StreamingVideo from "@/components/StreamingVideo";
-import { rowWrapper } from "@/styles/wrapper.css";
-import { useParams } from "next/navigation";
-import useProfileStore from "@/store/ProfileStore";
 
-export default function UserStreaming() {
+export default function ViewerStreaming() {
 
   // const { getCurrentTopViewers, currentTopViewersData, getUserProfileInfo, getUserNicknameSearch, searchData } = useProfileStore()
   // const [subscriberCount, setSubscriberCount] = useState(profileData.followers || 0)

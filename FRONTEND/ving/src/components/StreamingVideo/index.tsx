@@ -35,9 +35,10 @@ export default function StreamingVideo() {
         ref={videoRef}
         autoPlay={true}
         controls={false}
+        className={styles.videoResize}
       />
       <div>
-        <VideoPlayer videoRef={videoRef} setUrl={setUrl}/>
+        <VideoPlayer videoRef={videoRef} setUrl={setUrl} />
       </div>
     </div>
   )
