@@ -39,8 +39,25 @@ export default function Chat() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
   const { streamRoomData } = useStreamingStore()
+  const [nicknameColors, setNicknameColors] = useState(new Map());
 
-  // 1. 이거 동적라우팅으로 바꿔야함
+  const getRandomColor = () => {
+    const hue = Math.floor(Math.random() * 360)
+    const saturation = Math.floor(Math.random() * 10) + 70
+    const lightness = Math.floor(Math.random() * 20) + 70
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`
+  }
+
+  const getNicknameColor = (nickname: string) => {
+    if (nicknameColors.has(nickname)) {
+      return nicknameColors.get(nickname);
+    } else {
+      const newColor = getRandomColor(); // 랜덤 색상 생성 함수
+      setNicknameColors(new Map(nicknameColors.set(nickname, newColor)));
+      return newColor;
+    }
+  };
+
   const roomId = btoa(streamRoomData.username);
 
   const onMessageReceived = (msg) => {
@@ -76,16 +93,6 @@ export default function Chat() {
     client.activate();
     setStompClient(client);
   };
-  
-  // useEffect(() => {
-  //   connect();
-  //   return () => {
-  //     if (stompClient) {
-  //       console.log("WebSocket 연결 해제 시도 중...");
-  //       stompClient.deactivate();
-  //     }
-  //   }
-  // }, []);
 
   useEffect(() => {
     connect();
@@ -109,31 +116,32 @@ export default function Chat() {
     setMessageInput(prev => prev + emoji.emoji);
   }
 
-  const handleSendMessage = (event) => {
-    event.preventDefault()
-    const formattedTimestamp = getFormattedTimestamp()
+const handleSendMessage = (event) => {
+  event.preventDefault();
+  const formattedTimestamp = getFormattedTimestamp();
 
-    if (stompClient && messageInput.trim() && connected) {
-      const message : Message = {
-         // 2. userData에 Id속성 없음 username으로 해야함
-        userName: userData.username,
-        nickname: userData.nickname,
-        timeStamp: formattedTimestamp,
-        donation : 0,
-        isTts: false,
-        text: messageInput,
-      };
-      stompClient.publish({
-        destination: `/pub/channel/${roomId}`,
-        body: JSON.stringify(message)
-      });
-      console.log("메시지 형식:", message)
-      addMessage(message);
-      setMessageInput('');
-    } else {
-      console.log("아직 소켓 연결 안 됨");
-    }
-  };
+  if (stompClient && messageInput.trim() && connected) {
+    const message = {
+      userName: userData.username,
+      nickname: userData.nickname,
+      timeStamp: formattedTimestamp,
+      donation: 0,
+      isTts: false,
+      text: messageInput,
+      origin: 'local'
+    };
+    stompClient.publish({
+      destination: `/pub/channel/${roomId}`,
+      body: JSON.stringify(message)
+    });
+    console.log("메시지 형식:", message);
+    // addMessage(message);
+    setMessageInput('');
+  } else {
+    console.log("아직 소켓 연결 안 됨");
+  }
+};
+
   
   useEffect(() => {
     // 스크롤 항상 아래로 내리기
@@ -159,19 +167,27 @@ export default function Chat() {
           >
             {msg.donation ? 
               <div className={styles.donationChatItem}>
-                <button className={styles.DontaionchatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
-                  {msg.nickname}
-                </button>
-                <div>{msg.text}</div>
-                <hr className={line} />
-                <div className={styles.donationChatItemChoco}>🍫 {msg.donation}</div>
-              </div>
+              <button 
+                style={{ color: getNicknameColor(msg.nickname) }}
+                className={styles.DonationchatNickname}
+                onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}
+              >
+                {msg.nickname}
+              </button>
+              <div>{msg.text}</div>
+              <hr className={line} />
+              <div className={styles.donationChatItemChoco}>🍫 {msg.donation}</div>
+            </div>
             : 
-              <div>
-                <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
-                  {msg.nickname}
-                </button>: <span>{msg.text}</span>
-              </div>
+            <div>
+              <button
+                style={{ color: getNicknameColor(msg.nickname) }}
+                className={styles.chatNickname}
+                onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}
+              >
+                {msg.nickname}
+              </button>: <span>{msg.text}</span>
+            </div>
             }
           </div>
         ))}
