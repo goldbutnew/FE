@@ -24,7 +24,7 @@ public class UserModel {
 
 
     private Integer userIsregistered;
-    private String userPhoto;
+
     private String userIntroduction;
 
 
@@ -32,6 +32,8 @@ public class UserModel {
     private Integer userChoco;
     private Integer userSubscriberCount;
 
+    @Column(nullable = true)
+    private String userPhoto;
 
     @Column(nullable = true)
     private LocalDateTime userLeaveDate;

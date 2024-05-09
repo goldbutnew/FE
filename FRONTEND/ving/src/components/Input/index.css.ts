@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css'
 import { recipe } from '@vanilla-extract/recipes'
 import { vars } from '@/styles/vars.css'
-import { columnbox } from '@/styles/box.css'
+import { columnWrapper } from '@/styles/wrapper.css'
 import { plainButton } from '@/styles/common.css'
 
 // common
@@ -14,7 +14,7 @@ export const characterCount = style({
 })
 
 export const emojiButton = style([
-  columnbox,
+  columnWrapper,
   plainButton,
   {
     padding: `0 ${vars.space['1x']} 0 ${vars.space['1x']}`,

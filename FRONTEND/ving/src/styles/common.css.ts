@@ -18,6 +18,13 @@ export const line = style({
   borderBottom: `1px solid ${vars.colors.gray}`,
 })
 
+export const lighLine = style({  
+  margin: `${vars.space['1x']} 0 ${vars.space['1x']} 0`,
+  padding: 0,
+  border: 'none',
+  borderBottom: `1px solid ${vars.colors.lightGray}`,
+})
+
 export const flex = recipe({
   base: {
     display: 'flex',

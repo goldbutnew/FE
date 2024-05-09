@@ -1,8 +1,6 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,react,nextjs,visualstudiocode,python,django,intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,react,nextjs,visualstudiocode,python,django,intellij
-STATIC/
-*.ts
-*.m3u8
+STATIC/*.m3u8
 
 ### Django ###
 *.log

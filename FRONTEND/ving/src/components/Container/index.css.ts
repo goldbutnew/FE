@@ -3,5 +3,5 @@ import { vars } from '@/styles/vars.css'
 
 export const container = style({
   flexGrow: 1,
-  padding: `${vars.space['8x']} ${vars.space['2x']} 0 ${vars.space['2x']}`,
+  padding: `${vars.space['10x']} ${vars.space['10x']} 0 ${vars.space['10x']}`,
 })

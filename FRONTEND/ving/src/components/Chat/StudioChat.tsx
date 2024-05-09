@@ -3,14 +3,13 @@
 import React, { useState, useEffect, useRef } from "react"
 import SockJS from 'sockjs-client'
 import { Stomp } from '@stomp/stompjs'
-import SideBar from "../SideBar/SideBar"
 import DefaultInput from "../Input/DefaultInput"
 import SmallButton from "../Button/SmallButton"
 import * as styles from "./index.css"
 import { vars } from "@/styles/vars.css"
 import EmojiPicker from "emoji-picker-react"
 import useAuthStore from "@/store/AuthStore";
-import useChatStore from "@/store/ChatStore";
+import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
 import { line } from "@/styles/common.css";
 
@@ -133,47 +132,52 @@ export default function StudioChat() {
 
   return (
     <div className={styles.studioChatContainer}>
-      <div className={styles.studioChatBox} ref={chatBoxRef}>
-        {messages.map((msg, index) => (
-          <div 
-            key={index} 
-            className={styles.chatItem}
-          >
-            {msg.donation ? 
-              <div className={styles.donationChatItem}>
-                <button className={styles.DontaionchatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
-                  {msg.nickname}
-                </button>
-                <div>{msg.text}</div>
-                <hr className={line} />
-                <div className={styles.donationChatItemChoco}>🍫 {msg.donation}</div>
-              </div>
-            : 
-              <div>
-                <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
-                  {msg.nickname}
-                </button>: <span>{msg.text}</span>
-              </div>
-            }
-          </div>
-        ))}
+      <div className={styles.title}>
+        채팅
       </div>
-      <form className={styles.inputBox} onSubmit={handleSendMessage}>     
-        <div className={styles.emojiBox}>
-          {showEmojiPicker && (
-            <EmojiPicker width="100%" height={300} onEmojiClick={handleEmojiClick} />
-          )}
+      <hr className={line} />
+      <div className={styles.studioChatContent}>
+        <div className={styles.studioChatBox} ref={chatBoxRef}>
+          {messages.map((msg, index) => (
+            <div 
+              key={index} 
+              className={styles.chatItem}
+            >
+                <div>
+                  <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
+                  👑{msg.nickname}
+                  </button>: <span>{msg.text}</span>
+                </div>
+            </div>
+          ))}
         </div>
-        <DefaultInput 
-          type="text"
-          value={messageInput}
-          onChange={handleChange}
-          placeholder="채팅을 입력해 주세요"
-          onEmojiClick={openEmojiPicker}
-        />
-      </form>
-      <div className={styles.studioChatSendButtonBox}>
-        <SmallButton text="전송" color={vars.colors.darkGray} onClick={handleSendMessage} />
+        <form className={styles.inputBox} onSubmit={handleSendMessage}>     
+          <div className={styles.emojiBox}>
+            {showEmojiPicker && (
+              <EmojiPicker 
+                width="100%" 
+                searchDisabled={true} 
+                height={180} 
+                previewConfig={{
+                  defaultEmoji: "1f60a",
+                  defaultCaption: "What's your mood?",
+                  showPreview: false
+                }}
+              onEmojiClick={handleEmojiClick} 
+            />
+            )}
+          </div>
+          <DefaultInput 
+            type="text"
+            value={messageInput}
+            onChange={handleChange}
+            placeholder="채팅을 입력해 주세요"
+            onEmojiClick={openEmojiPicker}
+          />
+        </form>
+        <div className={styles.studioChatSendButtonBox}>
+          <SmallButton text="전송" color={vars.colors.darkGray} onClick={handleSendMessage} />
+        </div>
       </div>
     </div>
   );

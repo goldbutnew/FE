@@ -10,8 +10,8 @@ import SmallButton from "../Button/SmallButton";
 import { vars } from "@/styles/vars.css";
 import DefaultInput from "../Input/DefaultInput";
 import ToggleButton from "../Button/ToggleButton";
-import { betweenBox } from "@/styles/box.css";
-import useChatStore from "@/store/ChatStore";
+import { betweenWrapper } from "@/styles/wrapper.css";
+import useChatStore from "@/components/Chat/Store";
 import useAuthStore from "@/store/AuthStore";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
 // import axios from "axios";
@@ -188,14 +188,14 @@ export default function Donation() {
             </div>
             <hr className={line} />
             <div className={styles.toggleBox}>
-              <div className={betweenBox}>
+              <div className={betweenWrapper}>
                 채팅 읽어 주기
                 <ToggleButton
                   isActive={isTTS}
                   onChange={handleTTS}
                 />
               </div>
-              <div className={betweenBox}>
+              <div className={betweenWrapper}>
                 익명으로 후원하기
                 <ToggleButton
                   isActive={isAnonym}
@@ -209,6 +209,12 @@ export default function Donation() {
                 <EmojiPicker
                   width="100%"
                   height={200}
+                  searchDisabled={true} 
+                  previewConfig={{
+                    defaultEmoji: "1f60a",
+                    defaultCaption: "What's your mood?",
+                    showPreview: false
+                  }}
                   onEmojiClick={handleEmojiClick}
                 />
               </div>

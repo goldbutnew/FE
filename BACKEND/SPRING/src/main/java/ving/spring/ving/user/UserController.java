@@ -29,6 +29,7 @@ import ving.spring.ving.security.dto.LoginRequest;
 import ving.spring.ving.security.dto.LoginResponse;
 import ving.spring.ving.security.dto.UserPrincipal;
 import ving.spring.ving.security.jwt.JwtIssuer;
+import ving.spring.ving.subscription.SubscriptionModel;
 import ving.spring.ving.subscription.SubscriptionService;
 import ving.spring.ving.user.dto.FillupDto;
 import ving.spring.ving.user.dto.ProfileDto;
@@ -107,7 +108,7 @@ public class UserController {
                     .userPassword(passwordEncoder.encode(request.getPassword()))
                     .userSubscriberCount(0)
                     .userNickname(request.getNickname())
-                    .userPhoto("NULL")
+                    .userPhoto("https://mozzibucket.s3.ap-northeast-2.amazonaws.com/profile.png")
                     .userChoco(0)
                     .userIsregistered(1)
                     .build();
@@ -166,6 +167,7 @@ public class UserController {
             LinkModel linkModel = LinkModel.builder()
                     .userModel(userModel)
                     .url(linkDto.getUrl())
+                    .title(linkDto.getTitle())
                     .build();
             linkService.save(linkModel);
             return ResponseEntity.ok(HttpStatus.CREATED);
@@ -197,11 +199,17 @@ public class UserController {
     {
         UserModel userModel = userService.findByUserUsername(username).orElseThrow();
         UserModel me = userService.findCurrentUser();
+        boolean isSubscribed = subscriptionService.existsByStreamerAndFollower(userModel, me);
+        boolean isAlarmed = isSubscribed && subscriptionService.findByStreamerAndFollower(userModel, me).getNotification() == 1;
         List<VideoModel> videoModels = videoService.findVideoModelsByUser(userModel);
         List<VideoDto.VideoEntity> returnList = new ArrayList<>();
-        List<String> links = new ArrayList<>();
+        List<LinkDto> links = new ArrayList<>();
         linkService.findLinkModelsByUserModel(userModel).forEach(
-                x -> links.add(x.getUrl())
+                x -> links.add(
+                        LinkDto.builder()
+                                .title(x.getTitle())
+                                .url(x.getUrl())
+                                .build())
         );
         for (VideoModel videoModel : videoModels)
         {
@@ -224,6 +232,7 @@ public class UserController {
                         .followers(subscriptionService.countAllByStreamer(userModel))
                         .photoUrl(userModel.getUserPhoto())
                         .videos(returnList)
+                        .isAlarmed(isAlarmed)
                         .links(links)
                         .isFollowed(subscriptionService.existsByStreamerAndFollower(userModel, me))
                         .build()
@@ -233,8 +242,7 @@ public class UserController {
     @PatchMapping("/api/auth/fillup")
     public ResponseEntity<?> fillUp(@ModelAttribute FillupDto fillupDto)
     {
-        try
-        {
+        try {
             MultipartFile photo = fillupDto.getPhoto();
             String nickname = fillupDto.getNickname();
             String introduction = fillupDto.getIntroduction();
@@ -242,14 +250,20 @@ public class UserController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String username = userDetails.getUsername();
             UserModel userModel = userService.findByUserUsername(username).orElseThrow();
-            String sourceFileName = photo.getOriginalFilename();
-            String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
-            String fileUrl = "https://" + bucket +".s3.ap-northeast-2.amazonaws.com" + "/";
-            String destinationFileName = RandomStringUtils.randomAlphabetic(5) + "_" + username  + "."
-                    + sourceFileNameExtension;
-            userModel.setUserNickname(fillupDto.getNickname());
-            userModel.setUserIntroduction(fillupDto.getIntroduction());
-            String finalUrl = (fileUrl + destinationFileName);
+            String fileUrl = "https://mozzibucket.s3.ap-northeast-2.amazonaws.com/";
+            String destinationFileName = "profile.png";
+            if (photo != null)
+            {
+                String sourceFileName = photo.getOriginalFilename();
+                String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
+                fileUrl = "https://" + bucket +".s3.ap-northeast-2.amazonaws.com" + "/";
+                destinationFileName = RandomStringUtils.randomAlphabetic(5) + "_" + username  + "."
+                        + sourceFileNameExtension;
+                userModel.setUserNickname(fillupDto.getNickname());
+                userModel.setUserIntroduction(fillupDto.getIntroduction());
+            }
+            String finalUrl = fileUrl + destinationFileName;
+
 
             userModel.setUserPhoto(finalUrl);
             userService.save(userModel);

@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
-import { columnbox, defaultBox, rowbox } from '@/styles/box.css';
+import { columnWrapper, defaultWrapper, rowWrapper } from '@/styles/wrapper.css';
 import { bold } from '@/styles/fonts.css';
 import { calc } from '@vanilla-extract/css-utils';
 
@@ -16,7 +16,7 @@ export const baseSidebar = style({
   zIndex: 3000,
   transition: '0.3s ease-in-out',
   overflow: 'hidden',
-});
+})
 
 export const leftSidebar = style([
   baseSidebar,
@@ -74,7 +74,7 @@ export const sidebarTitle = style([
 ])
 
 export const sidebarContent = style([
-  defaultBox,
+  defaultWrapper,
   {
     whiteSpace: 'pre-wrap',
     overflowWrap: 'break-word',
@@ -82,3 +82,66 @@ export const sidebarContent = style([
     height: calc.subtract(`100% - ${vars.space['5x']}`)
   }
 ]);
+
+// 사이드 랭킹 관련 스타일 시작
+
+export const SearchBarContainer = style([
+  rowWrapper, {
+
+}])
+
+export const SearchBarInputBox = style({
+  width: '100%',
+  border: `1px solid ${vars.colors.gray}`,
+  padding: '4px 8px',
+  borderRadius: vars.borderRadius['0.5x'],
+})
+
+export const input = style({
+  flex: 1,
+  border: 'none',
+  outline: 'none',
+  padding: '8px',
+})
+
+export const searchIcon = style({
+  backgroundColor: vars.colors.lightGray,
+  borderRadius: vars.borderRadius['0.5x'],
+  border: 'none',
+  cursor: 'pointer',
+  margin: '0px 0px 0px 3px',
+  padding: '8px',
+  fontSize: vars.fontSize['2x'],
+})
+
+export const autocompleteList = style({
+  position: 'absolute',
+  backgroundColor: vars.colors.white,
+  // 테두리 주니까 밑줄 모양이 남음.. 일단 보류
+  // border: `1px solid ${vars.colors.gray}`,
+  width: '100%',
+  maxHeight: 272,
+  overflowY: 'auto',
+  zIndex: 100,
+})
+
+export const searchUserImage = style({
+  width: 45,
+  height: 45, 
+  borderRadius: vars.borderRadius.full,
+  border: `2.5px solid ${vars.colors.black}`,
+  margin: '0px 5px 0px 0px'
+})
+
+export const autocompleteItem = style([
+  rowWrapper, {
+  margin: '5px 0px 5px 0px',
+  width: 190
+  }
+])
+
+export const rankingUserName = style({
+  overflow: 'hidden', 
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis'
+})

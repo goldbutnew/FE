@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import * as styles from './index.css'
-import axios from 'axios'
 import { FiSearch } from "react-icons/fi"
 import useProfileStore from '@/store/ProfileStore'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 interface User {
@@ -16,8 +14,9 @@ export default function SearchBar() {
   const [nickname, setNickname] = useState('')
   const [username, setUsername] = useState('')
   const [users, setUsers] = useState<User[]>([])
+  const autocompleteRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('')
-  const { getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData } = useProfileStore()
+  const { profileUserName, getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData } = useProfileStore()
   const router = useRouter()
 
   const filterUsers = (searchTerm: string) => {
@@ -41,12 +40,27 @@ export default function SearchBar() {
     setUsers([])
   }
 
+  // 검색어 자동완성 외 부분 마우스 클릭하면 자동완성리스트 사라지는 로직
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (autocompleteRef.current && !autocompleteRef.current.contains(event.target as Node)) {
+        setUsers([])
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [autocompleteRef])
+
   useEffect(() => {
     getUserNicknameSearch()
   }, [getUserNicknameSearch])
 
   const moveSearchUser = (username:string) => {
-    router.push(`/profile/${username}`)
+    getUserProfileInfo(username)
+    console.log('이동 전에 데이터 담는다')
+    router.push(`/profile/${btoa(username)}`)
   }
   
   
@@ -78,12 +92,12 @@ export default function SearchBar() {
             onChange={handleInputChange}
           />
         </div>
-        <button className={styles.searchIcon} onClick={() => moveSearchUser(btoa(username))}>
+        <button className={styles.searchIcon} onClick={() => moveSearchUser(username)}>
           <FiSearch size={20}/>
         </button>
       </div>
       <div>
-        <div className={styles.autocompleteList}>
+        <div ref={autocompleteRef} className={styles.autocompleteList}>
           {users.map(user => (
             <div key={user.username} onClick={() => handleAutoComplete(user)}>
               <div className={styles.autocompleteItem}>

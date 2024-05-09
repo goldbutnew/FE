@@ -39,5 +39,16 @@ public class Message {
         private boolean isTts;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class NewsFeed
+    {
+        private Boolean isDonation;
+        private String username;
+        private String nickname;
+        private Integer choco;
+    }
 
 }

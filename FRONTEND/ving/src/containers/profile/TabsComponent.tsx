@@ -1,15 +1,20 @@
 import React, { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import * as styles from './index.css'
-import { ProfileTabComponent } from './ProfileTabComponent'
+import ProfileTabComponent from './ProfileTabComponent'
 import VideoTabComponent from './VideoTabComponent'
+import { line } from '@/styles/common.css'
 
-export default function TabsComponent({ where }) {
+type TabsComponentProps = {
+  where: string
+}
+
+const TabsComponent = ({ where }: TabsComponentProps) =>  {
   const [activeTab, setActiveTab] = useState(where)
   const router = useRouter()
   const params = useParams()
 
-  const move = (tabName) => {
+  const move = (tabName:string) => {
     if ((tabName) === 'video' ) {
       console.log('hiiiiii', (tabName))
       setActiveTab('video')
@@ -23,7 +28,7 @@ export default function TabsComponent({ where }) {
   }
 
   return (
-    <div className={styles.tabsContainer}>
+    <div>
       <ul className={styles.tabList}>
         <li 
           className={styles.tab} 
@@ -44,6 +49,7 @@ export default function TabsComponent({ where }) {
           동영상
         </li>
       </ul>
+      <hr className={line} />
       <div className={styles.tabPanel}>
         {activeTab === 'home' && <ProfileTabComponent />}
         {activeTab === 'video' && <VideoTabComponent />}
@@ -51,3 +57,5 @@ export default function TabsComponent({ where }) {
     </div>
   )
 }
+
+export default TabsComponent

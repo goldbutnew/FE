@@ -1,97 +1,25 @@
 import { create } from 'zustand'
 import axios from '../api/axios'
+import { persist } from 'zustand/middleware'
 
-const useStreamingStore = create((set) => ({
-
-  streamData:'',
-
-  openPort: async (tmp) => {
-    const token = localStorage.getItem('accessToken')
+const useStreamingStore = create(persist((set, get) => ({
+  streamRoomsData: [],
+  streamRoomData: '',
+  setStreamRoomData: (data: Object) => set({ setStreamRoomData: data }),
+  getStreamInfo: async () => {
     try {
-      const response = await axios.patch('stream/createRoom', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: {
-          tmp
-        }
-      })
-      console.log('방송 시작 요청', response.data)
+      const response = await axios.get('stream/findAll')
+      console.log('생방송 목록 가져오기 성공', response.data)
+      set({ streamRoomsData: response.data.streamRooms })
 
     } catch (error) {
-      console.error('방송 시작 요청 실패:', error)
+      console.error('생방송 목록 가져오기 실패:', error)
     }
   },
-
-  closePort: async (username) => {
-    const token = localStorage.getItem('accessToken')
-    try {
-      const response = await axios.delete('home/delete_streaming_room/int:room_id/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: {
-          username
-        }
-      })
-      console.log('방송 종료 요청', response.data)
-
-    } catch (error) {
-      console.error('방송 종료 요청 실패:', error)
-    }
-  },
-
-  sendStreamTitle: async (new_name) => {
-    const token = localStorage.getItem('accessToken')
-    try {
-      const response = await axios.patch('home/set_streaming_room_name/int:room_id/', {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
-        body: {
-          new_name
-        }
-      })
-      console.log('제목 수정 완료', response.data)
-
-    } catch (error) {
-      console.error('제목 수정 실패:', error)
-    }
-  },
-  sendStreamThumbnail: async (thumbNail) => {
-    const token = localStorage.getItem('accessToken')
-    try {
-      const response = await axios.patch('update_streaming_room_thumbnail/int:room_id/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: {
-          thumbNail
-        }
-      })
-      console.log('썸네일 수정 완료', response.data)
-
-    } catch (error) {
-      console.error('썸네일 수정 실패:', error)
-    }
-  },
-  sendStreamLimit: async (isAdult) => {
-    const token = localStorage.getItem('accessToken')
-    try {
-      const response = await axios.patch('home/set_streaming_room_is_adult/int:room_id/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: {
-          isAdult
-        }
-      })
-      console.log('연령 제한 설정 완료', response.data)
-
-    } catch (error) {
-      console.error('연령 제한 설정 실패:', error)
-    }
-  },
-}))
+}), {
+  name: 'streaming-store',
+  getStorage: () => localStorage,
+  partialize: (state: any) => ({ streamRoomData: state.streamRoomData })
+}));
 
 export default useStreamingStore

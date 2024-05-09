@@ -1,9 +1,9 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '../../styles/vars.css'
-import { betweenBox, columnbox, defaultBox, rowbox } from '@/styles/box.css';
+import { betweenWrapper, columnWrapper, defaultWrapper, rowWrapper } from '@/styles/wrapper.css';
 
 export const container = style([
-  betweenBox,
+  betweenWrapper,
   {
     position: 'fixed',
     width: '100%',
@@ -17,14 +17,14 @@ export const container = style([
 ])
 
 export const leftNavBox = style([
-  rowbox,
+  rowWrapper,
   {
     gap: vars.space['1x']
   }
 ])
 
 export const centerBox = style([
-  rowbox,
+  rowWrapper,
   {
     position: 'absolute',
     left: '50%',
@@ -33,14 +33,14 @@ export const centerBox = style([
 ])
 
 export const rightNavBox = style([
-  rowbox,
+  rowWrapper,
   {
     gap: vars.space['1x']
   }
 ])
 
 export const logo = style([
-  rowbox,
+  rowWrapper,
   {
     width: 'auto',
     height: 32,
@@ -51,14 +51,14 @@ export const logo = style([
 // studioNav.tsx
 
 export const studioNavBox = style([
-  rowbox,
+  rowWrapper,
   {
     gap: vars.space.none,
   }
 ])
 
 export const textLogo = style([
-  rowbox,
+  rowWrapper,
   {
     width: 'auto',
     height: 12,
@@ -74,7 +74,7 @@ export const profileMenuContainer = style({
 });
 
 export const avatarButton = style([
-  columnbox,
+  columnWrapper,
   {
     backgroundImage: 'url("/path/to/avatar.png")',
     backgroundRepeat: 'no-repeat',
@@ -88,7 +88,7 @@ export const avatarButton = style([
 // SeachBar 관련 style 시작
 
 export const SearchBarContainer = style([
-  rowbox, {
+  rowWrapper, {
 
 }])
 
@@ -136,7 +136,7 @@ export const searchUserImage = style({
 })
 
 export const autocompleteItem = style([
-  rowbox, {
+  rowWrapper, {
   margin: '5px 0px 5px 0px'
   }
 ])

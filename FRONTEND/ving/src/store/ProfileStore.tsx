@@ -1,7 +1,8 @@
 import { create } from 'zustand'
 import axios from '../api/axios'
+import { persist } from "zustand/middleware"
 
-const useProfileStore = create((set, get) => ({
+const useProfileStore = create(persist((set, get) => ({
   // 팔로우 관련 axios
   // checkFollowStatus: async ({loading:Boolean isFollowed: Boolean userId:String}) => {
   //   try {
@@ -13,7 +14,30 @@ const useProfileStore = create((set, get) => ({
   //   } 
   // }
   profileData: {},
-  searchData: {},
+  streamerProfileData: {},
+  searchData: [],
+  currentTopViewersData: [],
+  profileUserName: '',
+  streamerUserName: '',
+  loginUserName: '',
+  loginUserProfileData: {},
+  // 로그인 유저 프로필 가져오기
+  getLoginUserInfo: async (username:string) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.get(`auth/getProfile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: { username : username},
+      })
+      set({ loginUserProfileData: response.data,
+        loginUserName: username
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  },
   // 유저 프로필 가져오기
   getUserProfileInfo: async (username:string) => {
     const token = localStorage.getItem('accessToken')
@@ -24,7 +48,26 @@ const useProfileStore = create((set, get) => ({
         },
         params: { username : username},
       })
-      set({ profileData: response.data })
+      set({ profileData: response.data,
+        profileUserName: username
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 스트리머 프로필 가져오기
+  getStreamerProfileInfo: async (username:string) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.get(`auth/getProfile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: { username : username},
+      })
+      set({ streamerProfileData: response.data,
+        streamerUserName: username
+      })
     } catch (error) {
       console.error(error)
     }
@@ -39,6 +82,21 @@ const useProfileStore = create((set, get) => ({
         }
       })
       set({ searchData: response.data.users })
+      console.log('-------------', response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 현재 시청자 수 랭킹 가져오기
+  getCurrentTopViewers: async () => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.get(`search/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      set({ currentTopViewersData: response.data.users })
       console.log('-------------', response.data)
     } catch (error) {
       console.error(error)
@@ -60,15 +118,16 @@ const useProfileStore = create((set, get) => ({
     }
   },
   // 팔로우 신청 /api/sub/subscript
-  doFollowUser: async (userId:number) => {
+  doFollowUser: async (username:string) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.post(`sub/subscript`,  {
+      const response = await axios.post(`sub/subscript`,   
+      { username },
+      {
         headers: {
           "Content-Type" : "application/json",
           Authorization: `Bearer ${token}`,
         },
-        data: { userId: userId }
       })
       console.log(response, '팔로우 신청 성공')
     } catch (error) {
@@ -76,7 +135,7 @@ const useProfileStore = create((set, get) => ({
     }
   },
   // 팔로우 취소 /api/sub/unSubscript
-  unDoFollowUser: async (userId:number) => {
+  unDoFollowUser: async (username:string) => {
     const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.delete(`sub/unSubscript`,  {
@@ -84,9 +143,26 @@ const useProfileStore = create((set, get) => ({
           "Content-Type" : "application/json",
           Authorization: `Bearer ${token}`,
         },
-        data: { userId: userId }
+        data: { username: username }
       })
       console.log(response, '팔로우 취소 성공')
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 알림 켜고 끄기
+  doChangeAlarm: async (username:string) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.patch(`sub/changeAlarm`, 
+      { username }, 
+      {
+        headers: {
+          "Content-Type" : "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(response, '알림 켜고 끄기 성공')
     } catch (error) {
       console.error(error)
     }
@@ -95,11 +171,12 @@ const useProfileStore = create((set, get) => ({
   doFixVideo: async (videoId:number) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.post(`video/doFix`, {
+      const response = await axios.post(`video/doFix`, 
+      { videoId },
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        data: { videoId: videoId }
       })
       console.log(response, '상단 고정 성공')
     } catch (error) {
@@ -121,6 +198,27 @@ const useProfileStore = create((set, get) => ({
       console.error(error)
     }
   },
+  // 비디오 삭제 
+  doDeleteVideo: async (videoId:number) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.delete(`video/delete`, 
+      {
+        headers: {
+          "Content-Type" : "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        data: { videoId: videoId }
+      })
+      console.log(response, '비디오 삭제 성공')
+    } catch (error) {
+      console.error(error)
+    }
+  },
+}), {
+  name: 'profile-store',
+  getStorage: () => localStorage, 
+  partialize: (state:any) => ({ loginUserName: state.loginUserName, loginUserProfileData: state.loginUserProfileData }) 
 }))
 
 export default useProfileStore

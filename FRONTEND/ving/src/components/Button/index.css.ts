@@ -1,13 +1,13 @@
 import { recipe } from '@vanilla-extract/recipes';
 import { vars } from '@/styles/vars.css';
 import { style, composeStyles, styleVariants } from '@vanilla-extract/css';
-import { centerbox } from '@/styles/box.css';
+import { centerWrapper } from '@/styles/wrapper.css';
 import { buttonEffect } from '@/styles/animation.css';
 
 export const defaultButton = recipe({
   base: composeStyles(
     buttonEffect,
-    centerbox,
+    centerWrapper,
     style({
       border: 'none',
       outline: 'none',

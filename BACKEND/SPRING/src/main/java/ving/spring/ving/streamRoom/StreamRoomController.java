@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ving.spring.ving.global.dto.DateTimeFormmer;
 import ving.spring.ving.s3.S3Service;
 import ving.spring.ving.socket.Message;
 import ving.spring.ving.socket.chat.ChatModel;
@@ -20,6 +21,7 @@ import ving.spring.ving.subscription.SubscriptionModel;
 import ving.spring.ving.subscription.SubscriptionService;
 import ving.spring.ving.user.UserModel;
 import ving.spring.ving.user.UserService;
+import ving.spring.ving.video.VideoDto;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -40,6 +42,7 @@ public class StreamRoomController {
     private final S3Service s3Service;
     private final SubscriptionService subscriptionService;
     private final AlarmService alarmService;
+    private final DateTimeFormmer dateTimeFormmer;
     @GetMapping("/chatting")
     List<Message.RecordedChat> getChatting(@RequestParam("videoName") String videoName,@RequestParam("timeStamp") String timeStamp)
     {
@@ -87,6 +90,50 @@ public class StreamRoomController {
         }
     }
 
+    @GetMapping("/getOnAir")
+    ResponseEntity<?> getOnAir(@RequestParam String username)
+    {
+        try
+        {
+            UserModel userModel = userService.findByUserUsername(username).orElseThrow();
+            StreamRoomModel streamRoomModel = streamRoomService.findStreamRoomModelByStreamerAndIsEnd(userModel);
+            VideoDto.VideoEntity videoEntity = VideoDto.VideoEntity.builder()
+                    .isFixed(false)
+                    .videoPlay(0)
+                    .videoId(-1)
+                    .title(streamRoomModel.getRoomName())
+                    .thumbnail(streamRoomModel.getRoomThumbnail())
+                    .createdAt(dateTimeFormmer.transform(streamRoomModel.getCreatedAt()))
+                    .build();
+            return ResponseEntity.ok(videoEntity);
+        } catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/findAll")
+    ResponseEntity<?> findAll()
+    {
+        List<StreamRoomDto.StreamRoom> streamRooms = new ArrayList<>();
+
+        for (StreamRoomModel streamRoomModel : streamRoomService.findAll())
+        {
+
+            streamRooms.add(
+                    StreamRoomDto.StreamRoom.builder()
+                            .title(streamRoomModel.getRoomName())
+                            .username(streamRoomModel.getStreamer().getUserUsername())
+                            .viewers(0)
+                            .thumbnail(streamRoomModel.getRoomThumbnail())
+                            .build()
+            );
+        }
+        StreamRoomDto.FindAllResponse findAllResponse = StreamRoomDto.FindAllResponse.builder()
+                .streamRooms(streamRooms)
+                .build();
+        return ResponseEntity.ok(findAllResponse);
+    }
     @GetMapping("/getAlarm")
     ResponseEntity<?> getAlarm()
     {
@@ -103,6 +150,7 @@ public class StreamRoomController {
                     alarms.add(
                             StreamRoomDto.Alarm.builder()
                                     .streamer(subscriptionModel.getStreamer().getUserNickname())
+                                    .type(alarmModel.getNoticeContent().toString())
                                     .build()
                     );
                 }

@@ -12,6 +12,7 @@ const useAuthStore = create(
     (set, get) => ({
       Token: null,
       userData: [],
+      code: '',
       isCheck: false,
 
       login: async (data:Data) => {
@@ -21,8 +22,9 @@ const useAuthStore = create(
 
           localStorage.setItem('accessToken', response.data.token.accessToken)
           set({ userData: response.data.info })
+          set({ code: btoa(response.data.info.username)})
           set({ Token: response.data.token.accessToken })
-          console.log('유저 데이터입니다', response.data)
+          console.log('유저 데이터입니다', response.data.info)
 
         } catch (error) {
           console.error('로그인 실패:', error)

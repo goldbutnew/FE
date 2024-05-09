@@ -8,9 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ving.spring.ving.socket.Message;
 import ving.spring.ving.socket.MessageController;
+import ving.spring.ving.streamRoom.StreamRoomModel;
+import ving.spring.ving.streamRoom.StreamRoomService;
 import ving.spring.ving.user.UserModel;
 import ving.spring.ving.user.UserService;
 
+import javax.swing.text.View;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
@@ -22,12 +25,13 @@ import java.util.Base64;
 public class SubscriptionController {
     private final UserService userService;
     private final SubscriptionService subscriptionService;
+    private final StreamRoomService streamRoomService;
 
     private final MessageController messageController;
     @PostMapping("/subscript")
     public  ResponseEntity<?> subscript(@RequestBody SubscriptionDto.SubscriptRequest subscriptRequest)
     {
-        UserModel streamer = userService.findByUserId(subscriptRequest.getUserId()).orElseThrow();
+        UserModel streamer = userService.findByUserUsername(subscriptRequest.getUsername()).orElseThrow();
         UserModel follower = userService.findCurrentUser();
 
         if (streamer.equals(follower))
@@ -52,16 +56,57 @@ public class SubscriptionController {
 
         return ResponseEntity.ok(
                 SubscriptionDto.SubscriptResponse.builder()
-                        .userId(subscriptRequest.getUserId())
+                        .username(subscriptRequest.getUsername())
                         .build()
         );
 
     }
 
+
+    @GetMapping("/tmpAlarm")
+    public ResponseEntity<?> tmpAlarm(@RequestParam String streamer, @RequestParam String viewer)
+    {
+        UserModel Streamer = userService.findByUserUsername(streamer).orElseThrow();
+        UserModel Viewer = userService.findByUserUsername(viewer).orElseThrow();
+
+        if (subscriptionService.existsByStreamerAndFollower(Streamer, Viewer) )
+        {
+            subscriptionService.findByStreamerAndFollower(Streamer, Viewer).setNotification(1);
+        }
+        else
+        {
+            SubscriptionModel subscriptionModel = SubscriptionModel.builder()
+                    .donation(0)
+                    .follower(Viewer)
+                    .streamer(Streamer)
+                    .notification(1)
+                    .build();
+            subscriptionService.create(subscriptionModel);
+        }
+        StreamRoomModel streamRoomModel = StreamRoomModel.builder()
+                .streamer(Streamer)
+                .roomThumbnail("https://vingving.s3.ap-northeast-2.amazonaws.com/WwGSt_모두 모여라.png")
+                .roomName("tmptmp")
+                .isEnd(false)
+                .build();
+
+        Message.NewsFeed newsFeed = Message.NewsFeed.builder()
+                .isDonation(false)
+                .username(Viewer.getUserUsername())
+                .nickname(Viewer.getUserNickname())
+                .choco(0)
+                .build();
+
+        String strBase64Encode = Base64.getEncoder().encodeToString(Viewer.getUserUsername().getBytes());
+        log.info(strBase64Encode);
+        messageController.follow(newsFeed, strBase64Encode);
+        return ResponseEntity.ok(HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/unSubscript")
     public ResponseEntity<?> unSubscript(@RequestBody SubscriptionDto.SubscriptRequest subscriptRequest)
     {
-        UserModel streamer = userService.findByUserId(subscriptRequest.getUserId()).orElseThrow();
+        UserModel streamer = userService.findByUserUsername(subscriptRequest.getUsername()).orElseThrow();
         UserModel follower = userService.findCurrentUser();
 
 
@@ -69,6 +114,8 @@ public class SubscriptionController {
         {
             return ResponseEntity.badRequest().body("나를 팔로우 할 수 없음");
         }
+
+
         subscriptionService.delete(streamer, follower);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
@@ -76,7 +123,7 @@ public class SubscriptionController {
     @PatchMapping("/changeAlarm")
     public ResponseEntity<?> changeAlarm(@RequestBody SubscriptionDto.SubscriptRequest subscriptRequest)
     {
-        UserModel streamer = userService.findByUserId(subscriptRequest.getUserId()).orElseThrow();
+        UserModel streamer = userService.findByUserUsername(subscriptRequest.getUsername()).orElseThrow();
         UserModel follower = userService.findCurrentUser();
         if (streamer.equals(follower))
         {
@@ -84,6 +131,7 @@ public class SubscriptionController {
         }
 
         SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(streamer, follower);
+
 
         subscriptionModel.setNotification(Math.abs(subscriptionModel.getNotification() - 1));
         subscriptionService.create(subscriptionModel);
@@ -96,7 +144,7 @@ public class SubscriptionController {
         log.info(donationRequest.getUsername());
         try
         {
-            UserModel follower = userService.findCudnbrrentUser();
+            UserModel follower = userService.findCurrentUser();
             UserModel streamer = userService.findByUserUsername(donationRequest.getUsername()).orElseThrow();
             SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(streamer, follower);
             subscriptionModel.setDonation(subscriptionModel.getDonation() + donationRequest.getChoco());
@@ -127,7 +175,15 @@ public class SubscriptionController {
                     .isTts(donationRequest.getIsTts())
                     .text(donationRequest.getMessage())
                     .build();
-            messageController.donation(chatMessage, strBase64Encode);
+
+            Message.NewsFeed newsFeed = Message.NewsFeed.builder()
+                    .isDonation(true)
+                    .choco(donationRequest.getChoco())
+                    .nickname(follower.getUserNickname())
+                    .username(follower.getUserUsername())
+                    .build();
+
+            messageController.donation(chatMessage, newsFeed, strBase64Encode);
             return ResponseEntity.ok(HttpStatus.OK);
         }
 
