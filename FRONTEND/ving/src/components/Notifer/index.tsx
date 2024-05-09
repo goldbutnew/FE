@@ -34,9 +34,17 @@ export default function Notifer() {
               />
             </div>
             {myAlarm.length > 0 ? (
-              myAlarm.map((alarm, index) => (
-                <p key={index}>{alarm.message}</p> // 알림 메시지 출력
-              ))
+              myAlarm.map((alarm, index) => {
+                let message = "";
+                if (alarm.type === "recording") {
+                  message = `${alarm.streamer}님의 녹화 영상이 업로드 됐습니다`;
+                } else if (alarm.type === "streaming") {
+                  message = `${alarm.streamer}님의 스트리밍이 시작되었습니다`;
+                } else {
+                  message = "알림 유형을 알 수 없습니다";
+                }
+                return <p key={index}>{message}</p>;
+              })
             ) : (
               <p>알림이 없습니다.</p>
             )}
