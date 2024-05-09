@@ -13,6 +13,7 @@ export default function MainPage() {
   const { streamRoomsData, getStreamInfo, setStreamRoomData } = useStreamingStore()
 
   const handleStreamDataChange = (data: Object) => {
+    console.log(data)
     setStreamRoomData(data)
   }
   

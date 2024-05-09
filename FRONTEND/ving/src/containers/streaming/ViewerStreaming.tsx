@@ -15,7 +15,7 @@ export default function ViewerStreaming() {
 
   const [loading, setLoading] = useState(false)
   const { userData } = useAuthStore()
-  const { streamRoomTitle } = useStreamingStore()
+  const { streamRoomData } = useStreamingStore()
   const { streamerProfileData, streamerUserName, getStreamerProfileInfo, doFollowUser, unDoFollowUser } = useProfileStore()
   const [subscriberCount, setSubscriberCount] = useState(streamerProfileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(streamerProfileData.isFollowed)
@@ -77,7 +77,7 @@ export default function ViewerStreaming() {
           <ProfileImage url={streamerProfileData.photoUrl} width={80} alt={"User profile"}/>
           <div className={styles.leftBox}>
             <div className={styles.leftBoxItem}>
-              <div className={styles.streamingTitle}>{streamRoomTitle}</div>
+              <div className={styles.streamingTitle}>{streamRoomData.title}</div>
             </div>
             <div className={styles.leftBoxItem}>
               <div className={styles.streamerName}>{streamerProfileData.nickname}</div>    

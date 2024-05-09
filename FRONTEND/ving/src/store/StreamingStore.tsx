@@ -5,7 +5,7 @@ import { persist } from 'zustand/middleware'
 const useStreamingStore = create(persist((set, get) => ({
   streamRoomsData: [],
   streamRoomData: '',
-  setStreamRoomData: (data: Object) => set({ setStreamRoomData: data }),
+  setStreamRoomData: (data: Object) => set({ streamRoomData: data }),
   getStreamInfo: async () => {
     try {
       const response = await axios.get('stream/findAll')
