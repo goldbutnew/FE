@@ -4,7 +4,8 @@ import axios from '../api/axios'
 
 const useMainStore = create((set) => ({
   streamData: [],
-
+  streamRoomTitle: '',
+  setStreamRoomTitle: (title:string) => set({ streamRoomTitle: title }),
   getStreamInfo: async () => {
     try {
       const response = await axios.get('stream/findAll')
