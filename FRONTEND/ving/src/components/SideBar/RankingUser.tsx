@@ -50,10 +50,10 @@ export default function RankingUser() {
             <div className={styles.autocompleteItem}>
               <img 
                 className={styles.searchUserImage} 
-                src={user.thumbnail || 'path_to_default_image.png'}
+                src={user.thumbnail}
                 alt={user.nickname}
               />
-              <span>{user.nickname}</span>
+              <div className={styles.rankingUserName}>{user.nickname}</div>
             </div>
           </div>
         ))}

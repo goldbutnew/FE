@@ -9,6 +9,7 @@ import useMainStore from "@/store/MainStore";
 import useProfileStore from "@/store/ProfileStore";
 import ProfileImage from "@/components/ProfileImg";
 import { vars } from "@/styles/vars.css";
+import StreamingVideo from "@/components/StreamingVideo";
 
 export default function ViewerStreaming() {
 
@@ -43,9 +44,9 @@ export default function ViewerStreaming() {
 
   useEffect(() => {
     let encodedUsername = params.username
-    encodedUsername = String(encodedUsername).replace("%3D", '')
+    console.log(encodedUsername)
+    encodedUsername = String(encodedUsername).replace(/%3D/g, '')
     const decodedUsername = atob(encodedUsername)
-    if (!streamerUserName) {
       // decodedUsername이 null인 경우만 initData를 호출
       const initData = async () => {
         console.log('스트리머 방 관련 정보 가져오기', decodedUsername)
@@ -53,7 +54,7 @@ export default function ViewerStreaming() {
         setLoading(true)
       }
       initData()
-    }
+    console.log(streamerUserName, decodedUsername, '의 방입니다^^^^^^^^')
   }, [getStreamerProfileInfo])
 
   useEffect(() => {

@@ -70,7 +70,9 @@ export default function ProfileUserInfoBox() {
 
   useEffect(() => {
     let encodedUsername = params.username
-    encodedUsername = String(encodedUsername).replace("%3D", '')
+    console.log(encodedUsername)
+    encodedUsername = String(encodedUsername).replace(/%3D/g, '')
+    console.log(encodedUsername)
     const decodedUsername = atob(encodedUsername)
     if (!profileUserName) {
       // decodedUsername이 null인 경우만 initData를 호출
