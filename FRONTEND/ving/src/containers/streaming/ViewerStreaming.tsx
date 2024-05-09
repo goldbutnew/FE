@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation"
 import * as styles from './index.css'
 import SmallButton from "@/components/Button/SmallButton";
 import useAuthStore from "@/store/AuthStore";
-import useMainStore from "@/store/StreamingStore";
+import useStreamingStore from "@/store/StreamingStore";
 import useProfileStore from "@/store/ProfileStore";
 import ProfileImage from "@/components/ProfileImg";
 import { vars } from "@/styles/vars.css";
@@ -14,7 +14,7 @@ export default function ViewerStreaming() {
 
   const [loading, setLoading] = useState(false)
   const { userData } = useAuthStore()
-  const { streamRoomTitle } = useMainStore()
+  const { streamRoomTitle } = useStreamingStore()
   const { streamerProfileData, streamerUserName, getStreamerProfileInfo, doFollowUser, unDoFollowUser } = useProfileStore()
   const [subscriberCount, setSubscriberCount] = useState(streamerProfileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(streamerProfileData.isFollowed)

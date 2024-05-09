@@ -3,9 +3,9 @@ import axios from '../api/axios'
 
 
 const useStreamingStore = create((set) => ({
-  streamData: [],
-  streamRoomTitle: '',
-  setStreamRoomTitle: (title:string) => set({ streamRoomTitle: title }),
+  streamRoomsData: [],
+  streamRoomData: '',
+  setStreamRoomData: (data: Object) => set({ setStreamRoomData: data }),
   getStreamInfo: async () => {
     try {
       const response = await axios.get('stream/findAll')
