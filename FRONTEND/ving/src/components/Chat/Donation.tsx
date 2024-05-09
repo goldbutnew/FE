@@ -13,9 +13,7 @@ import ToggleButton from "../Button/ToggleButton";
 import { betweenWrapper } from "@/styles/wrapper.css";
 import useChatStore from "@/components/Chat/Store";
 import useAuthStore from "@/store/AuthStore";
-import { getFormattedTimestamp } from "@/utils/dateUtils";
-// import axios from "axios";
-import axios from '../../api/axios'
+
 export default function Donation() {
   const { userData } = useAuthStore()
   const [messageInput, setMessageInput] = useState('');
@@ -76,63 +74,20 @@ export default function Donation() {
     setMessageInput((prevMessage) => prevMessage + emoji)
   }  
 
-  const handleSendMessageWithChoco = (e) => {
-    e.preventDefault()
-    const formattedTimestamp = getFormattedTimestamp()
-
-    const message = {
-      userName: userData.Id,
-      nickname: name,
-      timestamp: formattedTimestamp,
-      donation : choco,
+  const handleSendMessageWithChoco = async (e) => {
+    e.preventDefault();
+    const donationRequest = {
+      username: userData.username, 
+      choco: choco,
       isTts: isTTS,
-      text: messageInput,
+      message: messageInput,
     };
-
-    interface DonationRequest {
-      username: string;
-      choco: number;
-      isTts: boolean;
-      message: string;
-    }
-    
-    const donationRequest : DonationRequest = 
-    {
-      username: "kanyewest",
-      choco : Number(choco),
-      isTts: isTTS,
-      message: messageInput
-    } 
-    const doDonations = async (donationData: DonationRequest) => {
-      console.log("도네이션 데이터", donationData)
-      const token = localStorage.getItem('accessToken')
-      if (!token) {
-        console.error('Access token is missing');
-        return;
-      }
-      try {
-        const response = await axios.patch(`sub/donation`, donationData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        return response.data
-      {
-        console.log(message)
-      }
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    doDonations(donationRequest).then((msg) => {
-      console.log(msg)
-    })
-    console.log("메시지 형식:", message)
-    addMessage(message);
+  
+    await useChatStore.getState().sendDonation(donationRequest);
     setMessageInput('');
+    setChoco(0);
   };
-
+  
   return (
     <div>
       <SmallButton
