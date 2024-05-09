@@ -102,7 +102,7 @@ export default function Chat() {
         stompClient.deactivate();
       }
     };
-  }, [roomId]); // roomId가 변경될 때마다 connect 함수를 다시 호출
+  }, []);
 
   const handleChange = (event) => {
     setMessageInput(event.target.value);
@@ -135,7 +135,6 @@ const handleSendMessage = (event) => {
       body: JSON.stringify(message)
     });
     console.log("메시지 형식:", message);
-    // addMessage(message);
     setMessageInput('');
   } else {
     console.log("아직 소켓 연결 안 됨");
