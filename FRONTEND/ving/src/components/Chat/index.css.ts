@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/vars.css'
-import { betweenBox, columnbox, defaultBox, endBox, rowbox } from '@/styles/box.css'
+import { betweenWrapper, columnWrapper, defaultWrapper, endWrapper, rowWrapper } from '@/styles/wrapper.css'
 import { bold } from '@/styles/fonts.css'
 import { plainButton } from '@/styles/common.css'
 
@@ -73,7 +73,7 @@ export const emojiBox = style({
 })
 
 export const sendButtonBox = style([
-  betweenBox,
+  betweenWrapper,
   {
     width: "100%",
     margin: `${vars.space['1x']} 0 0 0`
@@ -102,7 +102,7 @@ export const myChoco = style({
 })
 
 export const selectedChocoBox = style([
-  rowbox,
+  rowWrapper,
   {
     color: vars.colors.black,
     backgroundColor: vars.colors.lightGray,
@@ -119,7 +119,7 @@ export const chocoInputBox = style({
 })
 
 export const donationInputBox = style([
-  defaultBox,
+  defaultWrapper,
   {
     width: '100%',
     padding: vars.space['2x'],
@@ -130,14 +130,14 @@ export const donationInputBox = style([
 ])
 
 export const buttonGroup = style([
-  betweenBox,
+  betweenWrapper,
   {
     padding: `0 0 ${vars.space['0.5x']} 0`,
   }
 ])
 
 export const warningBox = style([
-  rowbox,
+  rowWrapper,
   {
     color: vars.colors.red,
     fontSize: vars.fontSize['0.5x'],
@@ -163,7 +163,7 @@ export const donationEmojiPicker = style({
 });
 
 export const donationSendButtonBox = style([
-  endBox,
+  endWrapper,
   {
     width: "100%",
     margin: `${vars.space['1x']} 0 0 0`
@@ -173,7 +173,7 @@ export const donationSendButtonBox = style([
 
 // StudioChat.ts
 export const studioChatContainer = style([
-  columnbox,
+  columnWrapper,
   {
     width: '100%',
     height: '50vh',
@@ -184,7 +184,7 @@ export const studioChatContainer = style([
 ])
 
 export const studioChatContent = style([
-  defaultBox,
+  defaultWrapper,
   {
     whiteSpace: 'pre-wrap',
     overflowWrap: 'break-word',
@@ -213,7 +213,7 @@ export const studioChatBox = style({
 })
 
 export const studioChatSendButtonBox = style([
-  endBox,
+  endWrapper,
   {
     width: "100%",
     margin: `${vars.space['1x']} 0 0 0`

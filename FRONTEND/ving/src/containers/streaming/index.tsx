@@ -2,12 +2,12 @@
 
 import Chat from "@/components/Chat"
 import * as styles from "./index.css"
-import UserStreaming from "./UserStreaming"
+import ViewerStreaming from "./ViewerStreaming"
 
 export default function Streaming() {
   return (
     <div className={styles.contentContainer}>
-      <UserStreaming /> 
+      <ViewerStreaming /> 
       <Chat />
     </div>
   )

@@ -1,39 +1,39 @@
 import { flex } from './common.css';
 
-export const defaultBox = flex({
+export const defaultWrapper = flex({
   direction: 'column',
   align: 'start',
   justify: 'start',
 })
 
-export const columnbox = flex({
+export const columnWrapper = flex({
   direction: 'column',
   justify: 'center',
 });
 
-export const rowbox = flex({
+export const rowWrapper = flex({
   direction: 'row',
   align: 'center',
 })
 
-export const centerbox = flex({
+export const centerWrapper = flex({
   justify: 'center',
   align: 'center',
 })
 
-export const betweenBox = flex({
+export const betweenWrapper = flex({
   direction: 'row',
   align: 'center',
   justify: 'between',
 })
 
-export const startBox = flex({
+export const startWrapper = flex({
   direction: 'row',
   align: 'center',
   justify: 'start',
 })
 
-export const endBox = flex({
+export const endWrapper = flex({
   direction: 'row',
   align: 'center',
   justify: 'end',

@@ -1,9 +1,9 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '../../styles/vars.css'
-import { columnbox } from '@/styles/box.css'
+import { columnWrapper } from '@/styles/wrapper.css'
 
 export const ProfileImage = style([
-  columnbox,
+  columnWrapper,
   { 
     borderRadius: vars.borderRadius.full,
     border: `2px solid ${vars.colors.black}`,

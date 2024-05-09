@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
-import { columnbox, defaultBox, rowbox } from '@/styles/box.css';
+import { columnWrapper, defaultWrapper, rowWrapper } from '@/styles/wrapper.css';
 import { bold } from '@/styles/fonts.css';
 import { calc } from '@vanilla-extract/css-utils';
 
@@ -74,7 +74,7 @@ export const sidebarTitle = style([
 ])
 
 export const sidebarContent = style([
-  defaultBox,
+  defaultWrapper,
   {
     whiteSpace: 'pre-wrap',
     overflowWrap: 'break-word',
@@ -86,7 +86,7 @@ export const sidebarContent = style([
 // 사이드 랭킹 관련 스타일 시작
 
 export const SearchBarContainer = style([
-  rowbox, {
+  rowWrapper, {
 
 }])
 
@@ -134,7 +134,7 @@ export const searchUserImage = style({
 })
 
 export const autocompleteItem = style([
-  rowbox, {
+  rowWrapper, {
   margin: '5px 0px 5px 0px'
   }
 ])

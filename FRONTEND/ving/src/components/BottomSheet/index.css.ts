@@ -1,7 +1,7 @@
 import { style, keyframes } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
 import { plainButton } from '@/styles/common.css';
-import { endBox } from '@/styles/box.css';
+import { endWrapper } from '@/styles/wrapper.css';
 
 const slideUp = keyframes({
   '0%': { transform: 'translateY(100%)' },
@@ -15,7 +15,7 @@ const slideDown = keyframes({
 
 export const closeButtonBox = style([
   plainButton,
-  endBox,
+  endWrapper,
   {
     zIndex: 3002,
   }

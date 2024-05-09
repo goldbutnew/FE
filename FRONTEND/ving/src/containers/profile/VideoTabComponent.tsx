@@ -7,13 +7,12 @@ import { HiEllipsisVertical } from "react-icons/hi2"
 import SmallButton from '@/components/Button/SmallButton'
 import DropdownMenu from '@/components/DropdownMenu/DropdownMenu'
 import MenuItem from '@/components/DropdownMenu/MenuItem'
-import Link from 'next/link'
 
 export default function VideoTabComponent() {
 
   const router = useRouter()
   const params = useParams()
-  const { profileData, getUserProfileInfo, doFixVideo, unDoFixVideo } = useProfileStore()
+  const { profileData, getUserProfileInfo, doFixVideo, unDoFixVideo, doDeleteVideo } = useProfileStore()
   const [isOpen, setIsOpen] = useState({})
 
   const toggleMenu = (videoId:number) => {
@@ -21,6 +20,11 @@ export default function VideoTabComponent() {
       ...prev,
       [videoId]: !prev[videoId]
     }))
+  }
+
+  // 비디오 삭제 함수
+  const handleDelete = (videoId:number) => {
+    doDeleteVideo(videoId)
   }
 
   const [videos, setVideos] = useState([{
@@ -77,6 +81,19 @@ export default function VideoTabComponent() {
     }))
   }
 
+  // const togglePin = async (videoId) => {
+  //   setVideos(prevVideos => {
+  //     const updatedVideos = prevVideos.map(video => {
+  //       if (video.videoId === videoId) {
+  //         video.isFixed ? unDoFixVideo(videoId) : doFixVideo(videoId)
+  //         return { ...video, isFixed: !video.isFixed }
+  //       }
+  //       return video;
+  //     })
+  //     return updatedVideos.sort((a, b) => b.isFixed - a.isFixed)
+  //   })
+  // }
+
   useEffect(() => {
     const initData = async (userIdNum:number) => {
       await getUserProfileInfo(userIdNum)
@@ -97,21 +114,20 @@ export default function VideoTabComponent() {
                 {video.isFixed && <BsFillPinAngleFill color='white' size={24} />}
               </div>
               <img src={video.thumbnail} alt={video.title} className={styles.videoThumbnail} />
-              <div className={styles.videoItemAdditionalInfo}>
-                <div className={styles.videoItemAdditionalTextInfo}>
+              <div className={styles.videoInfoContainer}>
+                <div className={styles.videoInfoBox}>
                   <span>{video.title}</span>
-                  <span className={styles.videoItemAdditionalInfoText}>조회수 {video.videoPlay}회</span>
+                  <span className={styles.videoInfoText}>조회수 {video.videoPlay}회</span>
                 </div>
                   <DropdownMenu 
                     button={<button onClick={() => toggleMenu(video.videoId)} className={styles.videoItemellipsisButton}>
                       <HiEllipsisVertical size={20} />
                     </button>}>
-                    <MenuItem>
-                      <div onClick={() => togglePin(video.videoId)}>
-                      {video.isFixed ? '상단 고정 취소' : '상단 고정'}</div>
+                    <MenuItem onClick={() => togglePin(video.videoId)}>
+                        {video.isFixed ? '상단 고정 취소' : '상단 고정'}
                     </MenuItem>
-                    <MenuItem>
-                      <span>삭제</span>
+                    <MenuItem onClick={() => handleDelete(video.videoId)}>
+                        <span>삭제</span>
                     </MenuItem>
                   </DropdownMenu>
                 </div>

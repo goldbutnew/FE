@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import * as styles from './index.css';
-import { betweenBox } from '@/styles/box.css';
+import { betweenWrapper } from '@/styles/wrapper.css';
 import { FaRegFaceSmile } from "react-icons/fa6";
 
 const EmojiButton = ({ onClick }) => (
@@ -24,7 +24,7 @@ interface InputProps {
 
 const DefaultInput: React.FC<InputProps> = ({ type, value, onChange, onEmojiClick, placeholder, maxLength }) => {
   return (
-    <div className={`${betweenBox} ${styles.defaultInputBox}`}>
+    <div className={`${betweenWrapper} ${styles.defaultInputBox}`}>
       
       <input
         type={type}
