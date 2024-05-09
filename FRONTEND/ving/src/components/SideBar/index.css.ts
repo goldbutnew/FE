@@ -119,8 +119,8 @@ export const autocompleteList = style({
   backgroundColor: vars.colors.white,
   // 테두리 주니까 밑줄 모양이 남음.. 일단 보류
   // border: `1px solid ${vars.colors.gray}`,
-  maxHeight: 200,
-  width: 243,
+  width: '100%',
+  maxHeight: 272,
   overflowY: 'auto',
   zIndex: 100,
 })
@@ -135,6 +135,13 @@ export const searchUserImage = style({
 
 export const autocompleteItem = style([
   rowWrapper, {
-  margin: '5px 0px 5px 0px'
+  margin: '5px 0px 5px 0px',
+  width: 190
   }
 ])
+
+export const rankingUserName = style({
+  overflow: 'hidden', 
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis'
+})

@@ -218,7 +218,7 @@ const useProfileStore = create(persist((set, get) => ({
 }), {
   name: 'profile-store',
   getStorage: () => localStorage, 
-  partialize: (state) => ({ loginUserName: state.loginUserName, loginUserProfileData: state.loginUserProfileData }) 
+  partialize: (state:any) => ({ loginUserName: state.loginUserName, loginUserProfileData: state.loginUserProfileData }) 
 }))
 
 export default useProfileStore

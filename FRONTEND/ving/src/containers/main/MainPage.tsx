@@ -21,7 +21,7 @@ export default function MainPage() {
   }, [])
 
   return (
-    <div>
+    <div className={styles.mainVideoGridBox}>
       <h3>메인 페이지</h3>
       <h3>{userData.nickname} 계정으로 로그인되었습니다.</h3>
 

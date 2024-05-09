@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import axios from '../api/axios'
+import { persist } from 'zustand/middleware'
 
 
 const useStreamingStore = create((set) => ({
@@ -17,6 +18,10 @@ const useStreamingStore = create((set) => ({
     }
   },
 
+}), {
+  name: 'streamRoom-store',
+  getStorage: () => localStorage,  
+  partialize: (state:any) => ({ streamRoomTitle: state.streamRoomTitle }),
 }))
 
 export default useStreamingStore
