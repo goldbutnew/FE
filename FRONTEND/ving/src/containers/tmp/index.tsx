@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Hls from 'hls.js'
+import Bumsang from './Bumsang'
 
 export default function Tmp() {
   const videoRef = useRef(null)
@@ -53,6 +54,7 @@ export default function Tmp() {
 
   return (
     <div>
+      <Bumsang/>
       <video 
         ref={audioRef}
         autoPlay={true}
