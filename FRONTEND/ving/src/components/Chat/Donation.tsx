@@ -11,7 +11,7 @@ import { vars } from "@/styles/vars.css";
 import DefaultInput from "../Input/DefaultInput";
 import ToggleButton from "../Button/ToggleButton";
 import { betweenWrapper } from "@/styles/wrapper.css";
-import useChatStore from "@/store/ChatStore";
+import useChatStore from "@/components/Chat/Store";
 import useAuthStore from "@/store/AuthStore";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
 // import axios from "axios";

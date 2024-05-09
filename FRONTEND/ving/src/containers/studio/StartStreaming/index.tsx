@@ -1,7 +1,7 @@
 import React from "react";
 import Chat from "@/components/Chat";
 import StudioStreaming from "./StudioStreaming";
-import * as styles from './index.css'
+import * as styles from '../index.css'
 import NewsFeed from "@/components/NewsFeed";
 import StudioChat from "@/components/Chat/StudioChat";
 import { line } from "@/styles/common.css";

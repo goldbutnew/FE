@@ -1,1 +1,1 @@
-export { default } from '@/containers/studio'
+export { default } from '@/containers/studio/Dashboard'

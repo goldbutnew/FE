@@ -7,6 +7,15 @@ const fadeInKeyframes = keyframes({
   to: { opacity: 1 }
 });
 
+const rotateKeyframes = keyframes({
+  from: {
+    transform: 'rotate(0deg)'
+  },
+  to: {
+    transform: 'rotate(360deg)'
+  }
+});
+
 // 페이드인
 export const fadeIn = style({
   animation: `${fadeInKeyframes} 1s ease-in-out`
@@ -18,6 +27,11 @@ export const scaleUp = style({
   ':hover': {
     transform: 'scale(1.1)'
   }
+});
+
+// 회전
+export const rotateAnimation = style({
+  animation: `${rotateKeyframes} 1s ease-in-out`
 });
 
 // 버튼 효과

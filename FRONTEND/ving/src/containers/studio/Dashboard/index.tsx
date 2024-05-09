@@ -1,13 +1,12 @@
 'use client'
 
 import LargeButton from '@/components/Button/LargeButton'
-import * as styles from './index.css'
+import * as styles from '../index.css'
 import { useParams, useRouter } from 'next/navigation'
-import Link from 'next/link'
 import useAuthStore from '@/store/AuthStore'
 import Container from '@/components/Container'
 
-export default function Studio() {
+export default function Dashboard() {
   const { userData } = useAuthStore()
   
   const router = useRouter()
