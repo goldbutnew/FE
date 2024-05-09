@@ -46,6 +46,7 @@ export default function Chat() {
   const onMessageReceived = (msg) => {
     const newMessage = JSON.parse(msg.body);
     console.log(newMessage);
+    addMessage(newMessage);
   };
 
   const connect = () => {
@@ -76,6 +77,16 @@ export default function Chat() {
     setStompClient(client);
   };
   
+  // useEffect(() => {
+  //   connect();
+  //   return () => {
+  //     if (stompClient) {
+  //       console.log("WebSocket 연결 해제 시도 중...");
+  //       stompClient.deactivate();
+  //     }
+  //   }
+  // }, []);
+
   useEffect(() => {
     connect();
     return () => {
@@ -83,8 +94,8 @@ export default function Chat() {
         console.log("WebSocket 연결 해제 시도 중...");
         stompClient.deactivate();
       }
-    }
-  }, []);
+    };
+  }, [roomId]); // roomId가 변경될 때마다 connect 함수를 다시 호출
 
   const handleChange = (event) => {
     setMessageInput(event.target.value);
