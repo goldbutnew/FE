@@ -125,10 +125,10 @@ export default function SettingForm() {
   if (isLoading) {
   return (
     <div>
-    <span className={styles.settingSubtitle}>기본 정보</span>
-    <Card>
-      <div className={styles.CardContentContainer}>
-        <div className={styles.defaultSettingItemBox}>
+      <span className={styles.settingSubtitle}>기본 정보</span>
+      <Card>
+        <div className={styles.CardContentContainer}>
+          <div className={styles.defaultSettingItemBox}>
           <span className={styles.defaultSettingItemTitle}>
             프로필 이미지
           </span>
@@ -173,7 +173,7 @@ export default function SettingForm() {
         </div>        
       </div>
     </Card>
-
+    <br />
     <span className={styles.settingSubtitle}>채널 정보</span>
     <Card>
       <div className={styles.CardContentContainer}>
@@ -183,8 +183,7 @@ export default function SettingForm() {
           </span>
           <div className={styles.channelSettingItemContent}>
             {registerLinks.map((link, index) => (
-              <div key={link.id} className={styles.socailLinkItemContainer}>
-                <div className={styles.registerLinkBox}>
+              <div key={link.id} className={styles.registerLinkBox}>
                   <div className={styles.registerLinkIcon}>
                     <FiLink />
                   </div>
@@ -197,7 +196,6 @@ export default function SettingForm() {
                     color={vars.colors.gray} 
                     onClick={() => removeRegisterLinkField({linkId: link.id, url: link.url, title: link.title})} 
                   />
-                </div>
               </div>
             ))}
             {links.map((link, index) => (
@@ -218,15 +216,15 @@ export default function SettingForm() {
                     maxLength={30}
                   />
                   <div className={styles.registerLinkButtonContainer}>
-                    <SmallButton text='등록' color='lightGray' onClick={() => addRegisterList({linkId: link.id, url: link.url, title: link.title})} />
-                    <SmallButton text='취소' color='lightGray' onClick={() => removeLinkField(link.id)} />
+                    <SmallButton text='등록' color={vars.colors.gray} onClick={() => addRegisterList({linkId: link.id, url: link.url, title: link.title})} />
+                    <SmallButton text='취소' color={vars.colors.gray} onClick={() => removeLinkField(link.id)} />
                   </div>
                 </div>
               </div>
             ))}
             <div className={styles.addLinkButtonContainer}>
               {(registerLinks.length + links.length) < 3 && (
-                <SmallButton text='링크 추가' color='lightGray' onClick={() => addLinkField({ url: '', title: '' })} />
+                <SmallButton text='링크 추가' color={vars.colors.gray} onClick={() => addLinkField({ url: '', title: '' })} />
               )}
             </div>
             <span className={styles.linkLimitNote}>· 최대 3개까지 등록할 수 있습니다.</span>
@@ -236,7 +234,7 @@ export default function SettingForm() {
     </Card> 
 
     <div className={styles.buttonContainer}>
-      <SmallButton text="취소" color='lightGray' />
+      <SmallButton text="취소" color={vars.colors.gray} />
       <SmallButton 
         onClick={() => {handleUpdateProfile()}} 
         text="저장" 
