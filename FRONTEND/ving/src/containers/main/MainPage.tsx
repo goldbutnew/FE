@@ -28,12 +28,12 @@ export default function MainPage() {
       <div>~~~~~~~~~~~~~~~테스트 페이지로 이동~~~~~~~~~~~~~</div>
       <Link href={`/tmp`}>test</Link>
 
-      <div>
+      <div className={styles.mainVideoGrid}>
         {streamRoomsData.map((data, index) => {
           return (
             <div 
               key={index} 
-              className={styles.test} 
+              className={styles.mainVideoItem} 
               onClick={() => handleStreamDataChange(data)}
             >
               <Link href={`/streaming/${btoa(data.username)}`}>{data.title}</Link> 
