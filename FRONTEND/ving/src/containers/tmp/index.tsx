@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Hls from 'hls.js'
 import Bumsang from './Bumsang'
 import VideoPlayer from '@/components/StreamingVideo/Player'
+import Link from 'next/link'
 
 export default function Tmp() {
   const videoRef = useRef(null)
@@ -48,7 +49,7 @@ export default function Tmp() {
       }
     }
 
-    const hlsVideo = setupHls(videoElement, `https://vingving.s3.ap-northeast-2.amazonaws.com/${url}/anjdidhodkseho.m3u8`)
+    const hlsVideo = setupHls(videoElement, `https://vingving.s3.ap-northeast-2.amazonaws.com/720p/anjdidhodkseho.m3u8`)
     const hlsAudio = setupHls(audioElement, `https://vingving.s3.ap-northeast-2.amazonaws.com/256/anjdidhodkseho.m3u8`)
 
     return () => {
@@ -60,6 +61,7 @@ export default function Tmp() {
   return (
     <div>
       <Bumsang/>
+      <Link href={`/tmp2`}>test</Link>
       <video
         ref={videoRef}
         autoPlay={true}
