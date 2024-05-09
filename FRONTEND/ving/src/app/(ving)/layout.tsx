@@ -40,7 +40,7 @@ export default function RootLayout({
             initOpen={initOpenState}
             width={200}
           >
-            <RankingUser />
+            <RankingUser initOpen={initOpenState}/>
           </ SideBar>
           <div className={styles.mainContent}>
             {children}

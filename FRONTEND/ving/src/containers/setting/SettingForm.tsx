@@ -25,7 +25,7 @@ interface UserInfoBoxProps {
 }
 
 export default function SettingForm() {
-  const { profileData, getUserProfileInfo, patchUserProfileInfo } = useProfileStore<UserInfoBoxProps>()
+  const { profileData, getUserProfileInfo, patchUserProfileInfo, getLoginUserInfo } = useProfileStore()
 
   const [nickname, setNickname] = useState('')
   const [introduction, setIntroduction] = useState('')
@@ -86,7 +86,8 @@ export default function SettingForm() {
       console.log(key, value)
     }
     patchUserProfileInfo(formData)
-
+    getLoginUserInfo(loginUserName)
+    location.reload()
   }
 
   const [file, setFile] = useState(null)
