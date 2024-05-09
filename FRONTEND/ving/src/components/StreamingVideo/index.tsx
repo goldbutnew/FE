@@ -1,63 +1,44 @@
-
 'use client'
 
-// import React, { useState } from 'react'
-// import Video from 'next-video'
-// import Player from './Player'
- 
-// export default function StreamingVideo() {
-
-//   return (
-//     <div>
-//       <Video as={Player} src='http://127.0.0.1:8000/media/qudtls_720p.m3u8' />
-//       {/* // <Video src='http://127.0.0.1:8000/media/qudtls_7 20p.m3u8' controls /> */}
-//     </div>
-//   )
-// }
-
-import React, { useState } from 'react'
-import ReactPlayer from 'react-player'
+import { useEffect, useRef, useState } from 'react'
+import Hls from 'hls.js'
 import * as styles from './index.css'
+import VideoPlayer from './Player'
 
-export default function StreamingVideo () {
-  const [url, setUrl] = useState('http://127.0.0.1:8000/media/qudtls_720p.m3u8')
+export default function StreamingVideo() {
+  const videoRef = useRef(null)
+  const [url, setUrl] = useState('720p')
 
-  const handleSetQuality = (quality: string) => {
-    switch (quality) {
-      case '720p':
-        setUrl('http://127.0.0.1:8000/media/qudtls_720p.m3u8')
-        break
-      case '360p1':
-        setUrl('http://127.0.0.1:8000/media/cjswo_360p.m3u8')
-        break
-      case '360p2':
-        setUrl('http://127.0.0.1:8000/media/chswo_360p.m3u8')
-        break
-      default:
-        setUrl('http://127.0.0.1:8000/media/qudtls_720p.m3u8')
+  useEffect(() => {
+    const videoElement = videoRef.current
+    if (!videoElement) return
+
+    if (Hls.isSupported()) {
+      const hls = new Hls()
+      hls.loadSource(`https://vingving.s3.ap-northeast-2.amazonaws.com/qudtls_${url}.m3u8`)
+      hls.attachMedia(videoElement)
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        videoElement.play()
+      })
+
+      // Cleanup function
+      return () => {
+        hls.destroy()
+      }
     }
-    console.log(quality, url, '이걸로 바뀜')
-  }
+  }, [url])  // url을 종속성 배열에 추가
 
   return (
     <div>
-      <ReactPlayer
-        // ref={playerRef}
-        url={url}
-        width='100%'
-        height='100%'
-        playing={true}
-        controls={false} // 내장 컨트롤 비활성화
-        light={false}
+      <video
+        src={`https://vingving.s3.ap-northeast-2.amazonaws.com/qudtls_${url}.m3u8`}
+        ref={videoRef}
+        autoPlay={true}
+        controls={false}
       />
-      <div>
-        <button onClick={() => handleSetQuality('720p')}>720</button>
-        <button onClick={() => handleSetQuality('360p1')}>360.1</button>
-        <button onClick={() => handleSetQuality('360p2')}>360.2</button>
+      <div className={styles.videoPlayer}>
+        <VideoPlayer videoRef={videoRef} setUrl={setUrl}/>
       </div>
     </div>
   )
 }
-
-//   // src: 'http://example.com/live-stream.m3u8',
-//   // type: 'application/x-mpegURL'
