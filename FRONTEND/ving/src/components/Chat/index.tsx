@@ -12,10 +12,10 @@ import EmojiPicker from "emoji-picker-react"
 import ChatProfile from "./ChatProfile"
 import Donation from "./Donation"
 import useAuthStore from "@/store/AuthStore";
-import useChatStore from "@/store/ChatStore";
+import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
-import { style } from "@vanilla-extract/css";
 import { line } from "@/styles/common.css";
+import useMainStore from "@/store/MainStore";
 
 interface Message {
   userName: string;
@@ -38,7 +38,7 @@ export default function Chat() {
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
-  
+  const { streamData } = useMainStore()
 
   // 1. 이거 동적라우팅으로 바꿔야함
   const roomId = "a2FueWV3ZXN0";
@@ -50,7 +50,8 @@ export default function Chat() {
 
   const connect = () => {
     console.log("WebSocket 연결 시도 중...");
-    const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
+    // const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
+    const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
     client.debug = function(str) {

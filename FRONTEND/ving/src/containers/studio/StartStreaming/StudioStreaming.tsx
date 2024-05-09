@@ -9,7 +9,7 @@ import DefaultInput from '@/components/Input/DefaultInput'
 import Radio from '@/components/Input/Radio'
 import SmallButton from '@/components/Button/SmallButton'
 import StreamingVideo from '@/components/StreamingVideo'
-import * as styles from './index.css'
+import * as styles from '../index.css'
 
 
 export default function StudioStreaming() {

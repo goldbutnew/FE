@@ -3,14 +3,13 @@
 import React, { useState, useEffect, useRef } from "react"
 import SockJS from 'sockjs-client'
 import { Stomp } from '@stomp/stompjs'
-import SideBar from "../SideBar/SideBar"
 import DefaultInput from "../Input/DefaultInput"
 import SmallButton from "../Button/SmallButton"
 import * as styles from "./index.css"
 import { vars } from "@/styles/vars.css"
 import EmojiPicker from "emoji-picker-react"
 import useAuthStore from "@/store/AuthStore";
-import useChatStore from "@/store/ChatStore";
+import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
 import { line } from "@/styles/common.css";
 
