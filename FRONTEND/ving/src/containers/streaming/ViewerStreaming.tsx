@@ -1,14 +1,14 @@
 'use client'
 
 import React, { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation"
 import * as styles from './index.css'
-import Image from "next/image";
-import dummy from '#/images/dummy-profile-img.jpg'
 import SmallButton from "@/components/Button/SmallButton";
-import StreamingVideo from "@/components/StreamingVideo";
 import useAuthStore from "@/store/AuthStore";
 import useMainStore from "@/store/MainStore";
 import useProfileStore from "@/store/ProfileStore";
+import ProfileImage from "@/components/ProfileImg";
+import { vars } from "@/styles/vars.css";
 
 export default function ViewerStreaming() {
 
