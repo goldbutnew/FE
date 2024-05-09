@@ -108,7 +108,7 @@ public class UserController {
                     .userPassword(passwordEncoder.encode(request.getPassword()))
                     .userSubscriberCount(0)
                     .userNickname(request.getNickname())
-                    .userPhoto("NULL")
+                    .userPhoto("https://mozzibucket.s3.ap-northeast-2.amazonaws.com/profile.png")
                     .userChoco(0)
                     .userIsregistered(1)
                     .build();
@@ -242,8 +242,7 @@ public class UserController {
     @PatchMapping("/api/auth/fillup")
     public ResponseEntity<?> fillUp(@ModelAttribute FillupDto fillupDto)
     {
-        try
-        {
+        try {
             MultipartFile photo = fillupDto.getPhoto();
             String nickname = fillupDto.getNickname();
             String introduction = fillupDto.getIntroduction();
@@ -251,14 +250,20 @@ public class UserController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String username = userDetails.getUsername();
             UserModel userModel = userService.findByUserUsername(username).orElseThrow();
-            String sourceFileName = photo.getOriginalFilename();
-            String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
-            String fileUrl = "https://" + bucket +".s3.ap-northeast-2.amazonaws.com" + "/";
-            String destinationFileName = RandomStringUtils.randomAlphabetic(5) + "_" + username  + "."
-                    + sourceFileNameExtension;
-            userModel.setUserNickname(fillupDto.getNickname());
-            userModel.setUserIntroduction(fillupDto.getIntroduction());
-            String finalUrl = (fileUrl + destinationFileName);
+            String fileUrl = "https://mozzibucket.s3.ap-northeast-2.amazonaws.com/";
+            String destinationFileName = "profile.png";
+            if (photo != null)
+            {
+                String sourceFileName = photo.getOriginalFilename();
+                String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
+                fileUrl = "https://" + bucket +".s3.ap-northeast-2.amazonaws.com" + "/";
+                destinationFileName = RandomStringUtils.randomAlphabetic(5) + "_" + username  + "."
+                        + sourceFileNameExtension;
+                userModel.setUserNickname(fillupDto.getNickname());
+                userModel.setUserIntroduction(fillupDto.getIntroduction());
+            }
+            String finalUrl = fileUrl + destinationFileName;
+
 
             userModel.setUserPhoto(finalUrl);
             userService.save(userModel);

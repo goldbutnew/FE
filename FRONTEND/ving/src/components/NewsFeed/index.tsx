@@ -25,7 +25,7 @@ export default function NewsFeed() {
     //     setEvents(prevEvents => [...prevEvents, newEvent]);
     //   });
     // });
-
+    
     // return () => {
     //   if (stompClient) {
     //     stompClient.disconnect(() => {

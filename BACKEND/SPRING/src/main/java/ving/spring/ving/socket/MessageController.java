@@ -32,9 +32,14 @@ public class MessageController {
     }
 
 
-    public void donation(Message.ChatMessage message, String channelId)
+    public void donation(Message.ChatMessage message, Message.NewsFeed newsFeed,  String channelId)
     {
+        simpMessageSendingOperations.convertAndSend("/sub/streamer/" + channelId, newsFeed);
         simpMessageSendingOperations.convertAndSend("/sub/channel/" + channelId, message);
     }
-    
+
+    public void follow(Message.NewsFeed newsFeed, String channelId)
+    {
+        simpMessageSendingOperations.convertAndSend("/sub/streamer/" + channelId, newsFeed);
+    }
 }

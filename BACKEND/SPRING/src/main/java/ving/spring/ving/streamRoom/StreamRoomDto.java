@@ -36,6 +36,7 @@ public class StreamRoomDto {
     public static class Alarm
     {
         private String streamer;
+        private String type;
     }
 
     @Builder

@@ -74,8 +74,6 @@ export default function StudioStreaming() {
         </div>
 
         <div className={styles.streamingInfoItem}>
-          {/* <label className={styles.streamingInfoTitle}>미리 보기 이미지</label>
-          <Image src={logo} alt="logo" /> */}
           <img
             src={photoUrl}
             alt="Profile"
