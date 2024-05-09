@@ -16,7 +16,8 @@ export default function Home() {
         console.error('Hls.js 오류 발생:', data);
       });
 
-      hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/qudtls_720p.m3u8');
+      hls.current.loadSource(`http://127.0.0.1:8000/media/qudtls_480p/qudtls_480p.m3u8`);
+      // hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/qudtls_720p.m3u8');
       hls.current.attachMedia(videoElement);
 
       hls.current.on(Hls.Events.MANIFEST_PARSED, function() {
