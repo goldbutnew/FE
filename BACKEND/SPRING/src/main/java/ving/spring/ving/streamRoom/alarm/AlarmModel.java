@@ -20,6 +20,9 @@ public class AlarmModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer noticeId;
 
+//    private String title;
+//    private String thumbnail;
+
     @ManyToOne
     @JoinColumn(name = "follow_id")
     private SubscriptionModel subscriptionModel;
