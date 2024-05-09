@@ -38,10 +38,10 @@ export default function Chat() {
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
-  const { streamData } = useStreamingStore()
+  const { streamRoomData } = useStreamingStore()
 
   // 1. 이거 동적라우팅으로 바꿔야함
-  const roomId = "a2FueWV3ZXN0";
+  const roomId = btoa(streamRoomData.username);
 
   const onMessageReceived = (msg) => {
     const newMessage = JSON.parse(msg.body);
