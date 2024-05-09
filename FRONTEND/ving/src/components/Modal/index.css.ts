@@ -1,9 +1,9 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
-import { columnbox, rowbox } from '@/styles/box.css';
+import { columnWrapper, rowWrapper } from '@/styles/wrapper.css';
 
 export const overlay = style([
-  rowbox,
+  rowWrapper,
   {
     position: 'fixed',
     top: 0,
@@ -19,7 +19,7 @@ export const overlay = style([
 ]);
 
 export const modalContainer = style([
-  columnbox,
+  columnWrapper,
   {
     backgroundColor: vars.colors.white,
     padding: vars.space['3x'],

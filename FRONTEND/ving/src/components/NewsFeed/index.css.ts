@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '../../styles/vars.css'
 import { bold } from '@/styles/fonts.css'
-import { defaultBox } from '@/styles/box.css'
+import { defaultWrapper } from '@/styles/wrapper.css'
 
 export const newsFeedContainer = style([
   {
@@ -14,7 +14,7 @@ export const newsFeedContainer = style([
 ])
 
 export const newsFeedContent = style([
-  defaultBox,
+  defaultWrapper,
   {
     whiteSpace: 'pre-wrap',
     overflowWrap: 'break-word',

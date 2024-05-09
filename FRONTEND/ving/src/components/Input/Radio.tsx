@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { rowbox } from "@/styles/box.css";
+import { rowWrapper } from "@/styles/wrapper.css";
 import * as styles from "./index.css";
 
 interface RadioProps {
@@ -15,7 +15,7 @@ export default function Radio({ text, isActive, onChange }: RadioProps) {
   };
 
   return (
-    <div className={rowbox} onClick={handleClick}>
+    <div className={rowWrapper} onClick={handleClick}>
       <input
         type="radio"
         className={styles.RadioButton}

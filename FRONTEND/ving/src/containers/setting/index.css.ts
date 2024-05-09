@@ -1,7 +1,8 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/vars.css'
-import { columnbox, defaultBox, rowbox, startBox } from '@/styles/box.css'
+import { centerWrapper, columnWrapper, defaultWrapper, endWrapper, rowWrapper, startWrapper } from '@/styles/wrapper.css'
 import { bold } from '@/styles/fonts.css'
+import { plainButton } from '@/styles/common.css'
 
 // 기본 정보
 
@@ -18,7 +19,7 @@ export const settingSubtitle = style({
 })
 
 export const CardContentContainer = style([
-  columnbox,
+  columnWrapper,
   {
     margin: `0 0 ${vars.space['1x']} 0`,
     gap: vars.space['2x']
@@ -26,7 +27,7 @@ export const CardContentContainer = style([
 ])
 
 export const defaultSettingItemBox = style([
-  rowbox, 
+  rowWrapper, 
   {
   }
 ])
@@ -37,7 +38,7 @@ export const defaultSettingItemTitle = style({
 })
 
 export const defaultSettingItemContent = style([
-  rowbox, 
+  rowWrapper, 
   {
   }
 ])
@@ -46,7 +47,7 @@ export const defaultSettingItemContent = style([
 // 채널 정보
 
 export const channelSettingItemBox = style([
-  rowbox, 
+  rowWrapper, 
   {
     alignItems: 'flex-start',
   }
@@ -60,119 +61,67 @@ export const channelSettingItemTitle = style({
 
 
 export const channelSettingItemContent = style([
-  columnbox, 
+  columnWrapper, 
   {
-    width: '100%'
   }
 ])
 
-export const socailLinkItemContainer = style({
-  borderRadius: vars.borderRadius['1x'],
-  backgroundColor: vars.colors.lightGray,
-  padding: vars.space['2x'],
-})
+export const socailLinkItemContainer = style(
+  {
+    borderRadius: vars.borderRadius['1x'],
+    backgroundColor: vars.colors.lightGray,
+    padding: vars.space['2x'],
+  }
+)
 
-export const fileInputContainer = style({
-  margin: '10px 0px 0px 0px'
-})
-
-export const customFileUpload = style({
-  padding: '4px 8px',
-  margin: '0px 0px 0px 10px',
-  cursor: 'pointer',
-  border: `2px solid ${vars.colors.lightGray}`,
-  borderRadius: vars.borderRadius['1x']
-})
-
-export const profileNicknameContainer = style([
-  defaultBox, {
-    flexDirection: 'row'
-}])
-
-export const profileNicknameText = style({
-  fontSize: `${vars.fontSize['1x']}`,
-  width: 60
-})
-
-export const profileNicknameInputBox = style([
-  rowbox, {
-    padding: '0px 0px 0px 65px',
-    width: '100%'
-}])
-
-export const profileChannelIntroduceContainer = style([
-  defaultBox, {
-    flexDirection: 'row',
-}])
-
-export const profileChannelIntroduceText = style({
-  fontSize: `${vars.fontSize['1x']}`,
-  width: 90
-})
-
-export const profileChannelIntroduceInputBox = style([
-  rowbox, {
-    padding: '0px 0px 0px 40px',
-    width: '100%'
-}])
+export const customFileUpload = style([
+  plainButton,
+  {
+    padding: `${vars.space['0.5x']} ${vars.space['1x']}`,
+    margin: `0 0 0 ${vars.space['1x']}`,
+    cursor: 'pointer',
+    border: `2px solid ${vars.colors.lightGray}`,
+    borderRadius: vars.borderRadius['1x']
+  }
+])
 
 export const registerLinkBox = style([
-  defaultBox, {
-    flexDirection: 'row',
-    alignItems: 'center'
-}])
+  rowWrapper, 
+  {
+  }
+])
 
-export const registerLinkIcon = style({
-  backgroundColor: vars.colors.lightGray, 
-  display: 'inline-flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  borderRadius: vars.borderRadius.full, 
-  padding: 10,
-  width: 40, 
-  height: 40,
-})
-
-export const registerLinkContentBox = style([
-  rowbox, {
-    alignItems: 'center',
-    width: '100%',
-}])
+export const registerLinkIcon = style([
+  centerWrapper,
+  {
+    backgroundColor: vars.colors.pink, 
+    borderRadius: vars.borderRadius.full, 
+    padding: vars.space['1.5x'],
+  }
+])
 
 export const registerLinkNameUrlBox = style([
-  columnbox, {
-    alignItems: 'flex-start',
+  columnWrapper,
+  {
     width: '100%',
-    padding: '0px 0px 0px 20px'
+    padding: `0 0 0 ${vars.space['2x']}`,
 }])
 
-export const linkField = style([
-  defaultBox, {
-  flexDirection: 'column',
-}])
+export const addLinkBox = style([
+  defaultWrapper, 
+  {
+    flexDirection: 'column',
+    gap: vars.space['1x']
+  }
+])
 
-export const linkEnterField = style([
-  defaultBox, {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: '0px 0px 5px 0px',
-    width: '100%'
-}])
-
-export const inputField = style({
-  border: '1px solid #ddd',
-  borderRadius: vars.borderRadius['1x'],
-  padding: '10px 15px',
-  margin: '10px 0',
-  width: '100%',
-})
-
-export const linkDeleteField = style([
-  defaultBox, {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%'
-}])
+export const registerLinkButtonContainer = style([
+  endWrapper,
+  {
+    width: '100%',
+    gap: vars.space['0.5x']
+  }
+])
 
 export const addLinkButtonContainer = style({
   margin: `${vars.space['1x']} 0`,

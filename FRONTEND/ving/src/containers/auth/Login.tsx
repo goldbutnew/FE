@@ -8,7 +8,7 @@ import useModal from "@/hooks/useModal"
 
 import Image from "next/image"
 import logo from '#/images/main-logo.png'
-import { columnbox, rowbox } from "@/styles/box.css"
+import { columnWrapper, rowWrapper } from "@/styles/wrapper.css"
 import * as styles from "./index.css"
 import LargeButton from "@/components/Button/LargeButton"
 import SmallButton from "@/components/Button/SmallButton"
@@ -63,7 +63,7 @@ export default function Login({ onLoginSuccess }) {
           <Image src={logo} alt="logo" className={styles.logo} />
           에 로그인      
         </div>
-        <form className={columnbox} onSubmit={handleLogin}>
+        <form className={columnWrapper} onSubmit={handleLogin}>
           <div className={styles.modalItem}>
             <label className={styles.labelText} htmlFor="id">아이디</label>
             <DefaultInput
