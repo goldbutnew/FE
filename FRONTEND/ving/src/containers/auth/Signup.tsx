@@ -9,7 +9,7 @@ import useModal from "@/hooks/useModal"
 import Image from "next/image"
 import logo from '#/images/main-logo.png'
 import { vars } from "@/styles/vars.css"
-import { columnbox, rowbox } from "@/styles/box.css"
+import { columnWrapper, rowWrapper } from "@/styles/wrapper.css"
 import * as styles from "./index.css"
 import SmallButton from "@/components/Button/SmallButton"
 import LargeButton from "@/components/Button/LargeButton"
@@ -77,7 +77,7 @@ export default function Signup() {
         <Image src={logo} alt="logo" className={styles.logo} />
         에 가입하세요!
       </div>
-      <form className={columnbox}>
+      <form className={columnWrapper}>
         <div className={styles.modalItem}>
           <label className={styles.labelText} htmlFor="id">아이디</label>
           <DefaultInput

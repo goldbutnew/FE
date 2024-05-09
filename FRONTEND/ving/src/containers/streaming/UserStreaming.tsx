@@ -7,7 +7,7 @@ import Image from "next/image";
 import dummy from '#/images/dummy-profile-img.jpg'
 import SmallButton from "@/components/Button/SmallButton";
 import StreamingVideo from "@/components/StreamingVideo";
-import { rowbox } from "@/styles/box.css";
+import { rowWrapper } from "@/styles/wrapper.css";
 import { useParams } from "next/navigation";
 import useProfileStore from "@/store/ProfileStore";
 

@@ -8,7 +8,9 @@ export default function Setting() {
   return (
     <Container>
       <div className={styles.settingTitle}>채널 관리</div>
-      <SettingForm />
+      <div className={styles.settingFormContainer}>
+        <SettingForm />
+      </div>
     </Container>
   )
 }

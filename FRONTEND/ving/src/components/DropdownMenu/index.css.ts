@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '../../styles/vars.css';
-import { defaultBox } from '@/styles/box.css';
+import { defaultWrapper } from '@/styles/wrapper.css';
 
 export const dropdownMenu = style({
   position: 'absolute',
@@ -15,7 +15,7 @@ export const dropdownMenu = style({
 });
 
 export const dropdownItem = style([
-  defaultBox,
+  defaultWrapper,
   {
     width: '100%',
     padding: vars.space['1x'],

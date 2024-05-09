@@ -10,6 +10,7 @@ import useAuthStore from '@/store/AuthStore'
 import useSettingStore from '@/store/SettingStore'
 import Card from '@/components/Card'
 import ProfileImage from '@/components/ProfileImg'
+import { vars } from '@/styles/vars.css'
 
 interface Link {
   id: number
@@ -124,10 +125,10 @@ export default function SettingForm() {
   if (isLoading) {
   return (
     <div>
-    <span className={styles.settingSubtitle}>기본 정보</span>
-    <Card>
-      <div className={styles.CardContentContainer}>
-        <div className={styles.defaultSettingItemBox}>
+      <span className={styles.settingSubtitle}>기본 정보</span>
+      <Card>
+        <div className={styles.CardContentContainer}>
+          <div className={styles.defaultSettingItemBox}>
           <span className={styles.defaultSettingItemTitle}>
             프로필 이미지
           </span>
@@ -137,18 +138,16 @@ export default function SettingForm() {
               width={80}
               alt="Profile"
             />
-            <div className={styles.fileInputContainer}>
-              <input
-                type="file"
-                id="file"
-                onChange={handleImageChange}
-                style={{ display: 'none' }}
-                accept="image/*"
-              />
-              <label htmlFor="file" className={styles.customFileUpload}>
-                이미지 수정
-              </label>
-            </div>
+            <input
+              type="file"
+              id="file"
+              onChange={handleImageChange}
+              style={{ display: 'none' }}
+              accept="image/*"
+            />
+            <label htmlFor="file" className={styles.customFileUpload}>
+              이미지 수정
+            </label>
           </div>
         </div>
         <div className={styles.defaultSettingItemBox}>
@@ -174,34 +173,34 @@ export default function SettingForm() {
         </div>        
       </div>
     </Card>
-
+    <br />
     <span className={styles.settingSubtitle}>채널 정보</span>
     <Card>
-      <div className={styles.channelSettingItemBox}> 
-        <span className={styles.channelSettingItemTitle}>
-          소셜 링크
-        </span>
-        <div className={styles.channelSettingItemContent}>
-          {registerLinks.map((link, index) => (
-            <div key={link.id} className={styles.socailLinkItemContainer}>
-              <div className={styles.registerLinkBox}>
-                <div className={styles.registerLinkIcon}>
-                  <FiLink />
-                </div>
-                <div className={styles.registerLinkContentBox}>
+      <div className={styles.CardContentContainer}>
+        <div className={styles.channelSettingItemBox}> 
+          <span className={styles.channelSettingItemTitle}>
+            소셜 링크
+          </span>
+          <div className={styles.channelSettingItemContent}>
+            {registerLinks.map((link, index) => (
+              <div key={link.id} className={styles.registerLinkBox}>
+                  <div className={styles.registerLinkIcon}>
+                    <FiLink />
+                  </div>
                   <div className={styles.registerLinkNameUrlBox}>
                     <span>{link.title}</span>
                     <span>{link.url}</span>
                   </div>
-                  <SmallButton text='삭제' color='lightGray' onClick={() => removeRegisterLinkField({linkId: link.id, url: link.url, title: link.title})} />
-                </div>
+                  <SmallButton 
+                    text='삭제' 
+                    color={vars.colors.gray} 
+                    onClick={() => removeRegisterLinkField({linkId: link.id, url: link.url, title: link.title})} 
+                  />
               </div>
-            </div>
-          ))}
-          {links.map((link, index) => (
-            <div key={link.id} className={`${styles.CardContentContainer}`}>
-              <div className={styles.linkField}>
-                <div className={styles.linkEnterField}>
+            ))}
+            {links.map((link, index) => (
+              <div key={link.id}>
+                <div className={styles.addLinkBox}>
                   <DefaultInput
                     type="text"
                     value={link.title}
@@ -209,8 +208,6 @@ export default function SettingForm() {
                     placeholder="링크 제목을 입력해 주세요"
                     maxLength={30}
                   />
-                </div>
-                <div className={styles.linkDeleteField}>
                   <DefaultInput
                     type="text"
                     value={link.url}
@@ -218,24 +215,26 @@ export default function SettingForm() {
                     placeholder="링크 URL을 입력해 주세요"
                     maxLength={30}
                   />
+                  <div className={styles.registerLinkButtonContainer}>
+                    <SmallButton text='등록' color={vars.colors.gray} onClick={() => addRegisterList({linkId: link.id, url: link.url, title: link.title})} />
+                    <SmallButton text='취소' color={vars.colors.gray} onClick={() => removeLinkField(link.id)} />
+                  </div>
                 </div>
-                <SmallButton text='등록' color='lightGray' onClick={() => addRegisterList({linkId: link.id, url: link.url, title: link.title})} />
-                <SmallButton text='취소' color='lightGray' onClick={() => removeLinkField(link.id)} />
               </div>
+            ))}
+            <div className={styles.addLinkButtonContainer}>
+              {(registerLinks.length + links.length) < 3 && (
+                <SmallButton text='링크 추가' color={vars.colors.gray} onClick={() => addLinkField({ url: '', title: '' })} />
+              )}
             </div>
-          ))}
-          <div className={styles.addLinkButtonContainer}>
-            {(registerLinks.length + links.length) < 3 && (
-              <SmallButton text='링크 추가' color='lightGray' onClick={() => addLinkField({ url: '', title: '' })} />
-            )}
+            <span className={styles.linkLimitNote}>· 최대 3개까지 등록할 수 있습니다.</span>
           </div>
-          <span className={styles.linkLimitNote}>· 최대 3개까지 등록할 수 있습니다.</span>
         </div>
       </div>
     </Card> 
 
     <div className={styles.buttonContainer}>
-      <SmallButton text="취소" color='lightGray' />
+      <SmallButton text="취소" color={vars.colors.gray} />
       <SmallButton 
         onClick={() => {handleUpdateProfile()}} 
         text="저장" 

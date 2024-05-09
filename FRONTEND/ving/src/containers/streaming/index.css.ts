@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/vars.css';
 import { bold } from '@/styles/fonts.css';
-import { betweenBox, columnbox, endBox, rowbox, startBox } from '@/styles/box.css';
+import { betweenWrapper, columnWrapper, endWrapper, rowWrapper, startWrapper } from '@/styles/wrapper.css';
 
 export const contentContainer = style({
   display: 'flex',
@@ -22,42 +22,42 @@ export const videoPlayer = style({
 })
 
 export const streamerInfoContainer = style([
-  betweenBox,
+  betweenWrapper,
   {
     padding: vars.space['2x'],
   }
 ])
 
 export const leftBoxContainer = style([
-  rowbox,
+  rowWrapper,
   {
     gap: 10,
   }
 ])
 
 export const leftBox = style([
-  columnbox,
+  columnWrapper,
   {
     // gap: 10,
   }
 ])
 
 export const rightBox = style([
-  columnbox,
+  columnWrapper,
   {
     gap: 10,
   }
 ])
 
 export const leftBoxItem = style([
-  startBox,
+  startWrapper,
   {
     height: '100%',
   }
 ])
 
 export const rightBoxItme = style([
-  endBox,
+  endWrapper,
   {
     height: '100%',
   }

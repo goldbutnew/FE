@@ -1,26 +1,26 @@
 import { vars } from '@/styles/vars.css'
 import { style } from '@vanilla-extract/css'
 import { flex } from '@/styles/common.css'
-import { betweenBox, centerbox, columnbox, defaultBox, endBox, rowbox } from '@/styles/box.css'
+import { betweenWrapper, centerWrapper, columnWrapper, defaultWrapper, endWrapper, rowWrapper } from '@/styles/wrapper.css'
 import { bold } from '@/styles/fonts.css'
 
 // ProfileUserInfoBox.tsx
 
 export const userInfoBox = style([
-  betweenBox, 
+  betweenWrapper, 
   {
     margin: `0 0 ${vars.space['2x']} 0`
   }
 ])
 
 export const userImageNameInfoBox = style([
-  rowbox, 
+  rowWrapper, 
   {
   }
 ])
 
 export const userTextInfoBox = style([
-  columnbox,
+  columnWrapper,
   {
     gap: vars.space['0.5x'],
     margin: `0 0 0 ${vars.space['1.5x']}`
@@ -47,7 +47,7 @@ export const userIntroduce = style({
 })
 
 export const followerBox = style([
-  rowbox, 
+  rowWrapper, 
   {
     alignItems: 'flex-end',
   }
@@ -55,7 +55,7 @@ export const followerBox = style([
 
 
 export const alarmIcon = style([
-  centerbox,
+  centerWrapper,
   {
     borderRadius: vars.borderRadius.full,
     backgroundColor: vars.colors.lightGray,
@@ -147,7 +147,7 @@ export const tabPanel = style({
 // ProfileTabComponent.tsx
 
 export const socialLinkBox = style([
-  rowbox,
+  rowWrapper,
   {
   gap: vars.space['0.5x'],
   padding: `${vars.space['0.5x']} 0`,
@@ -156,7 +156,7 @@ export const socialLinkBox = style([
 ])
 
 export const profileTabItemTitleBox = style([
-  rowbox,
+  rowWrapper,
   {
     margin: `0 0 ${vars.space['1x']} 0`
   }
@@ -171,7 +171,7 @@ export const profileTabItemTitle = style([
 ])
 
 export const representativeVideoInfo = style([
-  rowbox, 
+  rowWrapper, 
   {
   }
 ])
@@ -182,7 +182,7 @@ export const representativevideoThumnail = style({
 })
 
 export const representativevideoInfoBox = style([
-  columnbox, 
+  columnWrapper, 
   {
     gap: vars.space['1x'],
     margin: `0 0 0 ${vars.space['1x']}`,
@@ -219,14 +219,14 @@ export const videoThumbnail = style({
 })
 
 export const videoInfoContainer = style([
-  rowbox,
+  rowWrapper,
   {
 
   }
 ])
 
 export const videoInfoBox = style([
-  columnbox, 
+  columnWrapper, 
   {
     alignItems: 'flex-start',
     padding: `0 0 0 ${vars.space['0.5x']}`,
