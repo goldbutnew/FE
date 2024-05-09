@@ -6,57 +6,28 @@ import Bumsang from './Bumsang'
 import VideoPlayer from '@/components/StreamingVideo/Player'
 
 export default function Tmp() {
-  const videoRef = useRef(null)
-  const audioRef = useRef(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [url, setUrl] = useState('720p')
-
-  const syncPlayPause = () => {
-    const videoElement = videoRef.current
-    const audioElement = audioRef.current
-    if (!videoElement || !audioElement) return
-
-    if (isPlaying) {
-      videoElement.play()
-      audioElement.play()
-    } else {
-      videoElement.pause()
-      audioElement.pause()
-    }
-  }
+  const videoRef = useRef(null);
+  const hls = useRef(null);
 
   useEffect(() => {
-    syncPlayPause()
-  }, [isPlaying])
+    const videoElement = videoRef.current;
 
-  useEffect(() => {
-    const videoElement = videoRef.current
-    const audioElement = audioRef.current
+    if (Hls.isSupported()) {
+      hls.current = new Hls();
 
-    const setupHls = (element, src) => {
-      if (Hls.isSupported() && element) {
-        const hls = new Hls()
-        
-        console.log(src)
+      hls.current.on(Hls.Events.ERROR, function(event, data) {
+        console.error('Hls.js 오류 발생:', data);
+      });
 
-        hls.loadSource(src)
-        hls.attachMedia(element)
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          element.play()
-        })
-        return hls
-      }
+      hls.current.loadSource(`https://vingving.s3.ap-northeast-2.amazonaws.com/qudtls_480p/qudtls_480p.m3u8`);
+      // hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/qudtls_720p.m3u8');
+      hls.current.attachMedia(videoElement);
+
+      hls.current.on(Hls.Events.MANIFEST_PARSED, function() {
+        videoElement.play();
+      });
     }
-
-    const hlsVideo = setupHls(videoElement, `https://vingving.s3.ap-northeast-2.amazonaws.com/${url}/anjdidhodkseho.m3u8`)
-    const hlsAudio = setupHls(audioElement, `https://vingving.s3.ap-northeast-2.amazonaws.com/256/anjdidhodkseho.m3u8`)
-
-    return () => {
-      if (hlsVideo) hlsVideo.destroy()
-      if (hlsAudio) hlsAudio.destroy()
-    }
-  }, [url])
-
+  }, [])
   return (
     <div>
       <Bumsang/>
@@ -64,17 +35,9 @@ export default function Tmp() {
         ref={videoRef}
         autoPlay={true}
         controls={false}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
       />
-      <video
-        ref={audioRef}
-        autoPlay={true}
-        controls={false}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-      />
-      <VideoPlayer videoRef={videoRef} setUrl={setUrl} />
+
+
     </div>
   )
 }
