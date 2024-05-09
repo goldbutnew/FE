@@ -36,7 +36,7 @@ export default function StreamingVideo() {
         autoPlay={true}
         controls={false}
       />
-      <div className={styles.videoPlayer}>
+      <div>
         <VideoPlayer videoRef={videoRef} setUrl={setUrl}/>
       </div>
     </div>

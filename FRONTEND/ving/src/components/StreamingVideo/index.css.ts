@@ -7,11 +7,6 @@ export const videoResize = style({
   aspectRatio: "16/9",
 })
 
-// 비디오 플레이어 스타일
-export const videoPlayer = style({
-  width: '100%',
-  height: 'auto'
-})
 
 // 컨트롤러 패널 스타일
 export const controls = style({
@@ -36,7 +31,10 @@ export const button = style({
 
 // 슬라이더 스타일
 export const slider = style({
-  width: '200px',
+  width: '100%',
+  height: '4px', // 높이를 줄임
   cursor: 'pointer',
-  display: 'none'
+  display: 'none',
+  backgroundColor: 'silver',
+  borderRadius: '2px' // 모서리를 약간 둥글게
 })

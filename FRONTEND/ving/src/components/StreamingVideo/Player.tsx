@@ -120,19 +120,26 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
   return (
       <div className={styles.controls}>
         <button className={styles.button} onClick={togglePlayPause}>{isPlaying ? <IoStop color="Black" size={20}/> : <IoPlay color="Black" size={20}/>}</button>
-        <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-          <button className={styles.button} onClick={toggleMute}>{isMuted ? <RiVolumeMuteFill color="Black" size={20}/> : <RiVolumeUpFill color="Black" size={20}/>}</button>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-            className={styles.slider}
-            style={{ display: isHovering ? 'block' : 'none' }}
-          />
-        </div>
+        <button 
+          className={styles.button}
+          onClick={toggleMute}
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          {isMuted ? <RiVolumeMuteFill color="Black" size={20}/> : <RiVolumeUpFill color="Black" size={20}/>}
+        </button>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={handleVolumeChange}
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+          className={styles.slider}
+          style={{ display: isHovering ? 'block' : 'none' }}
+        />
         <button className={styles.button} onClick={toggleFullscreen}><MdOutlineFullscreen color="Black" size={20}/></button>
         <button className={styles.button} onClick={togglePip}><MdPictureInPictureAlt color="Black" size={20}/></button>
 
