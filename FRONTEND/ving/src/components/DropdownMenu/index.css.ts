@@ -16,8 +16,8 @@ export const dropdownMenu = style({
 
 export const dropdownMenuTop = style({
   position: 'absolute',
-  bottom: '100%',  // top이 true일 때 드롭다운을 버튼 위로 위치시킴
-  right: '0',
+  bottom: 0,  // top이 true일 때 드롭다운을 버튼 위로 위치시킴
+  right: 0,
   backgroundColor: vars.colors.white,
   boxShadow: vars.boxShadow['2x'],
   borderRadius: vars.borderRadius['1x'],

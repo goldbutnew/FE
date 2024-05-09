@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import * as styles from './index.css';
 import useModal from '@/hooks/useModal';
@@ -8,7 +10,7 @@ interface DropdownMenuProps {
   top?: boolean;
 }
 
-const DropdownMenu: React.FC<DropdownMenuProps> = ({ children, button, top  }) => {
+const DropdownMenu: React.FC<DropdownMenuProps> = ({ children, button, top }) => {
   const { isOpen, open, modalRef } = useModal();
 
   return (
