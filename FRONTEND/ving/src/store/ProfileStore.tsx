@@ -21,6 +21,7 @@ const useProfileStore = create(persist((set, get) => ({
   streamerUserName: '',
   loginUserName: '',
   loginUserProfileData: {},
+  setLoginUserProfileData: (loginUserProfileData:object) => set({ loginUserProfileData: loginUserProfileData }),
   // 로그인 유저 프로필 가져오기
   getLoginUserInfo: async (username:string) => {
     const token = localStorage.getItem('accessToken')
