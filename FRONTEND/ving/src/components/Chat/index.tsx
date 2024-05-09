@@ -15,7 +15,7 @@ import useAuthStore from "@/store/AuthStore";
 import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
 import { line } from "@/styles/common.css";
-import useMainStore from "@/store/MainStore";
+import useStreamingStore from "@/store/StreamingStore";
 
 interface Message {
   userName: string;
@@ -38,7 +38,7 @@ export default function Chat() {
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
-  const { streamData } = useMainStore()
+  const { streamData } = useStreamingStore()
 
   // 1. 이거 동적라우팅으로 바꿔야함
   const roomId = "a2FueWV3ZXN0";
