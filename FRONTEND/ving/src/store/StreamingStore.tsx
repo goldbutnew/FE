@@ -2,8 +2,7 @@ import { create } from 'zustand'
 import axios from '../api/axios'
 import { persist } from 'zustand/middleware'
 
-
-const useStreamingStore = create((set) => ({
+const useStreamingStore = create(persist((set, get) => ({
   streamRoomsData: [],
   streamRoomData: '',
   setStreamRoomData: (data: Object) => set({ setStreamRoomData: data }),
@@ -17,11 +16,10 @@ const useStreamingStore = create((set) => ({
       console.error('생방송 목록 가져오기 실패:', error)
     }
   },
-
 }), {
-  name: 'streamRoom-store',
-  getStorage: () => localStorage,  
-  partialize: (state:any) => ({ streamRoomTitle: state.streamRoomTitle }),
-}))
+  name: 'streaming-store',
+  getStorage: () => localStorage,
+  partialize: (state: any) => ({ streamRoomData: state.streamRoomData })
+}));
 
 export default useStreamingStore

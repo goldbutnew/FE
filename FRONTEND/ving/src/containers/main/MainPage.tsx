@@ -34,7 +34,7 @@ export default function MainPage() {
             <div 
               key={index} 
               className={styles.test} 
-              onClick={() => handleStreamDataChange(data.title, data.username)}
+              onClick={() => handleStreamDataChange(data)}
             >
               <Link href={`/streaming/${btoa(data.username)}`}>{data.title}</Link> 
             </div>
