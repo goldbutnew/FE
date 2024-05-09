@@ -2,7 +2,6 @@ package ving.spring.ving.streamRoom;
 
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
-import ving.spring.ving.streamRoom.alarm.AlarmModel;
 
 import java.util.List;
 
@@ -37,6 +36,8 @@ public class StreamRoomDto {
     {
         private String streamer;
         private String type;
+        private String roomName;
+        private String thumbnail;
     }
 
     @Builder
