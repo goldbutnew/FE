@@ -102,26 +102,22 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
       case 'AUTO':
         console.log('auto로 바꿈')
         setUrl('720p')
-        // setUrl('720p')
         break
       case '360p':
         console.log('360으로 바꿈')
         setUrl('360p')
-        // setUrl('360p')
         break
       case '720p':
         console.log('720으로 바꿈')
-        setUrl('720')
-        // setUrl('720p')
+        setUrl('720p')
         break
       case '480p':
         console.log('480으로 바꿈')
-        setUrl('1080')
+        setUrl('1080p')
         // setUrl('480p')
         break
       default:
-        setUrl('720')
-        // setUrl('720p')
+        setUrl('720p')
     }
   }
 

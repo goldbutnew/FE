@@ -63,11 +63,10 @@ export default function Tmp() {
       <video
         ref={videoRef}
         autoPlay={true}
-        controls={true}
+        controls={false}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
-      <VideoPlayer videoRef={videoRef} setUrl={setUrl} />
       <video
         ref={audioRef}
         autoPlay={true}
@@ -75,6 +74,7 @@ export default function Tmp() {
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
+      <VideoPlayer videoRef={videoRef} setUrl={setUrl} />
     </div>
   )
 }
