@@ -62,8 +62,7 @@ export default function SearchBar() {
     console.log('이동 전에 데이터 담는다')
     router.push(`/profile/${btoa(username)}`)
   }
-  
-  
+
   //   try {
   //     const response = await axios.post('/api/search/nickname', { nickname })
   //     // setUsers(response.data.data.users)
@@ -86,14 +85,14 @@ export default function SearchBar() {
         <div className={styles.SearchBarInputBox}>
           <input
             type="text"
-            placeholder="Search"
+            placeholder="지금 스트리머를 검색해 보세요!"
             className={styles.input}
             value={nickname}
             onChange={handleInputChange}
           />
         </div>
         <button className={styles.searchIcon} onClick={() => moveSearchUser(username)}>
-          <FiSearch size={20}/>
+          <FiSearch size={16}/>
         </button>
       </div>
       <div>

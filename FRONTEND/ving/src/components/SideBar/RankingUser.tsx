@@ -5,6 +5,7 @@ import useProfileStore from '@/store/ProfileStore'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { RiNumber1, RiNumber2, RiNumber3, RiNumber4, RiNumber5 } from "react-icons/ri"
+import ProfileImage from '../ProfileImg'
 
 interface User {
   username: string
@@ -12,7 +13,11 @@ interface User {
   thumbnail: string
 }
 
-export default function RankingUser() {
+interface RankingUserProps {
+  initOpen: boolean
+}
+
+export default function RankingUser({ initOpen }: RankingUserProps) {
   const { getCurrentTopViewers, currentTopViewersData, getUserProfileInfo, getUserNicknameSearch, searchData } = useProfileStore()
   const [users, setUsers] = useState<User[]>(currentTopViewersData || [])
   const router = useRouter()
@@ -43,21 +48,27 @@ export default function RankingUser() {
 
   console.log(currentTopViewersData)
   return (
-    <div>
-      <div className={styles.autocompleteList}>
-        {users.map((user: User)=> (
-          <div key={user.username} onClick={() => moveSearchUser(user.username)}>
+    <div className={styles.autocompleteList}>
+      {users.map((user: User) => (
+        <div key={user.username} onClick={() => moveSearchUser(user.username)}>
+          {initOpen ? (
             <div className={styles.autocompleteItem}>
-              <img 
-                className={styles.searchUserImage} 
-                src={user.thumbnail}
-                alt={user.nickname}
+              <ProfileImage 
+                url={user.thumbnail} 
+                width={45}
+                alt="User profile" 
               />
               <div className={styles.rankingUserName}>{user.nickname}</div>
             </div>
-          </div>
-        ))}
-      </div>
+          ) : (
+            <ProfileImage 
+                url={user.thumbnail} 
+                width={45}
+                alt="User profile" 
+              />
+          )}
+        </div>
+      ))}
     </div>
   )
 }
