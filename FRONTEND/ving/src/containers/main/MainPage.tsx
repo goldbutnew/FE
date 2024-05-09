@@ -10,8 +10,12 @@ import * as styles from './index.css'
 
 export default function MainPage() {
   const { userData, code } = useAuthStore()
-  const { streamData, getStreamInfo } = useMainStore()
+  const { streamData, getStreamInfo, setStreamRoomTitle } = useMainStore()
 
+  const handleTitleChange = (title:string) => {
+    setStreamRoomTitle(title)
+  }
+  
   useEffect (() => {
     getStreamInfo()  
   }, [])
@@ -27,7 +31,7 @@ export default function MainPage() {
       <div>
         {streamData.map((data, index) => {
           return (
-            <div key={index} className={styles.test}>
+            <div key={index} className={styles.test} onClick={() => handleTitleChange(data.title)}>
               <Link href={`/streaming/${btoa(data.username)}`}>{data.title}</Link> 
             </div>
           )

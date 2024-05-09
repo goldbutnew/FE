@@ -15,9 +15,12 @@ import SmallButton from "@/components/Button/SmallButton"
 import { vars } from "@/styles/vars.css"
 import DefaultInput from "@/components/Input/DefaultInput"
 import Textarea from "@/components/Input/TextArea"
+import useProfileStore from "@/store/ProfileStore"
 
 export default function Login({ onLoginSuccess }) {
-  const { Token, login } = useAuthStore()
+  const { Token, login, userData } = useAuthStore()
+  const { getLoginUserInfo } = useProfileStore()
+
   const router = useRouter()
   const [userID, setUserID] = useState('')
   const [userPW, setUserPW] = useState('')
@@ -45,6 +48,7 @@ export default function Login({ onLoginSuccess }) {
   useEffect (() => {
     console.log(Token)
     if (Token) {
+      getLoginUserInfo(userData.username)
       router.push('/')
       onLoginSuccess()
       close()

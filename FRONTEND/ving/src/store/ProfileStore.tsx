@@ -1,7 +1,8 @@
 import { create } from 'zustand'
 import axios from '../api/axios'
+import { persist } from "zustand/middleware"
 
-const useProfileStore = create((set, get) => ({
+const useProfileStore = create(persist((set, get) => ({
   // 팔로우 관련 axios
   // checkFollowStatus: async ({loading:Boolean isFollowed: Boolean userId:String}) => {
   //   try {
@@ -13,9 +14,30 @@ const useProfileStore = create((set, get) => ({
   //   } 
   // }
   profileData: {},
+  streamerProfileData: {},
   searchData: [],
   currentTopViewersData: [],
   profileUserName: '',
+  streamerUserName: '',
+  loginUserName: '',
+  loginUserProfileData: {},
+  // 로그인 유저 프로필 가져오기
+  getLoginUserInfo: async (username:string) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.get(`auth/getProfile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: { username : username},
+      })
+      set({ loginUserProfileData: response.data,
+        loginUserName: username
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  },
   // 유저 프로필 가져오기
   getUserProfileInfo: async (username:string) => {
     const token = localStorage.getItem('accessToken')
@@ -28,6 +50,23 @@ const useProfileStore = create((set, get) => ({
       })
       set({ profileData: response.data,
         profileUserName: username
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  // 스트리머 프로필 가져오기
+  getStreamerProfileInfo: async (username:string) => {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.get(`auth/getProfile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: { username : username},
+      })
+      set({ streamerProfileData: response.data,
+        streamerUserName: username
       })
     } catch (error) {
       console.error(error)
@@ -176,6 +215,10 @@ const useProfileStore = create((set, get) => ({
       console.error(error)
     }
   },
+}), {
+  name: 'profile-store',
+  getStorage: () => localStorage, 
+  partialize: (state) => ({ loginUserName: state.loginUserName, loginUserProfileData: state.loginUserProfileData }) 
 }))
 
 export default useProfileStore

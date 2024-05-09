@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import * as styles from './index.css'
 import { FiSearch } from "react-icons/fi"
 import useProfileStore from '@/store/ProfileStore'
@@ -14,6 +14,7 @@ export default function SearchBar() {
   const [nickname, setNickname] = useState('')
   const [username, setUsername] = useState('')
   const [users, setUsers] = useState<User[]>([])
+  const autocompleteRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('')
   const { profileUserName, getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData } = useProfileStore()
   const router = useRouter()
@@ -38,6 +39,19 @@ export default function SearchBar() {
     setUsername(selectedUser.username)
     setUsers([])
   }
+
+  // 검색어 자동완성 외 부분 마우스 클릭하면 자동완성리스트 사라지는 로직
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (autocompleteRef.current && !autocompleteRef.current.contains(event.target as Node)) {
+        setUsers([])
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [autocompleteRef])
 
   useEffect(() => {
     getUserNicknameSearch()
@@ -83,7 +97,7 @@ export default function SearchBar() {
         </button>
       </div>
       <div>
-        <div className={styles.autocompleteList}>
+        <div ref={autocompleteRef} className={styles.autocompleteList}>
           {users.map(user => (
             <div key={user.username} onClick={() => handleAutoComplete(user)}>
               <div className={styles.autocompleteItem}>
