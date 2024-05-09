@@ -69,7 +69,6 @@ public class SubscriptionController {
         UserModel Streamer = userService.findByUserUsername(streamer).orElseThrow();
         UserModel Viewer = userService.findByUserUsername(viewer).orElseThrow();
 
-
         if (subscriptionService.existsByStreamerAndFollower(Streamer, Viewer) )
         {
             subscriptionService.findByStreamerAndFollower(Streamer, Viewer).setNotification(1);
@@ -91,7 +90,16 @@ public class SubscriptionController {
                 .isEnd(false)
                 .build();
 
+        Message.NewsFeed newsFeed = Message.NewsFeed.builder()
+                .isDonation(false)
+                .username(Viewer.getUserUsername())
+                .nickname(Viewer.getUserNickname())
+                .choco(0)
+                .build();
 
+        String strBase64Encode = Base64.getEncoder().encodeToString(Viewer.getUserUsername().getBytes());
+        log.info(strBase64Encode);
+        messageController.follow(newsFeed, strBase64Encode);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
@@ -106,6 +114,8 @@ public class SubscriptionController {
         {
             return ResponseEntity.badRequest().body("나를 팔로우 할 수 없음");
         }
+
+
         subscriptionService.delete(streamer, follower);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
@@ -121,6 +131,7 @@ public class SubscriptionController {
         }
 
         SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(streamer, follower);
+
 
         subscriptionModel.setNotification(Math.abs(subscriptionModel.getNotification() - 1));
         subscriptionService.create(subscriptionModel);
@@ -164,7 +175,15 @@ public class SubscriptionController {
                     .isTts(donationRequest.getIsTts())
                     .text(donationRequest.getMessage())
                     .build();
-            messageController.donation(chatMessage, strBase64Encode);
+
+            Message.NewsFeed newsFeed = Message.NewsFeed.builder()
+                    .isDonation(true)
+                    .choco(donationRequest.getChoco())
+                    .nickname(follower.getUserNickname())
+                    .username(follower.getUserUsername())
+                    .build();
+
+            messageController.donation(chatMessage, newsFeed, strBase64Encode);
             return ResponseEntity.ok(HttpStatus.OK);
         }
 

@@ -1,23 +1,23 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
-import { centerbox, columnbox, rowbox } from '@/styles/box.css';
+import { centerWrapper, columnWrapper, rowWrapper } from '@/styles/wrapper.css';
 
 
 export const modalContainer = style([
-  columnbox,
+  columnWrapper,
   {
   }
 ]);
 
 export const modalTitle = style ([
-  centerbox,
+  centerWrapper,
   {
     margin: `0 0 ${vars.space['1x']}`,
   }
 ])
 
 export const modalItem = style([  
-  rowbox,
+  rowWrapper,
   {
     margin: `0 0 ${vars.space['1x']}`,
   }

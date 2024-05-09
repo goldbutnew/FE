@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import * as styles from './index.css';
 import { line } from '@/styles/common.css';
-import { betweenBox, columnbox } from '@/styles/box.css';
+import { betweenWrapper, columnWrapper } from '@/styles/wrapper.css';
 import { LiaDoorOpenSolid, LiaDoorClosedSolid } from "react-icons/lia";
 import RankingUser from './RankingUser';
 
@@ -33,7 +33,7 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
           style={widthStyle}>
           {side === 'left' ? 
             <div>
-              <div className={betweenBox}>
+              <div className={betweenWrapper}>
                 <span className={styles.sidebarTitle}>
                   {title}
                   </span>
@@ -46,7 +46,7 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
             </div>
             : 
             <div>
-              <div className={betweenBox}>
+              <div className={betweenWrapper}>
                 <LiaDoorClosedSolid
                   size={20}
                   className={styles.toggleButton}

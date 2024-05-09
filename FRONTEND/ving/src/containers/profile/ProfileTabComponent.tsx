@@ -98,10 +98,10 @@ export default function ProfileTabComponent() {
         </div>
         {representativeVideoInfo.map(video => (
           <div key={video.title} className={styles.representativeVideoInfo}>
-            <img src={video.videoThumbnail} className={styles.videoThumnail}></img>
-            <div className={styles.videoInfoBox}>
+            <img src={video.videoThumbnail} className={styles.representativevideoThumnail}></img>
+            <div className={styles.representativevideoInfoBox}>
               <span>{video.title}</span>
-              <span className={styles.videoAdditionalInfoText} >조회수 {video.viewCount}회 · {video.day}일 전</span>
+              <span className={styles.videoInfoText} >조회수 {video.viewCount}회 · {video.day}일 전</span>
             </div>
           </div>
             ))}

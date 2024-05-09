@@ -1,71 +1,82 @@
 import { vars } from '@/styles/vars.css'
 import { style } from '@vanilla-extract/css'
 import { flex } from '@/styles/common.css'
-import { betweenBox, columnbox, defaultBox, rowbox } from '@/styles/box.css'
+import { betweenWrapper, centerWrapper, columnWrapper, defaultWrapper, endWrapper, rowWrapper } from '@/styles/wrapper.css'
 import { bold } from '@/styles/fonts.css'
 
 // ProfileUserInfoBox.tsx
+
 export const userInfoBox = style([
-  betweenBox, 
+  betweenWrapper, 
   {
-    backgroundColor: vars.colors.white,
-    padding: `${vars.space['1x']} ${vars.space['2x']}`,
+    margin: `0 0 ${vars.space['2x']} 0`
   }
 ])
 
 export const userImageNameInfoBox = style([
-  rowbox, {
-}])
-
-export const userTextInfoBox = style([
-  columnbox,
+  rowWrapper, 
   {
-    margin: `0 0 0 ${vars.space['1x']}`
   }
 ])
 
-export const userName = style({
-  fontSize: vars.fontSize['2x'],
-  padding: `0 0 ${vars.space['0.5x']} 0`
-})
+export const userTextInfoBox = style([
+  columnWrapper,
+  {
+    gap: vars.space['0.5x'],
+    margin: `0 0 0 ${vars.space['1.5x']}`
+  }
+])
+
+export const userName = style([
+  bold,
+  {
+    fontSize: vars.fontSize['2x'],
+  }
+])
+
+export const followerText = style([
+  bold,
+  {
+    fontSize: vars.fontSize['0.75x'],
+    color: vars.colors.darkGray
+  }
+])
 
 export const userIntroduce = style({
   fontSize: vars.fontSize['1x'],
 })
 
 export const followerBox = style([
-  defaultBox, 
+  rowWrapper, 
   {
-    justifySelf: 'flex-end',
-  }])
-
-export const followerNotification = style([
-  rowbox, {
+    alignItems: 'flex-end',
   }
 ])
 
-export const alarmIcon = style({
-  display: 'flex',
-  borderRadius: vars.borderRadius.full,
-  backgroundColor: vars.colors.lightGray,
-  justifyContent: 'center',
-  alignItems: 'center',
-  border: 'none',
-  cursor: 'pointer',
-  margin: '0px 0px 0px 5px',
-  padding: 3,
-  // selectors: {
-  //   '&:hover .tooltip': {
-  //     visibility: 'visible',
-  //     opacity: 1,
-  //   }
-  // }
-})
+
+export const alarmIcon = style([
+  centerWrapper,
+  {
+    borderRadius: vars.borderRadius.full,
+    backgroundColor: vars.colors.lightGray,
+    border: 'none',
+    cursor: 'pointer',
+    margin: `0 0 0 ${vars.space['1x']}`,
+    padding: 3,
+    // selectors: {
+    //   '&:hover .tooltip': {
+    //     visibility: 'visible',
+    //     opacity: 1,
+    //   }
+    // }
+  }
+])
 
 export const notificationHoverText = style({
   position: 'relative',
   selectors: {
     '&::before': { 
+      fontSize: vars.fontSize['0.5x'],
       content: 'attr(data-hover)',  
       visibility: 'hidden',
       opacity: 0,
@@ -74,7 +85,7 @@ export const notificationHoverText = style({
       color: vars.colors.white,
       textAlign: 'center',
       borderRadius: vars.borderRadius['1x'],
-      padding: vars.borderRadius['0.5x'],
+      padding: `${vars.space['0.5x']} ${vars.space['1x']}`,
       transition: 'opacity 1s ease-in-out',
       position: 'absolute',
       zIndex: 1,
@@ -106,10 +117,6 @@ export const notificationHoverText = style({
 
 // TabsComponent.tsx
 
-export const tabsContainer = style({
-  padding: vars.space['2x']
-})
-
 export const tabList = style({
   display: 'flex',
   listStyle: 'none',
@@ -140,7 +147,7 @@ export const tabPanel = style({
 // ProfileTabComponent.tsx
 
 export const socialLinkBox = style([
-  rowbox,
+  rowWrapper,
   {
   gap: vars.space['0.5x'],
   padding: `${vars.space['0.5x']} 0`,
@@ -149,7 +156,7 @@ export const socialLinkBox = style([
 ])
 
 export const profileTabItemTitleBox = style([
-  rowbox,
+  rowWrapper,
   {
     margin: `0 0 ${vars.space['1x']} 0`
   }
@@ -164,27 +171,23 @@ export const profileTabItemTitle = style([
 ])
 
 export const representativeVideoInfo = style([
-  rowbox, 
+  rowWrapper, 
   {
   }
 ])
 
-export const videoThumnail = style({
+export const representativevideoThumnail = style({
   width: 200,
   aspectRatio: "4/3",
 })
 
-export const videoInfoBox = style([
-  columnbox, 
+export const representativevideoInfoBox = style([
+  columnWrapper, 
   {
     gap: vars.space['1x'],
     margin: `0 0 0 ${vars.space['1x']}`,
   }
 ])
-
-export const videoAdditionalInfoText = style({
-  fontSize: vars.fontSize['0.5x']
-})
 
 
 // VideoTabComponent.tsx
@@ -192,22 +195,21 @@ export const videoAdditionalInfoText = style({
 export const videoGrid = style({
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-  gap: '15px' /* 모든 그리드 아이템 사이에 15px의 간격 */
+  margin: `${vars.space['2x']} 0`,
+  gap: vars.space['2x'] /* 모든 그리드 아이템 사이에 15px의 간격 */
 })
 
 export const videoItem = style({
   position: 'relative',
   width: '100%',
-  height: 180,
-  margin: '0px 0px 45px 0px'
-  // overflow: 'hidden'
+  margin: `0 0 ${vars.space['2x']} 0`
 })
 
 export const pinIcon = style({
   position: 'absolute',
-  top: '10px',
-  left: '10px',
-  color: 'white',
+  top: 10,
+  left: 10,
+  color: vars.colors.white,
 })
 
 export const videoThumbnail = style({
@@ -216,24 +218,23 @@ export const videoThumbnail = style({
   objectFit: 'cover'
 })
 
-export const videoItemInfoBox = style({
-  fontSize: vars.fontSize['1x'],
-  padding: '4px 8px',
-})
+export const videoInfoContainer = style([
+  rowWrapper,
+  {
 
-export const videoItemAdditionalInfo = style([
-  rowbox, {
-    alignItems: 'center',
-}])
+  }
+])
 
-export const videoItemAdditionalTextInfo = style([
-  columnbox, {
+export const videoInfoBox = style([
+  columnWrapper, 
+  {
     alignItems: 'flex-start',
-    padding: '0px 0px 0px 10px',
+    padding: `0 0 0 ${vars.space['0.5x']}`,
     width: '100%'
-}])
+  }
+])
 
-export const videoItemAdditionalInfoText = style({
+export const videoInfoText = style({
   fontSize: vars.fontSize['0.5x']
 })
 

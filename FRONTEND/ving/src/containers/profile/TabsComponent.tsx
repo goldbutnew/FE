@@ -28,7 +28,7 @@ const TabsComponent = ({ where }: TabsComponentProps) =>  {
   }
 
   return (
-    <div className={styles.tabsContainer}>
+    <div>
       <ul className={styles.tabList}>
         <li 
           className={styles.tab} 

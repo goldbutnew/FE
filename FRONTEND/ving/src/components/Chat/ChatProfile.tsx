@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import BottomSheet from "../BottomSheet";
 import { line } from "@/styles/common.css";
 import { FaHeart } from "react-icons/fa";
-import { rowbox } from "@/styles/box.css";
+import { rowWrapper } from "@/styles/wrapper.css";
 import * as styles from './index.css'
 
 export default function ChatProfile({ isOpen, onClose, userData }) {
@@ -19,7 +19,7 @@ export default function ChatProfile({ isOpen, onClose, userData }) {
               {userData.nickname}
             </span>
             <hr className={line}/>
-            <div className={rowbox}>
+            <div className={rowWrapper}>
               <FaHeart
                 size={12}
                 color="D16D6A"
