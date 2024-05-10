@@ -34,24 +34,24 @@ export default function MainPage() {
     )
   }
 
-  const [currentSlide, setCurrentSlide] = useState(0)
+  // const [currentSlide, setCurrentSlide] = useState(0)
   
-  const moveSlide = (step:number) => {
-    setCurrentSlide((prevSlide) => {
-      let newIndex = prevSlide + step
-      const totalSlides = 3
-      if (newIndex < 0) newIndex = totalSlides - 1
-      else if (newIndex >= totalSlides) newIndex = 0
-      return newIndex
-    })
-  }
+  // const moveSlide = (step:number) => {
+  //   setCurrentSlide((prevSlide) => {
+  //     let newIndex = prevSlide + step
+  //     const totalSlides = 3
+  //     if (newIndex < 0) newIndex = totalSlides - 1
+  //     else if (newIndex >= totalSlides) newIndex = 0
+  //     return newIndex
+  //   })
+  // }
 
   return (
     <div className={styles.mainVideoGridBox}>
       <h3>메인 페이지</h3>
       <h3>{userData.nickname} 님 ving에 오신 걸 환영합니다.</h3>
 
-      <div className={styles.carouselContainer}>
+      {/* <div className={styles.carouselContainer}>
         <button className={styles.prev} onClick={() => moveSlide(-1)}><GrPrevious size={30}/></button>
         <div className={styles.carouselSlide} style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
             <div className={styles.carouselItem}>
@@ -66,7 +66,7 @@ export default function MainPage() {
             </div>
           </div>
         <button className={styles.next} onClick={() => moveSlide(1)}><GrNext size={30} /></button>
-      </div>
+      </div> */}
 
       <div className={styles.mainVideoGrid}>
       {streamRoomsData.slice(0, visibleCount).map((data, index) => {
