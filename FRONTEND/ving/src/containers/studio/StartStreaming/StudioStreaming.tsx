@@ -9,6 +9,7 @@ import SmallButton from '@/components/Button/SmallButton'
 import StreamingVideo from '@/components/StreamingVideo'
 import * as styles from '../index.css'
 import useAuthStore from '@/store/AuthStore'
+import { rowWrapper } from '@/styles/wrapper.css'
 
 
 export default function StudioStreaming() {
@@ -74,14 +75,14 @@ export default function StudioStreaming() {
         {isOnAir ?
           <StreamingVideo /> 
           :
-          <div className="video-placeholder">
-            <div className="message">
-              라이브 스트리밍을 시작하려면 스트리밍 소프트웨어를 연결하세요. 방송 시작 및 종료는 스트리밍 소프트웨어에서 가능합니다.
+          <div className={styles.videolaceholder}>
+            <div className={styles.videolaceholderText}>
+              <div>라이브 스트리밍을 시작하려면 스트리밍 소프트웨어를 연결하세요.</div>
+              <div>방송 시작 및 종료는 스트리밍 소프트웨어에서 가능합니다.</div>
             </div>
           </div>
         }
       </div>
-
       <div className={styles.streamingInfoContainer}>
         <div className={styles.streamingInfoItem}>
           <label className={styles.streamingInfoTitle}>방송 제목</label>
@@ -89,13 +90,19 @@ export default function StudioStreaming() {
         </div>
 
         <div className={styles.streamingInfoItem}>
-          <img
-            src={photoUrl}
-            alt="Profile"
-          />
-          <div>
-            <label className={styles.streamingInfoTitle} htmlFor="file">
-              미리보기 이미지
+          <label className={styles.streamingInfoTitle}>
+            미리보기 이미지
+          </label>
+          <div className={styles.makeThumnailContainer}>
+            {photoUrl && (
+              <img
+                src={photoUrl}
+                alt="Profile"
+                className={styles.studioThumnailResize}
+              />
+            )}
+            <label htmlFor="file" className={styles.customFileUpload}>
+              이미지 업로드
             </label>
             <input
               type="file"
@@ -103,7 +110,7 @@ export default function StudioStreaming() {
               onChange={handleImageChange}
               style={{ display: 'none' }}
               accept="image/*"
-            />
+            />      
           </div>
         </div>
 
@@ -115,12 +122,12 @@ export default function StudioStreaming() {
             onChange={toggleLimit}
           />
         </div>
-        <div className={styles.updateButtonBox}>
-          <SmallButton text="업데이트" onClick={submitStreamSetting}/>
-        </div>
-        <div className={styles.updateButtonBox}>
+        <div className={styles.buttonGroupContainer}>
           {isOnAir ? 
-            (<SmallButton text="방송종료" onClick={handleEndStream}/>)
+            (<div className={styles.updateButtonBox}>
+              <SmallButton text="업데이트" onClick={submitStreamSetting}/>
+              <SmallButton text="방송종료" onClick={handleEndStream}/>
+            </div>)
              :
             (<SmallButton text="방송시작" onClick={handleStartStream}/>)
           }
