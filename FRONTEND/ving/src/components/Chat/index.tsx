@@ -66,8 +66,16 @@ export default function Chat() {
       await getStreamerProfileInfo(streamRoomData.username);
       setIsFollowed(streamerProfileData.isFollowed);
     };
+  
     fetchProfile();
+    
+    const interval = setInterval(() => {
+      fetchProfile();  // 30초마다 팔로우 상태를 갱신
+    }, 30000);
+  
+    return () => clearInterval(interval);
   }, [getStreamerProfileInfo, streamRoomData.username, streamerProfileData.isFollowed]);
+  
 
   
   const roomId = btoa(streamRoomData.username);
@@ -225,7 +233,7 @@ const handleSendMessage = (event) => {
           type="text"
           value={messageInput}
           onChange={handleChange}
-          placeholder={isFollowed ? "채팅을 입력해 주세요" : "팔로우한 사용자만 채팅을 입력할 수 있습니다."}
+          placeholder={isFollowed ? "채팅을 입력해 주세요" : "팔로워만 채팅 가능합니다."}
           disabled={!isFollowed}
           onEmojiClick={openEmojiPicker}
         />
