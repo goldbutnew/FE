@@ -14,12 +14,14 @@ import { betweenWrapper } from "@/styles/wrapper.css";
 import useChatStore from "@/components/Chat/Store";
 import useAuthStore from "@/store/AuthStore";
 import useStreamingStore from "@/store/StreamingStore";
+import useModal from "@/hooks/useModal";
 
 export default function Donation() {
   const { userData } = useAuthStore()
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
-  const [isOpen, setIsOpen] = useState(false);
+  const { close, open, isOpen, modalRef } = useModal()
+  // const [isOpen, setIsOpen] = useState(false);
   const [choco, setChoco] = useState(0)
   const [isAnonym, setIsAnonym] = useState(false)
   const [isTTS, setIsTTS] = useState(false)
@@ -81,7 +83,7 @@ export default function Donation() {
     e.preventDefault();
     const donationRequest = {
       streamer: streamRoomData.username, 
-      nickname: userData.nickname,
+      nickname: name,
       choco: choco,
       isTts: isTTS,
       message: messageInput,
@@ -90,6 +92,7 @@ export default function Donation() {
     await useChatStore.getState().sendDonation(donationRequest);
     setMessageInput('');
     setChoco(0);
+    close();
   };
   
   return (
@@ -97,10 +100,10 @@ export default function Donation() {
       <SmallButton
         text="🍫" 
         color={vars.colors.lightGray}
-        onClick={() => setIsOpen(true)}
+        onClick={open}
       />
       {isOpen && (
-        <BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <BottomSheet isOpen={isOpen} onClose={close}>
           <div className={styles.topContainer}>
             <span className={bold}>후원</span>
             <hr className={line}/>
