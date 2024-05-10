@@ -2,7 +2,14 @@ from django.shortcuts import render
 import subprocess
 from django.http import JsonResponse
 from . import docker_ffmpeg
+import boto3
 
+
+from django.http import HttpResponse
+from .tasks import convert_stream_to_hls
+from botocore.exceptions import NoCredentialsError
+from django.conf import settings
+import os
 
 
 # def main(request):
@@ -28,16 +35,15 @@ from . import docker_ffmpeg
 #         return JsonResponse({"error": str(e), "status": "failure"}, status=500)
 
 
-from django.http import HttpResponse
-from .tasks import convert_stream_to_hls
-import boto3
-from botocore.exceptions import NoCredentialsError
-from django.conf import settings
-import os
+# from django.http import HttpResponse
+# from .tasks import convert_stream_to_hls
+# from botocore.exceptions import NoCredentialsError
+# from django.conf import settings
+# import os
 def main(request):
-    # user_id = request.user.id  # 예시로 사용자 ID를 가져옴
-    # resolutions = ['360p', '720p']
-    # output = ['1936','1935']
+#     # user_id = request.user.id  # 예시로 사용자 ID를 가져옴
+#     # resolutions = ['360p', '720p']
+#     # output = ['1936','1935']
     
     print(1)
     # user_name = ["cjswo","qudtls"]
@@ -95,13 +101,15 @@ def s3_connection():
         print('temp')
         # s3.put_object(Bucket='vingving', Key='720p/')
         # local_folder = "media/720"
-
+        print(os.getcwd())
+        local_folder = "C:/Users/SSAFY/Downloads/GOODCODE/S10P31A203/BACKEND/STATIC/"
+        words = ["audio", "video/720", "video/1080"]
         # # 로컬 폴더 내의 모든 파일을 찾아서 S3에 업로드
         # for root, dirs, files in os.walk(local_folder):
         #     for filename in files:
         #         local_path = os.path.join(root, filename)  # 로컬 파일 경로
         #         s3_path = os.path.join("720p", os.path.relpath(local_path, local_folder)).replace("\\", "/")
-        #         print(s3_path,1687167816278781264861824612)
+        #         print(s3_path)
                 # s3.upload_file(local_path, "vingving", s3_path)  # S3에 파일 업로드
         # s3.put_object(Bucket='vingving', Key='1080p/')
         # local_folder = "media/1080"
