@@ -118,11 +118,12 @@ def convert_stream_to_hls(user_id, resolution, output_path, input_port):
             '-tune', 'zerolatency',
             '-c:a', 'aac',
             '-b:a', '128k',
+            '-g', '30',
             '-vf', f'scale={quality[resolution]["resolution"]}',
             '-b:v', quality[resolution]['bitrate'],
             '-f', 'hls',
             '-hls_time', '1',
-            '-hls_list_size', '10',
+            '-hls_list_size', '0',
             output_file  # 출력 포트를 설정하여 변환 결과를 저장
         ]
     
