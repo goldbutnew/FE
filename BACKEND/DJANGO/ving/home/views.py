@@ -40,7 +40,7 @@ def set_streaming_room_name(request):
     decoded_data = json.loads(request.body.decode('utf-8'))
     
     user_name = decoded_data.get('username')
-    room_name = decoded_data.get('roomname')
+    room_name = decoded_data.get('roomName')
     try:
         user = User.objects.get(user_username = user_name)
         user_id = user.user_id
