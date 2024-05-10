@@ -192,7 +192,7 @@ const handleSendMessage = (event) => {
               <button 
                 style={{ color: getNicknameColor(msg.userName) }}
                 className={styles.dontaionChatNickname}
-                onClick={msg.nickname !== "익명의 후원자" ? () => handleNicknameClick({ id: msg.userName, nickname: msg.nickname }) : undefined}
+                onClick={msg.nickname !== "익명의 후원자" ? () => handleNicknameClick(msg.userName) : undefined}
               >
                 {msg.nickname}
               </button>
@@ -205,7 +205,7 @@ const handleSendMessage = (event) => {
               <button
                 style={{ color: getNicknameColor(msg.nickname) }}
                 className={styles.chatNickname}
-                onClick={() => handleNicknameClick({ id: msg.userName, nickname: msg.nickname })}
+                onClick={() => handleNicknameClick(msg.userName)}
               >
                 {msg.nickname}
               </button>: <span>{msg.text}</span>
