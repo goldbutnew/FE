@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import * as styles from './index.css';
 import { IoIosClose } from 'react-icons/io';
+import useModal from '@/hooks/useModal';
 
 interface BottomSheetProps {
   isOpen: boolean;
