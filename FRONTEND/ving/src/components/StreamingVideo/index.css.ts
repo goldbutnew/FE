@@ -27,8 +27,8 @@ export const button = style({
   borderRadius: '50%'
 })
 
-// 슬라이더 스타일
-export const slider = style({
+// 볼륨 슬라이더 스타일
+export const volumeSlider = style({
   width: '100%',
   height: '4px',
   cursor: 'pointer',
