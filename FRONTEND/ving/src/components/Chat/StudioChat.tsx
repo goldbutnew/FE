@@ -42,7 +42,7 @@ export default function StudioChat() {
 
   const connect = () => {
     console.log("WebSocket 연결 시도 중...");
-    const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
+    const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
     client.debug = function(str) {
