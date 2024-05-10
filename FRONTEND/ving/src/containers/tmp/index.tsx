@@ -7,24 +7,8 @@ import VideoPlayer from '@/components/StreamingVideo/Player'
 import Link from 'next/link'
 
 export default function Tmp() {
-  const videoRef = useRef(null)
-  const audioRef = useRef(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [url, setUrl] = useState('720p')
-
-  const syncPlayPause = () => {
-    const videoElement = videoRef.current
-    const audioElement = audioRef.current
-    if (!videoElement || !audioElement) return
-
-    if (isPlaying) {
-      videoElement.play()
-      audioElement.play()
-    } else {
-      videoElement.pause()
-      audioElement.pause()
-    }
-  }
+  const videoRef = useRef(null);
+  const hls = useRef(null);
 
   useEffect(() => {
     syncPlayPause()
@@ -66,17 +50,9 @@ export default function Tmp() {
         ref={videoRef}
         autoPlay={true}
         controls={false}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
       />
-      <video
-        ref={audioRef}
-        autoPlay={true}
-        controls={false}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-      />
-      <VideoPlayer videoRef={videoRef} setUrl={setUrl} />
+
+
     </div>
   )
 }

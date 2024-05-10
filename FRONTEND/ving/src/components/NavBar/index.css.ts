@@ -85,17 +85,19 @@ export const avatarButton = style([
   }
 ]);
 
-// SeachBar 관련 style 시작
+
+// SeachBar.tsx
 
 export const SearchBarContainer = style([
-  rowWrapper, {
+  rowWrapper, 
+  {
 
-}])
+  }
+])
 
 export const SearchBarInputBox = style({
   width: '100%',
   border: `1px solid ${vars.colors.gray}`,
-  padding: '4px 8px',
   borderRadius: vars.borderRadius['0.5x'],
 })
 
@@ -103,7 +105,7 @@ export const input = style({
   flex: 1,
   border: 'none',
   outline: 'none',
-  padding: '8px',
+  padding: vars.space['1x'],
 })
 
 export const searchIcon = style({
@@ -111,8 +113,8 @@ export const searchIcon = style({
   borderRadius: vars.borderRadius['0.5x'],
   border: 'none',
   cursor: 'pointer',
-  margin: '0px 0px 0px 3px',
-  padding: '8px',
+  margin: `0 0 0 ${vars.space['0.5x']}`,
+  padding: `${vars.space['0.5x']} ${vars.space['1x']}`,
   fontSize: vars.fontSize['2x'],
 })
 
@@ -132,12 +134,12 @@ export const searchUserImage = style({
   height: 45, 
   borderRadius: vars.borderRadius.full,
   border: `2.5px solid ${vars.colors.black}`,
-  margin: '0px 5px 0px 0px'
+  margin: `0 ${vars.space['0.5x']} 0 0`
 })
 
 export const autocompleteItem = style([
-  rowWrapper, {
-  margin: '5px 0px 5px 0px'
+  rowWrapper, 
+  {
+    margin: `0 ${vars.space['0.5x']}`
   }
 ])
-// SeachBar 관련 style 끝

@@ -122,7 +122,9 @@ export default function VideoTabComponent() {
                   <DropdownMenu 
                     button={<button onClick={() => toggleMenu(video.videoId)} className={styles.videoItemellipsisButton}>
                       <HiEllipsisVertical size={20} />
-                    </button>}>
+                    </button>}
+                    // top={true}
+                    >
                     <MenuItem onClick={() => togglePin(video.videoId)}>
                         {video.isFixed ? '상단 고정 취소' : '상단 고정'}
                     </MenuItem>
