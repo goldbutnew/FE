@@ -16,7 +16,7 @@ const useStudioStore = create((set) => ({
         }
       })
       console.log('방송 시작 요청 성공', response.data)
-      set({ isCheck: true })
+      set({ isOnAir: true })
 
     } catch (error) {
       console.error('방송 시작 요청 실패:', error)
@@ -28,7 +28,7 @@ const useStudioStore = create((set) => ({
     try {
       const response = await axios.get('media_pipeline/main')
       console.log('포트 개방 성공', response.data)
-      set({ isCheck: true })
+      set({ isOnAir: true })
 
     } catch (error) {
       console.error('포트 개방 실패:', error)
@@ -36,10 +36,10 @@ const useStudioStore = create((set) => ({
     }
   },
 
-  closePort: async (username) => {
+  closePort: async () => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('home/delete_streaming_room/', username, {
+      const response = await axios.patch('stream/end', {
         headers: {
           Authorization: `Bearer ${token}`,
         }

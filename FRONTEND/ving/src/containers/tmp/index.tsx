@@ -76,15 +76,15 @@ export default function Tmp() {
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
-      <video
+      {/* <video
         ref={audioRef}
         autoPlay={true}
         controls={false}
         muted={true}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
-      />
-      <VideoPlayer videoRef={audioRef} setUrl={setUrl} />
+      /> */}
+      <VideoPlayer videoRef={videoRef} setUrl={setUrl} />
     </div>
   )
 }

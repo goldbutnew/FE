@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import useStudioStore from '../Store'
-import useAuthStore from '@/store/AuthStore'
 
 import DefaultInput from '@/components/Input/DefaultInput'
 import Radio from '@/components/Input/Radio'
@@ -13,7 +12,6 @@ import * as styles from '../index.css'
 
 export default function StudioStreaming() {
   const { openPort, closePort, startStreaming, sendStreamTitle, sendStreamThumbnail, sendStreamLimit, isOnAir } = useStudioStore()
-  const { userData } = useAuthStore()
   const [ title, setTitle ] = useState('')
   const [ limit, setLimit ] = useState(false)
   const [ thumbnail, setThumbnail ] = useState('')
@@ -44,7 +42,7 @@ export default function StudioStreaming() {
   }
   
   const handleEndStream = () => {
-    closePort(userData.username)
+    closePort()
   }
 
   const handleTitle = (event) => {
