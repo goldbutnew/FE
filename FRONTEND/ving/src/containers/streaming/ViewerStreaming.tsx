@@ -15,7 +15,7 @@ export default function ViewerStreaming() {
 
   const [loading, setLoading] = useState(false)
   const { userData } = useAuthStore()
-  const { streamRoomData } = useStreamingStore()
+  const { streamRoomData, setIsStreamerFollowed, isStreamerFollowed } = useStreamingStore()
   const { streamerProfileData, streamerUserName, getStreamerProfileInfo, doFollowUser, unDoFollowUser } = useProfileStore()
   const [subscriberCount, setSubscriberCount] = useState(streamerProfileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(streamerProfileData.isFollowed)
@@ -32,10 +32,12 @@ export default function ViewerStreaming() {
 
     if (isFollowed) {
       setIsFollowed(false)
+      setIsStreamerFollowed(false)
       setSubscriberCount(subscriberCount - 1)
       unDoFollowUser(streamerUserName)
     } else {
       setIsFollowed(true)
+      setIsStreamerFollowed(true)
       setSubscriberCount(subscriberCount + 1)
       doFollowUser(streamerUserName)
     }
@@ -61,6 +63,7 @@ export default function ViewerStreaming() {
     setLoading(true)
     if (streamerProfileData) {
       setIsFollowed(streamerProfileData.isFollowed || false)
+      setIsStreamerFollowed(streamerProfileData.isFollowed || false)
       // 팔로우가 된 상태라면
       // 맨 처음에 팔로우 안 되어 있으면 자동으로 false
     }
@@ -92,7 +95,7 @@ export default function ViewerStreaming() {
                   <SmallButton
                     text={isFollowed ? '팔로잉' : '팔로우'}
                     color={isFollowed ? 'lightGray' : 'black'}
-                    onClick={() => toggleFollow()}
+                    onClick={() => {toggleFollow()}}
                   />
             )}
           </div>

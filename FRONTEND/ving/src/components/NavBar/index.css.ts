@@ -123,10 +123,23 @@ export const autocompleteList = style({
   backgroundColor: vars.colors.white,
   // 테두리 주니까 밑줄 모양이 남음.. 일단 보류
   // border: `1px solid ${vars.colors.gray}`,
+  borderRadius: vars.borderRadius['1x'],
+  boxShadow: vars.boxShadow['2x'],
   maxHeight: 200,
-  width: 243,
+  width: 230,
   overflowY: 'auto',
   zIndex: 100,
+  selectors: {
+  '&::-webkit-scrollbar': {
+    width: 5,
+    height: 2,
+    backgroundColor: vars.colors.lightGray
+  },
+  '&::-webkit-scrollbar-thumb': {
+    backgroundColor: vars.colors.darkGray
+  }
+  },
+  margin: `${vars.space['0.5x']} 0 0 0`
 })
 
 export const searchUserImage = style({
@@ -134,12 +147,12 @@ export const searchUserImage = style({
   height: 45, 
   borderRadius: vars.borderRadius.full,
   border: `2.5px solid ${vars.colors.black}`,
-  margin: `0 ${vars.space['0.5x']} 0 0`
+  margin: `0 ${vars.space['1x']} 0 0`
 })
 
 export const autocompleteItem = style([
   rowWrapper, 
   {
-    margin: `0 ${vars.space['0.5x']}`
+    margin: `${vars.space['0.5x']} ${vars.space['0.5x']}`
   }
 ])

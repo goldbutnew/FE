@@ -82,13 +82,15 @@ export default function SettingForm() {
   
     if (file) { // file 상태를 직접 사용
       formData.append('photo', file)
-    } else {
-      formData.append('photo', profileData.photoUrl)
+    } else if (profileData.photoUrl) {
+      const response = await fetch(profileData.photoUrl)
+      const imageBlob = await response.blob()
+      formData.append('photo', imageBlob, 'image.jpg')
     }
 
-    // for (let [key, value] of formData) {
-    //   console.log(key, value)
-    // }
+    for (let [key, value] of formData) {
+      console.log(key, value)
+    }
 
     try {
       // 프로필 업데이트 API 호출

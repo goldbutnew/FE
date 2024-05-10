@@ -5,6 +5,8 @@ import { persist } from 'zustand/middleware'
 const useStreamingStore = create(persist((set, get) => ({
   streamRoomsData: [],
   streamRoomData: '',
+  isStreamerFollowed: true,
+  setIsStreamerFollowed: (isFollowed:boolean) => set({ isFollowed: isFollowed }),
   setStreamRoomData: (data: Object) => set({ streamRoomData: data }),
   getStreamInfo: async () => {
     try {
@@ -18,7 +20,6 @@ const useStreamingStore = create(persist((set, get) => ({
   },
 }), {
   name: 'streaming-store',
-  // getStorage: () => localStorage,
   partialize: (state: any) => ({ streamRoomData: state.streamRoomData })
 }))
 
