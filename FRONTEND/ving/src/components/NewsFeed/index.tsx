@@ -65,8 +65,11 @@ export default function NewsFeed() {
       <div className={styles.title}>뉴스피드</div>
       <hr className={line} />
       <div className={styles.newsFeedContent}>
+      {/* <div className={styles.newfeedItemBox}>🎉 <span className={styles.newfeedItemNickname}>바보</span> 님이 팔로우했습니다.</div>
+      <div className={styles.newfeedItemBox}>🎉 <span className={styles.newfeedItemNickname}>바보</span> 님이 팔로우했습니다.</div>
+      <div className={styles.newfeedItemBox}>🍫 <span className={styles.newfeedItemNickname}>sdfsfsfdsfdsfsf보</span> 님이 <span className={styles.newfeedItemNickname}>10399348892398398234 초코</span>를 후원했습니다.</div> */}
         {events.map((event, index) => (
-          <div key={index} className={styles.newfeedItem}>
+          <div key={index} className={styles.newfeedItemBox}>
             {event.isDonation ?
               <div>🍫 <span className={styles.newfeedItemNickname}>{event.nickname}</span> 님이 <span className={styles.newfeedItemNickname}>{event.choco} 초코</span>를 후원했습니다.</div>
                :

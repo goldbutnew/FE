@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '../../styles/vars.css'
 import { bold } from '@/styles/fonts.css'
-import { defaultWrapper } from '@/styles/wrapper.css'
+import { defaultWrapper, rowWrapper } from '@/styles/wrapper.css'
 
 export const newsFeedContainer = style([
   {
@@ -10,6 +10,14 @@ export const newsFeedContainer = style([
     padding: `0 ${vars.space['1x']} ${vars.space['1x']} ${vars.space['1x']}`,
     backgroundColor: vars.colors.white,
     overflow: 'hidden',
+  }
+])
+
+export const title = style([
+  bold,
+  {
+    height: 20,
+    fontSize: vars.fontSize['0.5x'],
   }
 ])
 
@@ -26,19 +34,15 @@ export const newsFeedContent = style([
   }
 ])
 
-export const newfeedItem = style({
-  fontSize: vars.fontSize['0.75x'],
-})
-
-
-export const title = style([
-  bold,
+export const newfeedItemBox = style([
+  // rowWrapper,
   {
-    height: 20,
-    fontSize: vars.fontSize['0.5x'],
+    fontSize: vars.fontSize['0.75x'],
+    margin: `${vars.space['0.5x']} 0`
   }
 ])
 
 export const newfeedItemNickname = style([
   bold,
 ])
+
