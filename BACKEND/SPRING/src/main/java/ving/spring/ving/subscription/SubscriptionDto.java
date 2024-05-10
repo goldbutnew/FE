@@ -34,7 +34,7 @@ public class SubscriptionDto {
     @NoArgsConstructor
     public static class DonationRequest
     {
-        private String username;
+        private String streamer;
         private String nickname;
         private Integer choco;
         private Boolean isTts;

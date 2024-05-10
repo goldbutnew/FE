@@ -141,11 +141,11 @@ public class SubscriptionController {
     @PatchMapping("/donation")
     public ResponseEntity<?> donation(@RequestBody SubscriptionDto.DonationRequest donationRequest)
     {
-        log.info(donationRequest.getUsername());
+        log.info(donationRequest.getStreamer());
         try
         {
             UserModel follower = userService.findCurrentUser();
-            UserModel streamer = userService.findByUserUsername(donationRequest.getUsername()).orElseThrow();
+            UserModel streamer = userService.findByUserUsername(donationRequest.getStreamer()).orElseThrow();
             SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(streamer, follower);
             subscriptionModel.setDonation(subscriptionModel.getDonation() + donationRequest.getChoco());
             if (follower.getUserChoco() < donationRequest.getChoco())
@@ -155,7 +155,7 @@ public class SubscriptionController {
 
             follower.setUserChoco(follower.getUserChoco() - donationRequest.getChoco());
             streamer.setUserChoco(streamer.getUserChoco() + donationRequest.getChoco());
-            String strBase64Encode = Base64.getEncoder().encodeToString(donationRequest.getUsername().getBytes());
+            String strBase64Encode = Base64.getEncoder().encodeToString(donationRequest.getStreamer().getBytes());
             log.info(strBase64Encode);
             userService.save(follower);
             userService.save(streamer);
