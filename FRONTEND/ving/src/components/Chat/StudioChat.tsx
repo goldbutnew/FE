@@ -13,6 +13,8 @@ import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
 import { line } from "@/styles/common.css";
 import useStreamingStore from "@/store/StreamingStore";
+import ChatProfile from "./ChatProfile";
+import useModal from "@/hooks/useModal";
 
 interface Message {
   userName: string;
@@ -25,6 +27,8 @@ interface Message {
 
 export default function StudioChat() {
   const { userData } = useAuthStore()
+  const { streamRoomData } = useStreamingStore()
+  const { getChatProfile, selectedUserData } = useChatStore()
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
   const messages = useChatStore(state => state.messages)
@@ -32,6 +36,7 @@ export default function StudioChat() {
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
+  const { open, close, isOpen } = useModal()
   
   const roomId = btoa(userData.username);
 
@@ -94,14 +99,16 @@ export default function StudioChat() {
     const formattedTimestamp = getFormattedTimestamp()
 
     if (stompClient && messageInput.trim() && connected) {
-      const message : Message = {
-        userName: userData.Id,
-        nickname: userData.nickname,
-        timeStamp: formattedTimestamp,
-        donation : 0,
-        isTts: false,
-        text: messageInput,
-      };
+    // const color = getRandomColor()
+    const message = {
+      userName: userData.username,
+      nickname: userData.nickname,
+      timeStamp: formattedTimestamp,
+      donation: 0,
+      isTts: false,
+      text: messageInput,
+      // color: color
+    };
       stompClient.publish({
         destination: `/pub/channel/${roomId}`,
         body: JSON.stringify(message)
@@ -122,11 +129,22 @@ export default function StudioChat() {
   }, [messages]);
 
 
-  const handleNicknameClick = (user) => {
-    setSelectedUserData(user);
-    setProfileOpen(true);
-    setProfileKey(prevKey => prevKey + 1)
+  const handleNicknameClick = async (user: string) => {
+    const streamer = streamRoomData.username;
+    const viewer = user;
+    try {
+      const profileData = await getChatProfile(streamer, viewer);
+      if (profileData) {
+        console.log("내 프로필 정보", profileData);  // 데이터 확인
+        open();  // 모달 열기
+      } else {
+        console.log("프로필 데이터가 없습니다.");
+      }
+    } catch (error) {
+      console.error("프로필 정보 가져오기 실패", error);
+    }
   };
+
 
   return (
     <div className={styles.studioChatContainer}>
@@ -142,13 +160,18 @@ export default function StudioChat() {
               className={styles.chatItem}
             >
                 <div>
-                  <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
+                  <button className={styles.chatNickname} onClick={() => handleNicknameClick(msg.userName)}>
                   👑{msg.nickname}
                   </button>: <span>{msg.text}</span>
                 </div>
             </div>
           ))}
         </div>
+        <ChatProfile 
+          isOpen={isOpen} 
+          onClose={close} 
+          userData={selectedUserData} 
+        />
         <form className={styles.inputBox} onSubmit={handleSendMessage}>     
           <div className={styles.emojiBox}>
             {showEmojiPicker && (
