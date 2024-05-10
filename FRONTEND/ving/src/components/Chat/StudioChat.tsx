@@ -25,7 +25,6 @@ interface Message {
 
 export default function StudioChat() {
   const { userData } = useAuthStore()
-  const { streamRoomData } = useStreamingStore()
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
   const messages = useChatStore(state => state.messages)
@@ -34,7 +33,7 @@ export default function StudioChat() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
   
-  const roomId = btoa(streamRoomData.username);
+  const roomId = btoa(userData.username);
 
   const onMessageReceived = (msg) => {
     const newMessage = JSON.parse(msg.body);
