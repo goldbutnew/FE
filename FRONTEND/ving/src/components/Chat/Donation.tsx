@@ -80,7 +80,7 @@ export default function Donation() {
     console.log(streamRoomData)
     e.preventDefault();
     const donationRequest = {
-      streamername: streamRoomData.username, 
+      streamer: streamRoomData.username, 
       nickname: userData.nickname,
       choco: choco,
       isTts: isTTS,
