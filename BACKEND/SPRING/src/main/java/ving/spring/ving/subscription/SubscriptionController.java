@@ -6,6 +6,7 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ving.spring.ving.global.dto.DateTimeFormmer;
 import ving.spring.ving.socket.Message;
 import ving.spring.ving.socket.MessageController;
 import ving.spring.ving.streamRoom.StreamRoomModel;
@@ -26,6 +27,7 @@ public class SubscriptionController {
     private final UserService userService;
     private final SubscriptionService subscriptionService;
     private final StreamRoomService streamRoomService;
+    private final DateTimeFormmer dateTimeFormmer;
 
     private final MessageController messageController;
     @PostMapping("/subscript")
@@ -62,6 +64,30 @@ public class SubscriptionController {
 
     }
 
+    @GetMapping("/chatDetail")
+    public ResponseEntity<?> chatDetail(@RequestParam String streamer, @RequestParam String viewer)
+    {
+        try
+        {
+            UserModel Streamer = userService.findByUserUsername(streamer).orElseThrow();
+            UserModel Viewer = userService.findByUserUsername(viewer).orElseThrow();
+            SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(Streamer, Viewer);
+
+            return ResponseEntity.ok().body(
+                    SubscriptionDto.ChatDetailResponse.builder()
+                            .nickname(Viewer.getUserNickname())
+                            .username(Viewer.getUserUsername())
+                            .thumbnail(Viewer.getUserPhoto())
+                            .introduction(Viewer.getUserIntroduction())
+                            .timeStamp(dateTimeFormmer.transform(subscriptionModel.getCreatedAt()))
+                            .build()
+            );
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping("/tmpAlarm")
     public ResponseEntity<?> tmpAlarm(@RequestParam String streamer, @RequestParam String viewer)
@@ -141,11 +167,11 @@ public class SubscriptionController {
     @PatchMapping("/donation")
     public ResponseEntity<?> donation(@RequestBody SubscriptionDto.DonationRequest donationRequest)
     {
-        log.info(donationRequest.getUsername());
+        log.info(donationRequest.getStreamer());
         try
         {
             UserModel follower = userService.findCurrentUser();
-            UserModel streamer = userService.findByUserUsername(donationRequest.getUsername()).orElseThrow();
+            UserModel streamer = userService.findByUserUsername(donationRequest.getStreamer()).orElseThrow();
             SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(streamer, follower);
             subscriptionModel.setDonation(subscriptionModel.getDonation() + donationRequest.getChoco());
             if (follower.getUserChoco() < donationRequest.getChoco())
@@ -155,7 +181,7 @@ public class SubscriptionController {
 
             follower.setUserChoco(follower.getUserChoco() - donationRequest.getChoco());
             streamer.setUserChoco(streamer.getUserChoco() + donationRequest.getChoco());
-            String strBase64Encode = Base64.getEncoder().encodeToString(donationRequest.getUsername().getBytes());
+            String strBase64Encode = Base64.getEncoder().encodeToString(donationRequest.getStreamer().getBytes());
             log.info(strBase64Encode);
             userService.save(follower);
             userService.save(streamer);
@@ -169,7 +195,7 @@ public class SubscriptionController {
 
             Message.ChatMessage chatMessage = Message.ChatMessage.builder()
                     .userName(follower.getUserUsername())
-                    .nickname(follower.getUserNickname())
+                    .nickname(donationRequest.getNickname())
                     .donation(donationRequest.getChoco())
                     .timeStamp(formattedDate)
                     .isTts(donationRequest.getIsTts())

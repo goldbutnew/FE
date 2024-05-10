@@ -63,7 +63,8 @@
 import subprocess
 
 def convert_stream_to_hls(user_id):
-    container_name = "dazzling_shtern"
+    container_name = "thirsty_hodgkin"
+    # container_name = "dazzling_shtern"
     rtmp_url = f"rtmp://0.0.0.0:1935/{user_id}"
     output_path_1080 = f"/files/1080/{user_id}.m3u8"
     output_path_720 = f"/files/720/{user_id}.m3u8"
@@ -257,12 +258,12 @@ def convert_stream_to_hls(user_id):
         '-listen', '1',
         '-i', rtmp_url,
         '-map', '0:v:0', '-map', '0:v:0', '-map' , '0:a:0', '-map', '0:a:0',
-        '-c:v:0', 'libx264',  '-b:v:0',  '5000k', '-maxrate:v:0', '5000k', '-bufsize:v:0', '10000k', '-s:v:0', '1920x1080', '-g', '30', '-crf:v:0', '15',
-        '-c:v:1', 'libx264',  '-b:v:1',  '2500k', '-maxrate:v:1', '2500k', '-bufsize:v:1', '5000k', '-s:v:1', '1280x720', '-g', '30', '-crf:v:1', '22',
+        '-c:v:0', 'libx264',  '-b:v:0',   '5000k',  '-c:a:0', 'aac', '-b:a', '320k', '-maxrate:v:0', '5000k', '-bufsize:v:0', '10000k', '-s:v:0', '1920x1080', '-g', '30', '-crf:v:0', '15',
+        '-c:v:1', 'libx264',  '-b:v:1',  '2500k',  '-c:a:0', 'aac', '-b:a', '320k', '-maxrate:v:1', '2500k', '-bufsize:v:1', '5000k', '-s:v:1', '1280x720', '-g', '30', '-crf:v:1', '22',
         '-c:a:0', 'aac', '-b:a', '320k',
         '-c:a:1', 'aac', '-b:a', '160k',
         '-var_stream_map', 'v:0,name:video/1080 v:1,name:video/720 a:0,name:audio/320 a:1,name:audio/256',
-        # '-master_pl_name', 'master.m3u8',
+        '-master_pl_name', 'master.m3u8',
         '-hls_time', '3',
         '-hls_list_size', '10',
         '-hls_segment_filename', OUTPUT_HLS,

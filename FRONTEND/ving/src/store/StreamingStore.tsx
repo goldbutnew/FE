@@ -21,8 +21,8 @@ const useStreamingStore = create(persist((set, get) => ({
   setIsPlaying: (bool:boolean) => set({ isPlaying: bool }),
 }), {
   name: 'streaming-store',
-  getStorage: () => localStorage,
+  // getStorage: () => localStorage,
   partialize: (state: any) => ({ streamRoomData: state.streamRoomData })
-}));
+}))
 
 export default useStreamingStore

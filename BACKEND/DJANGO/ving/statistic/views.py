@@ -4,9 +4,9 @@ from django.shortcuts import render
 from home.models import User
 from .models import RecordedVideo
 from rest_framework.decorators import api_view
-from mongoengine import Document, DictField
-import pymongo
-from .models import MongoInfo,MongoFood
+# from mongoengine import Document, DictField
+# import pymongo
+# from .models import MongoInfo,MongoFood
 import json
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods

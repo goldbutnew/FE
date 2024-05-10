@@ -22,6 +22,8 @@ const useProfileStore = create(persist((set, get) => ({
   loginUserName: '',
   loginUserProfileData: {},
   setLoginUserProfileData: (loginUserProfileData:object) => set({ loginUserProfileData: loginUserProfileData }),
+  isFollowed: false,
+  
   // 로그인 유저 프로필 가져오기
   getLoginUserInfo: async (username:string) => {
     const token = localStorage.getItem('accessToken')
@@ -67,7 +69,8 @@ const useProfileStore = create(persist((set, get) => ({
         params: { username : username},
       })
       set({ streamerProfileData: response.data,
-        streamerUserName: username
+        streamerUserName: username,
+        isFollowed: response.data.isFollowed,
       })
     } catch (error) {
       console.error(error)
@@ -218,7 +221,6 @@ const useProfileStore = create(persist((set, get) => ({
   },
 }), {
   name: 'profile-store',
-  getStorage: () => localStorage, 
   partialize: (state:any) => ({ loginUserName: state.loginUserName, loginUserProfileData: state.loginUserProfileData }) 
 }))
 
