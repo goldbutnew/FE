@@ -83,8 +83,7 @@ export default function SettingForm() {
     if (file) { // file 상태를 직접 사용
       formData.append('photo', file)
     } else if (profileData.photoUrl) {
-      const response = await fetch(profileData.photoUrl)
-      const imageBlob = await response.blob()
+      const imageBlob = await profileData.photoUrl.blob()
       formData.append('photo', imageBlob, 'image.jpg')
     }
 
