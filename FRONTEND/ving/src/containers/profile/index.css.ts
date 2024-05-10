@@ -149,9 +149,16 @@ export const tabPanel = style({
 export const socialLinkBox = style([
   rowWrapper,
   {
-  gap: vars.space['0.5x'],
-  padding: `${vars.space['0.5x']} 0`,
-  fontSize: vars.fontSize['0.75x']  
+    gap: vars.space['0.5x'],
+    padding: `${vars.space['0.5x']} 0`,
+    fontSize: vars.fontSize['0.75x']  
+  }
+])
+
+export const socialLinkItemTitle = style([
+  bold,
+  {
+    
   }
 ])
 
