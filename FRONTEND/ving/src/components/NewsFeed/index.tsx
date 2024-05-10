@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
-import * as styles from './index.css';
+import * as styles from './index.css'
 import { line } from "@/styles/common.css";
 import useAuthStore from '@/store/AuthStore';
 
@@ -66,10 +66,11 @@ export default function NewsFeed() {
       <hr className={line} />
       <div className={styles.newsFeedContent}>
         {events.map((event, index) => (
-          <div key={index} className={styles.newsFeedItem}>
+          <div key={index} className={styles.newfeedItem}>
             {event.isDonation ?
-              `🍫 ${event.nickname} 님이 ${event.choco} 초코를 후원했습니다.` :
-              `🎉 ${event.nickname} 님이 팔로우했습니다.`
+              <div>🍫 <span className={styles.newfeedItemNickname}>{event.nickname}</span> 님이 <span className={styles.newfeedItemNickname}>{event.choco} 초코</span>를 후원했습니다.</div>
+               :
+              <div>🎉 <span className={styles.newfeedItemNickname}>{event.nickname}</span> 님이 팔로우했습니다.</div>
             }
           </div>
         ))}

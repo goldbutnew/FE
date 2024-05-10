@@ -38,3 +38,7 @@ export const title = style([
     fontSize: vars.fontSize['0.5x'],
   }
 ])
+
+export const newfeedItemNickname = style([
+  bold,
+])
