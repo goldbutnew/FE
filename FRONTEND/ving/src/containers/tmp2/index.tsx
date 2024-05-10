@@ -30,7 +30,7 @@ export default function Tmp() {
         hls.current.audioTracks = audioStreams
         console.log("오디오 트랙들 : " + JSON.stringify(audioStreams))
         console.log("비디오 트랙들 : " + hls.current.videoElement)
-
+        
         if (hls.current.audioTracks.length > 0) {
           console.log("오디오 발견")
           hls.current.audioTrack = 0; // 첫 번째 오디오 트랙 선택
