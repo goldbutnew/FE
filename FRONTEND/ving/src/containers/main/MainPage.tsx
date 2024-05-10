@@ -9,12 +9,15 @@ import * as styles from './index.css'
 import Image from "next/image"
 import ProfileImage from "@/components/ProfileImg"
 import { useRouter } from "next/navigation"
+import { MdExpandMore } from "react-icons/md"
 
 
 export default function MainPage() {
   const { userData, code } = useAuthStore()
   const { streamRoomsData, getStreamInfo, setStreamRoomData } = useStreamingStore()
   const router = useRouter()
+
+  const [visibleCount, setVisibleCount] = useState(8)
 
   const handleStreamDataChange = (data: Object) => {
     console.log(data)
@@ -25,6 +28,10 @@ export default function MainPage() {
     getStreamInfo()  
   }, [])
 
+  const handleShowMore = () => {
+    setVisibleCount(streamRoomsData.length)
+  }
+
   return (
     <div className={styles.mainVideoGridBox}>
       <h3>메인 페이지</h3>
@@ -34,7 +41,7 @@ export default function MainPage() {
       <Link href={`/tmp`}>test</Link>
 
       <div className={styles.mainVideoGrid}>
-        {streamRoomsData.map((data, index) => {
+      {streamRoomsData.slice(0, visibleCount).map((data, index) => {
           return (
             <div 
               key={index} 
@@ -70,7 +77,21 @@ export default function MainPage() {
           )
         })}
       </div>
-      <hr />
+      {visibleCount < streamRoomsData.length && (
+        <div className={styles.showMoreBox}>
+          <div className={styles.showMoreLeftBox}>
+            <div className={styles.showMoreLineTopBox}></div>
+            <div className={styles.showMoreLineBottomBox}></div>
+          </div>
+          <div className={styles.showMoreButtonBox}>
+            <button onClick={handleShowMore} className={styles.showMoreButton}>더보기<MdExpandMore /></button>
+          </div>
+          <div className={styles.showMoreRightBox}>
+            <div className={styles.showMoreLineTopBox}></div>
+            <div className={styles.showMoreLineBottomBox}></div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

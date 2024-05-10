@@ -85,3 +85,48 @@ export const streamingTitle = style([
 export const streamerName = style({
   fontSize: vars.fontSize['0.5x']
 })
+
+export const showMoreBox = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
+})
+
+export const showMoreButtonBox = style({
+  color: 'blue',
+  cursor: 'pointer',
+  width: 70,
+  display: 'flex',
+  justifyContent: 'center',
+  margin: `0 ${vars.space['1x']}`,
+  border: vars.colors.lightGray,
+  borderRadius: vars.borderRadius['1x']
+})
+
+export const showMoreButton = style({
+  color: 'blue',
+  cursor: 'pointer',
+  width: 70,
+  display: 'flex',
+  justifyContent: 'center',
+  margin: `0 ${vars.space['1x']}`,
+  border: vars.colors.lightGray,
+  borderRadius: vars.borderRadius['1x']
+})
+
+export const showMoreLineBottomBox = style({
+  width: '100%'
+})
+
+export const showMoreLineTopBox = style({
+  width: '100%',
+  borderBottom: `1px solid ${vars.colors.gray}`,
+})
+
+export const showMoreLeftBox = style({
+  width: '100%'
+})
+
+export const showMoreRightBox = style({
+  width: '100%'
+})
