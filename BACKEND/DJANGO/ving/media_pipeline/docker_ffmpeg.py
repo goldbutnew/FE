@@ -234,8 +234,8 @@ def convert_stream_to_hls(user_id):
         f'{output_path}/%v/playlist.m3u8'  # 재생 목록 파일 경로
     ]
 
-    OUTPUT_PATH = f'files/stream/%v/{user_id}.m3u8'
-    OUTPUT_HLS = f'files/stream/%v/{user_id}_%03d.ts'
+    OUTPUT_PATH = f'files/%v/{user_id}.m3u8'
+    OUTPUT_HLS = f'files/%v/{user_id}_%03d.ts'
     command = [
         'docker', 'exec', container_name, 'ffmpeg',
         '-y',
