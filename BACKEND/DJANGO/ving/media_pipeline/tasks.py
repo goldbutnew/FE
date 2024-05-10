@@ -11,12 +11,13 @@ import subprocess
 import os
 import boto3
 from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
+from watchdog.events import FileSystemEventHandler, FileMovedEvent
 from django.conf import settings
 
+from watchdog.events import FileSystemEventHandler, FileMovedEvent
+
 class S3Uploader(FileSystemEventHandler):
-    def __init__(self, bucket_name,s3_address):
-        print('init')
+    def __init__(self, bucket_name, s3_address):
         self.s3 = boto3.client(
             's3',
             aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
@@ -24,33 +25,30 @@ class S3Uploader(FileSystemEventHandler):
         )
         self.bucket_name = bucket_name
         self.s3_address = s3_address
-    def on_modified(self, event):
-        print('onmodified')
-        # 파일이 수정되었을 때만 업로드
-        if not event.is_directory and event.event_type == 'modified':
-            self.upload_file(event.src_path)
 
-    def upload_file(self, file_path):
-        print('upload_file11111111')
+    def on_modified(self, event):
+        if not event.is_directory:
+            self.handle_upload(event.src_path)
+
+    def on_created(self, event):
+        if not event.is_directory:
+            self.handle_upload(event.src_path)
+
+    def on_moved(self, event):
+        if isinstance(event, FileMovedEvent):
+            print(f"File moved from {event.src_path} to {event.dest_path}")
+            if event.dest_path.endswith('.m3u8'):
+                self.handle_upload(event.dest_path)
+
+    def handle_upload(self, file_path):
         file_name = os.path.basename(file_path)
         if file_name.endswith('.tmp'):
-            print(f"Skipping upload of temporary file: {file_name}")
+            print(f"Skipping temporary file: {file_name}")
             return
         print(f"Uploading {file_name} to S3...")
-        print(self.s3_address)
         self.s3.upload_file(file_path, self.bucket_name, f'{self.s3_address}{file_name}')
-        # self.s3.upload_file(file_path, self.bucket_name, file_name)
-
-                # s3.put_object(Bucket='vingving', Key='720p/')
-        # local_folder = "media/720"
-
-        # # 로컬 폴더 내의 모든 파일을 찾아서 S3에 업로드
-        # for root, dirs, files in os.walk(local_folder):
-        #     for filename in files:
-        #         local_path = os.path.join(root, filename)  # 로컬 파일 경로
-        #         s3_path = os.path.join("720p", os.path.relpath(local_path, local_folder)).replace("\\", "/")
-        #         s3.upload_file(local_path, "vingving", s3_path)  # S3에 파일 업로드
         print(f"Uploaded {file_name} to S3 successfully.")
+
 
 @shared_task
 def start_monitoring(directory_path, bucket_name,s3_address):
@@ -149,6 +147,9 @@ def convert_stream_to_hls(user_id, resolution, output_path, input_port):
     subprocess.Popen(command)
     # output_file = 'media/qudtls_720p.m3u8'
     # upload_to_s3(output_file, "vingving", f"{user_id}_{resolution}.m3u8")
+    # s3.upload_file(f'media/{user_id}_{resolution}.m3u8','vingving',f'{user_id}_{resolution}.m3u8')
+    # s3.upload_file('media/qudtls_480p.m3u8', "vingving", "qudtls_480p.m3u8")
+
     print('start_monitoring')
     start_monitoring(output_dir, "vingving",s3_address)
 

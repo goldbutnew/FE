@@ -7,7 +7,7 @@ const NetworkSpeedTest = () => {
     const [speed, setSpeed] = useState(null)
 
     const runSpeedTest = () => {
-        let startTime 
+        let startTime  
         let endTime
         const fileSize = 10 * 1024 * 1024 // 10MB file
 
