@@ -39,7 +39,7 @@ def main(request):
     # resolutions = ['360p', '720p']
     # output = ['1936','1935']
     
-
+    print(1)
     # user_name = ["cjswo","qudtls"]
     user_name = 'qudtls'
     print(user_name,3111111111)
