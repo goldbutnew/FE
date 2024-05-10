@@ -9,9 +9,13 @@ import * as styles from "./index.css"
 import { vars } from "@/styles/vars.css"
 import EmojiPicker from "emoji-picker-react"
 import useAuthStore from "@/store/AuthStore";
+import { getRandomColor } from "./utils";
 import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
 import { line } from "@/styles/common.css";
+import useStreamingStore from "@/store/StreamingStore";
+import ChatProfile from "./ChatProfile";
+import useModal from "@/hooks/useModal";
 
 interface Message {
   userName: string;
@@ -24,27 +28,39 @@ interface Message {
 
 export default function StudioChat() {
   const { userData } = useAuthStore()
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [selectedUserData, setSelectedUserData] = useState(null);
-  const [profileKey, setProfileKey] = useState(0)
+  const { streamRoomData } = useStreamingStore()
+  const { getChatProfile, selectedUserData } = useChatStore()
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
   const messages = useChatStore(state => state.messages)
   const addMessage = useChatStore(state => state.addMessage)
+  const [nicknameColors, setNicknameColors] = useState(new Map());
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
+  const { open, close, isOpen } = useModal()
   
-  const roomId = "a2FueWV3ZXN0";
+  const roomId = btoa(userData.username);
 
-  const onMessageReceived = (msg) => {
+  const getNicknameColor = (nickname: string) => {
+    if (nicknameColors.has(nickname)) {
+      return nicknameColors.get(nickname);
+    } else {
+      const newColor = getRandomColor(); // 랜덤 색상 생성 함수
+      setNicknameColors(new Map(nicknameColors.set(nickname, newColor)));
+      return newColor;
+    }
+  };
+
+  const onMessageReceived = (msg: string) => {
     const newMessage = JSON.parse(msg.body);
     console.log(newMessage);
+    addMessage(newMessage);
   };
 
   const connect = () => {
     console.log("WebSocket 연결 시도 중...");
-    const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
+    const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
     client.debug = function(str) {
@@ -96,20 +112,21 @@ export default function StudioChat() {
     const formattedTimestamp = getFormattedTimestamp()
 
     if (stompClient && messageInput.trim() && connected) {
-      const message : Message = {
-        userName: userData.Id,
-        nickname: userData.nickname,
-        timeStamp: formattedTimestamp,
-        donation : 0,
-        isTts: false,
-        text: messageInput,
-      };
+    // const color = getRandomColor()
+    const message = {
+      userName: userData.username,
+      nickname: userData.nickname,
+      timeStamp: formattedTimestamp,
+      donation: 0,
+      isTts: false,
+      text: messageInput,
+      // color: color
+    };
       stompClient.publish({
         destination: `/pub/channel/${roomId}`,
         body: JSON.stringify(message)
       });
       console.log("메시지 형식:", message)
-      addMessage(message);
       setMessageInput('');
     } else {
       console.log("아직 소켓 연결 안 됨");
@@ -124,11 +141,22 @@ export default function StudioChat() {
   }, [messages]);
 
 
-  const handleNicknameClick = (user) => {
-    setSelectedUserData(user);
-    setProfileOpen(true);
-    setProfileKey(prevKey => prevKey + 1)
+  const handleNicknameClick = async (user: string) => {
+    const streamer = streamRoomData.username;
+    const viewer = user;
+    try {
+      const profileData = await getChatProfile(streamer, viewer);
+      if (profileData) {
+        console.log("내 프로필 정보", profileData);  // 데이터 확인
+        open();  // 모달 열기
+      } else {
+        console.log("프로필 데이터가 없습니다.");
+      }
+    } catch (error) {
+      console.error("프로필 정보 가져오기 실패", error);
+    }
   };
+
 
   return (
     <div className={styles.studioChatContainer}>
@@ -143,14 +171,38 @@ export default function StudioChat() {
               key={index} 
               className={styles.chatItem}
             >
-                <div>
-                  <button className={styles.chatNickname} onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}>
-                  👑{msg.nickname}
-                  </button>: <span>{msg.text}</span>
-                </div>
+              {msg.donation ? 
+                <div className={styles.donationChatItem}>
+                <button 
+                  style={{ color: getNicknameColor(msg.userName) }}
+                  className={styles.dontaionChatNickname}
+                  onClick={msg.nickname !== "익명의 후원자" ? () => handleNicknameClick(msg.userName) : undefined}
+                >
+                  {msg.nickname}
+                </button>
+                <div>{msg.text}</div>
+                <hr className={line} />
+                <div className={styles.donationChatItemChoco}>🍫 {msg.donation}</div>
+              </div>
+              : 
+              <div>
+                <button
+                  style={{ color: getNicknameColor(msg.nickname) }}
+                  className={styles.chatNickname}
+                  onClick={() => handleNicknameClick(msg.userName)}
+                >
+                  {streamRoomData.username === msg.userName ? "👑 " : ""}{msg.nickname}
+                </button>: <span>{msg.text}</span>
+              </div>
+              }
             </div>
           ))}
         </div>
+        <ChatProfile 
+          isOpen={isOpen} 
+          onClose={close} 
+          userData={selectedUserData} 
+        />
         <form className={styles.inputBox} onSubmit={handleSendMessage}>     
           <div className={styles.emojiBox}>
             {showEmojiPicker && (

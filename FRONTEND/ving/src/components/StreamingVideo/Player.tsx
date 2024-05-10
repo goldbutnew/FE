@@ -22,7 +22,36 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
   const [storedVolume, setStoredVolume] = useState(0.5)
   const [isMuted, setIsMuted] = useState(true)
   const [isHovering, setIsHovering] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
 
+  useEffect(() => {
+    const video = videoRef.current
+    if (video) {
+      const handleLoadedMetadata = () => {
+        setDuration(video.duration)
+      }
+      const handleTimeUpdate = () => {
+        setCurrentTime(video.currentTime)
+      }
+      video.addEventListener('loadedmetadata', handleLoadedMetadata)
+      video.addEventListener('timeupdate', handleTimeUpdate)
+
+      return () => {
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata)
+        video.removeEventListener('timeupdate', handleTimeUpdate)
+      }
+    }
+  }, [videoRef])
+
+  const handleSeekChange = (event) => {
+    const video = videoRef.current
+    const newTime = parseFloat(event.target.value)
+    if (video) {
+      video.currentTime = newTime
+      setCurrentTime(newTime)
+    }
+  }
   const togglePlayPause = () => {
     const video = videoRef.current
     if (!video) return
@@ -68,14 +97,15 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
   }
 
   const toggleFullscreen = () => {
-    const videoContainer = videoRef.current?.parentNode
-    if (!videoContainer) return
+    const video = videoRef.current
+    video.controls = false
+    if (!video) return
 
     if (!document.fullscreenElement) {
-      videoContainer.requestFullscreen().catch(err => {
+      video.requestFullscreen().catch(err => {
         alert(`Cannot enable fullscreen mode: ${err.message}`)
       })
-    } else {
+    } else if (document.fullscreenElement === video) {
       document.exitFullscreen()
     }
   }
@@ -123,6 +153,16 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
   }
 
   return (
+    <div>
+      <input
+        type="range"
+        min="0"
+        max={duration}
+        step="1"
+        value={currentTime}
+        onChange={handleSeekChange}
+        className={styles.videoSlider}
+      />
       <div className={styles.controls}>
         <button className={styles.button} onClick={togglePlayPause}>{isPlaying ? <IoStop color="Black" size={20}/> : <IoPlay color="Black" size={20}/>}</button>
         <button 
@@ -133,6 +173,7 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
         >
           {isMuted ? <RiVolumeMuteFill color="Black" size={20}/> : <RiVolumeUpFill color="Black" size={20}/>}
         </button>
+
         <input
           type="range"
           min="0"
@@ -142,9 +183,10 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
           onChange={handleVolumeChange}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
-          className={styles.slider}
+          className={styles.volumeSlider}
           style={{ display: isHovering ? 'block' : 'none' }}
         />
+
         <button className={styles.button} onClick={toggleFullscreen}><MdOutlineFullscreen color="Black" size={20}/></button>
         <button className={styles.button} onClick={togglePip}><MdPictureInPictureAlt color="Black" size={20}/></button>
 
@@ -167,6 +209,7 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
           </DropdownMenu>
         </div>
       </div>
+    </div>
   )
 }
 

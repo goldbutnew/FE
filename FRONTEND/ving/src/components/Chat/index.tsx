@@ -14,6 +14,7 @@ import Donation from "./Donation"
 import useAuthStore from "@/store/AuthStore";
 import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
+import { getRandomColor } from "./utils";
 import { line } from "@/styles/common.css";
 import useStreamingStore from "@/store/StreamingStore";
 import useProfileStore from "@/store/ProfileStore";
@@ -22,7 +23,6 @@ import useModal from "@/hooks/useModal";
 
 export default function Chat() {
   const { userData } = useAuthStore()
-  // const [selectedUserData, setSelectedUserData] = useState(null);
   const [profileKey, setProfileKey] = useState(0)
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
@@ -37,13 +37,6 @@ export default function Chat() {
   const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
   const [isFollowed, setIsFollowed] = useState(false)
   const { open, close, isOpen } = useModal()
-
-  const getRandomColor = () => {
-    const hue = Math.floor(Math.random() * 360)
-    const saturation = Math.floor(Math.random() * 10) + 70
-    const lightness = Math.floor(Math.random() * 20) + 70
-    return `hsl(${hue}, ${saturation}%, ${lightness}%)`
-  }
 
   const getNicknameColor = (nickname: string) => {
     if (nicknameColors.has(nickname)) {
@@ -192,7 +185,7 @@ const handleSendMessage = (event) => {
               <button 
                 style={{ color: getNicknameColor(msg.userName) }}
                 className={styles.dontaionChatNickname}
-                onClick={msg.nickname !== "익명의 후원자" ? () => handleNicknameClick({ id: msg.userName, nickname: msg.nickname }) : undefined}
+                onClick={msg.nickname !== "익명의 후원자" ? () => handleNicknameClick(msg.userName) : undefined}
               >
                 {msg.nickname}
               </button>
@@ -205,9 +198,9 @@ const handleSendMessage = (event) => {
               <button
                 style={{ color: getNicknameColor(msg.nickname) }}
                 className={styles.chatNickname}
-                onClick={() => handleNicknameClick({ id: msg.userName, nickname: msg.nickname })}
+                onClick={() => handleNicknameClick(msg.userName)}
               >
-                {msg.nickname}
+                {streamRoomData.username === msg.userName ? "👑 " : ""}{msg.nickname}
               </button>: <span>{msg.text}</span>
             </div>
             }

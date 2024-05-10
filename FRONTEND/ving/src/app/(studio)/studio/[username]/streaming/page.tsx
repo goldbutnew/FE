@@ -1,1 +1,1 @@
-export { default } from '@/containers/studio/startStreaming'
+export { default } from '@/containers/studio/StartStreaming'
