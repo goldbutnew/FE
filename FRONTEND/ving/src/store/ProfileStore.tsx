@@ -69,7 +69,8 @@ const useProfileStore = create(persist((set, get) => ({
         params: { username : username},
       })
       set({ streamerProfileData: response.data,
-        streamerUserName: username
+        streamerUserName: username,
+        isFollowed: response.data.isFollowed,
       })
     } catch (error) {
       console.error(error)

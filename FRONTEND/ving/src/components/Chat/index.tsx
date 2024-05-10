@@ -71,12 +71,10 @@ export default function Chat() {
     
     const interval = setInterval(() => {
       fetchProfile();  // 30초마다 팔로우 상태를 갱신
-    }, 30000);
-  
+    }, 30000);  // 초 단위 오류 수정 (300 -> 30000)
+    
     return () => clearInterval(interval);
   }, [getStreamerProfileInfo, streamRoomData.username, streamerProfileData.isFollowed]);
-  
-
   
   const roomId = btoa(streamRoomData.username);
 
