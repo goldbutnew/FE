@@ -12,6 +12,7 @@ import useAuthStore from "@/store/AuthStore";
 import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
 import { line } from "@/styles/common.css";
+import useStreamingStore from "@/store/StreamingStore";
 
 interface Message {
   userName: string;
@@ -24,9 +25,7 @@ interface Message {
 
 export default function StudioChat() {
   const { userData } = useAuthStore()
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [selectedUserData, setSelectedUserData] = useState(null);
-  const [profileKey, setProfileKey] = useState(0)
+  const { streamRoomData } = useStreamingStore()
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
   const messages = useChatStore(state => state.messages)
@@ -35,7 +34,7 @@ export default function StudioChat() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
   
-  const roomId = "a2FueWV3ZXN0";
+  const roomId = btoa(streamRoomData.username);
 
   const onMessageReceived = (msg) => {
     const newMessage = JSON.parse(msg.body);
