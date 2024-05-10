@@ -8,9 +8,11 @@ import Radio from '@/components/Input/Radio'
 import SmallButton from '@/components/Button/SmallButton'
 import StreamingVideo from '@/components/StreamingVideo'
 import * as styles from '../index.css'
+import useAuthStore from '@/store/AuthStore'
 
 
 export default function StudioStreaming() {
+  const { userData } = useAuthStore()
   const { openPort, closePort, startStreaming, sendStreamTitle, sendStreamThumbnail, sendStreamLimit, isOnAir } = useStudioStore()
   const [ title, setTitle ] = useState('')
   const [ limit, setLimit ] = useState(false)
@@ -22,9 +24,10 @@ export default function StudioStreaming() {
   }, [isOnAir])
 
   const submitStreamSetting = () => {
-    sendStreamTitle(title)
-    sendStreamThumbnail(thumbnail)
-    sendStreamLimit(limit)
+    const username = userData.username
+    sendStreamTitle(username, title)
+    sendStreamThumbnail(username, thumbnail)
+    sendStreamLimit(username, limit)
   }
   
   const handleStartStream = () => {
@@ -68,7 +71,15 @@ export default function StudioStreaming() {
   return (
     <div className={styles.studioStreamingContainer}>
       <div>
-        {isOnAir ? <StreamingVideo /> : <video src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"></video>}
+        {isOnAir ?
+          <StreamingVideo /> 
+          :
+          <div className="video-placeholder">
+            <div className="message">
+              라이브 스트리밍을 시작하려면 스트리밍 소프트웨어를 연결하세요. 방송 시작 및 종료는 스트리밍 소프트웨어에서 가능합니다.
+            </div>
+          </div>
+        }
       </div>
 
       <div className={styles.streamingInfoContainer}>
