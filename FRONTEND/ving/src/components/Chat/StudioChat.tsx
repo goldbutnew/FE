@@ -52,7 +52,7 @@ export default function StudioChat() {
     }
   };
 
-  const onMessageReceived = (msg) => {
+  const onMessageReceived = (msg: string) => {
     const newMessage = JSON.parse(msg.body);
     console.log(newMessage);
     addMessage(newMessage);
