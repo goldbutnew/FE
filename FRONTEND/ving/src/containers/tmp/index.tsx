@@ -55,7 +55,7 @@ export default function Tmp() {
       }
     }
 
-    const hlsVideo = setupHls(videoElement, `https://vingving.s3.ap-northeast-2.amazonaws.com/720p/anjdidhodkseho.m3u8`)
+    const hlsVideo = setupHls(videoElement, `https://vingving.s3.ap-northeast-2.amazonaws.com/video/1080/anjdidhodkseho.m3u8`)
     const hlsAudio = setupHls(audioElement, `https://vingving.s3.ap-northeast-2.amazonaws.com/256/anjdidhodkseho.m3u8`)
 
     return () => {
