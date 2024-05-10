@@ -52,7 +52,6 @@ export default function SettingForm() {
     }
   }, [profileData])
   
-  const formData = new FormData()
 
   const handleImageChange = async (event: any) => {
     const file = event.target.files[0]
@@ -60,35 +59,50 @@ export default function SettingForm() {
       const reader = new FileReader()
       reader.onload = (event: any) => {
         setPhotoUrl(event.target.result)
-        formData.append('photo', file)
       }
       reader.readAsDataURL(file)
       setFile(file)
     }
   }
 
-  const handleUpdateProfile = () => {
+  const handleUpdateProfile = async () =>  {
     const formData = new FormData()
   
     if (nickname !== profileData.nickname) {
       formData.append('nickname', nickname)
+    } else {
+      formData.append('nickname', profileData.nickname)
     }
   
     if (introduction !== profileData.introduction) {
       formData.append('introduction', introduction)
+    } else {
+      formData.append('introduction', profileData.introduction)
     }
   
     if (file) { // file 상태를 직접 사용
       formData.append('photo', file)
+    } else {
+      formData.append('photo', profileData.photoUrl)
     }
 
-    for (let [key, value] of formData) {
-      console.log(key, value)
+    // for (let [key, value] of formData) {
+    //   console.log(key, value)
+    // }
+
+    try {
+      // 프로필 업데이트 API 호출
+      await patchUserProfileInfo(formData)
+      console.log(loginUserName, '프로필 수정하면 우측 상단 사진도 바뀌어야지. 그래야지. 왜 안돼----------')
+      
+      // 로그인 사용자 정보 갱신
+      await getLoginUserInfo(loginUserName)
+    } catch (error) {
+        console.error('프로필 업데이트 중 에러 발생:', error)
     }
-    patchUserProfileInfo(formData)
-    getLoginUserInfo(loginUserName)
-    location.reload()
-  }
+
+      location.reload()
+    }
 
   const [file, setFile] = useState(null)
   const [linkTitle, setLinkTitle] = useState('')
@@ -184,7 +198,7 @@ export default function SettingForm() {
           </span>
           <div className={styles.channelSettingItemContent}>
             {registerLinks.map((link, index) => (
-              <div key={link.id} className={styles.registerLinkBox}>
+              <div key={index} className={styles.registerLinkBox}>
                   <div className={styles.registerLinkIcon}>
                     <FiLink />
                   </div>
