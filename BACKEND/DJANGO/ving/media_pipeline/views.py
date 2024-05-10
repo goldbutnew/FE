@@ -5,10 +5,10 @@ from . import docker_ffmpeg
 
 
 
-def main(request):
-    # user_name = "qudtls"
-    username = request.GET.get('username') 
-    return JsonResponse({"url" : docker_ffmpeg.convert_stream_to_hls(username)})
+# def main(request):
+#     # user_name = "qudtls"
+#     username = request.GET.get('username') 
+#     return JsonResponse({"url" : docker_ffmpeg.convert_stream_to_hls(username)})
 
 
 
