@@ -88,6 +88,33 @@ export const emojiPicker = style({
 
 
 // chatProfile.tsx
+
+export const chatProfileContainer = style([
+  rowWrapper,
+  {
+    gap: vars.space['1x']
+  }
+])
+
+export const chatProfileItemBox = style([
+  {
+    
+  }
+])
+
+export const chatProfileNickanme = style([
+  bold,
+  {
+
+  }
+])
+
+export const chatProfileIntroduction = style([
+  {
+    fontSize: vars.fontSize['0.75x']
+  }
+])
+
 export const dateBox = style({
   margin: `0 0 0 ${vars.space['0.5x']}`,
   width: '100%',
