@@ -42,14 +42,6 @@ const useChatStore = create<ChatStore>((set, get) => ({
       });
       if (response.data) {
         console.log('Donation successful:', response.data);
-        get().addMessage({
-          userName: donationData.username,
-          nickname: donationData.username, // 유저 이름 설정이 필요한 경우 수정
-          timestamp: getFormattedTimestamp(),
-          donation: donationData.choco,
-          isTts: donationData.isTts,
-          text: donationData.message,
-        });
       }
     } catch (error) {
       console.error('Donation failed:', error);

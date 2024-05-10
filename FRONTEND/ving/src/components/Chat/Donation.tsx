@@ -13,6 +13,7 @@ import ToggleButton from "../Button/ToggleButton";
 import { betweenWrapper } from "@/styles/wrapper.css";
 import useChatStore from "@/components/Chat/Store";
 import useAuthStore from "@/store/AuthStore";
+import useStreamingStore from "@/store/StreamingStore";
 
 export default function Donation() {
   const { userData } = useAuthStore()
@@ -27,6 +28,7 @@ export default function Donation() {
   const [warning, setWarning] = useState('')
   const addMessage = useChatStore(state => state.addMessage)
   const [name, setName] = useState('')
+  const { streamRoomData } = useStreamingStore()
   
   useEffect(() => {
     if (userData.nickname) {
@@ -75,9 +77,11 @@ export default function Donation() {
   }  
 
   const handleSendMessageWithChoco = async (e) => {
+    console.log(streamRoomData)
     e.preventDefault();
     const donationRequest = {
-      username: userData.username, 
+      streamername: streamRoomData.username, 
+      nickname: userData.nickname,
       choco: choco,
       isTts: isTTS,
       message: messageInput,
