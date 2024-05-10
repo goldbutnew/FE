@@ -16,6 +16,7 @@ public class ProfileDto {
     private String nickname;
     private String photoUrl;
     private String introduction;
+    private Integer choco;
     private Integer followers;
     private List<VideoDto.VideoEntity> videos;
     private Boolean isFollowed;

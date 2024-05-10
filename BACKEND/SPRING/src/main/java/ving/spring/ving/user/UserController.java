@@ -109,7 +109,7 @@ public class UserController {
                     .userSubscriberCount(0)
                     .userNickname(request.getNickname())
                     .userPhoto("https://mozzibucket.s3.ap-northeast-2.amazonaws.com/profile.png")
-                    .userChoco(0)
+                    .userChoco(20000000)
                     .userIsregistered(1)
                     .build();
 
@@ -127,6 +127,7 @@ public class UserController {
                     .info(
                             LoginResponse.info.builder()
                                     .nickname(registerUserModel.getUserNickname())
+                                    .username(registerUserModel.getUserUsername())
                                     .build()
                     ).build();
 
@@ -229,6 +230,7 @@ public class UserController {
                 ProfileDto.builder()
                         .nickname(userModel.getUserNickname())
                         .introduction(userModel.getUserIntroduction())
+                        .choco(userModel.getUserChoco())
                         .followers(subscriptionService.countAllByStreamer(userModel))
                         .photoUrl(userModel.getUserPhoto())
                         .videos(returnList)
