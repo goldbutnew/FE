@@ -207,7 +207,7 @@ const handleSendMessage = (event) => {
                 className={styles.chatNickname}
                 onClick={() => handleNicknameClick(msg.userName)}
               >
-                {msg.nickname}
+                {streamRoomData.username === msg.userName ? "👑 " : ""}{msg.nickname}
               </button>: <span>{msg.text}</span>
             </div>
             }

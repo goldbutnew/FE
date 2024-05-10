@@ -43,6 +43,7 @@ export default function StudioChat() {
   const onMessageReceived = (msg) => {
     const newMessage = JSON.parse(msg.body);
     console.log(newMessage);
+    addMessage(newMessage);
   };
 
   const connect = () => {
@@ -114,7 +115,6 @@ export default function StudioChat() {
         body: JSON.stringify(message)
       });
       console.log("메시지 형식:", message)
-      addMessage(message);
       setMessageInput('');
     } else {
       console.log("아직 소켓 연결 안 됨");
