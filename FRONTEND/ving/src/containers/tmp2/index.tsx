@@ -5,7 +5,7 @@ import Hls from 'hls.js'
 import Bumsang from './Bumsang'
 import VideoPlayer from '@/components/StreamingVideo/Player'
 
-export default function Tmp() {
+export default function Tmp2() {
   const videoRef = useRef(null);
   const hls:any = useRef(null);
 
@@ -22,13 +22,13 @@ export default function Tmp() {
       // hls.current.loadSource(`https://vingving.s3.ap-northeast-2.amazonaws.com/qudtls_480p/qudtls_480p.m3u8`);
       // hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/qudtls_720p.m3u8');
       // hls.current.loadSource('file://C:/Users/SSAFY/Downloads/GOODCODE/S10P31A203/BACKEND/STATIC/master.m3u8');
-      hls.current.loadSource('https://mozzibucket.s3.ap-northeast-2.amazonaws.com/master.m3u8');
+      hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/master/master.m3u8');
       hls.current.on(Hls.Events.MANIFEST_LOADED, (event:any, data:any) => {
         console.log("모든 데이터들 " +  JSON.stringify(data))
-        const audioStreams = data.levels.filter(level => level.audioCodec || (level.codecs && level.codecs.startsWith('mp4a')));
+        // const audioStreams = data.levels.filter(level => level.audioCodec || (level.codecs && level.codecs.startsWith('mp4a')));
         // hls.current.addAudioTracks(audioStreams)
-        hls.current.audioTracks = audioStreams
-        console.log("오디오 트랙들 : " + JSON.stringify(audioStreams))
+        // hls.current.audioTracks = audioStreams
+        // console.log("오디오 트랙들 : " + JSON.stringify(audioStreams))
         console.log("비디오 트랙들 : " + hls.current.videoElement)
         
         if (hls.current.audioTracks.length > 0) {
