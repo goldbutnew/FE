@@ -11,38 +11,18 @@ export default function NewsFeed() {
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
 
-  const roomId = "ZGhhYWtzbHFrc2FwZ2hh";
-
-  useEffect(() => {
-    const sock = new SockJS('http://localhost:8080/ws');
-    const stompClient = Stomp.over(sock);
-
-    // stompClient.connect({}, frame => {
-    //   console.log('Connected: ' + frame);
-
-    //   stompClient.subscribe('/topic/newsFeed', message => {
-    //     const newEvent = JSON.parse(message.body);
-    //     setEvents(prevEvents => [...prevEvents, newEvent]);
-    //   });
-    // });
-    
-    // return () => {
-    //   if (stompClient) {
-    //     stompClient.disconnect(() => {
-    //       console.log('Disconnected');
-    //     });
-    //   }
-    // };
-  }, []);
+  const roomId = btoa(streamRoomData.username);
 
   const onMessageReceived = (msg) => {
     const newMessage = JSON.parse(msg.body);
     console.log(newMessage);
+    addMessage(newMessage);
   };
 
   const connect = () => {
     console.log("WebSocket 연결 시도 중...");
-    const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
+    // const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
+    const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
     client.debug = function(str) {
@@ -52,7 +32,7 @@ export default function NewsFeed() {
     client.onConnect = () => {
       console.log("연결 완료");
       setConnected(true);
-      client.subscribe(`/sub/streamer/${roomId}`, onMessageReceived, {
+      client.subscribe(`/sub/channel/${roomId}`, onMessageReceived, {
         id: `sub-${roomId}`,
         ack: 'client'
       });
@@ -66,7 +46,7 @@ export default function NewsFeed() {
     client.activate();
     setStompClient(client);
   };
-  
+
   useEffect(() => {
     connect();
     return () => {
@@ -74,8 +54,9 @@ export default function NewsFeed() {
         console.log("WebSocket 연결 해제 시도 중...");
         stompClient.deactivate();
       }
-    }
+    };
   }, []);
+
 
   return (
     // <div className={styles.newsFeedContainer}>
