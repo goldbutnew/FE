@@ -16,6 +16,7 @@ import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
 import { line } from "@/styles/common.css";
 import useStreamingStore from "@/store/StreamingStore";
+import useProfileStore from "@/store/ProfileStore";
 
 interface Message {
   userName: string;
@@ -40,6 +41,8 @@ export default function Chat() {
   const chatBoxRef = useRef(null);
   const { streamRoomData } = useStreamingStore()
   const [nicknameColors, setNicknameColors] = useState(new Map());
+  const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
+  const [isFollowed, setIsFollowed] = useState(false)
 
   const getRandomColor = () => {
     const hue = Math.floor(Math.random() * 360)
@@ -58,6 +61,15 @@ export default function Chat() {
     }
   };
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      await getStreamerProfileInfo(streamRoomData.username);
+      setIsFollowed(streamerProfileData.isFollowed);
+    };
+    fetchProfile();
+  }, [getStreamerProfileInfo, streamRoomData.username, streamerProfileData.isFollowed]);
+
+  
   const roomId = btoa(streamRoomData.username);
 
   const onMessageReceived = (msg) => {
@@ -121,6 +133,7 @@ const handleSendMessage = (event) => {
   const formattedTimestamp = getFormattedTimestamp();
 
   if (stompClient && messageInput.trim() && connected) {
+    // const color = getRandomColor()
     const message = {
       userName: userData.username,
       nickname: userData.nickname,
@@ -128,6 +141,7 @@ const handleSendMessage = (event) => {
       donation: 0,
       isTts: false,
       text: messageInput,
+      // color: color
     };
     stompClient.publish({
       destination: `/pub/channel/${roomId}`,
@@ -211,7 +225,8 @@ const handleSendMessage = (event) => {
           type="text"
           value={messageInput}
           onChange={handleChange}
-          placeholder="채팅을 입력해 주세요"
+          placeholder={isFollowed ? "채팅을 입력해 주세요" : "팔로우한 사용자만 채팅을 입력할 수 있습니다."}
+          disabled={!isFollowed}
           onEmojiClick={openEmojiPicker}
         />
       </form>
