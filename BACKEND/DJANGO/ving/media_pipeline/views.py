@@ -103,7 +103,7 @@ def s3_connection():
         # local_folder = "media/720"
         print(os.getcwd())
         local_folder = "C:/Users/SSAFY/Downloads/GOODCODE/S10P31A203/BACKEND/STATIC/"
-        words = ["audio/256/", "audio/320/", "video/720/", "video/1080/"]
+        words = ["audio/256/", "audio/320/", "video/720/", "video/1080/", "master/"]
         # # 로컬 폴더 내의 모든 파일을 찾아서 S3에 업로드\
         for word in words:
             s3.put_object(Bucket='vingving', Key=word)

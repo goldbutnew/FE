@@ -1,7 +1,7 @@
 
 from django.db import models
 from home.models import User,StreamingRoom
-from mongoengine import Document, DictField
+# from mongoengine import Document, DictField
 
 class RecordedVideo(models.Model):
     video_id = models.AutoField(primary_key=True)
@@ -20,8 +20,8 @@ class RecordedVideo(models.Model):
 
 
 
-class MongoInfo(Document):
-    info_per_minute = DictField()
+# class MongoInfo(Document):
+#     info_per_minute = DictField()
 
-class MongoFood(Document):
-    food_recipe = DictField()
+# class MongoFood(Document):
+#     food_recipe = DictField()
