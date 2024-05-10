@@ -7,8 +7,13 @@ import { FaHeart } from "react-icons/fa";
 import { rowWrapper } from "@/styles/wrapper.css";
 import * as styles from './index.css'
 
-export default function ChatProfile({ isOpen, onClose, userData }) {
-  // const [isOpen, setIsOpen] = useState(false);
+interface ChatProfileProps {
+  isOpen: boolean;
+  onClose: () => void;
+  userData: UserData;
+}
+
+export default function ChatProfile({ isOpen, onClose, userData }: ChatProfileProps) {
 
   return (
     <div>
@@ -17,6 +22,9 @@ export default function ChatProfile({ isOpen, onClose, userData }) {
           <div>
             <span>
               {userData.nickname}
+            </span>
+            <span>
+              {userData.introduction}
             </span>
             <hr className={line}/>
             <div className={rowWrapper}>

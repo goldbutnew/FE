@@ -21,14 +21,12 @@ export default function Donation() {
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const { close, open, isOpen, modalRef } = useModal()
-  // const [isOpen, setIsOpen] = useState(false);
   const [choco, setChoco] = useState(0)
   const [isAnonym, setIsAnonym] = useState(false)
   const [isTTS, setIsTTS] = useState(false)
   const initChoco = 3000000
   const [dummyChoco, setDummyChoco] = useState(initChoco)
   const [warning, setWarning] = useState('')
-  const addMessage = useChatStore(state => state.addMessage)
   const [name, setName] = useState('')
   const { streamRoomData } = useStreamingStore()
   

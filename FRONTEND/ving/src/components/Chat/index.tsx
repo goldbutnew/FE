@@ -17,23 +17,16 @@ import { getFormattedTimestamp } from "@/utils/dateUtils";
 import { line } from "@/styles/common.css";
 import useStreamingStore from "@/store/StreamingStore";
 import useProfileStore from "@/store/ProfileStore";
+import useModal from "@/hooks/useModal";
 
-interface Message {
-  userName: string;
-  nickname: string;
-  timeStamp: string;
-  donation : number;
-  isTts : Boolean;
-  text: string;
-}
-//3. 방은 만들어져있지않으면 몽고 저장이 안돼서 문제생김 방은 axios로 만들 수 있음 
+
 export default function Chat() {
   const { userData } = useAuthStore()
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [selectedUserData, setSelectedUserData] = useState(null);
+  // const [selectedUserData, setSelectedUserData] = useState(null);
   const [profileKey, setProfileKey] = useState(0)
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
+  const { getChatProfile, selectedUserData } = useChatStore()
   const messages = useChatStore(state => state.messages)
   const addMessage = useChatStore(state => state.addMessage)
   const [messageInput, setMessageInput] = useState('');
@@ -43,6 +36,7 @@ export default function Chat() {
   const [nicknameColors, setNicknameColors] = useState(new Map());
   const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
   const [isFollowed, setIsFollowed] = useState(false)
+  const { open, close, isOpen } = useModal()
 
   const getRandomColor = () => {
     const hue = Math.floor(Math.random() * 360)
@@ -169,10 +163,20 @@ const handleSendMessage = (event) => {
   }, [messages]);
 
 
-  const handleNicknameClick = (user) => {
-    setSelectedUserData(user);
-    setProfileOpen(true);
-    setProfileKey(prevKey => prevKey + 1)
+  const handleNicknameClick = async (user) => {
+    const streamer = streamRoomData.username;
+    const viewer = userData.username;
+    try {
+      const profileData = await getChatProfile(streamer, viewer);
+      if (profileData) {
+        console.log("내 프로필 정보", profileData);  // 데이터 확인
+        open();  // 모달 열기
+      } else {
+        console.log("프로필 데이터가 없습니다.");
+      }
+    } catch (error) {
+      console.error("프로필 정보 가져오기 실패", error);
+    }
   };
 
   return (
@@ -188,7 +192,7 @@ const handleSendMessage = (event) => {
               <button 
                 style={{ color: getNicknameColor(msg.nickname) }}
                 className={styles.dontaionChatNickname}
-                onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}
+                onClick={msg.nickname !== "익명의 후원자" ? () => handleNicknameClick({ id: msg.userName, nickname: msg.nickname }) : undefined}
               >
                 {msg.nickname}
               </button>
@@ -201,7 +205,7 @@ const handleSendMessage = (event) => {
               <button
                 style={{ color: getNicknameColor(msg.nickname) }}
                 className={styles.chatNickname}
-                onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}
+                onClick={() => handleNicknameClick({ id: msg.userName, nickname: msg.nickname })}
               >
                 {msg.nickname}
               </button>: <span>{msg.text}</span>
@@ -210,7 +214,11 @@ const handleSendMessage = (event) => {
           </div>
         ))}
       </div>
-      <ChatProfile isOpen={profileOpen} onClose={() => setProfileOpen(false)} userData={selectedUserData} />
+      <ChatProfile 
+        isOpen={isOpen} 
+        onClose={close} 
+        userData={selectedUserData} 
+      />
       <form className={styles.inputBox} onSubmit={handleSendMessage}>     
         <div className={styles.emojiBox}>
           {showEmojiPicker && (
