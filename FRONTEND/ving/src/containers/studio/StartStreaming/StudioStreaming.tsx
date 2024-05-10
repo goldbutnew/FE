@@ -93,7 +93,14 @@ export default function StudioStreaming() {
           <label className={styles.streamingInfoTitle}>
             미리보기 이미지
           </label>
-          <div className={styles.streamingInfoContent}>
+          <div className={styles.makeThumnailContainer}>
+            {photoUrl && (
+              <img
+                src={photoUrl}
+                alt="Profile"
+                className={styles.studioThumnailResize}
+              />
+            )}
             <label htmlFor="file" className={styles.customFileUpload}>
               이미지 업로드
             </label>
@@ -103,14 +110,7 @@ export default function StudioStreaming() {
               onChange={handleImageChange}
               style={{ display: 'none' }}
               accept="image/*"
-            />            
-            <div className={styles.studioThumnailItemContainer}>
-              <img
-                src={photoUrl}
-                alt="Profile"
-                className={styles.studioThumnailResize}
-              />
-            </div>
+            />      
           </div>
         </div>
 

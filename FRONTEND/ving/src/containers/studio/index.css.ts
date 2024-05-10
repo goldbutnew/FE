@@ -179,13 +179,6 @@ export const streamingInfoTitle = style([
   }
 ])
 
-export const streamingInfoContent = style([
-  defaultWrapper,
-  {
-    flex: '0 0 70%',
-  }
-]);
-
 export const videolaceholder = style([
   columnWrapper,
   {
@@ -204,6 +197,14 @@ export const videolaceholderText = style([
   }
 ])
 
+export const makeThumnailContainer = style([
+  rowWrapper,
+  {
+    flex: '0 0 70%',
+    gap: vars.space['1x'],
+  }
+]);
+
 export const customFileUpload = style([
   plainButton,
   {
@@ -214,14 +215,17 @@ export const customFileUpload = style([
   }
 ])
 
-export const studioThumnailItemContainer = style({
-  width: 300,
-  border: `1px solid ${vars.colors.lightGray}`
-})
+// export const studioThumnailItemContainer = style({
+//   width: 300,
+//   border: `1px solid ${vars.colors.lightGray}`,
+//   borderRadius: vars.borderRadius['1x']
+// })
 
 export const studioThumnailResize = style({
-  width: '100%',
   aspectRatio: "16/9",
+  width: 200,
+  border: `1px solid ${vars.colors.lightGray}`,
+  borderRadius: vars.borderRadius['1x']
 })
 
 
