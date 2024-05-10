@@ -44,7 +44,7 @@ def set_streaming_room_name(request):
     try:
         user = User.objects.get(user_username = user_name)
         user_id = user.user_id
-        streaming_room = get_object_or_404(StreamingRoom, user_id=user_id,is_end = True)
+        streaming_room = get_object_or_404(StreamingRoom, user_id=user_id,is_end = False)
         
 
         # if not streaming_room:
@@ -81,7 +81,7 @@ def set_streaming_room_is_adult(request):
         if is_adult is None:
             return Response({'error': 'limit field is required'}, status=400)
         
-        streaming_room = get_object_or_404(StreamingRoom, user_id=user_id,is_end = True)
+        streaming_room = get_object_or_404(StreamingRoom, user_id=user_id,is_end = False)
         streaming_room.room_age_limit = is_adult
         streaming_room.save()
         
@@ -122,7 +122,7 @@ def update_streaming_room_thumbnail(request):
         return Response({'message': 'Thumbnail is required'}, status=400)
 
     try:
-        streaming_room = get_object_or_404(StreamingRoom, user_id=user_id,is_end = True)
+        streaming_room = get_object_or_404(StreamingRoom, user_id=user_id,is_end = False)
 
         
         
