@@ -97,8 +97,9 @@ export const chatProfileContainer = style([
 ])
 
 export const chatProfileItemBox = style([
+  columnWrapper,
   {
-    
+    gap: vars.space['1x']
   }
 ])
 
@@ -122,6 +123,17 @@ export const dateBox = style({
   color: vars.colors.darkGray,
 })
 
+export const userFunctionItem = style([
+  rowWrapper,
+  plainButton,
+  {
+    margin: `0 0 0 ${vars.space['0.5x']}`,
+    width: '100%',
+    fontSize: vars.fontSize['1x'],
+    color: vars.colors.black,
+    gap: vars.space['0.5x'],
+  }
+])
 
 // donation.tsx
 export const myChoco = style({
