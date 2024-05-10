@@ -20,6 +20,11 @@ export default function ProfileMenu({ onLogout }) {
     console.log(userData.username)
   }
 
+  useEffect(() => {
+    console.log('sdfsdfsdsdsdfsdfsdsdfdsffs')
+  }, [loginUserProfileData])
+  
+
   return (
     <div className={styles.profileMenuContainer}>
       <DropdownMenu 

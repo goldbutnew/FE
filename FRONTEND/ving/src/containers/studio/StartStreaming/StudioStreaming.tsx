@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, useEffect  } from 'react'
+import { useState, useEffect } from 'react'
 import useStudioStore from '../Store'
+import useAuthStore from '@/store/AuthStore'
 
-import Image from 'next/image'
-import logo from '#/images/main-logo.png'
 import DefaultInput from '@/components/Input/DefaultInput'
 import Radio from '@/components/Input/Radio'
 import SmallButton from '@/components/Button/SmallButton'
@@ -13,12 +12,16 @@ import * as styles from '../index.css'
 
 
 export default function StudioStreaming() {
-  const { openPort, startStreaming, sendStreamTitle, sendStreamThumbnail, sendStreamLimit } = useStudioStore()
-  const [ isOnline, setIsOnline ] = useState(false)
+  const { openPort, closePort, startStreaming, sendStreamTitle, sendStreamThumbnail, sendStreamLimit, isOnAir } = useStudioStore()
+  const { userData } = useAuthStore()
   const [ title, setTitle ] = useState('')
   const [ limit, setLimit ] = useState(false)
   const [ thumbnail, setThumbnail ] = useState('')
   const [ photoUrl, setPhotoUrl ] = useState('')
+
+  useEffect (() => {
+    console.log('방송 상태 변경')
+  }, [isOnAir])
 
   const submitStreamSetting = () => {
     sendStreamTitle(title)
@@ -26,7 +29,7 @@ export default function StudioStreaming() {
     sendStreamLimit(limit)
   }
   
-  const handleStream = () => {
+  const handleStartStream = () => {
     const formData = new FormData()
   
     formData.append('roomName', title)
@@ -36,10 +39,13 @@ export default function StudioStreaming() {
     for (let [key, value] of formData) {
       console.log(key, value)
     }
-
     startStreaming(formData)
     openPort()
-  } 
+  }
+  
+  const handleEndStream = () => {
+    closePort(userData.username)
+  }
 
   const handleTitle = (event) => {
     setTitle(event.target.value)
@@ -64,7 +70,7 @@ export default function StudioStreaming() {
   return (
     <div className={styles.studioStreamingContainer}>
       <div>
-        <StreamingVideo />
+        {isOnAir ? <StreamingVideo /> : <video src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"></video>}
       </div>
 
       <div className={styles.streamingInfoContainer}>
@@ -104,7 +110,11 @@ export default function StudioStreaming() {
           <SmallButton text="업데이트" onClick={submitStreamSetting}/>
         </div>
         <div className={styles.updateButtonBox}>
-          <SmallButton text="방송시작" onClick={handleStream}/>
+          {isOnAir ? 
+            (<SmallButton text="방송종료" onClick={handleEndStream}/>)
+             :
+            (<SmallButton text="방송시작" onClick={handleStartStream}/>)
+          }
         </div>
       </div>
     </div>

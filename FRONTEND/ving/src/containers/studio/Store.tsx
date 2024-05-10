@@ -3,6 +3,8 @@ import axios from '../../api/axios'
 
 const useStudioStore = create((set) => ({
 
+  isOnAir: false,
+
   startStreaming: async (formData: FormData) => {
     console.log(formData, '방정보완성')
     const token = localStorage.getItem('accessToken')
@@ -13,10 +15,12 @@ const useStudioStore = create((set) => ({
           'Content-type': 'multipart/form-data',
         }
       })
-      console.log('방송 시작 요청', response.data)
+      console.log('방송 시작 요청 성공', response.data)
+      set({ isCheck: true })
 
     } catch (error) {
       console.error('방송 시작 요청 실패:', error)
+      set({ isOnAir: false })
     }
   },
 
@@ -24,19 +28,24 @@ const useStudioStore = create((set) => ({
     try {
       const response = await axios.get('media_pipeline/main')
       console.log('포트 개방 성공', response.data)
+      set({ isCheck: true })
 
     } catch (error) {
       console.error('포트 개방 실패:', error)
+      set({ isOnAir: false })
     }
   },
 
   closePort: async (username) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('home/delete_streaming_room/', {
-        username
+      const response = await axios.patch('home/delete_streaming_room/', username, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
       })
       console.log('방송 종료 요청 성공', response.data)
+      set({ isOnAir: false })
 
     } catch (error) {
       console.error('방송 종료 요청 실패:', error)
