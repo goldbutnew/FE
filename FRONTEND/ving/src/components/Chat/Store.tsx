@@ -10,6 +10,7 @@ interface Message {
   donation: number;
   isTts: boolean;
   text: string;
+  color?: string;
 }
 
 interface DonationRequest {

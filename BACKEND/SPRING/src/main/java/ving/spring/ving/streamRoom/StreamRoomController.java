@@ -56,11 +56,37 @@ public class StreamRoomController {
         return chatModelService.findChatModelsByTimeStamp(duration.getSeconds(), videoName);
     }
 
+    @PatchMapping("/end")
+    ResponseEntity<?> endStreaming()
+    {
+        try {
+            UserModel streamer = userService.findCurrentUser();
+            StreamRoomModel streamRoomModel = streamRoomService.findStreamRoomModelByStreamerAndIsEnd(streamer);
+            streamRoomModel.setIsEnd(true);
+            streamRoomService.save(streamRoomModel);
+            return ResponseEntity.ok(HttpStatus.ACCEPTED);
+        } catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping(value = "/tmpCreate", consumes = "multipart/form-data")
     ResponseEntity<?> tmpCreate(@ModelAttribute StreamRoomDto.CreateRoomRequest createRoomRequest)
     {
         try {
             UserModel streamer = userService.findCurrentUser();
+            try
+            {
+                StreamRoomModel existingStreamRoomModel = streamRoomService.findStreamRoomModelByStreamerAndIsEnd(streamer);
+                log.info("이미 방이 존재함");
+                existingStreamRoomModel.setIsEnd(true);
+                streamRoomService.save(existingStreamRoomModel);
+            } catch (Exception e)
+            {   
+                log.info("방송 있음");
+            }
+
             StreamRoomModel streamRoomModel = StreamRoomModel.builder()
                     .streamer(streamer)
                     .roomThumbnail(s3Service.saveMedia(createRoomRequest.getThumbNail(), createRoomRequest.getRoomName()))

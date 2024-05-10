@@ -103,15 +103,17 @@ def s3_connection():
         # local_folder = "media/720"
         print(os.getcwd())
         local_folder = "C:/Users/SSAFY/Downloads/GOODCODE/S10P31A203/BACKEND/STATIC/"
-        words = ["audio", "video/720", "video/1080"]
-        # # 로컬 폴더 내의 모든 파일을 찾아서 S3에 업로드
-        # for root, dirs, files in os.walk(local_folder):
-        #     for filename in files:
-        #         local_path = os.path.join(root, filename)  # 로컬 파일 경로
-        #         s3_path = os.path.join("720p", os.path.relpath(local_path, local_folder)).replace("\\", "/")
-        #         print(s3_path)
-                # s3.upload_file(local_path, "vingving", s3_path)  # S3에 파일 업로드
-        # s3.put_object(Bucket='vingving', Key='1080p/')
+        words = ["audio/256/", "audio/320/", "video/720/", "video/1080/", "master/"]
+        # # 로컬 폴더 내의 모든 파일을 찾아서 S3에 업로드\
+        for word in words:
+            s3.put_object(Bucket='vingving', Key=word)
+
+            for root, dirs, files in os.walk(local_folder + word):
+                for filename in files:
+                    local_path = os.path.join(root, filename)  # 로컬 파일 경로
+                    s3_path = os.path.join("", os.path.relpath(local_path, local_folder)).replace("\\", "/")
+                    print(s3_path)
+                    s3.upload_file(local_path, "vingving", s3_path)  # S3에 파일 업로드
         # local_folder = "media/1080"
 
         # # 로컬 폴더 내의 모든 파일을 찾아서 S3에 업로드

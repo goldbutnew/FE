@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import ving.spring.ving.user.UserModel;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @Setter
@@ -28,4 +30,13 @@ public class SubscriptionModel {
     private Integer notification;
 
     private Integer donation;
+
+    @Column(nullable = true, updatable = false)
+    private LocalDateTime createdAt;
+    @PrePersist
+    protected void onCreate() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
 }

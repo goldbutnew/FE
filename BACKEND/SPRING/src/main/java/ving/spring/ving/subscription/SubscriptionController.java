@@ -6,6 +6,7 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ving.spring.ving.global.dto.DateTimeFormmer;
 import ving.spring.ving.socket.Message;
 import ving.spring.ving.socket.MessageController;
 import ving.spring.ving.streamRoom.StreamRoomModel;
@@ -26,6 +27,7 @@ public class SubscriptionController {
     private final UserService userService;
     private final SubscriptionService subscriptionService;
     private final StreamRoomService streamRoomService;
+    private final DateTimeFormmer dateTimeFormmer;
 
     private final MessageController messageController;
     @PostMapping("/subscript")
@@ -62,6 +64,30 @@ public class SubscriptionController {
 
     }
 
+    @GetMapping("/chatDetail")
+    public ResponseEntity<?> chatDetail(@RequestParam String streamer, @RequestParam String viewer)
+    {
+        try
+        {
+            UserModel Streamer = userService.findByUserUsername(streamer).orElseThrow();
+            UserModel Viewer = userService.findByUserUsername(viewer).orElseThrow();
+            SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(Streamer, Viewer);
+
+            return ResponseEntity.ok().body(
+                    SubscriptionDto.ChatDetailResponse.builder()
+                            .nickname(Viewer.getUserNickname())
+                            .username(Viewer.getUserUsername())
+                            .thumbnail(Viewer.getUserPhoto())
+                            .introduction(Viewer.getUserIntroduction())
+                            .timeStamp(dateTimeFormmer.transform(subscriptionModel.getCreatedAt()))
+                            .build()
+            );
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping("/tmpAlarm")
     public ResponseEntity<?> tmpAlarm(@RequestParam String streamer, @RequestParam String viewer)
