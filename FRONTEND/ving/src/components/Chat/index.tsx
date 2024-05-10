@@ -128,7 +128,6 @@ const handleSendMessage = (event) => {
       donation: 0,
       isTts: false,
       text: messageInput,
-      origin: 'local'
     };
     stompClient.publish({
       destination: `/pub/channel/${roomId}`,
@@ -168,7 +167,7 @@ const handleSendMessage = (event) => {
               <div className={styles.donationChatItem}>
               <button 
                 style={{ color: getNicknameColor(msg.nickname) }}
-                className={styles.DonationchatNickname}
+                className={styles.dontaionChatNickname}
                 onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}
               >
                 {msg.nickname}
