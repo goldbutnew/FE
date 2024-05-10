@@ -22,7 +22,6 @@ import useModal from "@/hooks/useModal";
 
 export default function Chat() {
   const { userData } = useAuthStore()
-  // const [selectedUserData, setSelectedUserData] = useState(null);
   const [profileKey, setProfileKey] = useState(0)
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
