@@ -163,9 +163,9 @@ const handleSendMessage = (event) => {
   }, [messages]);
 
 
-  const handleNicknameClick = async (user) => {
+  const handleNicknameClick = async (user: string) => {
     const streamer = streamRoomData.username;
-    const viewer = userData.username;
+    const viewer = user;
     try {
       const profileData = await getChatProfile(streamer, viewer);
       if (profileData) {
@@ -190,7 +190,7 @@ const handleSendMessage = (event) => {
             {msg.donation ? 
               <div className={styles.donationChatItem}>
               <button 
-                style={{ color: getNicknameColor(msg.nickname) }}
+                style={{ color: getNicknameColor(msg.userName) }}
                 className={styles.dontaionChatNickname}
                 onClick={msg.nickname !== "익명의 후원자" ? () => handleNicknameClick({ id: msg.userName, nickname: msg.nickname }) : undefined}
               >
