@@ -14,6 +14,7 @@ import Donation from "./Donation"
 import useAuthStore from "@/store/AuthStore";
 import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
+import { getRandomColor } from "./utils";
 import { line } from "@/styles/common.css";
 import useStreamingStore from "@/store/StreamingStore";
 import useProfileStore from "@/store/ProfileStore";
@@ -36,13 +37,6 @@ export default function Chat() {
   const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
   const [isFollowed, setIsFollowed] = useState(false)
   const { open, close, isOpen } = useModal()
-
-  const getRandomColor = () => {
-    const hue = Math.floor(Math.random() * 360)
-    const saturation = Math.floor(Math.random() * 10) + 70
-    const lightness = Math.floor(Math.random() * 20) + 70
-    return `hsl(${hue}, ${saturation}%, ${lightness}%)`
-  }
 
   const getNicknameColor = (nickname: string) => {
     if (nicknameColors.has(nickname)) {

@@ -9,6 +9,7 @@ import * as styles from "./index.css"
 import { vars } from "@/styles/vars.css"
 import EmojiPicker from "emoji-picker-react"
 import useAuthStore from "@/store/AuthStore";
+import { getRandomColor } from "./utils";
 import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
 import { line } from "@/styles/common.css";
@@ -33,12 +34,23 @@ export default function StudioChat() {
   const [connected, setConnected] = useState(false);
   const messages = useChatStore(state => state.messages)
   const addMessage = useChatStore(state => state.addMessage)
+  const [nicknameColors, setNicknameColors] = useState(new Map());
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
   const { open, close, isOpen } = useModal()
   
   const roomId = btoa(userData.username);
+
+  const getNicknameColor = (nickname: string) => {
+    if (nicknameColors.has(nickname)) {
+      return nicknameColors.get(nickname);
+    } else {
+      const newColor = getRandomColor(); // 랜덤 색상 생성 함수
+      setNicknameColors(new Map(nicknameColors.set(nickname, newColor)));
+      return newColor;
+    }
+  };
 
   const onMessageReceived = (msg) => {
     const newMessage = JSON.parse(msg.body);
@@ -159,11 +171,30 @@ export default function StudioChat() {
               key={index} 
               className={styles.chatItem}
             >
-                <div>
-                  <button className={styles.chatNickname} onClick={() => handleNicknameClick(msg.userName)}>
-                  👑{msg.nickname}
-                  </button>: <span>{msg.text}</span>
-                </div>
+              {msg.donation ? 
+                <div className={styles.donationChatItem}>
+                <button 
+                  style={{ color: getNicknameColor(msg.userName) }}
+                  className={styles.dontaionChatNickname}
+                  onClick={msg.nickname !== "익명의 후원자" ? () => handleNicknameClick(msg.userName) : undefined}
+                >
+                  {msg.nickname}
+                </button>
+                <div>{msg.text}</div>
+                <hr className={line} />
+                <div className={styles.donationChatItemChoco}>🍫 {msg.donation}</div>
+              </div>
+              : 
+              <div>
+                <button
+                  style={{ color: getNicknameColor(msg.nickname) }}
+                  className={styles.chatNickname}
+                  onClick={() => handleNicknameClick(msg.userName)}
+                >
+                  {streamRoomData.username === msg.userName ? "👑 " : ""}{msg.nickname}
+                </button>: <span>{msg.text}</span>
+              </div>
+              }
             </div>
           ))}
         </div>
