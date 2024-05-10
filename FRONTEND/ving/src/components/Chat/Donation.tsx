@@ -13,14 +13,15 @@ import ToggleButton from "../Button/ToggleButton";
 import { betweenWrapper } from "@/styles/wrapper.css";
 import useChatStore from "@/components/Chat/Store";
 import useAuthStore from "@/store/AuthStore";
-import { getFormattedTimestamp } from "@/utils/dateUtils";
-// import axios from "axios";
-import axios from '../../api/axios'
+import useStreamingStore from "@/store/StreamingStore";
+import useModal from "@/hooks/useModal";
+
 export default function Donation() {
   const { userData } = useAuthStore()
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
-  const [isOpen, setIsOpen] = useState(false);
+  const { close, open, isOpen, modalRef } = useModal()
+  // const [isOpen, setIsOpen] = useState(false);
   const [choco, setChoco] = useState(0)
   const [isAnonym, setIsAnonym] = useState(false)
   const [isTTS, setIsTTS] = useState(false)
@@ -29,6 +30,7 @@ export default function Donation() {
   const [warning, setWarning] = useState('')
   const addMessage = useChatStore(state => state.addMessage)
   const [name, setName] = useState('')
+  const { streamRoomData } = useStreamingStore()
   
   useEffect(() => {
     if (userData.nickname) {
@@ -76,72 +78,32 @@ export default function Donation() {
     setMessageInput((prevMessage) => prevMessage + emoji)
   }  
 
-  const handleSendMessageWithChoco = (e) => {
-    e.preventDefault()
-    const formattedTimestamp = getFormattedTimestamp()
-
-    const message = {
-      userName: userData.Id,
+  const handleSendMessageWithChoco = async (e) => {
+    console.log(streamRoomData)
+    e.preventDefault();
+    const donationRequest = {
+      streamer: streamRoomData.username, 
       nickname: name,
-      timestamp: formattedTimestamp,
-      donation : choco,
+      choco: choco,
       isTts: isTTS,
-      text: messageInput,
+      message: messageInput,
     };
-
-    interface DonationRequest {
-      username: string;
-      choco: number;
-      isTts: boolean;
-      message: string;
-    }
-    
-    const donationRequest : DonationRequest = 
-    {
-      username: "kanyewest",
-      choco : Number(choco),
-      isTts: isTTS,
-      message: messageInput
-    } 
-    const doDonations = async (donationData: DonationRequest) => {
-      console.log("도네이션 데이터", donationData)
-      const token = localStorage.getItem('accessToken')
-      if (!token) {
-        console.error('Access token is missing');
-        return;
-      }
-      try {
-        const response = await axios.patch(`sub/donation`, donationData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        return response.data
-      {
-        console.log(message)
-      }
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    doDonations(donationRequest).then((msg) => {
-      console.log(msg)
-    })
-    console.log("메시지 형식:", message)
-    addMessage(message);
+  
+    await useChatStore.getState().sendDonation(donationRequest);
     setMessageInput('');
+    setChoco(0);
+    close();
   };
-
+  
   return (
     <div>
       <SmallButton
         text="🍫" 
         color={vars.colors.lightGray}
-        onClick={() => setIsOpen(true)}
+        onClick={open}
       />
       {isOpen && (
-        <BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <BottomSheet isOpen={isOpen} onClose={close}>
           <div className={styles.topContainer}>
             <span className={bold}>후원</span>
             <hr className={line}/>

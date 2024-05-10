@@ -20,9 +20,10 @@ interface InputProps {
   onEmojiClick?: () => void
   placeholder?: string
   maxLength?: number
+  disabled?: boolean
 }
 
-const DefaultInput: React.FC<InputProps> = ({ type, value, onChange, onEmojiClick, placeholder, maxLength }) => {
+const DefaultInput: React.FC<InputProps> = ({ type, value, onChange, onEmojiClick, placeholder, maxLength, disabled }) => {
   return (
     <div className={`${betweenWrapper} ${styles.defaultInputBox}`}>
       
@@ -32,6 +33,7 @@ const DefaultInput: React.FC<InputProps> = ({ type, value, onChange, onEmojiClic
         onChange={onChange}
         placeholder={placeholder}
         maxLength={maxLength}
+        disabled={disabled}
         className={styles.defaultInputForm}
       />
       {maxLength && (

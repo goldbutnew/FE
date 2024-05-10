@@ -16,6 +16,7 @@ import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
 import { line } from "@/styles/common.css";
 import useStreamingStore from "@/store/StreamingStore";
+import useProfileStore from "@/store/ProfileStore";
 
 interface Message {
   userName: string;
@@ -40,6 +41,8 @@ export default function Chat() {
   const chatBoxRef = useRef(null);
   const { streamRoomData } = useStreamingStore()
   const [nicknameColors, setNicknameColors] = useState(new Map());
+  const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
+  const [isFollowed, setIsFollowed] = useState(false)
 
   const getRandomColor = () => {
     const hue = Math.floor(Math.random() * 360)
@@ -58,6 +61,21 @@ export default function Chat() {
     }
   };
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      await getStreamerProfileInfo(streamRoomData.username);
+      setIsFollowed(streamerProfileData.isFollowed);
+    };
+  
+    fetchProfile();
+    
+    const interval = setInterval(() => {
+      fetchProfile();  // 30초마다 팔로우 상태를 갱신
+    }, 30000);  // 초 단위 오류 수정 (300 -> 30000)
+    
+    return () => clearInterval(interval);
+  }, [getStreamerProfileInfo, streamRoomData.username, streamerProfileData.isFollowed]);
+  
   const roomId = btoa(streamRoomData.username);
 
   const onMessageReceived = (msg) => {
@@ -121,6 +139,7 @@ const handleSendMessage = (event) => {
   const formattedTimestamp = getFormattedTimestamp();
 
   if (stompClient && messageInput.trim() && connected) {
+    // const color = getRandomColor()
     const message = {
       userName: userData.username,
       nickname: userData.nickname,
@@ -128,7 +147,7 @@ const handleSendMessage = (event) => {
       donation: 0,
       isTts: false,
       text: messageInput,
-      origin: 'local'
+      // color: color
     };
     stompClient.publish({
       destination: `/pub/channel/${roomId}`,
@@ -168,7 +187,7 @@ const handleSendMessage = (event) => {
               <div className={styles.donationChatItem}>
               <button 
                 style={{ color: getNicknameColor(msg.nickname) }}
-                className={styles.DonationchatNickname}
+                className={styles.dontaionChatNickname}
                 onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}
               >
                 {msg.nickname}
@@ -212,7 +231,8 @@ const handleSendMessage = (event) => {
           type="text"
           value={messageInput}
           onChange={handleChange}
-          placeholder="채팅을 입력해 주세요"
+          placeholder={isFollowed ? "채팅을 입력해 주세요" : "팔로워만 채팅 가능합니다."}
+          disabled={!isFollowed}
           onEmojiClick={openEmojiPicker}
         />
       </form>

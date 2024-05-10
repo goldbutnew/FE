@@ -1,7 +1,12 @@
 import { create } from 'zustand'
 import axios from '../api/axios'
 
-const useSettingStore = create((set, get) => ({
+interface SettingStoreState {
+  doAddLink: (url: string, title: string) => Promise<void>
+  doDeleteLink: (url: string, title: string) => Promise<void>
+}
+
+const useSettingStore = create<SettingStoreState>((set, get) => ({
 
   // 링크 추가
   doAddLink: async (url:string, title: string) => {

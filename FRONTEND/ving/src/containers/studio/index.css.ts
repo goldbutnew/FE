@@ -6,7 +6,7 @@ import { style } from '@vanilla-extract/css'
 
 // common.tsx
 export const container = style({
-  margin: `${vars.space['2x']} ${vars.space['8x']}`,
+  margin: `${vars.space['2x']} 0`,
 })
 
 export const title = style([
