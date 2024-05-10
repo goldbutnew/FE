@@ -1,2 +1,2 @@
-STATIC/*.ts
-STATIC/*.m3u8
+STATIC/*/*/*.ts
+STATIC/*/*/*.m3u8

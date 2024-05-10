@@ -18,8 +18,8 @@ const useStreamingStore = create(persist((set, get) => ({
   },
 }), {
   name: 'streaming-store',
-  getStorage: () => localStorage,
+  // getStorage: () => localStorage,
   partialize: (state: any) => ({ streamRoomData: state.streamRoomData })
-}));
+}))
 
 export default useStreamingStore
