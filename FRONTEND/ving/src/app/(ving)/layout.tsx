@@ -7,6 +7,7 @@ import * as styles from './layout.css'
 import '../../styles/reset.css'
 import Chat from "@/components/Chat";
 import RankingUser from "@/components/SideBar/RankingUser";
+import useProfileStore from "@/store/ProfileStore";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,7 +41,6 @@ export default function RootLayout({
             initOpen={initOpenState}
             width={200}
           >
-            <RankingUser initOpen={initOpenState}/>
           </ SideBar>
           <div className={styles.mainContent}>
             {children}

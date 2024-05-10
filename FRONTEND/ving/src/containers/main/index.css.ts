@@ -1,4 +1,6 @@
+import { bold } from '@/styles/fonts.css'
 import { vars } from '@/styles/vars.css'
+import { columnWrapper, rowWrapper, startWrapper } from '@/styles/wrapper.css'
 import { style } from '@vanilla-extract/css'
 
 export const test = style({
@@ -30,6 +32,56 @@ export const mainVideoItem = style({
   width: "100%",
   aspectRatio: "4/3",
   objectFit: 'cover',
-  backgroundColor: 'black',
-  color: vars.colors.white,
+  // backgroundColor: 'black',
+})
+
+export const imageStyle = style({
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover', // 이미지 비율을 유지하면서 div에 꽉 차게 채우기
+})
+
+export const roomInfoBox = style([
+  rowWrapper, 
+  {
+  }
+])
+
+export const leftBoxContainer = style([
+  rowWrapper,
+  {
+    gap: 10,
+  }
+])
+
+export const leftBox = style([
+  columnWrapper,
+  {
+    margin: `0 0 0 ${vars.space['0.5x']}`
+  }
+])
+
+export const rightBox = style([
+  columnWrapper,
+  {
+    gap: 5,
+  }
+])
+
+export const leftBoxItem = style([
+  startWrapper,
+  {
+    height: '100%',
+  }
+])
+
+export const streamingTitle = style([
+  bold,
+  {
+    fontSize: vars.fontSize['1x']
+  }
+])
+
+export const streamerName = style({
+  fontSize: vars.fontSize['0.5x']
 })

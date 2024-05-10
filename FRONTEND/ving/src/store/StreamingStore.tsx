@@ -5,6 +5,8 @@ import { persist } from 'zustand/middleware'
 const useStreamingStore = create(persist((set, get) => ({
   streamRoomsData: [],
   streamRoomData: '',
+  isStreamerFollowed: true,
+  setIsStreamerFollowed: (isFollowed:boolean) => set({ isFollowed: isFollowed }),
   setStreamRoomData: (data: Object) => set({ streamRoomData: data }),
   getStreamInfo: async () => {
     try {
@@ -16,9 +18,11 @@ const useStreamingStore = create(persist((set, get) => ({
       console.error('생방송 목록 가져오기 실패:', error)
     }
   },
+
+  isPlaying: false,
+  setIsPlaying: (bool:boolean) => set({ isPlaying: bool }),
 }), {
   name: 'streaming-store',
-  // getStorage: () => localStorage,
   partialize: (state: any) => ({ streamRoomData: state.streamRoomData })
 }))
 

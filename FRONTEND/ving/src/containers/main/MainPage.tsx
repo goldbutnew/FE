@@ -6,11 +6,15 @@ import useStreamingStore from "@/store/StreamingStore"
 
 import Link from 'next/link'
 import * as styles from './index.css'
+import Image from "next/image"
+import ProfileImage from "@/components/ProfileImg"
+import { useRouter } from "next/navigation"
 
 
 export default function MainPage() {
   const { userData, code } = useAuthStore()
   const { streamRoomsData, getStreamInfo, setStreamRoomData } = useStreamingStore()
+  const router = useRouter()
 
   const handleStreamDataChange = (data: Object) => {
     console.log(data)
@@ -37,7 +41,31 @@ export default function MainPage() {
               className={styles.mainVideoItem} 
               onClick={() => handleStreamDataChange(data)}
             >
-              <Link href={`/streaming/${btoa(data.username)}`}>{data.title}</Link> 
+              <img 
+              src={data.thumbnail} 
+              alt="비디오 자리"
+              className={styles.imageStyle}
+              />
+              <div className={styles.roomInfoBox} onClick={() => router.push(`/streaming/${btoa(data.username)}`)}>
+                <ProfileImage 
+                  url={data.username} 
+                  width={35}
+                  alt="streamer profile" 
+                />
+                {/* <Link href={`/streaming/${btoa(data.username)}`}>{data.title}</Link>  */}
+                {/* <div>
+                  <span>{data.title}</span>
+                  <span>뭐니</span>
+                </div> */}
+                <div className={styles.leftBox}>
+                  <div className={styles.leftBoxItem}>
+                    <div className={styles.streamingTitle}>{data.title}</div>
+                  </div>
+                  <div className={styles.leftBoxItem}>
+                    <div className={styles.streamerName}>{data.username}</div>    
+                  </div>  
+                </div>
+              </div>
             </div>
           )
         })}

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { RiNumber1, RiNumber2, RiNumber3, RiNumber4, RiNumber5 } from "react-icons/ri"
 import ProfileImage from '../ProfileImg'
+import { vars } from '@/styles/vars.css'
 
 interface User {
   username: string
@@ -47,12 +48,13 @@ export default function RankingUser({ initOpen }: RankingUserProps) {
   }
 
   console.log(currentTopViewersData)
+  
   return (
-    <div className={styles.autocompleteList}>
+    <div className={initOpen ? styles.openRankingList : styles.closeRankingList}>
       {users.map((user: User) => (
         <div key={user.username} onClick={() => moveSearchUser(user.username)}>
           {initOpen ? (
-            <div className={styles.autocompleteItem}>
+            <div className={styles.rankingListItem}>
               <ProfileImage 
                 url={user.thumbnail} 
                 width={45}
@@ -61,11 +63,13 @@ export default function RankingUser({ initOpen }: RankingUserProps) {
               <div className={styles.rankingUserName}>{user.nickname}</div>
             </div>
           ) : (
-            <ProfileImage 
-                url={user.thumbnail} 
-                width={45}
-                alt="User profile" 
-              />
+            <div className={styles.closeRankingListItem}>
+              <ProfileImage 
+                  url={user.thumbnail} 
+                  width={45}
+                  alt="User profile" 
+                />
+            </div>
           )}
         </div>
       ))}
