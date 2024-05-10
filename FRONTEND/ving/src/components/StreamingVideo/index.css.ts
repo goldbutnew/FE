@@ -37,3 +37,14 @@ export const volumeSlider = style({
   borderRadius: '2px',
   alignSelf: 'center'
 })
+
+// 재생 슬라이더 스타일
+export const videoSlider = style({
+  width: '100%',
+  height: '4px',
+  cursor: 'pointer',
+  backgroundColor: 'silver',
+  borderRadius: '2px',
+  alignSelf: 'center'
+})
+

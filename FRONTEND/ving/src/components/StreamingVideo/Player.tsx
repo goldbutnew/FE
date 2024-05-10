@@ -153,6 +153,16 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
   }
 
   return (
+    <div>
+      <input
+        type="range"
+        min="0"
+        max={duration}
+        step="1"
+        value={currentTime}
+        onChange={handleSeekChange}
+        className={styles.videoSlider}
+      />
       <div className={styles.controls}>
         <button className={styles.button} onClick={togglePlayPause}>{isPlaying ? <IoStop color="Black" size={20}/> : <IoPlay color="Black" size={20}/>}</button>
         <button 
@@ -163,15 +173,6 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
         >
           {isMuted ? <RiVolumeMuteFill color="Black" size={20}/> : <RiVolumeUpFill color="Black" size={20}/>}
         </button>
-        
-        <input
-          type="range"
-          min="0"
-          max={duration}
-          step="1"
-          value={currentTime}
-          onChange={handleSeekChange}
-        />
 
         <input
           type="range"
@@ -208,6 +209,7 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
           </DropdownMenu>
         </div>
       </div>
+    </div>
   )
 }
 
