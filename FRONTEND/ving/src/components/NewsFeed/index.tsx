@@ -37,7 +37,7 @@ export default function NewsFeed() {
     };
 
     client.onConnect = () => {
-      console.log("WebSocket 연결 완료");
+      console.log("뉴스피드 WebSocket 연결 완료");
       client.subscribe(`/sub/streamer/${roomId}`, onMessageReceived, {
         id: `sub-${roomId}`,
         ack: 'client'

@@ -153,9 +153,12 @@ export const startStreamingRightBox = style([
 
 export const studioStreamingContainer = style({
   flexGrow: 1,
+  margin: `50 0 0 0`
 })
 
+
 // StudioStreaming.tsx
+
 export const streamingInfoContainer = style({
   width: '100%',
   padding: vars.space['2x']
@@ -164,7 +167,6 @@ export const streamingInfoContainer = style({
 export const streamingInfoItem = style([
   rowWrapper,
   {
-    // alignItems: 'flex-start',
     padding: `${vars.space['1x']} 0`
   }
 ])
@@ -184,11 +186,58 @@ export const streamingInfoContent = style([
   }
 ]);
 
+export const videolaceholder = style([
+  columnWrapper,
+  {
+    alignItems: 'center',
+    backgroundColor: vars.colors.black,
+    width: '100%',
+    aspectRatio: "16/9",
+  }
+])
 
-export const updateButtonBox = style([
+export const videolaceholderText = style([
+  columnWrapper,
+  {
+    color: vars.colors.white,
+    alignItems: 'center',
+  }
+])
+
+export const customFileUpload = style([
+  plainButton,
+  {
+    padding: `${vars.space['0.5x']} ${vars.space['1x']}`,
+    cursor: 'pointer',
+    border: `2px solid ${vars.colors.lightGray}`,
+    borderRadius: vars.borderRadius['1x']
+  }
+])
+
+export const studioThumnailItemContainer = style({
+  width: 300,
+  border: `1px solid ${vars.colors.lightGray}`
+})
+
+export const studioThumnailResize = style({
+  width: '100%',
+  aspectRatio: "16/9",
+})
+
+
+export const buttonGroupContainer = style([
   endWrapper,
   {
-    padding: `${vars.space['1x']} 0`
+    width: '100%',
+    padding: `${vars.space['1x']} 0`,
+  }
+])
+
+export const updateButtonBox = style([
+  rowWrapper,
+  {
+    gap: vars.space['0.5x'],
+    padding: `${vars.space['1x']} 0`,
   }
 ])
 
