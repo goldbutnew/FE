@@ -40,7 +40,7 @@ def set_streaming_room_name(request):
     decoded_data = json.loads(request.body.decode('utf-8'))
     
     user_name = decoded_data.get('username')
-    room_name = decoded_data.get('roomName')
+    room_name = decoded_data.get('title')
     try:
         user = User.objects.get(user_username = user_name)
         user_id = user.user_id
@@ -76,10 +76,10 @@ def set_streaming_room_is_adult(request):
     user_id = user.user_id
         
     if request.method == 'PATCH':
-        is_adult = decoded_data.get('isAdult', None)
+        is_adult = decoded_data.get('limit', None)
         
         if is_adult is None:
-            return Response({'error': 'isAdult field is required'}, status=400)
+            return Response({'error': 'limit field is required'}, status=400)
         
         streaming_room = get_object_or_404(StreamingRoom, user_id=user_id,is_end = True)
         streaming_room.room_age_limit = is_adult
@@ -93,12 +93,12 @@ def set_streaming_room_is_adult(request):
 def create_streaming_room(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        room_name = data.get('roomName', None)
-        is_adult = data.get('isAdult', None)
+        room_name = data.get('title', None)
+        is_adult = data.get('limit', None)
         thumbnail = data.get('thumbnail', None)
         
         if room_name is None or is_adult is None or thumbnail is None:
-            return Response({'error': 'roomName, isAdult, thumbnail fields are required'}, status=400)
+            return Response({'error': 'title, limit, thumbnail fields are required'}, status=400)
         
         streaming_room = StreamingRoom(room_name=room_name, room_age_limit=is_adult, room_thumbnail=thumbnail)
         streaming_room.save()

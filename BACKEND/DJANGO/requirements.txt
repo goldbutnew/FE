@@ -26,10 +26,8 @@ future==1.0.0
 jmespath==1.0.1
 kombu==5.3.7
 m3u8==4.1.0
-mongoengine==0.28.2
 mysqlclient==2.2.4
 prompt-toolkit==3.0.43
-pymongo==4.7.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 python-ffmpeg-video-streaming==0.1.16
