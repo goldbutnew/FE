@@ -2,17 +2,35 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Hls from 'hls.js'
+import useStreamingStore from '@/store/StreamingStore'
+
 import Bumsang from './Bumsang'
 import VideoPlayer from '@/components/StreamingVideo/Player'
 import Link from 'next/link'
 
-export default function Tmp2() {
-  const videoRef = useRef(null);
-  const hls = useRef(null);
+export default function Tmp() {
+  const { isPlaying, setIsPlaying } = useStreamingStore()
+  const videoRef = useRef(null)
+  const audioRef = useRef(null)
+  const [url, setUrl] = useState('720p')
 
-  // useEffect(() => {
-  //   syncPlayPause()
-  // }, [isPlaying])
+  const syncPlayPause = () => {
+    const videoElement = videoRef.current
+    const audioElement = audioRef.current
+    if (!videoElement || !audioElement) return
+
+    if (isPlaying) {
+      videoElement.play()
+      audioElement.play()
+    } else {
+      videoElement.pause()
+      audioElement.pause()
+    }
+  }
+
+  useEffect(() => {
+    syncPlayPause()
+  }, [isPlaying])
 
   useEffect(() => {
     const videoElement = videoRef.current
@@ -20,7 +38,11 @@ export default function Tmp2() {
 
     const setupHls = (element, src) => {
       if (Hls.isSupported() && element) {
-        const hls = new Hls()
+        const hls = new Hls({
+          liveSyncDurationCount: 2,
+          maxLatency: 2,
+          highLatency: 3
+      })
         
         console.log(src)
 
@@ -50,9 +72,19 @@ export default function Tmp2() {
         ref={videoRef}
         autoPlay={true}
         controls={false}
+        muted={true}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
       />
-
-
+      {/* <video
+        ref={audioRef}
+        autoPlay={true}
+        controls={false}
+        muted={true}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      /> */}
+      <VideoPlayer videoRef={videoRef} setUrl={setUrl} />
     </div>
   )
 }

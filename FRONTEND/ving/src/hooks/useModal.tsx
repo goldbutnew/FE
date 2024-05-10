@@ -30,7 +30,7 @@ function useModal(initialState: boolean = false): UseModalReturnType {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen])
+  }, [modalRef, close])
 
   return {
     isOpen,

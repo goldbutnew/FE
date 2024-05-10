@@ -18,9 +18,9 @@ import { MdPictureInPictureAlt } from "react-icons/md"
 
 const VideoPlayer = ({ videoRef, setUrl }) => {
   const [isPlaying, setIsPlaying] = useState(true)
-  const [volume, setVolume] = useState(0.5)
+  const [volume, setVolume] = useState(0)
   const [storedVolume, setStoredVolume] = useState(0.5)
-  const [isMuted, setIsMuted] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
   const [isHovering, setIsHovering] = useState(false)
 
   const togglePlayPause = () => {
@@ -38,6 +38,7 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
 
   const toggleMute = () => {
     const video = videoRef.current
+    video.muted = false
     if (!video) return
 
     if (!isMuted) {

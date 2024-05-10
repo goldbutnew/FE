@@ -16,7 +16,7 @@ const useStudioStore = create((set) => ({
         }
       })
       console.log('방송 시작 요청 성공', response.data)
-      set({ isCheck: true })
+      set({ isOnAir: true })
 
     } catch (error) {
       console.error('방송 시작 요청 실패:', error)
@@ -28,7 +28,7 @@ const useStudioStore = create((set) => ({
     try {
       const response = await axios.get('media_pipeline/main')
       console.log('포트 개방 성공', response.data)
-      set({ isCheck: true })
+      set({ isOnAir: true })
 
     } catch (error) {
       console.error('포트 개방 실패:', error)
@@ -36,10 +36,10 @@ const useStudioStore = create((set) => ({
     }
   },
 
-  closePort: async (username) => {
+  closePort: async () => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('home/delete_streaming_room/', username, {
+      const response = await axios.patch('stream/end', {} , {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -52,11 +52,12 @@ const useStudioStore = create((set) => ({
     }
   },
 
-  sendStreamTitle: async (roomName) => {
+  sendStreamTitle: async (username, title) => {
     const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.patch('home/set_streaming_room_name/', {
-        roomName
+        username,
+        title
       })
       console.log('제목 수정 완료', response.data)
 
@@ -64,12 +65,20 @@ const useStudioStore = create((set) => ({
       console.error('제목 수정 실패:', error)
     }
   },
-  sendStreamThumbnail: async (thumbNail) => {
+  sendStreamThumbnail: async (username, thumbnail) => {
     const token = localStorage.getItem('accessToken')
     try {
-      const response = await axios.patch('update_streaming_room_thumbnail/', {
-        thumbNail
-      })
+      const response = await axios.patch('home/update_streaming_room_thumbnail/', {
+        username,
+        thumbnail: thumbnail.name
+      }, 
+      // {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //     'Content-type': 'multipart/form-data',
+      //   }
+      // }
+      )
       console.log('썸네일 수정 완료', response.data)
 
     } catch (error) {
@@ -77,11 +86,12 @@ const useStudioStore = create((set) => ({
     }
   },
 
-  sendStreamLimit: async (isAdult) => {
+  sendStreamLimit: async (username, limit) => {
     const token = localStorage.getItem('accessToken')
     try {
       const response = await axios.patch('home/set_streaming_room_is_adult/', {
-        isAdult
+        username,
+        limit
       })
       console.log('연령 제한 설정 완료', response.data)
 

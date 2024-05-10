@@ -18,6 +18,9 @@ const useStreamingStore = create(persist((set, get) => ({
       console.error('생방송 목록 가져오기 실패:', error)
     }
   },
+
+  isPlaying: false,
+  setIsPlaying: (bool:boolean) => set({ isPlaying: bool }),
 }), {
   name: 'streaming-store',
   partialize: (state: any) => ({ streamRoomData: state.streamRoomData })
