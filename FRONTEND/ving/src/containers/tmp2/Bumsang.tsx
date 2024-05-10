@@ -4,6 +4,7 @@ import NetworkSpeedTest from "../streaming/Network"
 
 export default function Bumsang() {
   return (
-    <NetworkSpeedTest />
+    // <NetworkSpeedTest />
+    <h1>ㅇㅇㅇ</h1>
   )
 }

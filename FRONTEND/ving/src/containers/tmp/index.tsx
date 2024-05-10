@@ -6,13 +6,13 @@ import Bumsang from './Bumsang'
 import VideoPlayer from '@/components/StreamingVideo/Player'
 import Link from 'next/link'
 
-export default function Tmp() {
+export default function Tmp2() {
   const videoRef = useRef(null);
   const hls = useRef(null);
 
-  useEffect(() => {
-    syncPlayPause()
-  }, [isPlaying])
+  // useEffect(() => {
+  //   syncPlayPause()
+  // }, [isPlaying])
 
   useEffect(() => {
     const videoElement = videoRef.current

@@ -35,6 +35,7 @@ public class SubscriptionDto {
     public static class DonationRequest
     {
         private String username;
+        private String nickname;
         private Integer choco;
         private Boolean isTts;
         private String message;

@@ -169,7 +169,7 @@ public class SubscriptionController {
 
             Message.ChatMessage chatMessage = Message.ChatMessage.builder()
                     .userName(follower.getUserUsername())
-                    .nickname(follower.getUserNickname())
+                    .nickname(donationRequest.getNickname())
                     .donation(donationRequest.getChoco())
                     .timeStamp(formattedDate)
                     .isTts(donationRequest.getIsTts())
