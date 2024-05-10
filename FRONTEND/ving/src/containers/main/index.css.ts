@@ -1,3 +1,4 @@
+import { plainButton } from '@/styles/common.css'
 import { bold } from '@/styles/fonts.css'
 import { vars } from '@/styles/vars.css'
 import { columnWrapper, rowWrapper, startWrapper } from '@/styles/wrapper.css'
@@ -28,12 +29,15 @@ export const mainVideoGrid = style({
   // }
 })
 
-export const mainVideoItem = style({
-  width: "100%",
-  aspectRatio: "4/3",
-  objectFit: 'cover',
-  // backgroundColor: 'black',
-})
+export const mainVideoItem = style([
+  plainButton,
+  {
+    width: "100%",
+    aspectRatio: "4/3",
+    objectFit: 'cover',
+    // backgroundColor: 'black',
+  }
+])
 
 export const imageStyle = style({
   width: '100%',

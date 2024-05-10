@@ -15,16 +15,18 @@ import useChatStore from "@/components/Chat/Store";
 import useAuthStore from "@/store/AuthStore";
 import useStreamingStore from "@/store/StreamingStore";
 import useModal from "@/hooks/useModal";
+import useProfileStore from "@/store/ProfileStore";
 
 export default function Donation() {
   const { userData } = useAuthStore()
+  const { streamerProfileData } = useProfileStore()
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const { close, open, isOpen, modalRef } = useModal()
   const [choco, setChoco] = useState(0)
   const [isAnonym, setIsAnonym] = useState(false)
   const [isTTS, setIsTTS] = useState(false)
-  const initChoco = 3000000
+  const initChoco = streamerProfileData.choco
   const [dummyChoco, setDummyChoco] = useState(initChoco)
   const [warning, setWarning] = useState('')
   const [name, setName] = useState('')
