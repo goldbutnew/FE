@@ -71,7 +71,6 @@ export default function Tmp() {
       <video
         ref={videoRef}
         autoPlay={true}
-        controls={false}
         muted={true}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}

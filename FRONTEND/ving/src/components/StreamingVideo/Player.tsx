@@ -98,7 +98,6 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
 
   const toggleFullscreen = () => {
     const video = videoRef.current
-    video.controls = false
     if (!video) return
 
     if (!document.fullscreenElement) {
