@@ -102,7 +102,7 @@ export default function StudioStreaming() {
               />
             )}
             <label htmlFor="file" className={styles.customFileUpload}>
-              이미지 업로드
+              {photoUrl ? "수정" : "이미지 업로드"}
             </label>
             <input
               type="file"

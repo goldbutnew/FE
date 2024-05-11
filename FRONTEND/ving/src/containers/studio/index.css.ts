@@ -184,6 +184,37 @@ export const streamingInfoContent = style([
   }
 ]);
 
+export const customFileUpload = style([
+  plainButton,
+  {
+    padding: `${vars.space['0.5x']} ${vars.space['1x']}`,
+    cursor: 'pointer',
+    border: `2px solid ${vars.colors.lightGray}`,
+    borderRadius: vars.borderRadius['1x']
+  }
+])
+
+// export const studioThumnailItemContainer = style({
+//   width: 300,
+//   border: `1px solid ${vars.colors.lightGray}`,
+//   borderRadius: vars.borderRadius['1x']
+// })
+
+export const studioThumnailResize = style({
+  aspectRatio: "16/9",
+  width: 200,
+  border: `1px solid ${vars.colors.gray}`,
+  borderRadius: vars.borderRadius['1x']
+})
+
+
+export const buttonGroupContainer = style([
+  endWrapper,
+  {
+    width: '100%',
+    padding: `${vars.space['1x']} 0`,
+  }
+])
 
 export const updateButtonBox = style([
   endWrapper,

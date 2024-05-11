@@ -50,6 +50,7 @@ export const close = style([
     display: 'flex',
     width: "80px",
     justifyContent: 'center',
+    // 수정한 부분
     flexDirection: 'column',
   }
 ]);
