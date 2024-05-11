@@ -153,12 +153,9 @@ export const startStreamingRightBox = style([
 
 export const studioStreamingContainer = style({
   flexGrow: 1,
-  margin: `50 0 0 0`
 })
 
-
 // StudioStreaming.tsx
-
 export const streamingInfoContainer = style({
   width: '100%',
   padding: vars.space['2x']
@@ -167,6 +164,7 @@ export const streamingInfoContainer = style({
 export const streamingInfoItem = style([
   rowWrapper,
   {
+    // alignItems: 'flex-start',
     padding: `${vars.space['1x']} 0`
   }
 ])
@@ -179,69 +177,18 @@ export const streamingInfoTitle = style([
   }
 ])
 
-export const videolaceholder = style([
-  columnWrapper,
-  {
-    alignItems: 'center',
-    backgroundColor: vars.colors.black,
-    width: '100%',
-    aspectRatio: "16/9",
-  }
-])
-
-export const videolaceholderText = style([
-  columnWrapper,
-  {
-    color: vars.colors.white,
-    alignItems: 'center',
-  }
-])
-
-export const makeThumnailContainer = style([
-  rowWrapper,
+export const streamingInfoContent = style([
+  defaultWrapper,
   {
     flex: '0 0 70%',
-    gap: vars.space['1x'],
   }
 ]);
 
-export const customFileUpload = style([
-  plainButton,
-  {
-    padding: `${vars.space['0.5x']} ${vars.space['1x']}`,
-    cursor: 'pointer',
-    border: `2px solid ${vars.colors.lightGray}`,
-    borderRadius: vars.borderRadius['1x']
-  }
-])
-
-// export const studioThumnailItemContainer = style({
-//   width: 300,
-//   border: `1px solid ${vars.colors.lightGray}`,
-//   borderRadius: vars.borderRadius['1x']
-// })
-
-export const studioThumnailResize = style({
-  aspectRatio: "16/9",
-  width: 200,
-  border: `1px solid ${vars.colors.lightGray}`,
-  borderRadius: vars.borderRadius['1x']
-})
-
-
-export const buttonGroupContainer = style([
-  endWrapper,
-  {
-    width: '100%',
-    padding: `${vars.space['1x']} 0`,
-  }
-])
 
 export const updateButtonBox = style([
-  rowWrapper,
+  endWrapper,
   {
-    gap: vars.space['0.5x'],
-    padding: `${vars.space['1x']} 0`,
+    padding: `${vars.space['1x']} 0`
   }
 ])
 

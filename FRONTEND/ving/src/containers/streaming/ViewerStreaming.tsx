@@ -73,7 +73,7 @@ export default function ViewerStreaming() {
   return (
     <div className={styles.container}>
       <div className={styles.videoPlayer}>
-        {/* <StreamingVideo /> */}
+        <StreamingVideo />
       </div>
       <div className={styles.streamerInfoContainer}>
         <div className={styles.leftBoxContainer}>
