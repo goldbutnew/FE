@@ -1,7 +1,8 @@
+import { slideOut } from '@/components/BottomSheet/index.css'
 import { plainButton } from '@/styles/common.css'
 import { bold } from '@/styles/fonts.css'
 import { vars } from '@/styles/vars.css'
-import { columnWrapper, rowWrapper, startWrapper } from '@/styles/wrapper.css'
+import { centerWrapper, columnWrapper, rowWrapper, startWrapper } from '@/styles/wrapper.css'
 import { style } from '@vanilla-extract/css'
 
 export const test = style({
@@ -90,28 +91,33 @@ export const streamerName = style({
   fontSize: vars.fontSize['0.5x']
 })
 
-export const showMoreBox = style({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
-})
+export const showMoreBox = style([
+  rowWrapper,
+  {
+    margin: `0 0 ${vars.space['4x']} 0`,
+    maxHeight: '50', // 초기 값은 숨겨진 상태
+    opacity: 50,
+    transition: 'max-height 0.5s ease-in-out, opacity 0.5s ease-in-out',
+  }
+])
 
-export const showMoreButtonBox = style({
-  cursor: 'pointer',
-  width: 200,
-  display: 'flex',
-  justifyContent: 'center',
-  margin: `${vars.space['1x']} ${vars.space['1x']}`,
-  border: `2px solid ${vars.colors.gray}`,
-  padding: `${vars.space['1x']} ${vars.space['2x']}`,
-  borderRadius: vars.borderRadius['2x']
-})
+export const showMoreExpanded = style({
+  maxHeight: '500px',  // 충분히 컨텐츠를 보여줄 수 있는 높이
+  opacity: 1,
+});
 
-export const showMoreButton = style([
-  bold, {
-  color: vars.colors.darkGray,
-  fontSize: vars.fontSize['1x']
-}])
+export const showMoreButtonBox = style([
+  centerWrapper,
+  plainButton,
+  {
+    width: 200,
+    margin: `${vars.space['1x']} ${vars.space['1x']}`,
+    border: `2px solid ${vars.colors.gray}`,
+    padding: `${vars.space['0.5x']} ${vars.space['1x']}`,
+    borderRadius: vars.borderRadius['2x'],
+    color: vars.colors.darkGray,
+  }
+])
 
 export const showMoreLineBottomBox = style({
   width: '100%'
