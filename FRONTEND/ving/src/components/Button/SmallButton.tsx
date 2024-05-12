@@ -16,6 +16,8 @@ export default function SmallButton({ text, color, fontColor, onClick }: ButtonP
         backgroundColor: color === 'defaultColor' ? 'black' : color || 'black',
         color: color === 'defaultColor' ? 'white' : fontColor || 'white',
       }}
+      onMouseEnter={e => e.currentTarget.style.opacity = "0.5"}  // Reduce opacity on hover
+      onMouseLeave={e => e.currentTarget.style.opacity = "1"} 
       onClick={onClick}
     >
       {text}
