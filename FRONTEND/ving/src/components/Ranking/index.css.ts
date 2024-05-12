@@ -23,9 +23,10 @@ export const openRankingList = style({
 })
 
 export const rankingListItem = style([
-  rowWrapper, {
-  margin: `${vars.space['0.5x']} 0`,
-  width: '100%'
+  rowWrapper, 
+  {
+    margin: `${vars.space['0.5x']} 0`,
+    width: '100%'
   }
 ])
 
