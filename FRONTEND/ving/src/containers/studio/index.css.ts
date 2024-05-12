@@ -233,7 +233,7 @@ export const buttonGroupContainer = style([
   endWrapper,
   {
     width: '100%',
-    padding: `${vars.space['1x']} 0`,
+    gap: `${vars.space['1x']} 0`,
   }
 ])
 

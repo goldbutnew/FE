@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/vars.css';
-import { columnWrapper, defaultWrapper, rowWrapper } from '@/styles/wrapper.css';
+import { centerWrapper, columnWrapper, defaultWrapper, rowWrapper } from '@/styles/wrapper.css';
 import { bold } from '@/styles/fonts.css';
 import { calc } from '@vanilla-extract/css-utils';
 
@@ -45,11 +45,11 @@ export const open = style({
 });
 
 export const close = style([
+  centerWrapper,
   {
     transform: 'translateX(0)',
     display: 'flex',
     width: "80px",
-    justifyContent: 'center',
     flexDirection: 'column',
   }
 ]);

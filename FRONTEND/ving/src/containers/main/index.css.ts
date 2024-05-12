@@ -1,17 +1,9 @@
+import { slideOut } from '@/components/BottomSheet/index.css'
 import { plainButton } from '@/styles/common.css'
 import { bold } from '@/styles/fonts.css'
 import { vars } from '@/styles/vars.css'
-import { columnWrapper, rowWrapper, startWrapper } from '@/styles/wrapper.css'
+import { centerWrapper, columnWrapper, rowWrapper, startWrapper } from '@/styles/wrapper.css'
 import { style } from '@vanilla-extract/css'
-
-export const test = style({
-  backgroundColor: 'black',
-  width: 200,
-  aspectRatio: "4/3",
-  color: "white",
-  textAlign: 'center',
-  padding: '20px',
-})
 
 export const mainVideoGridBox = style({
   width: '100%',
@@ -90,28 +82,26 @@ export const streamerName = style({
   fontSize: vars.fontSize['0.5x']
 })
 
-export const showMoreBox = style({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
-})
+export const showMoreBox = style([
+  rowWrapper,
+  {
+    margin: `0 0 ${vars.space['4x']} 0`,
+    opacity: 50,
+    transition: 'max-height 0.5s ease-in-out, opacity 0.5s ease-in-out',
+  }
+])
 
-export const showMoreButtonBox = style({
-  cursor: 'pointer',
-  width: 200,
-  display: 'flex',
-  justifyContent: 'center',
-  margin: `${vars.space['1x']} ${vars.space['1x']}`,
-  border: `2px solid ${vars.colors.gray}`,
-  padding: `${vars.space['1x']} ${vars.space['2x']}`,
-  borderRadius: vars.borderRadius['2x']
-})
-
-export const showMoreButton = style([
-  bold, {
-  color: vars.colors.darkGray,
-  fontSize: vars.fontSize['1x']
-}])
+export const showMoreButtonBox = style([
+  centerWrapper,
+  plainButton,
+  {
+    margin: `${vars.space['1x']} ${vars.space['0.5x']}`,
+    border: `2px solid ${vars.colors.gray}`,
+    padding: `${vars.space['0.5x']} ${vars.space['2x']}`,
+    borderRadius: vars.borderRadius['2x'],
+    color: vars.colors.darkGray,
+  }
+])
 
 export const showMoreLineBottomBox = style({
   width: '100%'
@@ -188,4 +178,24 @@ export const carouselImage = style({
   width: 400,
   aspectRatio: "4/3",
   objectFit: 'cover',
+})
+
+
+// Footer.tsx
+
+export const footerContainer = style([
+  centerWrapper,
+  {
+    flexDirection: 'column',
+    width: '100%',
+    fontSize: vars.fontSize['0.75x'],
+    margin: `${vars.space['5x']} 0`,
+    color: vars.colors.darkGray
+  }
+])
+
+export const contactEmail = style({
+  ':hover': {
+    opacity: '0.7',
+  }
 })
