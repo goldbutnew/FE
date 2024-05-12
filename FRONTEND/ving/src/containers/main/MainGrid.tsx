@@ -9,7 +9,7 @@ import ProfileImage from "@/components/ProfileImg"
 import { useRouter } from "next/navigation"
 import { MdExpandLess, MdExpandMore } from "react-icons/md"
 
-export default function MainPage() {
+export default function MainGrid() {
   const { userData, code } = useAuthStore()
   const { streamRoomsData, getStreamInfo, setStreamRoomData } = useStreamingStore()
   const router = useRouter()
@@ -109,7 +109,7 @@ export default function MainPage() {
           <div className={styles.showMoreLineBottomBox}></div>
         </div>
         <div className={styles.showMoreButtonBox} onClick={toggleShowMore}>
-          {visibleCount >= streamRoomsData.length ? "접기 " : "더보기 "} 
+          {/* {visibleCount >= streamRoomsData.length ? "접기 " : "더보기 "}  */}
           {visibleCount >= streamRoomsData.length ? <MdExpandLess size={16} /> : <MdExpandMore size={16} />}
         </div>
         <div className={styles.showMoreRightBox}>

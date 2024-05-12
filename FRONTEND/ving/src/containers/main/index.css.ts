@@ -5,15 +5,6 @@ import { vars } from '@/styles/vars.css'
 import { centerWrapper, columnWrapper, rowWrapper, startWrapper } from '@/styles/wrapper.css'
 import { style } from '@vanilla-extract/css'
 
-export const test = style({
-  backgroundColor: 'black',
-  width: 200,
-  aspectRatio: "4/3",
-  color: "white",
-  textAlign: 'center',
-  padding: '20px',
-})
-
 export const mainVideoGridBox = style({
   width: '100%',
   padding: `0 ${vars.space['2x']} 0 ${vars.space['2x']}`
@@ -95,25 +86,18 @@ export const showMoreBox = style([
   rowWrapper,
   {
     margin: `0 0 ${vars.space['4x']} 0`,
-    maxHeight: '50', // 초기 값은 숨겨진 상태
     opacity: 50,
     transition: 'max-height 0.5s ease-in-out, opacity 0.5s ease-in-out',
   }
 ])
 
-export const showMoreExpanded = style({
-  maxHeight: '500px',  // 충분히 컨텐츠를 보여줄 수 있는 높이
-  opacity: 1,
-});
-
 export const showMoreButtonBox = style([
   centerWrapper,
   plainButton,
   {
-    width: 200,
-    margin: `${vars.space['1x']} ${vars.space['1x']}`,
+    margin: `${vars.space['1x']} ${vars.space['0.5x']}`,
     border: `2px solid ${vars.colors.gray}`,
-    padding: `${vars.space['0.5x']} ${vars.space['1x']}`,
+    padding: `${vars.space['0.5x']} ${vars.space['2x']}`,
     borderRadius: vars.borderRadius['2x'],
     color: vars.colors.darkGray,
   }
@@ -194,4 +178,24 @@ export const carouselImage = style({
   width: 400,
   aspectRatio: "4/3",
   objectFit: 'cover',
+})
+
+
+// Footer.tsx
+
+export const footerContainer = style([
+  centerWrapper,
+  {
+    flexDirection: 'column',
+    width: '100%',
+    fontSize: vars.fontSize['0.75x'],
+    margin: `${vars.space['5x']} 0`,
+    color: vars.colors.darkGray
+  }
+])
+
+export const contactEmail = style({
+  ':hover': {
+    opacity: '0.7',
+  }
 })

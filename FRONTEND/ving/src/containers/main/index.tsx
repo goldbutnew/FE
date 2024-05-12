@@ -1,14 +1,15 @@
 
 'use client'
 
-import MainPage from './MainPage'
-import ChoiceChip from '@/components/Button/ChoiceChip';
+import Footer from "./Footer"
+import MainGrid from "./MainGrid"
 
 export default function Main() {
 
   return (
     <div>
-      <MainPage />  
+      <MainGrid />
+      <Footer />
     </div>
   )
 }

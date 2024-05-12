@@ -8,6 +8,7 @@ import '../../styles/reset.css'
 import Chat from "@/components/Chat";
 import RankingUser from "@/components/SideBar/RankingUser";
 import useProfileStore from "@/store/ProfileStore";
+import Ranking from "@/components/Ranking";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,20 +29,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const initOpenState = true
-
   return (
     <html lang="kr">
       <body className={`${styles.layout} ${pretendard.className}`}>
         <NavBar />
         <div className={styles.contentContainer}>
-          <SideBar
-            title="랭킹"
-            side="left"
-            initOpen={initOpenState}
-            width={200}
-          >
-          </ SideBar>
+          <Ranking />
           <div className={styles.mainContent}>
             {children}
           </div>
