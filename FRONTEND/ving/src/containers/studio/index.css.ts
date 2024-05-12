@@ -153,9 +153,12 @@ export const startStreamingRightBox = style([
 
 export const studioStreamingContainer = style({
   flexGrow: 1,
+  margin: `50 0 0 0`
 })
 
+
 // StudioStreaming.tsx
+
 export const streamingInfoContainer = style({
   width: '100%',
   padding: vars.space['2x']
@@ -164,7 +167,6 @@ export const streamingInfoContainer = style({
 export const streamingInfoItem = style([
   rowWrapper,
   {
-    // alignItems: 'flex-start',
     padding: `${vars.space['1x']} 0`
   }
 ])
@@ -177,10 +179,29 @@ export const streamingInfoTitle = style([
   }
 ])
 
-export const streamingInfoContent = style([
-  defaultWrapper,
+export const videolaceholder = style([
+  columnWrapper,
+  {
+    alignItems: 'center',
+    backgroundColor: vars.colors.black,
+    width: '100%',
+    aspectRatio: "16/9",
+  }
+])
+
+export const videolaceholderText = style([
+  columnWrapper,
+  {
+    color: vars.colors.white,
+    alignItems: 'center',
+  }
+])
+
+export const makeThumnailContainer = style([
+  rowWrapper,
   {
     flex: '0 0 70%',
+    gap: vars.space['1x'],
   }
 ]);
 
@@ -217,10 +238,10 @@ export const buttonGroupContainer = style([
 ])
 
 export const updateButtonBox = style([
-  endWrapper,
+  rowWrapper,
   {
-    padding: `${vars.space['1x']} 0`,
     gap: vars.space['0.5x'],
+    padding: `${vars.space['1x']} 0`,
   }
 ])
 
