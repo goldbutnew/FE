@@ -225,7 +225,8 @@ export const studioThumnailResize = style({
   aspectRatio: "16/9",
   width: 200,
   border: `1px solid ${vars.colors.gray}`,
-  borderRadius: vars.borderRadius['1x']
+  borderRadius: vars.borderRadius['1x'],
+  objectFit: 'cover',
 })
 
 
