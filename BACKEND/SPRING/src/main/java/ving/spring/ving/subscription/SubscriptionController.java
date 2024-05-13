@@ -28,7 +28,6 @@ public class SubscriptionController {
     private final SubscriptionService subscriptionService;
     private final StreamRoomService streamRoomService;
     private final DateTimeFormmer dateTimeFormmer;
-
     private final MessageController messageController;
     @PostMapping("/subscript")
     public  ResponseEntity<?> subscript(@RequestBody SubscriptionDto.SubscriptRequest subscriptRequest)
