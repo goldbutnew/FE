@@ -75,9 +75,9 @@ export default function MainGrid() {
               onClick={() => handleStreamDataChange(data)}
             >
               <img 
-              src={data.thumbnail} 
-              alt="비디오 자리"
-              className={styles.imageStyle}
+                src={data.thumbnail} 
+                alt="비디오 썸네일"
+                className={styles.imageStyle}
               />
               <div className={styles.roomInfoBox} onClick={() => router.push(`/streaming/${btoa(data.username)}`)}>
                 <ProfileImage 
