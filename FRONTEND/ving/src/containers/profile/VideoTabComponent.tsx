@@ -14,6 +14,7 @@ export default function VideoTabComponent() {
   const params = useParams()
   const { profileData, getUserProfileInfo, doFixVideo, unDoFixVideo, doDeleteVideo } = useProfileStore()
   const [isOpen, setIsOpen] = useState({})
+  const [loading, setLoading] = useState(false)
 
   const toggleMenu = (videoId:number) => {
     setIsOpen(prev => ({
@@ -104,6 +105,14 @@ export default function VideoTabComponent() {
     setVideos(sortedVideos)
   }, [getUserProfileInfo. videos])
 
+  useEffect(() => {
+    if (profileData) {
+      setLoading(true)
+    }
+    console.log('hi')
+  }, [profileData])
+  
+  if (loading) {
   return (
     <div>
       {videos && videos.length > 0 ? (
@@ -141,4 +150,5 @@ export default function VideoTabComponent() {
       )}
     </div>
   )
+}
 }
