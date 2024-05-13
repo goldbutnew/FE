@@ -55,7 +55,7 @@ export default function StreamingVideo() {
     return () => {
       if (hlsVideo) hlsVideo.destroy()
     }
-  }, [url])
+  }, [resolution])
 
   return (
     <div className={styles.videoResize} ref={containerRef}>
