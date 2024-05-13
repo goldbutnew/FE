@@ -151,12 +151,6 @@ export const startStreamingRightBox = style([
   }
 ])
 
-export const studioStreamingContainer = style({
-  flexGrow: 1,
-  margin: `50 0 0 0`
-})
-
-
 // StudioStreaming.tsx
 
 export const streamingInfoContainer = style({
