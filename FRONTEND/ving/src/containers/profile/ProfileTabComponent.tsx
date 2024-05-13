@@ -64,6 +64,7 @@ export default function ProfileTabComponent() {
   const { profileData, getUserProfileInfo } = useProfileStore()
   const profileUserName = params.username
   const [links, setLinks] = useState(profileData.links || [])
+  const [loading, setLoading] = useState(false)
 
   // useEffect(() => {
   //   const initData = async () => {
@@ -73,12 +74,14 @@ export default function ProfileTabComponent() {
   //   console.log(profileData)
   // }, [getUserProfileInfo])
 
-  // useEffect(() => {
-  //   if (profileData) {
-  //     setLinks(profileData.links || [])
-  //   }
-  // }, [profileData])
-
+  useEffect(() => {
+    if (profileData) {
+      setLoading(true)
+    }
+    console.log('hi')
+  }, [profileData])
+  
+  if (loading) {
   return (
     <div>
       <Card>
@@ -108,4 +111,5 @@ export default function ProfileTabComponent() {
       </Card>
     </div>
   )
+}
 }
