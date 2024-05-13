@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react"
 import SockJS from 'sockjs-client'
+import Router from "next/router";
+import { useRouter } from "next/navigation";
 import { Stomp } from '@stomp/stompjs'
 import SideBar from "../SideBar/SideBar"
 import DefaultInput from "../Input/DefaultInput"
@@ -73,8 +75,12 @@ export default function Chat() {
   };
 
   const connect = () => {
+    if (connected) {
+      console.log("이미 WebSocket에 연결되어 있습니다.");
+      return; // 이미 연결된 경우 추가 연결 방지
+    }
+
     console.log("WebSocket 연결 시도 중...");
-    // const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
     const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
@@ -108,9 +114,9 @@ export default function Chat() {
         stompClient.deactivate();
       }
     };
-  }, []);
-
-  const handleChange = (event) => {
+  }, [connected]);
+  
+  const handleChange = (event: any) => {
     setMessageInput(event.target.value);
   };
 
@@ -118,7 +124,7 @@ export default function Chat() {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
-  const handleEmojiClick = (emoji) => {
+  const handleEmojiClick = (emoji: any) => {
     setMessageInput(prev => prev + emoji.emoji);
   }
 
