@@ -60,7 +60,7 @@ export const viewerCounterTextBadge = style({
 })
 
 export const imageStyle = style({
-  aspectRatio: '4/3',
+  aspectRatio: '16/9',
   margin: 0,
   padding: 0,
   width: '100%',
@@ -126,8 +126,8 @@ export const showMoreButtonBox = style([
   plainButton,
   {
     margin: `${vars.space['1x']} 0`,
-    border: `1px solid ${vars.colors.gray}`,
     padding: `${vars.space['0.5x']} ${vars.space['2x']}`,
+    border: `1px solid ${vars.colors.gray}`,
     borderRadius: vars.borderRadius['2x'],
     color: vars.colors.darkGray,
     fontSize: vars.fontSize['0.5x'],
