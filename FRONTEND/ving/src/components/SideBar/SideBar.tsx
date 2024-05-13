@@ -1,6 +1,6 @@
- 'use client'
+'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as styles from './index.css';
 import { line } from '@/styles/common.css';
 import { betweenWrapper, columnWrapper } from '@/styles/wrapper.css';
@@ -10,24 +10,23 @@ import useProfileStore from '@/store/ProfileStore';
 interface SidebarProps {
   title: string
   side: 'left' | 'right'
-  initOpen?: boolean
   width: number
+  initOpen?: boolean
   hidden?: boolean
   children?: React.ReactNode
   onToggle?: () => void;
+  isOpen?: boolean;
 }
 
-export default function SideBar({ title, side, initOpen, width, hidden, children, onToggle }: SidebarProps) {
-  const [isOpen, setIsOpen] = useState(initOpen);
+export default function SideBar({ title, side, isOpen, initOpen, width, hidden, children, onToggle }: SidebarProps) {
   const positionStyle = side === 'left' ? `${styles.leftSidebar}` : `${styles.rightSidebar}`;
 
   const toggleSidebar = () => {
-    setIsOpen(prev => !prev);
-    onToggle?.();  // 부모 컴포넌트에 상태 변화를 알림
+    onToggle()
   };
 
   const widthStyle = {
-    width: isOpen ? `${width}px` : (hidden ? '30px' : '80px'),
+    width: isOpen ? `${width}px` : (hidden ? '28px' : '68px'),
   };
 
   return (
@@ -41,7 +40,7 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
               <div className={betweenWrapper}>
                 <span className={styles.sidebarTitle}>
                   {title}
-                  </span>
+                </span>
                 <LiaDoorClosedSolid
                   size={20}
                   className={styles.toggleButton}
@@ -55,12 +54,13 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
                 <LiaDoorClosedSolid
                   size={20}
                   className={styles.toggleButton}
-                  onClick={() => setIsOpen(!isOpen)}
+                  onClick={toggleSidebar}
                 />
                 <span className={styles.sidebarTitle}>
                   {title}
                 </span>                
               </div>
+ 
             </div>
           }              
           <hr className={line} />     
@@ -88,11 +88,11 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
             <LiaDoorOpenSolid
               size={20}
               className={styles.toggleButton}
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={toggleSidebar}
             />
             <hr className={line} width="100%" /> 
             <div className={styles.sidebarContent}>
-            {children}
+              {children}
             </div>    
           </div>
         )}     

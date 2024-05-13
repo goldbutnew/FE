@@ -26,6 +26,7 @@ export default function Chat() {
   const [profileKey, setProfileKey] = useState(0)
   const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const { getChatProfile, selectedUserData } = useChatStore()
   const messages = useChatStore(state => state.messages)
   const addMessage = useChatStore(state => state.addMessage)
@@ -173,7 +174,15 @@ const handleSendMessage = (event) => {
   };
 
   return (
-    <SideBar title="채팅" side="right" initOpen={true} width={300} hidden={true}>
+    <SideBar 
+      title="채팅" 
+      side="right" 
+      isOpen={isSidebarOpen}
+      initOpen={true} 
+      width={300} 
+      hidden={true}
+      onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+    >
       <div className={styles.chatBox} ref={chatBoxRef}>
         {messages.map((msg, index) => (
           <div 

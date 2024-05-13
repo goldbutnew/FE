@@ -80,11 +80,21 @@ export default function SettingForm() {
       formData.append('introduction', profileData.introduction)
     }
   
-    if (file) { // file 상태를 직접 사용
+    if (file) {
       formData.append('photo', file)
     } else if (profileData.photoUrl) {
-      const imageBlob = await profileData.photoUrl.blob()
-      formData.append('photo', imageBlob, 'image.jpg')
+      // 사진은 수정 안 하고 닉네임이랑 채널 소개만 할 경우
+      try {
+        const response = await fetch(profileData.photoUrl)
+        if (!response.ok) {
+          throw new Error('네트워크 오류')
+        }
+        const imageBlob = await response.blob()
+        console.log(imageBlob, '이미지 블롭화~~~~~~')
+        formData.append('photo', imageBlob, 'image.jpg')
+      } catch (error) {
+        console.error('이미지 블롭화 실패', error)
+      }
     }
 
     for (let [key, value] of formData) {

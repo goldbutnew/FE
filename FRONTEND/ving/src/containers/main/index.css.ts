@@ -5,6 +5,8 @@ import { vars } from '@/styles/vars.css'
 import { centerWrapper, columnWrapper, rowWrapper, startWrapper } from '@/styles/wrapper.css'
 import { style } from '@vanilla-extract/css'
 
+// MainGrid.tsx 시작
+
 export const mainVideoGridBox = style({
   width: '100%',
   padding: `0 ${vars.space['2x']} 0 ${vars.space['2x']}`
@@ -12,29 +14,66 @@ export const mainVideoGridBox = style({
 
 export const mainVideoGrid = style({
   display: 'grid',
-  // gridTemplateColumns: 'repeat(4, 1fr)', 
   gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))',
   margin: `${vars.space['2x']} 0`,
   gap: vars.space['2x'],
-  // '& > :nth-child(4n)': { 
-  //   margin: `0 ${vars.space['2x']} 0 0`
-  // }
 })
 
 export const mainVideoItem = style([
-  plainButton,
-  {
-    width: "100%",
-    aspectRatio: "4/3",
-    objectFit: 'cover',
-    // backgroundColor: 'black',
-  }
+  plainButton
 ])
 
+
+export const videoThumnailContaienr = style({
+  position: 'relative',
+  // selectors: {
+  //   '&:hover': {
+  //     backgroundColor: vars.colors.lightGray
+  //   }
+  // }
+})
+  
+
+export const LiveTextBadge = style({
+  position: 'absolute',
+  top: 8,
+  left: 8,
+  display: 'inline-block',
+  padding: `0 ${vars.space['0.5x']}`,
+  backgroundColor: vars.colors.red, 
+  borderRadius: vars.borderRadius['0.5x'],
+  color: vars.colors.white,
+  fontSize: vars.fontSize['0.5x'],
+  zIndex: 100,
+})
+
+export const viewerCounterTextBadge = style({
+  position: 'absolute',
+  top: 8,
+  left: 44,
+  display: 'inline-block',
+  padding: `0 ${vars.space['0.5x']}`,
+  backgroundColor: vars.colors.black,
+  opacity: "0.8", 
+  borderRadius: vars.borderRadius['0.5x'],
+  color: vars.colors.white,
+  fontSize: vars.fontSize['0.5x'],
+  zIndex: 100,
+})
+
 export const imageStyle = style({
+  aspectRatio: '16/9',
+  margin: 0,
+  padding: 0,
   width: '100%',
   height: '100%',
+  borderRadius: vars.borderRadius['1x'],
   objectFit: 'cover', // 이미지 비율을 유지하면서 div에 꽉 차게 채우기
+  border: `1px solid ${vars.colors.lightGray}`,
+  ':hover': {
+    backgroundColor: vars.colors.black,
+    opacity: '0.3',
+  }
 })
 
 export const roomInfoBox = style([
@@ -43,16 +82,10 @@ export const roomInfoBox = style([
   }
 ])
 
-export const leftBoxContainer = style([
-  rowWrapper,
-  {
-    gap: 10,
-  }
-])
-
 export const leftBox = style([
   columnWrapper,
   {
+    // gap: vars.space['0.5x']
     margin: `0 0 0 ${vars.space['0.5x']}`
   }
 ])
@@ -60,7 +93,7 @@ export const leftBox = style([
 export const rightBox = style([
   columnWrapper,
   {
-    gap: 5,
+    gap: vars.space['0.5x'],
   }
 ])
 
@@ -74,7 +107,10 @@ export const leftBoxItem = style([
 export const streamingTitle = style([
   bold,
   {
-    fontSize: vars.fontSize['1x']
+    fontSize: vars.fontSize['1x'],
+    overflow: 'hidden', 
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
   }
 ])
 
@@ -82,41 +118,38 @@ export const streamerName = style({
   fontSize: vars.fontSize['0.5x']
 })
 
-export const showMoreBox = style([
+export const showMoreContainer= style([
   rowWrapper,
   {
-    margin: `0 0 ${vars.space['4x']} 0`,
-    opacity: 50,
-    transition: 'max-height 0.5s ease-in-out, opacity 0.5s ease-in-out',
+    // margin: `0 0 ${vars.space['4x']} 0`,
+    // opacity: 50,
+    // transition: 'max-height 0.5s ease-in-out, opacity 0.5s ease-in-out',
   }
 ])
 
 export const showMoreButtonBox = style([
-  centerWrapper,
   plainButton,
   {
-    margin: `${vars.space['1x']} ${vars.space['0.5x']}`,
-    border: `2px solid ${vars.colors.gray}`,
+    margin: `${vars.space['1x']} 0`,
     padding: `${vars.space['0.5x']} ${vars.space['2x']}`,
+    border: `1px solid ${vars.colors.gray}`,
     borderRadius: vars.borderRadius['2x'],
     color: vars.colors.darkGray,
+    fontSize: vars.fontSize['0.5x'],
+    whiteSpace: 'nowrap',
   }
 ])
 
-export const showMoreLineBottomBox = style({
-  width: '100%'
-})
+export const showMoreButtonText = style([
+  centerWrapper,
+  {
+    width: "100%",
+    ":hover": {
+      opacity: '0.7',
+    }
+}])
 
-export const showMoreLineTopBox = style({
-  width: '100%',
-  borderBottom: `2px solid ${vars.colors.gray}`,
-})
-
-export const showMoreLeftBox = style({
-  width: '100%'
-})
-
-export const showMoreRightBox = style({
+export const showMoreBox = style({
   width: '100%'
 })
 
@@ -179,7 +212,6 @@ export const carouselImage = style({
   aspectRatio: "4/3",
   objectFit: 'cover',
 })
-
 
 // Footer.tsx
 

@@ -151,12 +151,6 @@ export const startStreamingRightBox = style([
   }
 ])
 
-export const studioStreamingContainer = style({
-  flexGrow: 1,
-  margin: `50 0 0 0`
-})
-
-
 // StudioStreaming.tsx
 
 export const streamingInfoContainer = style({
@@ -225,7 +219,8 @@ export const studioThumnailResize = style({
   aspectRatio: "16/9",
   width: 200,
   border: `1px solid ${vars.colors.gray}`,
-  borderRadius: vars.borderRadius['1x']
+  borderRadius: vars.borderRadius['1x'],
+  objectFit: 'cover',
 })
 
 

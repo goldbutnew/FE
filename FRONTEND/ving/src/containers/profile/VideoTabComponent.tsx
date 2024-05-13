@@ -10,10 +10,10 @@ import MenuItem from '@/components/DropdownMenu/MenuItem'
 
 export default function VideoTabComponent() {
 
-  const router = useRouter()
   const params = useParams()
-  const { profileData, getUserProfileInfo, doFixVideo, unDoFixVideo, doDeleteVideo } = useProfileStore()
+  const { profileUserName, profileData, getUserProfileInfo, doFixVideo, unDoFixVideo, doDeleteVideo } = useProfileStore()
   const [isOpen, setIsOpen] = useState({})
+  const [loading, setLoading] = useState(false)
 
   const toggleMenu = (videoId:number) => {
     setIsOpen(prev => ({
@@ -57,53 +57,65 @@ export default function VideoTabComponent() {
     },  
   ])
 
-  const togglePin = (videoId:number) => {
-    setVideos(videos.map(video => {
-      // 클릭한 비디오일 경우, 상단 고정 반대로 함.
-      if (video.videoId === videoId) {
-        if (video.isFixed) {
-          unDoFixVideo(videoId)
-          console.log('상단고정해제')
-        } 
-        else {
-          doFixVideo(videoId)
-          console.log('상단 고정')
-        }
-        return { ...video, isFixed: !video.isFixed }
-      }
-      // 클릭한 비디오가 아닐 경우, 만약 상단 고정된 비디오일 경우,
-      // false로 한다.
-      else if (video.isFixed) {
-        console.log('다른 비디오 상단 고정 해제')
-        return { ...video, isFixed: false }
-      }
-      return video
-    }))
-  }
-
-  // const togglePin = async (videoId) => {
-  //   setVideos(prevVideos => {
-  //     const updatedVideos = prevVideos.map(video => {
-  //       if (video.videoId === videoId) {
-  //         video.isFixed ? unDoFixVideo(videoId) : doFixVideo(videoId)
-  //         return { ...video, isFixed: !video.isFixed }
+  // const togglePin = (videoId:number) => {
+  //   setVideos(videos.map(video => {
+  //     // 클릭한 비디오일 경우, 상단 고정 반대로 함.
+  //     if (video.videoId === videoId) {
+  //       if (video.isFixed) {
+  //         unDoFixVideo(videoId)
+  //         console.log('상단고정해제')
+  //       } 
+  //       else {
+  //         doFixVideo(videoId)
+  //         console.log('상단 고정')
   //       }
-  //       return video;
-  //     })
-  //     return updatedVideos.sort((a, b) => b.isFixed - a.isFixed)
-  //   })
+  //       return { ...video, isFixed: !video.isFixed }
+  //     }
+  //     // 클릭한 비디오가 아닐 경우, 만약 상단 고정된 비디오일 경우,
+  //     // false로 한다.
+  //     else if (video.isFixed) {
+  //       console.log('다른 비디오 상단 고정 해제')
+  //       return { ...video, isFixed: false }
+  //     }
+  //     return video
+  //   }))
   // }
 
+  const togglePin = async (videoId:number) => {
+    setVideos(prevVideos => {
+      const updatedVideos = prevVideos.map(video => {
+        if (video.videoId === videoId) {
+          video.isFixed ? unDoFixVideo(videoId) : doFixVideo(videoId)
+          return { ...video, isFixed: !video.isFixed }
+        }
+        return video;
+      })
+      return updatedVideos.sort((a, b) => Number(b.isFixed) - Number(a.isFixed))
+    })
+  }
+
   useEffect(() => {
-    const initData = async (userIdNum:number) => {
-      await getUserProfileInfo(userIdNum)
-      // setLoading(true)
-    }
-    initData(params.userId)
+  //   let encodedUsername = params.username
+  //   encodedUsername = String(encodedUsername).replace(/%3D/g, '')
+  //   const decodedUsername = atob(encodedUsername)
+  //   if (!profileUserName) {
+  //   const initData = async () => {
+  //     await getUserProfileInfo(decodedUsername)
+  //     // setLoading(true)
+  //   }
+  //   initData()
+  // }
     const sortedVideos = [...videos].sort((a, b) => b.isFixed - a.isFixed)
     setVideos(sortedVideos)
   }, [getUserProfileInfo. videos])
 
+  useEffect(() => {
+    if (profileData) {
+      setLoading(true)
+    }
+  }, [profileData])
+  
+  if (loading) {
   return (
     <div>
       {videos && videos.length > 0 ? (
@@ -141,4 +153,5 @@ export default function VideoTabComponent() {
       )}
     </div>
   )
+}
 }

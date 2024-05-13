@@ -10,6 +10,7 @@ import StreamingVideo from '@/components/StreamingVideo'
 import * as styles from '../index.css'
 import useAuthStore from '@/store/AuthStore'
 import { rowWrapper } from '@/styles/wrapper.css'
+import VideoContainer from '@/components/Container/VideoContainer'
 
 
 export default function StudioStreaming() {
@@ -70,7 +71,7 @@ export default function StudioStreaming() {
   }
 
   return (
-    <div className={styles.studioStreamingContainer}>
+    <VideoContainer>
       <div>
         {isOnAir ?
           <StreamingVideo /> 
@@ -133,7 +134,7 @@ export default function StudioStreaming() {
           }
         </div>
       </div>
-    </div>
+    </VideoContainer>
   )
 }
 
