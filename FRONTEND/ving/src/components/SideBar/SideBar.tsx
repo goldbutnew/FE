@@ -1,11 +1,10 @@
-'use client'
+ 'use client'
 
 import React, { useState } from 'react';
 import * as styles from './index.css';
 import { line } from '@/styles/common.css';
 import { betweenWrapper, columnWrapper } from '@/styles/wrapper.css';
 import { LiaDoorOpenSolid, LiaDoorClosedSolid } from "react-icons/lia";
-import RankingUser from './RankingUser';
 import useProfileStore from '@/store/ProfileStore';
 
 interface SidebarProps {
@@ -15,13 +14,18 @@ interface SidebarProps {
   width: number
   hidden?: boolean
   children?: React.ReactNode
+  onToggle?: () => void;
 }
 
-export default function SideBar({ title, side, initOpen, width, hidden, children }: SidebarProps) {
+export default function SideBar({ title, side, initOpen, width, hidden, children, onToggle }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(initOpen);
   const positionStyle = side === 'left' ? `${styles.leftSidebar}` : `${styles.rightSidebar}`;
-  const { setSideRankingIsOpen } = useProfileStore()
-  // 사이드바 너비 스타일 동적 생성
+
+  const toggleSidebar = () => {
+    setIsOpen(prev => !prev);
+    onToggle?.();  // 부모 컴포넌트에 상태 변화를 알림
+  };
+
   const widthStyle = {
     width: isOpen ? `${width}px` : (hidden ? '30px' : '80px'),
   };
@@ -41,7 +45,7 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
                 <LiaDoorClosedSolid
                   size={20}
                   className={styles.toggleButton}
-                  onClick={() => setIsOpen(!isOpen)}
+                  onClick={toggleSidebar}
                 />
               </div>
             </div>
@@ -62,7 +66,6 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
           <hr className={line} />     
           <div className={styles.sidebarContent}>
             {children}
-            {side === 'left' && <RankingUser initOpen={isOpen} />}
           </div>              
         </div>
         : 
@@ -74,7 +77,7 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
             <LiaDoorOpenSolid
               size={20}
               className={styles.toggleButton}
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={toggleSidebar}
             />
           </div>
         ) : (
@@ -87,10 +90,9 @@ export default function SideBar({ title, side, initOpen, width, hidden, children
               className={styles.toggleButton}
               onClick={() => setIsOpen(!isOpen)}
             />
-            <hr className={line} /> 
+            <hr className={line} width="100%" /> 
             <div className={styles.sidebarContent}>
             {children}
-            {side === 'left' && <RankingUser initOpen={false} />}
             </div>    
           </div>
         )}     

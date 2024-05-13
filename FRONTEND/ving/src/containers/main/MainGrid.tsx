@@ -4,18 +4,16 @@ import React, { useState, useEffect } from "react"
 import useAuthStore from "@/store/AuthStore"
 import useStreamingStore from "@/store/StreamingStore"
 
-import Link from 'next/link'
 import * as styles from './index.css'
-import Image from "next/image"
 import ProfileImage from "@/components/ProfileImg"
 import { useRouter } from "next/navigation"
 import { MdExpandLess, MdExpandMore } from "react-icons/md"
-import { GrNext, GrPrevious } from "react-icons/gr"
 
-export default function MainPage() {
+export default function MainGrid() {
   const { userData, code } = useAuthStore()
   const { streamRoomsData, getStreamInfo, setStreamRoomData } = useStreamingStore()
   const router = useRouter()
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const [visibleCount, setVisibleCount] = useState(8)
 
@@ -32,6 +30,7 @@ export default function MainPage() {
     setVisibleCount(prevCount => 
       prevCount >= streamRoomsData.length ? 8 : streamRoomsData.length
     )
+    setIsExpanded(!isExpanded);
   }
 
   // const [currentSlide, setCurrentSlide] = useState(0)
@@ -48,7 +47,6 @@ export default function MainPage() {
 
   return (
     <div className={styles.mainVideoGridBox}>
-      <h3>메인 페이지</h3>
       <h3>{userData.nickname} 님 ving에 오신 걸 환영합니다.</h3>
 
       {/* <div className={styles.carouselContainer}>
@@ -105,22 +103,20 @@ export default function MainPage() {
           )
         })}
       </div>
-        <div className={styles.showMoreBox}>
-          <div className={styles.showMoreLeftBox}>
-            <div className={styles.showMoreLineTopBox}></div>
-            <div className={styles.showMoreLineBottomBox}></div>
-          </div>
-          <div className={styles.showMoreButtonBox} onClick={toggleShowMore}>
-            <button className={styles.showMoreButton}>
-              {visibleCount >= streamRoomsData.length ? "접기 " : "더보기 "} 
-              {visibleCount >= streamRoomsData.length ? <MdExpandLess /> : <MdExpandMore />}
-            </button>
-          </div>
-          <div className={styles.showMoreRightBox}>
-            <div className={styles.showMoreLineTopBox}></div>
-            <div className={styles.showMoreLineBottomBox}></div>
-          </div>
+      <div className={styles.showMoreBox}>
+        <div className={styles.showMoreLeftBox}>
+          <div className={styles.showMoreLineTopBox}></div>
+          <div className={styles.showMoreLineBottomBox}></div>
         </div>
+        <div className={styles.showMoreButtonBox} onClick={toggleShowMore}>
+          {/* {visibleCount >= streamRoomsData.length ? "접기 " : "더보기 "}  */}
+          {visibleCount >= streamRoomsData.length ? <MdExpandLess size={16} /> : <MdExpandMore size={16} />}
+        </div>
+        <div className={styles.showMoreRightBox}>
+          <div className={styles.showMoreLineTopBox}></div>
+          <div className={styles.showMoreLineBottomBox}></div>
+        </div>
+      </div>
     </div>
   )
 }

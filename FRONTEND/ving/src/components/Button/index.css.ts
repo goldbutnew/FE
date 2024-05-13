@@ -3,16 +3,14 @@ import { vars } from '@/styles/vars.css';
 import { style, composeStyles, styleVariants } from '@vanilla-extract/css';
 import { centerWrapper } from '@/styles/wrapper.css';
 import { buttonEffect } from '@/styles/animation.css';
+import { plainButton } from '@/styles/common.css';
 
 export const defaultButton = recipe({
   base: composeStyles(
     buttonEffect,
     centerWrapper,
+    plainButton,
     style({
-      border: 'none',
-      outline: 'none',
-      backgroundColor: 'inherit',
-      cursor: 'pointer',
       borderRadius: vars.borderRadius['1x'],
       padding: `${vars.space['1x']} ${vars.space['1x']}`,
       whiteSpace: 'nowrap',
@@ -23,9 +21,9 @@ export const defaultButton = recipe({
       small: {
         padding: `${vars.space['0.5x']} ${vars.space['1x']}`
       },
-      // medium: {
-      //   padding: `${vars.space['1x']} ${vars.space['2x']}` // 패딩 증가
-      // },
+      medium: {
+        padding: `${vars.space['1x']} ${vars.space['2x']}` // 패딩 증가
+      },
       large: {
         width: '100%',
       }
