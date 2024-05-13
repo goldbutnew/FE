@@ -26,8 +26,9 @@ urlpatterns = [
     path('api/camera_app/', include('camera_app.urls')),
     path('api/statistic/', include('statistic.urls')),
     path('api/ws/', include(routing.websocket_urlpatterns)),
-    
     path('api/media_pipeline/', include('media_pipeline.urls')),
+    path('api/network_throughput/', include('network_throughput.urls')),
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
