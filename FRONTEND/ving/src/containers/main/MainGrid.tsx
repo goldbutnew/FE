@@ -8,6 +8,8 @@ import * as styles from './index.css'
 import ProfileImage from "@/components/ProfileImg"
 import { useRouter } from "next/navigation"
 import { MdExpandLess, MdExpandMore } from "react-icons/md"
+import { line } from "@/styles/common.css"
+import { GrNext, GrPrevious } from 'react-icons/gr'
 
 export default function MainGrid() {
   const { userData, code } = useAuthStore()
@@ -33,17 +35,17 @@ export default function MainGrid() {
     setIsExpanded(!isExpanded);
   }
 
-  // const [currentSlide, setCurrentSlide] = useState(0)
+  const [currentSlide, setCurrentSlide] = useState(0)
   
-  // const moveSlide = (step:number) => {
-  //   setCurrentSlide((prevSlide) => {
-  //     let newIndex = prevSlide + step
-  //     const totalSlides = 3
-  //     if (newIndex < 0) newIndex = totalSlides - 1
-  //     else if (newIndex >= totalSlides) newIndex = 0
-  //     return newIndex
-  //   })
-  // }
+  const moveSlide = (step:number) => {
+    setCurrentSlide((prevSlide) => {
+      let newIndex = prevSlide + step
+      const totalSlides = 3
+      if (newIndex < 0) newIndex = totalSlides - 1
+      else if (newIndex >= totalSlides) newIndex = 0
+      return newIndex
+    })
+  }
 
   return (
     <div className={styles.mainVideoGridBox}>
@@ -74,22 +76,21 @@ export default function MainGrid() {
               className={styles.mainVideoItem} 
               onClick={() => handleStreamDataChange(data)}
             >
-              <img 
-                src={data.thumbnail} 
-                alt="비디오 썸네일"
-                className={styles.imageStyle}
-              />
+              <div className={styles.videoThumnailContaienr}>
+                <div className={styles.LiveTextBadge}>Live</div>
+                <div className={styles.viewerCounterTextBadge}>3898명 시청 중</div>
+                <img 
+                  src={data.thumbnail} 
+                  alt="비디오 썸네일"
+                  className={styles.imageStyle}
+                />
+              </div>
               <div className={styles.roomInfoBox} onClick={() => router.push(`/streaming/${btoa(data.username)}`)}>
                 <ProfileImage 
                   url={data.username} 
                   width={35}
                   alt="streamer profile" 
                 />
-                {/* <Link href={`/streaming/${btoa(data.username)}`}>{data.title}</Link>  */}
-                {/* <div>
-                  <span>{data.title}</span>
-                  <span>뭐니</span>
-                </div> */}
                 <div className={styles.leftBox}>
                   <div className={styles.leftBoxItem}>
                     <div className={styles.streamingTitle}>{data.title}</div>
@@ -103,18 +104,16 @@ export default function MainGrid() {
           )
         })}
       </div>
-      <div className={styles.showMoreBox}>
-        <div className={styles.showMoreLeftBox}>
-          <div className={styles.showMoreLineTopBox}></div>
-          <div className={styles.showMoreLineBottomBox}></div>
+      <div className={styles.showMoreContainer}>
+        <div className={styles.showMoreBox}>
+          <div className={line}></div>
         </div>
         <div className={styles.showMoreButtonBox} onClick={toggleShowMore}>
-          {/* {visibleCount >= streamRoomsData.length ? "접기 " : "더보기 "}  */}
+          {visibleCount >= streamRoomsData.length ? "접기 " : "더보기 "} 
           {visibleCount >= streamRoomsData.length ? <MdExpandLess size={16} /> : <MdExpandMore size={16} />}
         </div>
-        <div className={styles.showMoreRightBox}>
-          <div className={styles.showMoreLineTopBox}></div>
-          <div className={styles.showMoreLineBottomBox}></div>
+        <div className={styles.showMoreBox}>
+          <div className={line}></div>
         </div>
       </div>
     </div>
