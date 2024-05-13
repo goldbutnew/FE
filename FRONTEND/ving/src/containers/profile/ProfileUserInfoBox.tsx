@@ -27,7 +27,7 @@ export default function ProfileUserInfoBox() {
   // 임시 로그인 유저
 
   const [loading, setLoading] = useState(false)
-  const { profileData, profileUserName, getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData, doChangeAlarm } = useProfileStore()
+  const { profileData, profileUserName, getUserProfileInfo, doFollowUser, unDoFollowUser, doChangeAlarm } = useProfileStore()
   const { userData } = useAuthStore()
   const [subscriberCount, setSubscriberCount] = useState(profileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(profileData.isFollowed)

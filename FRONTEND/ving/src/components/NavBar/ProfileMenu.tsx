@@ -9,15 +9,18 @@ import Logout from '@/containers/auth/Logout';
 import useAuthStore from '@/store/AuthStore'
 import ProfileImage from '../ProfileImg';
 import useProfileStore from '@/store/ProfileStore';
+import { useRouter } from 'next/navigation';
 
 export default function ProfileMenu({ onLogout }) {
   const { userData } = useAuthStore()
   const { getLoginUserInfo, loginUserProfileData, getUserProfileInfo } = useProfileStore()
   const username = btoa(userData.username)
+  const router = useRouter()
 
   const handleMyChannel = () => {
     getUserProfileInfo(userData.username)
     console.log(userData.username)
+    router.push(`/profile/${username}`)
   }
 
   useEffect(() => {
@@ -35,11 +38,11 @@ export default function ProfileMenu({ onLogout }) {
             alt="User profile" 
           />
         </button>}>
-        <MenuItem>
-          <Link href={`/setting/${username}`}>세팅</Link>
+        <MenuItem onClick={() => router.push(`/setting/${username}`)}>
+          세팅
         </MenuItem>
-        <MenuItem>
-          <Link href={`/profile/${username}`} onClick={() => handleMyChannel()}>내 채널</Link>
+        <MenuItem onClick={() => handleMyChannel()}>
+          내 채널
         </MenuItem>
         <MenuItem>
           <Logout onLogoutSuccess={onLogout} />

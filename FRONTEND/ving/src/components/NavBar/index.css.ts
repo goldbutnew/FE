@@ -153,6 +153,19 @@ export const searchUserImage = style({
 export const autocompleteItem = style([
   rowWrapper, 
   {
-    margin: `${vars.space['0.5x']} ${vars.space['0.5x']}`
+    margin: `${vars.space['0.5x']} ${vars.space['0.5x']}`,
+    cursor: 'pointer',
+    selectors: {
+      '&:hover': {
+        backgroundColor: vars.colors.lightGray,
+      }
+    }
   }
 ])
+
+export const searchUserName = style({
+  overflow: 'hidden', 
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  margin: `0 0 0 ${vars.space['0.5x']}`,
+})

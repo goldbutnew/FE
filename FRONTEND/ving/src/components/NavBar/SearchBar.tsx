@@ -102,7 +102,7 @@ export default function SearchBar() {
               <div className={styles.autocompleteItem}>
                 {/* 이미지가 null이라서 width를 줄 수 없어 에러가 뜨니 잠시 Image 말고 img 쓰겠슴다 */}
                 <img className={styles.searchUserImage} src={user.thumbnail} alt={user.nickname} />
-                <span>{user.nickname}</span>
+                <span className={styles.searchUserName}>{user.nickname}</span>
               </div>
             </div>
           ))}
