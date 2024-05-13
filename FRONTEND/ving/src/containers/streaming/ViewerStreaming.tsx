@@ -10,6 +10,7 @@ import useProfileStore from "@/store/ProfileStore";
 import ProfileImage from "@/components/ProfileImg";
 import { vars } from "@/styles/vars.css";
 import StreamingVideo from "@/components/StreamingVideo";
+import VideoContainer from "@/components/Container/VideoContainer";
 
 export default function ViewerStreaming() {
 
@@ -71,7 +72,7 @@ export default function ViewerStreaming() {
 
   console.log(streamerProfileData)
   return (
-    <div className={styles.container}>
+    <VideoContainer>
       <div className={styles.videoPlayer}>
         <StreamingVideo />
       </div>
@@ -104,6 +105,6 @@ export default function ViewerStreaming() {
           </div>
         </div>
       </div>
-    </div>
+    </VideoContainer>
   )
 }
