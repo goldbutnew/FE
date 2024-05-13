@@ -6,24 +6,82 @@ import Bumsang from './Bumsang'
 import VideoPlayer from '@/components/StreamingVideo/Player'
 
 export default function Tmp2() {
-  const videoRef = useRef(null);
+  const videoRef:React.RefObject<HTMLVideoElement> = useRef(null);
   const hls:any = useRef(null);
   const [speed, setSpeed] = useState<number>(0)
+  const [chunk, setChunk] = useState<number>(0)
+  const [buffer, setBuffer] = useState<number>(0)
   useEffect(() => {
-    function abrNetwork() {
-      if (hls.current) {
-        const currentLevel = hls.current.currentLevel;
-        const maxLevel = hls.current.levels.length - 1;
-        if (speed > 50000000 && currentLevel < maxLevel) {
-          hls.current.currentLevel = currentLevel + 1;
-          console.log(speed)
-        } else if (speed <= 50000000 && currentLevel > 0) {
-          hls.current.currentLevel = currentLevel - 1;
+
+    function checkBufferStatus() {
+      if (videoRef.current === null) 
+      {return 0;}
+      else
+      {
+        const buffered = videoRef.current.buffered;
+        const currentTime = videoRef.current.currentTime;
+        let bufferEnd : number = 0;
+    
+        // 현재 재생 시간 이후로 버퍼링된 구간을 찾음
+        for (let i = 0; i < buffered.length; i++) {
+            if (buffered.start(i) <= currentTime && currentTime < buffered.end(i)) {
+                bufferEnd = buffered.end(i);
+                break;
+            }
         }
+    
+        // 버퍼링된 길이 계산
+        const bufferedAhead = bufferEnd - currentTime;
+        
+        console.log(`Buffered ahead time: ${bufferedAhead} seconds.`);
+        return bufferedAhead;
+      }
+  }
+  
+    // function abrNetwork() 
+    // {
+    //   if (hls.current) {
+    //     const currentLevel = hls.current.currentLevel;
+    //     const maxLevel = hls.current.levels.length - 1;
+    //     if (speed > 50000000 && currentLevel < maxLevel) 
+    //     {
+    //       hls.current.currentLevel = currentLevel + 1;
+    //       console.log(speed)
+    //     } else if (speed <= 50000000 && currentLevel > 0) 
+    //     {
+    //       hls.current.currentLevel = currentLevel - 1;
+    //     } 
+    //   }
+    // }
+
+    // abrNetwork()
+    setBuffer(checkBufferStatus())
+
+    function definePosition() {
+      if (hls.current === null) return;
+      let evaluateThisRate : number = chunk / speed
+      const currentLevel = hls.current.currentLevel
+      const maxLevel = hls.current.levels.length - 1
+      console.log("지금 청크를 지금 스루풋으로 받는데 걸리는 시간", evaluateThisRate)
+      console.log("buffer에 남아있는 시간", buffer)
+      console.log("지금 내 해상도 레벨", currentLevel)
+      if (evaluateThisRate < buffer && currentLevel < maxLevel)
+      {
+        hls.current.currentLevel = currentLevel + 1;
+        console.log("더 높은 비트레이트로 변경")
+      }
+      else if (evaluateThisRate > buffer && currentLevel > 0)
+      {
+        console.log("뭐야")
+        hls.current.currentLevel = currentLevel - 1;
+        console.log("더 낮은 비트레이트로 변경")
       }
     }
-    abrNetwork();
+    definePosition()
   }, [speed]);
+
+  
+
   useEffect(() => {
     const videoElement:any = videoRef.current;
 
@@ -32,6 +90,16 @@ export default function Tmp2() {
 
     if (Hls.isSupported()) {
       hls.current = new Hls();
+
+
+      hls.current.on(Hls.Events.FRAG_LOADED, function(event:any, data:any) {
+        // console.log("$$모든 데이터들 " +  JSON.stringify(data))
+        // console.log(`$$Loaded fragment: ${data.frag.relurl}`);
+        // console.log(`$$Fragment size: ${data.frag.stats.total} bytes`); // 세그먼트 크기
+        // console.log(`$$Loading duration: ${data.frag.stats.loading.end - data.frag.stats.loading.start} ms`); // 로딩 시간
+        setChunk(data.frag.stats.total)
+      });
+      
 
       hls.current.on(Hls.Events.ERROR, function(event:any, data:any) {
         console.error('Hls.js 오류 발생:', data);

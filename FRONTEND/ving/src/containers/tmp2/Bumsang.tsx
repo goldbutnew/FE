@@ -17,7 +17,6 @@ export default function Bumsang(
 
   async function fetchSegmentWithAxios(url: string): Promise<void> {
     const startTime = performance.now(); // 요청 시작 시간을 기록
-
     try {
         const response = await axios.get(url, { responseType: 'arraybuffer' }); // 세그먼트 요청
         const data = response.data; // `axios`는 `arrayBuffer`를 직접 `data`로 반환합니다.
