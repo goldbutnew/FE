@@ -5,6 +5,8 @@ import { vars } from '@/styles/vars.css'
 import { centerWrapper, columnWrapper, rowWrapper, startWrapper } from '@/styles/wrapper.css'
 import { style } from '@vanilla-extract/css'
 
+// MainGrid.tsx 시작
+
 export const mainVideoGridBox = style({
   width: '100%',
   padding: `0 ${vars.space['2x']} 0 ${vars.space['2x']}`
@@ -74,7 +76,10 @@ export const leftBoxItem = style([
 export const streamingTitle = style([
   bold,
   {
-    fontSize: vars.fontSize['1x']
+    fontSize: vars.fontSize['1x'],
+    overflow: 'hidden', 
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
   }
 ])
 
@@ -179,7 +184,6 @@ export const carouselImage = style({
   aspectRatio: "4/3",
   objectFit: 'cover',
 })
-
 
 // Footer.tsx
 

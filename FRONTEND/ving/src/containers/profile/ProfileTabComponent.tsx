@@ -62,7 +62,6 @@ export default function ProfileTabComponent() {
   const params = useParams()
 
   const { profileData, getUserProfileInfo } = useProfileStore()
-  const profileUserName = params.username
   const [links, setLinks] = useState(profileData.links || [])
   const [loading, setLoading] = useState(false)
 
@@ -89,7 +88,7 @@ export default function ProfileTabComponent() {
             <BsFillPinAngleFill size={24} />
             <span className={styles.profileTabItemTitle}>소셜링크</span>
           </div>
-          {links.map((link) => (
+          {links.map((link:SocialLinkProps) => (
             <SocialLink key={link.title} {...link} />
           ))}
       </Card>
