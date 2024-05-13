@@ -157,8 +157,6 @@ public class SubscriptionController {
         }
 
         SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(streamer, follower);
-
-
         subscriptionModel.setNotification(Math.abs(subscriptionModel.getNotification() - 1));
         subscriptionService.create(subscriptionModel);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
