@@ -34,7 +34,6 @@ export default function Ranking() {
     if (currentTopViewersData) {
       setUsers(currentTopViewersData || [])
     }
-    console.log('뭔데---------')
     setLoading(true)
   }, [currentTopViewersData])
   
@@ -51,29 +50,22 @@ export default function Ranking() {
     <SideBar
       title="랭킹"
       side="left"
-      initOpen={isOpen}
+      initOpen={true}setO
+      isOpen={isOpen}
       width={200}
       onToggle={() => setIsOpen(!isOpen)}
     >
-      <div className={isOpen ? styles.openRankingList : styles.closeRankingList}>
+      <div className={styles.rankingList}>
         {users.map((user: User) => (
           <div key={user.username} onClick={() => moveSearchUser(user.username)}>
             {isOpen ? (
-              <div className={styles.rankingListItem}>
-                <ProfileImage 
-                  url={user.thumbnail} 
-                  width={45}
-                  alt="User profile" 
-                />
+              <div className={styles.openRankingListItem}>
+                <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
                 <div className={styles.rankingUserName}>{user.nickname}</div>
               </div>
             ) : (
               <div className={styles.closeRankingListItem}>
-                <ProfileImage 
-                  url={user.thumbnail} 
-                  width={45}
-                  alt="User profile"
-                />
+                <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
               </div>
             )}
           </div>
