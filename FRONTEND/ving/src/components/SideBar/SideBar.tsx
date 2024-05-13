@@ -26,7 +26,7 @@ export default function SideBar({ title, side, isOpen, initOpen, width, hidden, 
   };
 
   const widthStyle = {
-    width: isOpen ? `${width}px` : (hidden ? '30px' : '80px'),
+    width: isOpen ? `${width}px` : (hidden ? '28px' : '68px'),
   };
 
   return (

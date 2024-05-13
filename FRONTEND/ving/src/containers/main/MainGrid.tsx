@@ -109,8 +109,10 @@ export default function MainGrid() {
           <div className={line}></div>
         </div>
         <div className={styles.showMoreButtonBox} onClick={toggleShowMore}>
-          {visibleCount >= streamRoomsData.length ? "접기 " : "더보기 "} 
-          {visibleCount >= streamRoomsData.length ? <MdExpandLess size={16} /> : <MdExpandMore size={16} />}
+          <div className={styles.showMoreButtonText}>
+            {visibleCount >= streamRoomsData.length ? "접기 " : "더보기 "} 
+            {visibleCount >= streamRoomsData.length ? <MdExpandLess size={16} /> : <MdExpandMore size={16} />}
+          </div>
         </div>
         <div className={styles.showMoreBox}>
           <div className={line}></div>

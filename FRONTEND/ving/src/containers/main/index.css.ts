@@ -123,11 +123,10 @@ export const showMoreContainer= style([
 ])
 
 export const showMoreButtonBox = style([
-  centerWrapper,
   plainButton,
   {
-    margin: `${vars.space['1x']} ${vars.space['0.5x']}`,
-    border: `2px solid ${vars.colors.gray}`,
+    margin: `${vars.space['1x']} 0`,
+    border: `1px solid ${vars.colors.gray}`,
     padding: `${vars.space['0.5x']} ${vars.space['2x']}`,
     borderRadius: vars.borderRadius['2x'],
     color: vars.colors.darkGray,
@@ -135,6 +134,15 @@ export const showMoreButtonBox = style([
     whiteSpace: 'nowrap',
   }
 ])
+
+export const showMoreButtonText = style([
+  centerWrapper,
+  {
+    width: "100%",
+    ":hover": {
+      opacity: '0.7',
+    }
+}])
 
 export const showMoreBox = style({
   width: '100%'

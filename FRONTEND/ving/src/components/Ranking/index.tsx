@@ -50,7 +50,7 @@ export default function Ranking() {
     <SideBar
       title="랭킹"
       side="left"
-      initOpen={true}setO
+      initOpen={true}
       isOpen={isOpen}
       width={200}
       onToggle={() => setIsOpen(!isOpen)}

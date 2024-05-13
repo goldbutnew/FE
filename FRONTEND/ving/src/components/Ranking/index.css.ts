@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '../../styles/vars.css'
 import { columnWrapper, rowWrapper } from '@/styles/wrapper.css'
+import { plainButton } from '@/styles/common.css'
 
 export const rankingList = style({
   display: 'flex',
@@ -17,18 +18,25 @@ export const rankingList = style({
 })
 
 export const openRankingListItem = style([
+  plainButton,
   rowWrapper, 
   {
     margin: `${vars.space['0.5x']} 0`,
     width: 184,
+    padding: vars.space['0.5x'],
+    ':hover': {
+      backgroundColor: vars.colors.lightGray,
+      // borderRadius: vars.borderRadius['0.5x']
+    },
   }
 ])
 
 export const closeRankingListItem = style([
+  plainButton,
   rowWrapper,
   {
     margin: `${vars.space['0.5x']} 0`,
-    width: '100%'
+    width: '100%',
   }
 ])
 
