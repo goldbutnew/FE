@@ -15,6 +15,7 @@ import { MdOutlineFullscreenExit } from "react-icons/md"
 import { IoIosSettings } from "react-icons/io"
 import { MdPictureInPictureAlt } from "react-icons/md"
 
+
 const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
   const [ isPlaying, setIsPlaying ] = useState(true)
   const [ volume, setVolume ] = useState(0)
