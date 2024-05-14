@@ -9,7 +9,7 @@ import { style } from '@vanilla-extract/css'
 
 export const mainVideoGridBox = style({
   width: '100%',
-  padding: `0 ${vars.space['2x']} 0 ${vars.space['2x']}`
+  padding: `${vars.space['6x']} ${vars.space['2x']} 0 ${vars.space['2x']}`
 })
 
 export const mainVideoGrid = style({
@@ -24,7 +24,7 @@ export const mainVideoItem = style([
 ])
 
 
-export const videoThumnailContaienr = style({
+export const videoThumnailContainer = style({
   position: 'relative',
   // selectors: {
   //   '&:hover': {
@@ -234,4 +234,74 @@ export const contactEmail = style({
   ':hover': {
     opacity: '0.7',
   }
+})
+
+// MainLoading.tsx
+
+export const loadingHeader = style({
+  height: 24,
+  width: 200,
+  backgroundColor: vars.colors.lightGray,
+  margin: `${vars.space['6x']} 0 0 0`,
+})
+
+export const loadingGrid = style({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))',
+  gap: 16,
+})
+
+export const loadingCard = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 8,
+  padding: `${vars.space['2x']} 0 0 0`,
+  borderRadius: vars.borderRadius['1x']
+})
+
+export const loadingThumbnail = style({
+  width: '100%',
+  aspectRatio: '16/9',
+  height: '100%',
+  backgroundColor: vars.colors.lightGray,
+  borderRadius: vars.borderRadius['1x']
+})
+
+export const loadingProfileContainer = style({
+  display: 'flex',
+  flexDirection: 'row',
+  width: '100%',
+})
+
+export const loadingProfileImageBox = style({
+  width: 45,
+  height: 45,
+})
+
+export const loadingProfileImage = style({
+  width: 40,
+  height: 40,
+  backgroundColor: vars.colors.lightGray,
+  borderRadius: vars.borderRadius.full
+})
+
+export const loadingProfileInfoBox = style({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100%',
+  height: '100%',
+  padding: `0 0 0 ${vars.space['0.5x']}`,
+  gap: vars.space['1x']
+})
+
+export const loadingTextPlaceholder = style({
+  height: 16,
+  width: '100%',
+  backgroundColor: vars.colors.lightGray,
+})
+
+export const loadingTextSmall = style({
+  height: 12,
+  width: '60%',
+  backgroundColor: vars.colors.lightGray,
 })
