@@ -7,13 +7,13 @@ import * as styles from './index.css'
 export default function SearchNone() {
 
   const searchParams = useSearchParams()
-  const message = searchParams.get('message')
+  const searchQeury = searchParams.get('searchQeury')
 
   return (
     <Container>
       <div className={styles.searchNoneBox}>
         <div className={styles.searchNoneTitle}>
-          {`'${message}'에 대한 검색 결과가 없습니다.`}
+          {`'${searchQeury}'에 대한 검색 결과가 없습니다.`}
           <div className={styles.searchConform}>
             검색어를 확인해주세요.
           </div>

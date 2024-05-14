@@ -122,7 +122,7 @@ export default function ViewerStreaming() {
             )}
           </div>
           <div className={styles.rightBoxItme}>
-            <div className={styles.stremingInfo}>{streamRoomData.viewers}명 시청 중 {timeElapsed}스트리밍 중</div>
+            <span className={styles.stremingInfo}>{streamRoomData.viewers}명 시청 중 {timeElapsed}스트리밍 중</span>
           </div>
         </div>
       </div>
