@@ -115,7 +115,11 @@ export const streamingTitle = style([
 ])
 
 export const streamerName = style({
-  fontSize: vars.fontSize['0.5x']
+  fontSize: vars.fontSize['0.5x'],
+  ':hover': {
+    backgroundColor: vars.colors.gray,
+    borderRadius: vars.borderRadius['0.5x']
+  },
 })
 
 export const showMoreContainer= style([
