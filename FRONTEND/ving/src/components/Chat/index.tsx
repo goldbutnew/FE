@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import SockJS from 'sockjs-client'
 import { Stomp, StompSubscription, CompatClient } from '@stomp/stompjs'
+import { Stomp, StompSubscription, CompatClient } from '@stomp/stompjs'
 import SideBar from "../SideBar/SideBar"
 import DefaultInput from "../Input/DefaultInput"
 import SmallButton from "../Button/SmallButton"
@@ -37,14 +38,7 @@ export default function Chat() {
   const [nicknameColors, setNicknameColors] = useState(new Map());
   const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
   const [isFollowed, setIsFollowed] = useState(false)
-  
-
-  const getRandomColor = () => {
-    const hue = Math.floor(Math.random() * 360)
-    const saturation = Math.floor(Math.random() * 10) + 70
-    const lightness = Math.floor(Math.random() * 20) + 70
-    return `hsl(${hue}, ${saturation}%, ${lightness}%)`
-  }
+  const { open, close, isOpen } = useModal()
 
   const getNicknameColor = (nickname: string) => {
     if (nicknameColors.has(nickname)) {
