@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import SockJS from 'sockjs-client'
 import { Stomp, StompSubscription, CompatClient } from '@stomp/stompjs'
-import { Stomp, StompSubscription, CompatClient } from '@stomp/stompjs'
 import SideBar from "../SideBar/SideBar"
 import DefaultInput from "../Input/DefaultInput"
 import SmallButton from "../Button/SmallButton"
@@ -39,6 +38,8 @@ export default function Chat() {
   const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
   const [isFollowed, setIsFollowed] = useState(false)
   const { open, close, isOpen } = useModal()
+  const stompSubscription  = useRef<StompSubscription | null>(null)
+  const stompClient = useRef<CompatClient | null>(null)
 
   const getNicknameColor = (nickname: string) => {
     if (nicknameColors.has(nickname)) {
@@ -87,8 +88,7 @@ export default function Chat() {
     }  
 
     console.log("WebSocket 연결 시도 중...");
-    // const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
-    const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
+    const client = Stomp.over(() => new SockJS('https://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
     client.debug = function(str) {
