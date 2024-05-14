@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.db.models import Count
-from .models import Viewer,User,StreamingRoom,Chatting,FixedChatting,RecordedVideo
+from .models import Viewer,User,StreamingRoom,Chatting,FixedChatting,RecordedVideo,Viewer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status

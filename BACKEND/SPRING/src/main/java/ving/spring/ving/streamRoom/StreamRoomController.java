@@ -146,6 +146,7 @@ public class StreamRoomController {
         }
     }
 
+
     @GetMapping("/getOnAir")
     ResponseEntity<?> getOnAir(@RequestParam String username)
     {
@@ -162,6 +163,7 @@ public class StreamRoomController {
                     .createdAt(dateTimeFormmer.transform(streamRoomModel.getCreatedAt()))
                     .build();
             return ResponseEntity.ok(videoEntity);
+
         } catch (Exception e)
         {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -183,6 +185,7 @@ public class StreamRoomController {
                                 .title(streamRoomModel.getRoomName())
                                 .username(streamRoomModel.getStreamer().getUserUsername())
                                 .viewers(roomModel.getViewers())
+                                .nickname(streamRoomModel.getStreamer().getUserNickname())
                                 .thumbnail(streamRoomModel.getRoomThumbnail())
                                 .streamerThumbnail(streamRoomModel.getStreamer().getUserPhoto())
                                 .createdAt(roomModel.getCreatedAt())
@@ -191,7 +194,8 @@ public class StreamRoomController {
             }
             else
             {
-                streamRooms.add(
+                streamRooms.add
+                (
                         StreamRoomDto.StreamRoom.builder()
                                 .title(streamRoomModel.getRoomName())
                                 .username(streamRoomModel.getStreamer().getUserUsername())

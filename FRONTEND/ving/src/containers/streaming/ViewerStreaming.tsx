@@ -70,7 +70,28 @@ export default function ViewerStreaming() {
     }
   }, [streamerProfileData])
 
-  console.log(streamerProfileData)
+  const [timeElapsed, setTimeElapsed] = useState("")
+
+  useEffect(() => {
+    const calculateTimeElapsed = () => {
+      const createdTime = new Date(streamRoomData.createdAt).getTime()
+      const now = new Date().getTime()
+      const secondsDifference = Math.floor((now - createdTime) / 1000)
+      
+      const hours = Math.floor(secondsDifference / 3600).toString().padStart(2, '0')
+      const minutes = Math.floor((secondsDifference % 3600) / 60).toString().padStart(2, '0')
+      const seconds = (secondsDifference % 60).toString().padStart(2, '0')
+
+      const formattedTime = `${hours}:${minutes}:${seconds}`
+      setTimeElapsed(formattedTime)
+    }
+
+    calculateTimeElapsed()
+    const intervalId = setInterval(calculateTimeElapsed, 1000)
+
+    return () => clearInterval(intervalId)
+  }, [streamRoomData.createdAt])
+
   return (
     <VideoContainer>
       <div className={styles.videoPlayer}>
@@ -101,7 +122,7 @@ export default function ViewerStreaming() {
             )}
           </div>
           <div className={styles.rightBoxItme}>
-            <div className={styles.stremingInfo}>1,549명 시청 중 03:43:14 스트리밍 중</div>
+            <span className={styles.stremingInfo}>{streamRoomData.viewers}명 시청 중 {timeElapsed}스트리밍 중</span>
           </div>
         </div>
       </div>

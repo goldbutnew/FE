@@ -53,8 +53,8 @@ public class SubscriptionController {
 
 
         subscriptionService.create(subscriptionModel);
-
-
+        streamer.setUserSubscriberCount(streamer.getUserSubscriberCount() + 1);
+        userService.save(streamer);
         return ResponseEntity.ok(
                 SubscriptionDto.SubscriptResponse.builder()
                         .username(subscriptRequest.getUsername())
@@ -140,8 +140,9 @@ public class SubscriptionController {
             return ResponseEntity.badRequest().body("나를 팔로우 할 수 없음");
         }
 
-
         subscriptionService.delete(streamer, follower);
+        streamer.setUserSubscriberCount(streamer.getUserSubscriberCount() - 1);
+        userService.save(streamer);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 

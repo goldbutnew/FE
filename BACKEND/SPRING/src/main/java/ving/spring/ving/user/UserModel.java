@@ -21,13 +21,8 @@ public class UserModel {
     private String userUsername;
     private String userPassword;
     private String userNickname;
-
-
     private Integer userIsregistered;
-
     private String userIntroduction;
-
-
     private Integer userDonated;
     private Integer userChoco;
     private Integer userSubscriberCount;
