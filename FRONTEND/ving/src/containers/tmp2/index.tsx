@@ -1,13 +1,14 @@
 'use client'
 
-import { useEffect, useRef, useState, createContext, useContext } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Hls, { Level } from 'hls.js'
 import Bumsang from './Bumsang'
 import VideoPlayer from '@/components/StreamingVideo/Player'
 
+
 export default function Tmp2() {
-  const videoRef:React.RefObject<HTMLVideoElement> = useRef(null);
-  const hls:any = useRef(null);
+  const videoRef:React.RefObject<HTMLVideoElement> = useRef(null)
+  const hls:any = useRef(null)
   const [speed, setSpeed] = useState<number>(0)
   const [chunk, setChunk] = useState<number>(0)
   const [buffer, setBuffer] = useState<number>(0)
@@ -15,50 +16,34 @@ export default function Tmp2() {
 
     function checkBufferStatus() {
       if (videoRef.current === null) 
-      {return 0;}
+      {return 0}
       else
       {
-        const buffered = videoRef.current.buffered;
-        const currentTime = videoRef.current.currentTime;
-        let bufferEnd : number = 0;
+        const buffered = videoRef.current.buffered
+        const currentTime = videoRef.current.currentTime
+        let bufferEnd : number = 0
     
         // 현재 재생 시간 이후로 버퍼링된 구간을 찾음
         for (let i = 0; i < buffered.length; i++) {
             if (buffered.start(i) <= currentTime && currentTime < buffered.end(i)) {
-                bufferEnd = buffered.end(i);
-                break;
+                bufferEnd = buffered.end(i)
+                break
             }
         }
     
         // 버퍼링된 길이 계산
-        const bufferedAhead = bufferEnd - currentTime;
+        const bufferedAhead = bufferEnd - currentTime
         
-        console.log(`Buffered ahead time: ${bufferedAhead} seconds.`);
-        return bufferedAhead;
+        console.log(`Buffered ahead time: ${bufferedAhead} seconds.`)
+        return bufferedAhead
       }
   }
-  
-    // function abrNetwork() 
-    // {
-    //   if (hls.current) {
-    //     const currentLevel = hls.current.currentLevel;
-    //     const maxLevel = hls.current.levels.length - 1;
-    //     if (speed > 50000000 && currentLevel < maxLevel) 
-    //     {
-    //       hls.current.currentLevel = currentLevel + 1;
-    //       console.log(speed)
-    //     } else if (speed <= 50000000 && currentLevel > 0) 
-    //     {
-    //       hls.current.currentLevel = currentLevel - 1;
-    //     } 
-    //   }
-    // }
 
-    // abrNetwork()
+
     setBuffer(checkBufferStatus())
 
     function definePosition() {
-      if (hls.current === null) return;
+      if (hls.current === null) return
       let evaluateThisRate : number = chunk / speed
       const currentLevel = hls.current.currentLevel
       const maxLevel = hls.current.levels.length - 1
@@ -67,54 +52,40 @@ export default function Tmp2() {
       console.log("지금 내 해상도 레벨", currentLevel)
       if (evaluateThisRate < buffer && currentLevel < maxLevel)
       {
-        hls.current.currentLevel = currentLevel + 1;
+        hls.current.currentLevel = currentLevel + 1
         console.log("더 높은 비트레이트로 변경")
       }
       else if (evaluateThisRate > buffer && currentLevel > 0)
       {
         console.log("뭐야")
-        hls.current.currentLevel = currentLevel - 1;
+        hls.current.currentLevel = currentLevel - 1
         console.log("더 낮은 비트레이트로 변경")
       }
     }
     definePosition()
-  }, [speed]);
+  }, [speed])
 
   
 
   useEffect(() => {
-    const videoElement:any = videoRef.current;
-
-
-    
+    const videoElement:any = videoRef.current
 
     if (Hls.isSupported()) {
-      hls.current = new Hls();
+      hls.current = new Hls()
 
 
       hls.current.on(Hls.Events.FRAG_LOADED, function(event:any, data:any) {
-        // console.log("$$모든 데이터들 " +  JSON.stringify(data))
-        // console.log(`$$Loaded fragment: ${data.frag.relurl}`);
-        // console.log(`$$Fragment size: ${data.frag.stats.total} bytes`); // 세그먼트 크기
-        // console.log(`$$Loading duration: ${data.frag.stats.loading.end - data.frag.stats.loading.start} ms`); // 로딩 시간
         setChunk(data.frag.stats.total)
-      });
+      })
       
 
       hls.current.on(Hls.Events.ERROR, function(event:any, data:any) {
-        console.error('Hls.js 오류 발생:', data);
-      });
+        console.error('Hls.js 오류 발생:', data)
+      })
       
-      // hls.current.loadSource(`https://vingving.s3.ap-northeast-2.amazonaws.com/qudtls_480p/qudtls_480p.m3u8`);
-      // hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/qudtls_720p.m3u8');
-      // hls.current.loadSource('file://C:/Users/SSAFY/Downloads/GOODCODE/S10P31A203/BACKEND/STATIC/master.m3u8');
-      hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/master.m3u8');
+      hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/master.m3u8')
       hls.current.on(Hls.Events.MANIFEST_LOADED, (event:any, data:any) => {
         console.log("모든 데이터들 " +  JSON.stringify(data))
-        // const audioStreams = data.levels.filter(level => level.audioCodec || (level.codecs && level.codecs.startsWith('mp4a')));
-        // hls.current.addAudioTracks(audioStreams)
-        // hls.current.audioTracks = audioStreams
-        // console.log("오디오 트랙들 : " + JSON.stringify(audioStreams))
         console.log("비디오 트랙들 : " + hls.current.levels )
 
         for (const level in hls.current.levels )
@@ -123,23 +94,23 @@ export default function Tmp2() {
         }
         if (hls.current.audioTracks.length > 0) {
           console.log("오디오 발견")
-          hls.current.audioTrack = 0; // 첫 번째 오디오 트랙 선택
+          hls.current.audioTrack = 0 // 첫 번째 오디오 트랙 선택
         } else
         {
           console.log("오디오 트랙 발견 못함")
         }
       })
 
-      hls.current.attachMedia(videoElement);
+      hls.current.attachMedia(videoElement)
       
       hls.current.on(Hls.Events.MANIFEST_PARSED, function() {
-        videoElement.play();
-      });
+        videoElement.play()
+      })
     }
   }, [])
   return (
     <div>
-      <Bumsang  speed ={speed} setSpeed = {setSpeed}  />
+      <Bumsang setSpeed = {setSpeed} />
       <video
         ref={videoRef}
         autoPlay={true}
@@ -163,4 +134,9 @@ export default function Tmp2() {
     </div>
   )
 }
+
+
+
+
+
 
