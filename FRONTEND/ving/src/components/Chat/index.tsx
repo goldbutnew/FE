@@ -66,19 +66,22 @@ export default function Chat() {
     return () => clearInterval(interval);
   }, [getStreamerProfileInfo, streamRoomData.username, streamerProfileData.isFollowed]);
   
+
   const roomId = btoa(streamRoomData.username);
 
+  
   const onMessageReceived = (msg) => {
     const newMessage = JSON.parse(msg.body);
-    console.log(newMessage);
+    // console.log(newMessage);
+    console.log("Received new message:", newMessage); // 로그 추가
     addMessage(newMessage);
   };
 
   const connect = () => {
     if (connected) {
-      console.log("이미 WebSocket에 연결되어 있습니다.");
+      console.log("이미 WebSocket에 연결되어 있습니다. 연결 상태:", connected);
       return; // 이미 연결된 경우 추가 연결 방지
-    }
+    }  
 
     console.log("WebSocket 연결 시도 중...");
     const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
@@ -95,6 +98,7 @@ export default function Chat() {
         id: `sub-${roomId}`,
         ack: 'client'
       });
+      console.log(`구독 완료: /sub/channel/${roomId}`);
     };
 
     client.onDisconnect = () => {
@@ -147,7 +151,7 @@ const handleSendMessage = (event) => {
       destination: `/pub/channel/${roomId}`,
       body: JSON.stringify(message)
     });
-    console.log("메시지 형식:", message);
+    // console.log("메시지 형식:", message);
     setMessageInput('');
   } else {
     console.log("아직 소켓 연결 안 됨");
@@ -178,6 +182,7 @@ const handleSendMessage = (event) => {
       console.error("프로필 정보 가져오기 실패", error);
     }
   };
+  
 
   return (
     <SideBar 
