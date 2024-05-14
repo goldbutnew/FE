@@ -36,17 +36,16 @@ export default function Chat() {
   const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
   const [isFollowed, setIsFollowed] = useState(false)
   const { open, close, isOpen } = useModal()
-=========
   // const [stompSubscription, setStompSubscription] = useState<StompSubscription | null | void >(null)
   const stompSubscription  = useRef<StompSubscription | null>(null)
   const stompClient = useRef<CompatClient | null>(null)
+
   const getRandomColor = () => {
     const hue = Math.floor(Math.random() * 360)
     const saturation = Math.floor(Math.random() * 10) + 70
     const lightness = Math.floor(Math.random() * 20) + 70
     return `hsl(${hue}, ${saturation}%, ${lightness}%)`
   }
->>>>>>>>> Temporary merge branch 2
 
   const getNicknameColor = (nickname: string) => {
     if (nicknameColors.has(nickname)) {
