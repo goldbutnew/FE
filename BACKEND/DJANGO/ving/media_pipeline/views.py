@@ -12,7 +12,7 @@ from django.conf import settings
 import os
 from watchdog.observers import Observer
 from pathlib import Path
-
+from threading import Thread
 # FFM_BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent.parent.parent.parent.parent
 # FFMPEG_ROOT = FFM_BASE_DIR
 
@@ -114,21 +114,39 @@ class S3Uploader(FileSystemEventHandler):
         self.s3.upload_file(file_path, self.bucket_name, s3_key)
         print(f"Uploaded {file_name} to S3 successfully.")
 
+# @shared_task
+# def start_monitoring(directory_path, bucket_name, s3_address):
+#     base_dir = Path(directory_path)
+#     print('Starting monitoring')
+#     event_handler = S3Uploader(bucket_name, s3_address, base_dir)
+#     observer = Observer()
+#     observer.schedule(event_handler, directory_path, recursive=True)
+#     observer.start()
+#     try:
+#         while True:
+#             observer.join(1)
+#     except KeyboardInterrupt:
+#         observer.stop()
+#     observer.join()
+
 @shared_task
 def start_monitoring(directory_path, bucket_name, s3_address):
-    base_dir = Path(directory_path)
-    print('Starting monitoring')
-    event_handler = S3Uploader(bucket_name, s3_address, base_dir)
-    observer = Observer()
-    observer.schedule(event_handler, directory_path, recursive=True)
-    observer.start()
-    try:
-        while True:
-            observer.join(1)
-    except KeyboardInterrupt:
-        observer.stop()
-    observer.join()
+    def run_observer():
+        base_dir = Path(directory_path)
+        event_handler = S3Uploader(bucket_name, s3_address, base_dir)
+        observer = Observer()
+        observer.schedule(event_handler, directory_path, recursive=True)
+        observer.start()
+        try:
+            while True:
+                observer.join(1)
+        except KeyboardInterrupt:
+            observer.stop()
+        observer.join()
 
+    thread = Thread(target=run_observer)
+    thread.start()
+    print('Monitoring task started on a new thread.')
 # Start the monitoring
 start_monitoring(FFMPEG_ROOT/'files', 'vingving', 'files/')
 def s3_connection():
