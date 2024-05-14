@@ -85,7 +85,7 @@ export default function ProfileTabComponent() {
     <div>
       <Card>
           <div className={styles.profileTabItemTitleBox}>
-            <BsFillPinAngleFill size={24} />
+            <BsFillPinAngleFill size={16} />
             <span className={styles.profileTabItemTitle}>소셜링크</span>
           </div>
           {links.map((link:SocialLinkProps) => (
@@ -95,7 +95,7 @@ export default function ProfileTabComponent() {
 
       <Card>
         <div className={styles.profileTabItemTitleBox}>
-          <BsFillPinAngleFill size={24} />
+          <BsFillPinAngleFill size={16} />
           <span className={styles.profileTabItemTitle}>대표영상</span>
         </div>
         {representativeVideoInfo.map(video => (
