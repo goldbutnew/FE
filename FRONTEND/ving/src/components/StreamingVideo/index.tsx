@@ -1,17 +1,23 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { MutableRefObject, useEffect, useRef, useState } from 'react'
 import Hls from 'hls.js'
 import useStreamingStore from '@/store/StreamingStore'
 
 import VideoPlayer from '@/components/StreamingVideo/Player'
+import Abs from './Abs'
 import * as styles from './index.css'
+
 
 export default function StreamingVideo() {
   const { isPlaying, setIsPlaying } = useStreamingStore()
-  const [ resolution, setResolution ] = useState(0)
-  const videoRef:React.RefObject<HTMLVideoElement> = useRef(null)
-  const containerRef = useRef(null)
+  const [ resolution, setResolution ] = useState<'auto' | number>('auto')
+  const [ speed, setSpeed ] = useState<number>(0)
+  const [ chunk, setChunk ] = useState(0)
+  const [ buffer, setBuffer ] = useState(0)
+  const videoRef: React.RefObject<HTMLVideoElement> = useRef(null)
+  const containerRef: MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null)
+  const hls = useRef<Hls | null>(null)
 
   const syncPlayPause = () => {
     const videoElement = videoRef.current
@@ -30,32 +36,73 @@ export default function StreamingVideo() {
 
   useEffect(() => {
     const videoElement = videoRef.current
+    if (!videoElement) return
 
-    const setupHls = (element, src) => {
-      if (Hls.isSupported() && element) {
-        const hls = new Hls({
-          liveSyncDurationCount: 2,
-          maxLatency: 2,
-          highLatency: 3
-      })
-        
-        console.log(src)
+    const checkBufferStatus = () => {
+      if (videoRef.current === null) {
+        return 0
+      } else {
+        const buffered = videoRef.current.buffered
+        const currentTime = videoRef.current.currentTime
+        let bufferEnd = 0
 
-        hls.loadSource(src)
-        hls.attachMedia(element)
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          element.play()
-        })
-        return hls
+        for (let i = 0; i < buffered.length; i++) {
+          if (buffered.start(i) <= currentTime && currentTime < buffered.end(i)) {
+            bufferEnd = buffered.end(i)
+            break
+          }
+        }
+
+        const bufferedAhead = bufferEnd - currentTime
+        console.log(`Buffered ahead time: ${bufferedAhead} seconds.`)
+        return bufferedAhead
       }
     }
 
-    const hlsVideo = setupHls(videoElement, `https://vingving.s3.ap-northeast-2.amazonaws.com/master.m3u8`)
+    setBuffer(checkBufferStatus())
 
-    return () => {
-      if (hlsVideo) hlsVideo.destroy()
+    const definePosition = () => {
+      if (!hls.current) return
+      let evaluateThisRate = chunk / speed
+      const currentLevel = hls.current.currentLevel
+      const maxLevel = hls.current.levels.length - 1
+      if (evaluateThisRate < buffer && currentLevel < maxLevel) {
+        hls.current.currentLevel = currentLevel + 1
+      } else if (evaluateThisRate > buffer && currentLevel > 0) {
+        hls.current.currentLevel = currentLevel - 1
+      }
     }
-  }, [resolution])
+
+    if (resolution === 'auto') {
+      definePosition()
+    } else {
+      if (hls.current) {
+        hls.current.currentLevel = resolution
+      }
+    }
+
+    if (Hls.isSupported()) {
+      hls.current = new Hls()
+      hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/master.m3u8')
+      hls.current.attachMedia(videoElement)
+      hls.current.on(Hls.Events.MANIFEST_PARSED, () => videoElement.play())
+
+      hls.current.on(Hls.Events.FRAG_LOADED, (event, data) => {
+        setChunk(data.frag.stats.total)
+      })
+
+      hls.current.on(Hls.Events.ERROR, (event, data) => {
+        console.error('Hls.js 오류 발생:', data)
+      })
+
+      return () => {
+        if (hls.current) {
+          hls.current.destroy()
+          hls.current = null
+        }
+      }
+    }
+  }, [resolution, speed])
 
   return (
     <div className={styles.videoResize} ref={containerRef}>
@@ -68,7 +115,8 @@ export default function StreamingVideo() {
         onPause={() => setIsPlaying(false)}
       />
 
-      <VideoPlayer containerRef={containerRef} videoRef={videoRef} setResolution={setResolution}/>
+      <VideoPlayer containerRef={containerRef} videoRef={videoRef} setResolution={setResolution} />
+      {/* <Abs setSpeed = {setSpeed}/> */}
     </div>
   )
 }
