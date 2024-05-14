@@ -30,7 +30,8 @@ export default function StudioChat() {
   const { userData } = useAuthStore()
   const { streamRoomData } = useStreamingStore()
   const { getChatProfile, selectedUserData } = useChatStore()
-  const [stompClient, setStompClient] = useState(null);
+  const stompSubscription  = useRef<StompSubscription | null>(null)
+  const stompClient = useRef<CompatClient | null>(null)
   const [connected, setConnected] = useState(false);
   const messages = useChatStore(state => state.messages)
   const addMessage = useChatStore(state => state.addMessage)
@@ -59,8 +60,14 @@ export default function StudioChat() {
   };
 
   const connect = () => {
+    if (connected) {
+      console.log("이미 WebSocket에 연결되어 있습니다. 연결 상태:", connected);
+      return; // 이미 연결된 경우 추가 연결 방지
+    }  
+
     console.log("WebSocket 연결 시도 중...");
-    const client = Stomp.over(() => new SockJS('https://k10a203.p.ssafy.io/ws'));
+    const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
+    // const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
     client.debug = function(str) {
@@ -81,21 +88,51 @@ export default function StudioChat() {
       setConnected(false);
     };
 
+    // client.activate();
+    // setStompClient(client);
     client.activate();
     stompClient.current = client;
     // setStompClient(client);
   };
+
+  
+  // useEffect(() => {
+  //   connect();
+  //   return () => {
+  //     if (stompClient) {
+  //       console.log("WebSocket 연결 해제 시도 중...");
+  //       stompClient.deactivate();
+  //     }
+  //   }
+  // }, []);
+
   
   useEffect(() => {
-    connect();
-    return () => {
-      if (stompClient) {
+    function unSub() {
+      console.log("WebSocket 연결 해제 시도 중...");
+      console.log(stompSubscription)
+      if (stompSubscription.current !== null)
+      {
+        stompSubscription.current.unsubscribe()
+      }
+      else
+      {
+        console.log("사실 난 없는사람이야", stompSubscription.current)
+      }
+      if (stompClient.current) {
+        // stompClient.unsubscribe(stompSubscription)
         console.log("WebSocket 연결 해제 시도 중...");
-        stompClient.deactivate();
+        stompClient.current.deactivate();
       }
     }
-  }, []);
+    
+    connect();
+    return () => {
+      unSub()
+    };
+  }, [roomId]);
 
+  
   const handleChange = (event) => {
     setMessageInput(event.target.value);
   };
