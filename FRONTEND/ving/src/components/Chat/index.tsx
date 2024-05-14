@@ -38,7 +38,7 @@ export default function Chat() {
   const { open, close, isOpen } = useModal()
   const stompSubscription  = useRef<StompSubscription | null>(null)
   const stompClient = useRef<CompatClient | null>(null)
-  const [roomId, setRoomId] = useState(""); // 룸 아이디를 저장하는 상태
+  const [roomId, setRoomId] = useState("")
 
   const getNicknameColor = (nickname: string) => {
     if (nicknameColors.has(nickname)) {
@@ -69,10 +69,8 @@ export default function Chat() {
     setRoomId(btoa(streamRoomData.username));
   }, [streamRoomData.username]);
 
-
-  const onMessageReceived = (msg) => {
+  const onMessageReceived = (msg: string) => {
     const newMessage = JSON.parse(msg.body);
-    // console.log(newMessage);
     console.log("Received new message:", newMessage); // 로그 추가
     addMessage(newMessage);
   };
@@ -165,7 +163,6 @@ export default function Chat() {
     const formattedTimestamp = getFormattedTimestamp();
 
     if (stompClient.current && messageInput.trim() && connected) {
-      // const color = getRandomColor()
       const message = {
         userName: userData.username,
         nickname: userData.nickname,
@@ -173,29 +170,24 @@ export default function Chat() {
         donation: 0,
         isTts: false,
         text: messageInput,
-        // color: color
       };
     
       stompClient.current.publish({
         destination: `/pub/channel/${roomId}`,
         body: JSON.stringify(message)
       });
-      // console.log("메시지 형식:", message);
       setMessageInput('');
     } else {
       console.log("아직 소켓 연결 안 됨");
     }
   };
 
-  
   useEffect(() => {
     // 스크롤 항상 아래로 내리기
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
   }, [messages]);
-
-
 
   const handleNicknameClick = async (user: string) => {
     const streamer = streamRoomData.username;
@@ -213,7 +205,6 @@ export default function Chat() {
     }
   };
   
-
   return (
     <SideBar 
       title="채팅" 
