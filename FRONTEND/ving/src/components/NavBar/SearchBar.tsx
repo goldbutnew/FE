@@ -82,15 +82,18 @@ export default function SearchBar() {
   useEffect(() => {
     getUserNicknameSearch()
   }, [getUserNicknameSearch])
+  
 
   const moveSearchUser = (username:string) => {
-    getUserProfileInfo(username)
     console.log('이동 전에 데이터 담는다', username)
     if (message) {
       router.push(`/tmp2?message=${message}`)
     } else {
+      getUserProfileInfo(username)
       router.push(`/profile/${btoa(username)}`)
     }
+    setNickname('')
+    setMessage('')
   }
 
   return (
