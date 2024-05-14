@@ -76,7 +76,7 @@ from pathlib import Path
 #     observer.join()
 
 # start_monitoring(FFMPEG_ROOT/'files', 'vingving','files/')
-FFM_BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent.parent
+FFM_BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent.parent.parent.parent.parent
 FFMPEG_ROOT = FFM_BASE_DIR
 class S3Uploader(FileSystemEventHandler):
     def __init__(self, bucket_name, s3_address, base_dir):
