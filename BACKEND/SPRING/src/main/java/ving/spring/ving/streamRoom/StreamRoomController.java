@@ -14,6 +14,8 @@ import ving.spring.ving.s3.S3Service;
 import ving.spring.ving.socket.Message;
 import ving.spring.ving.socket.chat.ChatModel;
 import ving.spring.ving.socket.chat.ChatModelService;
+import ving.spring.ving.socket.room.RoomModel;
+import ving.spring.ving.socket.room.RoomModelService;
 import ving.spring.ving.streamRoom.alarm.AlarmEnum;
 import ving.spring.ving.streamRoom.alarm.AlarmModel;
 import ving.spring.ving.streamRoom.alarm.AlarmService;
@@ -43,6 +45,7 @@ public class StreamRoomController {
     private final SubscriptionService subscriptionService;
     private final AlarmService alarmService;
     private final DateTimeFormmer dateTimeFormmer;
+    private final RoomModelService roomModelService;
     @GetMapping("/chatting")
     List<Message.RecordedChat> getChatting(@RequestParam("videoName") String videoName,@RequestParam("timeStamp") String timeStamp)
     {
@@ -63,6 +66,15 @@ public class StreamRoomController {
             UserModel streamer = userService.findCurrentUser();
             StreamRoomModel streamRoomModel = streamRoomService.findStreamRoomModelByStreamerAndIsEnd(streamer);
             streamRoomModel.setIsEnd(true);
+            try
+            {
+                RoomModel roomModel = roomModelService.findByStreamer(streamer.getUserUsername());
+                roomModelService.delete(roomModel);
+            }
+            catch (Exception e)
+            {
+                log.info("레전드 상황 발생");
+            }
             streamRoomService.save(streamRoomModel);
             return ResponseEntity.ok(HttpStatus.ACCEPTED);
         } catch (Exception e)
@@ -80,6 +92,16 @@ public class StreamRoomController {
             {
                 StreamRoomModel existingStreamRoomModel = streamRoomService.findStreamRoomModelByStreamerAndIsEnd(streamer);
                 log.info("이미 방이 존재함");
+                try
+                {
+                    RoomModel roomModel = roomModelService.findByStreamer(streamer.getUserUsername());
+                    roomModelService.delete(roomModel);
+                }
+                catch (Exception e)
+                {
+                    log.info("레전드 상황 발생");
+                }
+
                 existingStreamRoomModel.setIsEnd(true);
                 streamRoomService.save(existingStreamRoomModel);
             } catch (Exception e)
@@ -96,6 +118,14 @@ public class StreamRoomController {
                     .build();
             streamRoomService.save(streamRoomModel);
 
+            RoomModel roomModel = RoomModel.builder()
+                    .createdAt(dateTimeFormmer.transform(LocalDateTime.now()))
+                    .streamer(streamer.getUserUsername())
+                    .title(streamRoomModel.getRoomName())
+                    .viewers(0)
+                    .build();
+            log.info("몽고방 저장하겠습니다");
+            roomModelService.save(roomModel);
             // 메세징큐로 영상 녹화하는 내용 추가해야함
 
             // 모든 구독 찾아서 더해줘야함
@@ -152,6 +182,7 @@ public class StreamRoomController {
                             .username(streamRoomModel.getStreamer().getUserUsername())
                             .viewers(0)
                             .thumbnail(streamRoomModel.getRoomThumbnail())
+                            .streamerThumbnail(streamRoomModel.getStreamer().getUserPhoto())
                             .build()
             );
         }

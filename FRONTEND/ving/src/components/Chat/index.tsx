@@ -2,9 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react"
 import SockJS from 'sockjs-client'
-import Router from "next/router";
-import { useRouter } from "next/navigation";
-import { Stomp } from '@stomp/stompjs'
+import { Stomp, StompSubscription, CompatClient } from '@stomp/stompjs'
 import SideBar from "../SideBar/SideBar"
 import DefaultInput from "../Input/DefaultInput"
 import SmallButton from "../Button/SmallButton"
@@ -26,7 +24,7 @@ import useModal from "@/hooks/useModal";
 export default function Chat() {
   const { userData } = useAuthStore()
   const [profileKey, setProfileKey] = useState(0)
-  const [stompClient, setStompClient] = useState(null);
+  // const [stompClient, setStompClient] = useState<any>(null);
   const [connected, setConnected] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const { getChatProfile, selectedUserData } = useChatStore()
@@ -39,7 +37,13 @@ export default function Chat() {
   const [nicknameColors, setNicknameColors] = useState(new Map());
   const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
   const [isFollowed, setIsFollowed] = useState(false)
-  const { open, close, isOpen } = useModal()
+
+  const getRandomColor = () => {
+    const hue = Math.floor(Math.random() * 360)
+    const saturation = Math.floor(Math.random() * 10) + 70
+    const lightness = Math.floor(Math.random() * 20) + 70
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`
+  }
 
   const getNicknameColor = (nickname: string) => {
     if (nicknameColors.has(nickname)) {
@@ -66,10 +70,8 @@ export default function Chat() {
     return () => clearInterval(interval);
   }, [getStreamerProfileInfo, streamRoomData.username, streamerProfileData.isFollowed]);
   
-
   const roomId = btoa(streamRoomData.username);
 
-  
   const onMessageReceived = (msg) => {
     const newMessage = JSON.parse(msg.body);
     // console.log(newMessage);
@@ -77,6 +79,12 @@ export default function Chat() {
     addMessage(newMessage);
   };
 
+  useEffect(() => {
+    if (stompSubscription) {
+      console.log("업데이트된 stompSubscription:", stompSubscription);
+    }
+  }, [stompSubscription]);
+  
   const connect = () => {
     if (connected) {
       console.log("이미 WebSocket에 연결되어 있습니다. 연결 상태:", connected);
@@ -84,6 +92,7 @@ export default function Chat() {
     }  
 
     console.log("WebSocket 연결 시도 중...");
+    // const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
     const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
@@ -94,33 +103,50 @@ export default function Chat() {
     client.onConnect = () => {
       console.log("연결 완료");
       setConnected(true);
-      client.subscribe(`/sub/channel/${roomId}`, onMessageReceived, {
+      const subscription = client.subscribe(`/sub/channel/${roomId}`, onMessageReceived, {
         id: `sub-${roomId}`,
         ack: 'client'
       });
-      console.log(`구독 완료: /sub/channel/${roomId}`);
     };
 
     client.onDisconnect = () => {
       console.log("WebSocket 연결 해제 완료");
       setConnected(false);
     };
-
+    client.unsubscribe
     client.activate();
-    setStompClient(client);
+    // setStompClient(client);
+    stompClient.current = client
   };
 
   useEffect(() => {
+    function unSub() {
+      console.log("WebSocket 연결 해제 시도 중...");
+      console.log(stompSubscription)
+      if (stompSubscription.current !== null)
+      {
+        stompSubscription.current.unsubscribe()
+      }
+      else
+      {
+        console.log("사실 난 없는사람이야", stompSubscription.current)
+      }
+      if (stompClient.current) {
+        // stompClient.unsubscribe(stompSubscription)
+        console.log("WebSocket 연결 해제 시도 중...");
+        stompClient.current.deactivate();
+      }
+    }
+    
     connect();
     return () => {
-      if (stompClient) {
-        console.log("WebSocket 연결 해제 시도 중...");
-        stompClient.deactivate();
-      }
+      console.log("모든게 끝나가고 있다니까??????????????????????????????????????????????????")
+      unSub()
+      roomId = ""
     };
-  }, [connected]);
-  
-  const handleChange = (event: any) => {
+  }, []);
+
+  const handleChange = (event) => {
     setMessageInput(event.target.value);
   };
 
@@ -136,7 +162,7 @@ const handleSendMessage = (event) => {
   event.preventDefault();
   const formattedTimestamp = getFormattedTimestamp();
 
-  if (stompClient && messageInput.trim() && connected) {
+  if (stompClient.current && messageInput.trim() && connected) {
     // const color = getRandomColor()
     const message = {
       userName: userData.username,
@@ -147,7 +173,8 @@ const handleSendMessage = (event) => {
       text: messageInput,
       // color: color
     };
-    stompClient.publish({
+  
+    stompClient.current.publish({
       destination: `/pub/channel/${roomId}`,
       body: JSON.stringify(message)
     });

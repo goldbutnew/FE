@@ -59,5 +59,6 @@ public class StreamRoomDto {
         private String username;
         private String title;
         private Integer viewers;
+        private String streamerThumbnail;
     }
 }

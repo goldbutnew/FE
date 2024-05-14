@@ -1,8 +1,6 @@
 package ving.spring.ving.socket.chat;
 
-import jakarta.persistence.Entity;
 import lombok.*;
-import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.awt.*;

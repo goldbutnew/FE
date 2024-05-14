@@ -261,11 +261,14 @@ def convert_stream_to_hls(user_id):
         '-c:v:0', 'libx264',  '-b:v:0',   '5000k',  '-c:a:0', 'aac', '-b:a', '320k', '-maxrate:v:0', '5000k', '-bufsize:v:0', '10000k', '-s:v:0', '1920x1080', '-g', '30', '-crf:v:0', '15',
         '-c:v:1', 'libx264',  '-b:v:1',  '2500k',  '-c:a:0', 'aac', '-b:a', '320k', '-maxrate:v:1', '2500k', '-bufsize:v:1', '5000k', '-s:v:1', '1280x720', '-g', '30', '-crf:v:1', '22',
         '-c:a:0', 'aac', '-b:a', '320k',
-        '-c:a:1', 'aac', '-b:a', '160k',
-        '-var_stream_map', 'v:0,name:video/1080 v:1,name:video/720 a:0,name:audio/320 a:1,name:audio/256',
+        '-c:a:1', 'aac', '-b:a', '320k',
+
+        # '-c:a:1', 'aac', '-b:a', '160k',
+        '-var_stream_map', 'v:0,a:0,name:video/1080 v:1,a:1,name:video/720',
+        # '-var_stream_map', 'v:0,a:0,name:video/1080 v:1,a:1,name:video/720 a:0,name:audio/320 a:1,name:audio/256',
         '-master_pl_name', 'master.m3u8',
-        '-hls_time', '3',
-        '-hls_list_size', '10',
+        '-hls_time', '1',
+        '-hls_list_size', '0',
         '-hls_segment_filename', OUTPUT_HLS,
         '-f', 'hls', OUTPUT_PATH
     ]
