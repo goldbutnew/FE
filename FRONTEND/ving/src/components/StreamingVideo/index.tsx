@@ -35,9 +35,6 @@ export default function StreamingVideo() {
   }, [isPlaying])
 
   useEffect(() => {
-    const videoElement = videoRef.current
-    if (!videoElement) return
-
     const checkBufferStatus = () => {
       if (videoRef.current === null) {
         return 0
@@ -46,6 +43,7 @@ export default function StreamingVideo() {
         const currentTime = videoRef.current.currentTime
         let bufferEnd = 0
 
+        // 현재 재생 시간 이후로 버퍼링된 구간을 찾음
         for (let i = 0; i < buffered.length; i++) {
           if (buffered.start(i) <= currentTime && currentTime < buffered.end(i)) {
             bufferEnd = buffered.end(i)
@@ -53,6 +51,7 @@ export default function StreamingVideo() {
           }
         }
 
+        // 버퍼링된 길이 계산
         const bufferedAhead = bufferEnd - currentTime
         console.log(`Buffered ahead time: ${bufferedAhead} seconds.`)
         return bufferedAhead
@@ -80,6 +79,11 @@ export default function StreamingVideo() {
         hls.current.currentLevel = resolution
       }
     }
+  }, [speed])
+
+  useEffect (() => {
+    const videoElement = videoRef.current
+    if (!videoElement) return
 
     if (Hls.isSupported()) {
       hls.current = new Hls()
@@ -94,15 +98,8 @@ export default function StreamingVideo() {
       hls.current.on(Hls.Events.ERROR, (event, data) => {
         console.error('Hls.js 오류 발생:', data)
       })
-
-      return () => {
-        if (hls.current) {
-          hls.current.destroy()
-          hls.current = null
-        }
-      }
     }
-  }, [resolution, speed])
+  }, [])
 
   return (
     <div className={styles.videoResize} ref={containerRef}>
@@ -116,7 +113,7 @@ export default function StreamingVideo() {
       />
 
       <VideoPlayer containerRef={containerRef} videoRef={videoRef} setResolution={setResolution} />
-      {/* <Abs setSpeed = {setSpeed}/> */}
+      <Abs setSpeed = {setSpeed}/>
     </div>
   )
 }

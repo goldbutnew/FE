@@ -40,6 +40,7 @@ public class ChatModelService {
         LocalDateTime spentTime = LocalDateTime.parse(chatMessage.getTimeStamp(), formatter);
 
         Duration duration = Duration.between(createdAt, spentTime);
+        log.info("채팅 저장을 하는줄 알았는데요?");
         return chatModelRepository.save(ChatModel.builder()
                 .userName(chatMessage.getUserName())
                 .chatRoom(chatRoom)
