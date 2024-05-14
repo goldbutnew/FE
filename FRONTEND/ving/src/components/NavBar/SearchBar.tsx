@@ -16,7 +16,7 @@ export default function SearchBar() {
   const [username, setUsername] = useState('')
   const [users, setUsers] = useState<User[]>([])
   const autocompleteRef = useRef<HTMLDivElement>(null)
-  const [message, setMessage] = useState('')
+  const [searchQeury, setSearchQeury] = useState('')
   const { getUserProfileInfo, getUserNicknameSearch, searchData } = useProfileStore()
   const router = useRouter()
 
@@ -50,9 +50,9 @@ export default function SearchBar() {
       } else {
         setUsername('')
       }
-      setMessage('')
+      setSearchQeury('')
     } else {
-      setMessage(`${searchTerm}`)
+      setSearchQeury(`${searchTerm}`)
       setUsername('')
     }
 
@@ -64,6 +64,8 @@ export default function SearchBar() {
     setNickname(selectedUser.nickname)
     setUsername(selectedUser.username)
     setUsers([])
+
+    setSearchQeury('')
   }
 
   // 검색어 자동완성 외 부분 마우스 클릭하면 자동완성리스트 사라지는 로직
@@ -86,14 +88,14 @@ export default function SearchBar() {
 
   const moveSearchUser = (username:string) => {
     console.log('이동 전에 데이터 담는다', username)
-    if (message) {
-      router.push(`/tmp2?message=${message}`)
+    if (searchQeury) {
+      router.push(`/tmp2?searchQeury=${searchQeury}`)
     } else {
       getUserProfileInfo(username)
       router.push(`/profile/${btoa(username)}`)
     }
     setNickname('')
-    setMessage('')
+    setSearchQeury('')
   }
 
   return (

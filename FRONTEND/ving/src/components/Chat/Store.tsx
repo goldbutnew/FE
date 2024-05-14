@@ -83,31 +83,31 @@ const useChatStore = create<ChatStore>((set, get) => ({
     }
   },
 
-  // requestBlock: async (username: string) => {
-  //   const token = localStorage.getItem('accessToken');
-  //   if (!token) {
-  //     console.error('Access token is missing');
-  //     return;
-  //   }
-  //   try {
-  //     const url = `home/update_user_blocked_status/`;
-  //     const response = await axios.patch(url, {
-  //       username: username,
-  //       isBlocked: true  // isBlocked 상태를 true로 설정
-  //     }, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json"
-  //       },
-  //     });
-  //     if (response.data) {
-  //       console.log('Block status updated successfully:', response.data);
-  //       return response.data;
-  //     }
-  //   } catch (error) {
-  //     console.error('Failed to update block status', error);
-  //   }
-  // },
+  requestBlock: async (username: string) => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      console.error('Access token is missing');
+      return;
+    }
+    try {
+      const url = `home/update_user_blocked_status/`;
+      const response = await axios.patch(url, {
+        username: username,
+        isBlocked: true  // isBlocked 상태를 true로 설정
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+      });
+      if (response.data) {
+        console.log('Block status updated successfully:', response.data);
+        return response.data;
+      }
+    } catch (error) {
+      console.error('Failed to update block status', error);
+    }
+  },
 
 }));
 

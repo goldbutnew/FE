@@ -10,12 +10,14 @@ import { useRouter } from "next/navigation"
 import { MdExpandLess, MdExpandMore } from "react-icons/md"
 import { line } from "@/styles/common.css"
 import { GrNext, GrPrevious } from 'react-icons/gr'
+import useProfileStore from "@/store/ProfileStore"
 
 export default function MainGrid() {
   const { userData, code } = useAuthStore()
   const { streamRoomsData, getStreamInfo, setStreamRoomData } = useStreamingStore()
+  const { getUserProfileInfo } = useProfileStore()
   const router = useRouter()
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const [visibleCount, setVisibleCount] = useState(8)
 
@@ -86,7 +88,7 @@ export default function MainGrid() {
                 />
               </div>
               <div className={styles.roomInfoBox}>
-                <div onClick={() => router.push(`/profile/${btoa(data.username)}`)}>
+                <div onClick={() => {router.push(`/profile/${btoa(data.username)}`) ,getUserProfileInfo(data.username)}}>
                   <ProfileImage 
                     url={data.streamerThumbnail} 
                     width={35}
@@ -98,7 +100,7 @@ export default function MainGrid() {
                     <div className={styles.streamingTitle} onClick={() => router.push(`/streaming/${btoa(data.username)}`)}>{data.title}</div>
                   </div>
                   <div className={styles.leftBoxItem}>
-                    <div className={styles.streamerName} onClick={() => router.push(`/profile/${btoa(data.username)}`)}>{data.username}</div>    
+                    <div className={styles.streamerName} onClick={() => {router.push(`/profile/${btoa(data.username)}`), getUserProfileInfo(data.username)}}>{data.username}</div>    
                   </div>  
                 </div>
               </div>
@@ -106,6 +108,9 @@ export default function MainGrid() {
           )
         })}
       </div>
+      {streamRoomsData.length <= 8 && (
+        <div className={line}></div>
+      )}
       {streamRoomsData.length > 8 && (
         <div className={styles.showMoreContainer}>
           <div className={styles.showMoreBox}>
