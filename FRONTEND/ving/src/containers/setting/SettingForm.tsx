@@ -84,6 +84,7 @@ export default function SettingForm() {
       formData.append('photo', file)
     } else if (profileData.photoUrl) {
       // 사진은 수정 안 하고 닉네임이랑 채널 소개만 할 경우
+      console.log(profileData.photoUrl)
       try {
         const response = await fetch(profileData.photoUrl)
         if (!response.ok) {
@@ -112,7 +113,7 @@ export default function SettingForm() {
         console.error('프로필 업데이트 중 에러 발생:', error)
     }
 
-      location.reload()
+      // location.reload()
     }
 
   const [file, setFile] = useState(null)

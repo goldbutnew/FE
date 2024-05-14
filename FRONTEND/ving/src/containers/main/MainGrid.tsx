@@ -76,27 +76,29 @@ export default function MainGrid() {
               className={styles.mainVideoItem} 
               onClick={() => handleStreamDataChange(data)}
             >
-              <div className={styles.videoThumnailContaienr}>
+              <div className={styles.videoThumnailContaienr} onClick={() => router.push(`/streaming/${btoa(data.username)}`)}>
                 <div className={styles.LiveTextBadge}>Live</div>
-                <div className={styles.viewerCounterTextBadge}>3898명 시청 중</div>
+                <div className={styles.viewerCounterTextBadge}>{data.viewers}명 시청 중</div>
                 <img 
                   src={data.thumbnail} 
                   alt="비디오 썸네일"
                   className={styles.imageStyle}
                 />
               </div>
-              <div className={styles.roomInfoBox} onClick={() => router.push(`/streaming/${btoa(data.username)}`)}>
-                <ProfileImage 
-                  url={data.username} 
-                  width={35}
-                  alt="streamer profile" 
-                />
+              <div className={styles.roomInfoBox}>
+                <div onClick={() => router.push(`/profile/${btoa(data.username)}`)}>
+                  <ProfileImage 
+                    url={data.streamerThumbnail} 
+                    width={35}
+                    alt="streamer profile" 
+                  />
+                </div>
                 <div className={styles.leftBox}>
                   <div className={styles.leftBoxItem}>
-                    <div className={styles.streamingTitle}>{data.title}</div>
+                    <div className={styles.streamingTitle} onClick={() => router.push(`/streaming/${btoa(data.username)}`)}>{data.title}</div>
                   </div>
                   <div className={styles.leftBoxItem}>
-                    <div className={styles.streamerName}>{data.username}</div>    
+                    <div className={styles.streamerName} onClick={() => router.push(`/profile/${btoa(data.username)}`)}>{data.username}</div>    
                   </div>  
                 </div>
               </div>

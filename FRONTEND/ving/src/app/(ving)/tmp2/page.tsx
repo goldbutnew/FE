@@ -1,1 +1,1 @@
-export { default } from '@/containers/tmp2'
+export { default } from '@/containers/tmp2/SearchNone'
