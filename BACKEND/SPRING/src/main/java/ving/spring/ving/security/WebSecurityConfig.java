@@ -74,6 +74,7 @@ public class WebSecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3000");  // 프론트엔드 호스트
+        config.addAllowedOrigin("https://k10a203.p.ssafy.io");  // 프론트엔드 호스트
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

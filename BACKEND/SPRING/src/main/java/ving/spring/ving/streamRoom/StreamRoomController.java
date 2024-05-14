@@ -175,14 +175,15 @@ public class StreamRoomController {
 
         for (StreamRoomModel streamRoomModel : streamRoomService.findAll())
         {
-
+            RoomModel roomModel = roomModelService.findByStreamer(streamRoomModel.getStreamer().getUserUsername());
             streamRooms.add(
                     StreamRoomDto.StreamRoom.builder()
                             .title(streamRoomModel.getRoomName())
                             .username(streamRoomModel.getStreamer().getUserUsername())
-                            .viewers(0)
+                            .viewers(roomModel.getViewers())
                             .thumbnail(streamRoomModel.getRoomThumbnail())
                             .streamerThumbnail(streamRoomModel.getStreamer().getUserPhoto())
+                            .createdAt(roomModel.getCreatedAt())
                             .build()
             );
         }

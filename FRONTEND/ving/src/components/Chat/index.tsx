@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react"
 import SockJS from 'sockjs-client'
-import { Stomp, StompSubscription, CompatClient } from '@stomp/stompjs'
+import { Stomp } from '@stomp/stompjs'
 import SideBar from "../SideBar/SideBar"
 import DefaultInput from "../Input/DefaultInput"
 import SmallButton from "../Button/SmallButton"
@@ -36,9 +36,17 @@ export default function Chat() {
   const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
   const [isFollowed, setIsFollowed] = useState(false)
   const { open, close, isOpen } = useModal()
+=========
+  // const [stompSubscription, setStompSubscription] = useState<StompSubscription | null | void >(null)
   const stompSubscription  = useRef<StompSubscription | null>(null)
   const stompClient = useRef<CompatClient | null>(null)
-  const [roomId, setRoomId] = useState("")
+  const getRandomColor = () => {
+    const hue = Math.floor(Math.random() * 360)
+    const saturation = Math.floor(Math.random() * 10) + 70
+    const lightness = Math.floor(Math.random() * 20) + 70
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`
+  }
+>>>>>>>>> Temporary merge branch 2
 
   const getNicknameColor = (nickname: string) => {
     if (nicknameColors.has(nickname)) {
@@ -65,9 +73,7 @@ export default function Chat() {
     return () => clearInterval(interval);
   }, [getStreamerProfileInfo, streamRoomData.username, streamerProfileData.isFollowed]);
   
-  useEffect(() => {
-    setRoomId(btoa(streamRoomData.username));
-  }, [streamRoomData.username]);
+  let roomId = btoa(streamRoomData.username);
 
   const onMessageReceived = (msg: string) => {
     const newMessage = JSON.parse(msg.body);
@@ -75,12 +81,6 @@ export default function Chat() {
     addMessage(newMessage);
   };
 
-  useEffect(() => {
-    if (stompSubscription) {
-      console.log("업데이트된 stompSubscription:", stompSubscription);
-    }
-  }, [stompSubscription]);
-  
   const connect = () => {
     if (connected) {
       console.log("이미 WebSocket에 연결되어 있습니다. 연결 상태:", connected);
@@ -88,7 +88,8 @@ export default function Chat() {
     }  
 
     console.log("WebSocket 연결 시도 중...");
-    const client = Stomp.over(() => new SockJS('https://k10a203.p.ssafy.io/ws'));
+    const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
+    // const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
     client.debug = function(str) {
@@ -98,7 +99,7 @@ export default function Chat() {
     client.onConnect = () => {
       console.log("연결 완료");
       setConnected(true);
-      const subscription = client.subscribe(`/sub/channel/${roomId}`, onMessageReceived, {
+      client.subscribe(`/sub/channel/${roomId}`, onMessageReceived, {
         id: `sub-${roomId}`,
         ack: 'client'
       });
@@ -108,10 +109,9 @@ export default function Chat() {
       console.log("WebSocket 연결 해제 완료");
       setConnected(false);
     };
-    client.unsubscribe
+
     client.activate();
-    // setStompClient(client);
-    stompClient.current = client
+    setStompClient(client);
   };
 
   useEffect(() => {
@@ -133,18 +133,13 @@ export default function Chat() {
       }
     }
     
-    if (roomId) {
-      unSub(); // roomId가 변경되면 기존 연결 끊기
-      connect(); // 새로운 roomId로 WebSocket 연결 시도
-    }
-  
+    connect();
     return () => {
-      console.log("컴포넌트 언마운트 중...");
-      unSub();
-      clearMessages()
+      console.log("모든게 끝나가고 있다니까??????????????????????????????????????????????????")
+      unSub()
+      roomId = ""
     };
-  }, [roomId]); // roomId가 변경될 때마다 이 효과를 실행합니다.
-
+  }, [roomId]);
 
   const handleChange = (event) => {
     setMessageInput(event.target.value);
@@ -162,26 +157,30 @@ export default function Chat() {
     event.preventDefault();
     const formattedTimestamp = getFormattedTimestamp();
 
-    if (stompClient.current && messageInput.trim() && connected) {
-      const message = {
-        userName: userData.username,
-        nickname: userData.nickname,
-        timeStamp: formattedTimestamp,
-        donation: 0,
-        isTts: false,
-        text: messageInput,
-      };
-    
-      stompClient.current.publish({
-        destination: `/pub/channel/${roomId}`,
-        body: JSON.stringify(message)
-      });
-      setMessageInput('');
-    } else {
-      console.log("아직 소켓 연결 안 됨");
-    }
-  };
+  if (stompClient.current && messageInput.trim() && connected) {
+    // const color = getRandomColor()
+    const message = {
+      userName: userData.username,
+      nickname: userData.nickname,
+      timeStamp: formattedTimestamp,
+      donation: 0,
+      isTts: false,
+      text: messageInput,
+      // color: color
+    };
+  
+    stompClient.current.publish({
+      destination: `/pub/channel/${roomId}`,
+      body: JSON.stringify(message)
+    });
+    console.log("메시지 형식:", message);
+    setMessageInput('');
+  } else {
+    console.log("아직 소켓 연결 안 됨");
+  }
+};
 
+  
   useEffect(() => {
     // 스크롤 항상 아래로 내리기
     if (chatBoxRef.current) {
