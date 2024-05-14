@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react"
 import SockJS from 'sockjs-client'
-import { Stomp, StompSubscription, CompatClient } from '@stomp/stompjs'
+import { Stomp } from '@stomp/stompjs'
 import SideBar from "../SideBar/SideBar"
 import DefaultInput from "../Input/DefaultInput"
 import SmallButton from "../Button/SmallButton"
@@ -14,26 +14,20 @@ import Donation from "./Donation"
 import useAuthStore from "@/store/AuthStore";
 import useChatStore from "@/components/Chat/Store";
 import { getFormattedTimestamp } from "@/utils/dateUtils";
+import { getRandomColor } from "./utils";
 import { line } from "@/styles/common.css";
 import useStreamingStore from "@/store/StreamingStore";
 import useProfileStore from "@/store/ProfileStore";
+import useModal from "@/hooks/useModal";
 
-interface Message {
-  userName: string;
-  nickname: string;
-  timeStamp: string;
-  donation : number;
-  isTts : Boolean;
-  text: string;
-}
-//3. 방은 만들어져있지않으면 몽고 저장이 안돼서 문제생김 방은 axios로 만들 수 있음 
+
 export default function Chat() {
   const { userData } = useAuthStore()
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [selectedUserData, setSelectedUserData] = useState(null);
   const [profileKey, setProfileKey] = useState(0)
-  // const [stompClient, setStompClient] = useState<any>(null);
+  const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const { getChatProfile, selectedUserData } = useChatStore()
   const messages = useChatStore(state => state.messages)
   const addMessage = useChatStore(state => state.addMessage)
   const [messageInput, setMessageInput] = useState('');
@@ -43,15 +37,7 @@ export default function Chat() {
   const [nicknameColors, setNicknameColors] = useState(new Map());
   const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
   const [isFollowed, setIsFollowed] = useState(false)
-  // const [stompSubscription, setStompSubscription] = useState<StompSubscription | null | void >(null)
-  const stompSubscription  = useRef<StompSubscription | null>(null)
-  const stompClient = useRef<CompatClient | null>(null)
-  const getRandomColor = () => {
-    const hue = Math.floor(Math.random() * 360)
-    const saturation = Math.floor(Math.random() * 10) + 70
-    const lightness = Math.floor(Math.random() * 20) + 70
-    return `hsl(${hue}, ${saturation}%, ${lightness}%)`
-  }
+  const { open, close, isOpen } = useModal()
 
   const getNicknameColor = (nickname: string) => {
     if (nicknameColors.has(nickname)) {
@@ -78,7 +64,7 @@ export default function Chat() {
     return () => clearInterval(interval);
   }, [getStreamerProfileInfo, streamRoomData.username, streamerProfileData.isFollowed]);
   
-  let roomId = btoa(streamRoomData.username);
+  const roomId = btoa(streamRoomData.username);
 
   const onMessageReceived = (msg) => {
     const newMessage = JSON.parse(msg.body);
@@ -86,16 +72,10 @@ export default function Chat() {
     addMessage(newMessage);
   };
 
-  useEffect(() => {
-    if (stompSubscription) {
-      console.log("업데이트된 stompSubscription:", stompSubscription);
-    }
-  }, [stompSubscription]);
-  
   const connect = () => {
     console.log("WebSocket 연결 시도 중...");
-    const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
-    // const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
+    // const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
+    const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
     client.debug = function(str) {
@@ -105,49 +85,30 @@ export default function Chat() {
     client.onConnect = () => {
       console.log("연결 완료");
       setConnected(true);
-      const subscription = client.subscribe(`/sub/channel/${roomId}`, onMessageReceived, {
+      client.subscribe(`/sub/channel/${roomId}`, onMessageReceived, {
         id: `sub-${roomId}`,
         ack: 'client'
-      })
-      console.log("나는 구독됐단다?" , subscription)
-      stompSubscription.current = subscription
+      });
     };
 
     client.onDisconnect = () => {
       console.log("WebSocket 연결 해제 완료");
       setConnected(false);
     };
-    client.unsubscribe
+
     client.activate();
-    // setStompClient(client);
-    stompClient.current = client
+    setStompClient(client);
   };
 
   useEffect(() => {
-    function unSub() {
-      console.log("WebSocket 연결 해제 시도 중...");
-      console.log(stompSubscription)
-      if (stompSubscription.current !== null)
-      {
-        stompSubscription.current.unsubscribe()
-      }
-      else
-      {
-        console.log("사실 난 없는사람이야", stompSubscription.current)
-      }
-      if (stompClient.current) {
-        // stompClient.unsubscribe(stompSubscription)
-        console.log("WebSocket 연결 해제 시도 중...");
-        stompClient.current.deactivate();
-      }
-    }
-    
     connect();
     return () => {
-      unSub()
-      roomId = ""
+      if (stompClient) {
+        console.log("WebSocket 연결 해제 시도 중...");
+        stompClient.deactivate();
+      }
     };
-  }, [roomId]);
+  }, []);
 
   const handleChange = (event) => {
     setMessageInput(event.target.value);
@@ -165,7 +126,7 @@ const handleSendMessage = (event) => {
   event.preventDefault();
   const formattedTimestamp = getFormattedTimestamp();
 
-  if (stompClient.current && messageInput.trim() && connected) {
+  if (stompClient && messageInput.trim() && connected) {
     // const color = getRandomColor()
     const message = {
       userName: userData.username,
@@ -176,8 +137,7 @@ const handleSendMessage = (event) => {
       text: messageInput,
       // color: color
     };
-  
-    stompClient.current.publish({
+    stompClient.publish({
       destination: `/pub/channel/${roomId}`,
       body: JSON.stringify(message)
     });
@@ -197,14 +157,32 @@ const handleSendMessage = (event) => {
   }, [messages]);
 
 
-  const handleNicknameClick = (user) => {
-    setSelectedUserData(user);
-    setProfileOpen(true);
-    setProfileKey(prevKey => prevKey + 1)
+  const handleNicknameClick = async (user: string) => {
+    const streamer = streamRoomData.username;
+    const viewer = user;
+    try {
+      const profileData = await getChatProfile(streamer, viewer);
+      if (profileData) {
+        console.log("내 프로필 정보", profileData);  // 데이터 확인
+        open();  // 모달 열기
+      } else {
+        console.log("프로필 데이터가 없습니다.");
+      }
+    } catch (error) {
+      console.error("프로필 정보 가져오기 실패", error);
+    }
   };
 
   return (
-    <SideBar title="채팅" side="right" initOpen={true} width={300} hidden={true}>
+    <SideBar 
+      title="채팅" 
+      side="right" 
+      isOpen={isSidebarOpen}
+      initOpen={true} 
+      width={300} 
+      hidden={true}
+      onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+    >
       <div className={styles.chatBox} ref={chatBoxRef}>
         {messages.map((msg, index) => (
           <div 
@@ -214,9 +192,9 @@ const handleSendMessage = (event) => {
             {msg.donation ? 
               <div className={styles.donationChatItem}>
               <button 
-                style={{ color: getNicknameColor(msg.nickname) }}
+                style={{ color: getNicknameColor(msg.userName) }}
                 className={styles.dontaionChatNickname}
-                onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}
+                onClick={msg.nickname !== "익명의 후원자" ? () => handleNicknameClick(msg.userName) : undefined}
               >
                 {msg.nickname}
               </button>
@@ -229,16 +207,20 @@ const handleSendMessage = (event) => {
               <button
                 style={{ color: getNicknameColor(msg.nickname) }}
                 className={styles.chatNickname}
-                onClick={() => handleNicknameClick({ id: msg.senderId, nickname: msg.senderNickname })}
+                onClick={() => handleNicknameClick(msg.userName)}
               >
-                {msg.nickname}
+                {streamRoomData.username === msg.userName ? "👑 " : ""}{msg.nickname}
               </button>: <span>{msg.text}</span>
             </div>
             }
           </div>
         ))}
       </div>
-      <ChatProfile isOpen={profileOpen} onClose={() => setProfileOpen(false)} userData={selectedUserData} />
+      <ChatProfile 
+        isOpen={isOpen} 
+        onClose={close} 
+        userData={selectedUserData} 
+      />
       <form className={styles.inputBox} onSubmit={handleSendMessage}>     
         <div className={styles.emojiBox}>
           {showEmojiPicker && (
