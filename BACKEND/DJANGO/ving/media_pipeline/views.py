@@ -11,10 +11,10 @@ from botocore.exceptions import NoCredentialsError
 from django.conf import settings
 import os
 from watchdog.observers import Observer
+from pathlib import Path
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-FFMPEG_ROOT = BASE_DIR.parent.parent.parent.parent.parent.parent
+FFM_BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent.parent
+FFMPEG_ROOT = FFM_BASE_DIR
 
 class S3Uploader(FileSystemEventHandler):
     def __init__(self, bucket_name, s3_address):
