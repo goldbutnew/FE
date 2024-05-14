@@ -36,9 +36,9 @@ export default function Chat() {
   const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
   const [isFollowed, setIsFollowed] = useState(false)
   const { open, close, isOpen } = useModal()
-  // const [stompSubscription, setStompSubscription] = useState<StompSubscription | null | void >(null)
   const stompSubscription  = useRef<StompSubscription | null>(null)
   const stompClient = useRef<CompatClient | null>(null)
+  const [roomId, setRoomId] = useState("")
 
   const getRandomColor = () => {
     const hue = Math.floor(Math.random() * 360)
@@ -72,7 +72,9 @@ export default function Chat() {
     return () => clearInterval(interval);
   }, [getStreamerProfileInfo, streamRoomData.username, streamerProfileData.isFollowed]);
   
-  let roomId = btoa(streamRoomData.username);
+  useEffect(() => {
+    setRoomId(btoa(streamRoomData.username)); // Update room ID when streamRoomData changes
+  }, [streamRoomData.username]);
 
   const onMessageReceived = (msg: string) => {
     const newMessage = JSON.parse(msg.body);
@@ -87,8 +89,7 @@ export default function Chat() {
     }  
 
     console.log("WebSocket 연결 시도 중...");
-    const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
-    // const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
+    const client = Stomp.over(() => new SockJS('https://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
     client.debug = function(str) {
@@ -130,13 +131,13 @@ export default function Chat() {
         // stompClient.unsubscribe(stompSubscription)
         console.log("WebSocket 연결 해제 시도 중...");
         stompClient.current.deactivate();
+        clearMessages()
       }
     }
     
     connect();
     return () => {
       unSub()
-      roomId = ""
     };
   }, [roomId]);
 
@@ -156,17 +157,15 @@ export default function Chat() {
     event.preventDefault();
     const formattedTimestamp = getFormattedTimestamp();
 
-  if (stompClient.current && messageInput.trim() && connected) {
-    // const color = getRandomColor()
-    const message = {
-      userName: userData.username,
-      nickname: userData.nickname,
-      timeStamp: formattedTimestamp,
-      donation: 0,
-      isTts: false,
-      text: messageInput,
-      // color: color
-    };
+    if (stompClient.current && messageInput.trim() && connected) {
+      const message = {
+        userName: userData.username,
+        nickname: userData.nickname,
+        timeStamp: formattedTimestamp,
+        donation: 0,
+        isTts: false,
+        text: messageInput,
+      };
   
     stompClient.current.publish({
       destination: `/pub/channel/${roomId}`,
