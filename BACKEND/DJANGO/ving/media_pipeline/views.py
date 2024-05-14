@@ -58,7 +58,7 @@ def start_monitoring(directory_path, bucket_name,s3_address):
     observer = Observer()
     print('start_monitoring444')
 
-    observer.schedule(event_handler, directory_path, recursive=False)
+    observer.schedule(event_handler, directory_path, recursive=True)
     print('start_monitoring555')
 
     observer.start()
