@@ -89,19 +89,7 @@ export default function StudioChat() {
 
     client.activate();
     stompClient.current = client;
-    // setStompClient(client);
   };
-
-  
-  // useEffect(() => {
-  //   connect();
-  //   return () => {
-  //     if (stompClient) {
-  //       console.log("WebSocket 연결 해제 시도 중...");
-  //       stompClient.deactivate();
-  //     }
-  //   }
-  // }, []);
 
   
   useEffect(() => {

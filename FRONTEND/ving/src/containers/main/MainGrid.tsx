@@ -108,6 +108,9 @@ export default function MainGrid() {
           )
         })}
       </div>
+      {streamRoomsData.length <= 8 && (
+        <div className={line}></div>
+      )}
       {streamRoomsData.length > 8 && (
         <div className={styles.showMoreContainer}>
           <div className={styles.showMoreBox}>
