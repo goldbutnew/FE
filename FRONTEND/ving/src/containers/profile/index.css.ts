@@ -173,7 +173,7 @@ export const profileTabItemTitle = style([
   bold,
   {
     margin: `0 0 0 ${vars.space['1x']}`,
-    fontSize: vars.fontSize['1.5x']
+    fontSize: vars.fontSize['1x']
   }
 ])
 
