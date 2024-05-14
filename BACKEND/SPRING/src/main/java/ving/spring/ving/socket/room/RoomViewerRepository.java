@@ -9,4 +9,5 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "com.example.myapp.mongodb.repository")
 public interface RoomViewerRepository extends MongoRepository<RoomViewerModel, String> {
     RoomViewerModel findBySubscriptionId(String subscriptionId);
+    Boolean existsByStreamerAndSubscriptionId(String streamer, String subscriptionId);
 }

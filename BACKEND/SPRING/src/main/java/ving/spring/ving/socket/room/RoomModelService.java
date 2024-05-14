@@ -22,6 +22,9 @@ public class RoomModelService {
         return;
     }
 
+    public Boolean existsByStreamer(String streamer) {
+        return roomModelRepository.existsByStreamer(streamer);
+    }
     public RoomModel findByStreamer(String streamer)
     {
         return roomModelRepository.findByStreamer(streamer);

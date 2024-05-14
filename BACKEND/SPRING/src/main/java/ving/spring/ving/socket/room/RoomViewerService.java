@@ -20,6 +20,10 @@ public class RoomViewerService {
         return;
     }
 
+    public Boolean existsByStreamerAndSubscriptionId(String streamer, String subscriptionId)
+    {
+        return roomViewerRepository.existsByStreamerAndSubscriptionId(streamer, subscriptionId);
+    }
     public RoomViewerModel findBySubscriptionId(String subscriptionId)
     {
         return roomViewerRepository.findBySubscriptionId(subscriptionId);

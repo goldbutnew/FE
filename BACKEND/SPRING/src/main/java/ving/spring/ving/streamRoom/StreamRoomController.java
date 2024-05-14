@@ -175,17 +175,34 @@ public class StreamRoomController {
 
         for (StreamRoomModel streamRoomModel : streamRoomService.findAll())
         {
-            RoomModel roomModel = roomModelService.findByStreamer(streamRoomModel.getStreamer().getUserUsername());
-            streamRooms.add(
-                    StreamRoomDto.StreamRoom.builder()
-                            .title(streamRoomModel.getRoomName())
-                            .username(streamRoomModel.getStreamer().getUserUsername())
-                            .viewers(roomModel.getViewers())
-                            .thumbnail(streamRoomModel.getRoomThumbnail())
-                            .streamerThumbnail(streamRoomModel.getStreamer().getUserPhoto())
-                            .createdAt(roomModel.getCreatedAt())
-                            .build()
-            );
+            if (roomModelService.existsByStreamer(streamRoomModel.getStreamer().getUserUsername()))
+            {
+                RoomModel roomModel = roomModelService.findByStreamer(streamRoomModel.getStreamer().getUserUsername());
+                streamRooms.add(
+                        StreamRoomDto.StreamRoom.builder()
+                                .title(streamRoomModel.getRoomName())
+                                .username(streamRoomModel.getStreamer().getUserUsername())
+                                .viewers(roomModel.getViewers())
+                                .thumbnail(streamRoomModel.getRoomThumbnail())
+                                .streamerThumbnail(streamRoomModel.getStreamer().getUserPhoto())
+                                .createdAt(roomModel.getCreatedAt())
+                                .build()
+                );
+            }
+            else
+            {
+                streamRooms.add(
+                        StreamRoomDto.StreamRoom.builder()
+                                .title(streamRoomModel.getRoomName())
+                                .username(streamRoomModel.getStreamer().getUserUsername())
+                                .viewers(-1)
+                                .thumbnail(streamRoomModel.getRoomThumbnail())
+                                .streamerThumbnail(streamRoomModel.getStreamer().getUserPhoto())
+                                .createdAt(dateTimeFormmer.transform(LocalDateTime.now()))
+                                .build()
+                );
+            }
+
         }
         StreamRoomDto.FindAllResponse findAllResponse = StreamRoomDto.FindAllResponse.builder()
                 .streamRooms(streamRooms)

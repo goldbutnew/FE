@@ -8,4 +8,5 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "com.example.myapp.mongodb.repository")
 public interface RoomModelRepository extends MongoRepository<RoomModel, String> {
     RoomModel findByStreamer(String streamer);
+    Boolean existsByStreamer(String streamer);
 }

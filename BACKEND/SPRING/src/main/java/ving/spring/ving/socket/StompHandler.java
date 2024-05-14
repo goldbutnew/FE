@@ -50,20 +50,23 @@ public class StompHandler implements ChannelInterceptor {
                 String username = new String(Base64.getDecoder().decode(channelId));
                 log.info("UserName은 " + username);
                 log.info("구독하셨다");
-                try {
-                    log.info("구독하셨다");
-                    RoomModel roomModel = roomModelService.findByStreamer(username);
-                    roomModel.setViewers(roomModel.getViewers() + 1);
-                    roomModelService.save(roomModel);
-                    RoomViewerModel roomViewerModel = RoomViewerModel.builder()
-                            .streamer(username)
-                            .subscriptionId(accessor.getSubscriptionId())
-                            .build();
-                    roomViewerService.save(roomViewerModel);
-                    log.info("구독하셨다 " + roomViewerModel.getStreamer() + " " + roomViewerModel.getSubscriptionId());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (!roomViewerService.existsByStreamerAndSubscriptionId(username, accessor.getSubscriptionId()))
+                {
+                    try {
+                        RoomModel roomModel = roomModelService.findByStreamer(username);
+                        roomModel.setViewers(roomModel.getViewers() + 1);
+                        roomModelService.save(roomModel);
+                        RoomViewerModel roomViewerModel = RoomViewerModel.builder()
+                                .streamer(username)
+                                .subscriptionId(accessor.getSubscriptionId())
+                                .build();
+                        roomViewerService.save(roomViewerModel);
+                        log.info("구독하셨다 " + roomViewerModel.getStreamer() + " " + roomViewerModel.getSubscriptionId());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+
             }
         }
         else if (StompCommand.CONNECT.equals(command))
