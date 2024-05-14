@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '../../styles/vars.css'
 import { betweenWrapper, columnWrapper, defaultWrapper, rowWrapper } from '@/styles/wrapper.css';
+import { plainButton } from '@/styles/common.css';
 
 export const container = style([
   betweenWrapper,
@@ -91,18 +92,18 @@ export const avatarButton = style([
 export const SearchBarContainer = style([
   rowWrapper, 
   {
-
   }
 ])
 
 export const SearchBarInputBox = style({
-  width: '100%',
+  width: 300,
   border: `1px solid ${vars.colors.gray}`,
   borderRadius: vars.borderRadius['0.5x'],
 })
 
-export const input = style({
+export const searchInput = style({
   flex: 1,
+  width: '100%',
   border: 'none',
   outline: 'none',
   padding: vars.space['1x'],
@@ -121,25 +122,43 @@ export const searchIcon = style({
 export const autocompleteList = style({
   position: 'absolute',
   backgroundColor: vars.colors.white,
-  // 테두리 주니까 밑줄 모양이 남음.. 일단 보류
-  // border: `1px solid ${vars.colors.gray}`,
+  borderRadius: vars.borderRadius['1x'],
+  boxShadow: vars.boxShadow['2x'],
   maxHeight: 200,
-  width: 243,
+  width: 300,
   overflowY: 'auto',
   zIndex: 100,
-})
-
-export const searchUserImage = style({
-  width: 45,
-  height: 45, 
-  borderRadius: vars.borderRadius.full,
-  border: `2.5px solid ${vars.colors.black}`,
-  margin: `0 ${vars.space['0.5x']} 0 0`
+  selectors: {
+  '&::-webkit-scrollbar': {
+    display: 'none',
+    // width: 5,
+    // height: 2,
+    // backgroundColor: vars.colors.lightGray
+  },
+  '&::-webkit-scrollbar-thumb': {
+    backgroundColor: vars.colors.darkGray
+  }
+  },
+  margin: `${vars.space['0.5x']} 0 0 0`
 })
 
 export const autocompleteItem = style([
   rowWrapper, 
+  plainButton,
   {
-    margin: `0 ${vars.space['0.5x']}`
+    margin: `${vars.space['0.5x']} ${vars.space['0.5x']}`,
+    padding: vars.space['0.5x'],
+    selectors: {
+      '&:hover': {
+        backgroundColor: vars.colors.lightGray,
+      }
+    }
   }
 ])
+
+export const searchUserName = style({
+  overflow: 'hidden', 
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  margin: `0 0 0 ${vars.space['0.5x']}`,
+})

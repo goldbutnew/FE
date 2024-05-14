@@ -3,55 +3,41 @@
 import React, { useEffect, useState } from 'react';
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
-import * as styles from './index.css';
+import * as styles from './index.css'
 import { line } from "@/styles/common.css";
+import useAuthStore from '@/store/AuthStore';
+
+interface Event {
+  isDonation: boolean;
+  username: string;
+  nickname: string;
+  choco: number;
+}
 
 export default function NewsFeed() {
-  const [events, setEvents] = useState([]);
-  const [stompClient, setStompClient] = useState(null);
-  const [connected, setConnected] = useState(false);
+  const { userData } = useAuthStore()
+  const [events, setEvents] = useState<Event[]>([]);
+  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
 
-  const roomId = "ZGhhYWtzbHFrc2FwZ2hh";
+  const roomId = btoa(userData.username);
 
-  useEffect(() => {
-    const sock = new SockJS('http://localhost:8080/ws');
-    const stompClient = Stomp.over(sock);
-
-    // stompClient.connect({}, frame => {
-    //   console.log('Connected: ' + frame);
-
-    //   stompClient.subscribe('/topic/newsFeed', message => {
-    //     const newEvent = JSON.parse(message.body);
-    //     setEvents(prevEvents => [...prevEvents, newEvent]);
-    //   });
-    // });
-    
-    // return () => {
-    //   if (stompClient) {
-    //     stompClient.disconnect(() => {
-    //       console.log('Disconnected');
-    //     });
-    //   }
-    // };
-  }, []);
-
-  const onMessageReceived = (msg) => {
-    const newMessage = JSON.parse(msg.body);
-    console.log(newMessage);
+  const onMessageReceived = (msg: string) => {
+    const event: Event = JSON.parse(msg.body);
+    setEvents(prevEvents => [...prevEvents, event]);
+    console.log("Event received:", event);
   };
 
   const connect = () => {
-    console.log("WebSocket 연결 시도 중...");
-    const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
+    const socket = new SockJS('https://k10a203.p.ssafy.io/ws');
+    const client = Stomp.over(socket);
 
     client.reconnect_delay = 5000;
-    client.debug = function(str) {
+    client.debug = (str) => {
       console.log('STOMP Debug:', str);
     };
 
     client.onConnect = () => {
-      console.log("연결 완료");
-      setConnected(true);
+      console.log("뉴스피드 WebSocket 연결 완료");
       client.subscribe(`/sub/streamer/${roomId}`, onMessageReceived, {
         id: `sub-${roomId}`,
         ack: 'client'
@@ -60,48 +46,35 @@ export default function NewsFeed() {
 
     client.onDisconnect = () => {
       console.log("WebSocket 연결 해제 완료");
-      setConnected(false);
     };
 
     client.activate();
     setStompClient(client);
   };
-  
+
   useEffect(() => {
     connect();
     return () => {
-      if (stompClient) {
-        console.log("WebSocket 연결 해제 시도 중...");
-        stompClient.deactivate();
-      }
-    }
+      stompClient?.deactivate();
+      console.log("WebSocket 연결 해제 시도 중...");
+    };
   }, []);
 
   return (
-    // <div className={styles.newsFeedContainer}>
-    //   <div className={styles.title}>
-    //     뉴스피드
-    //   </div>
-    //   <hr className={line} />
-    //   <div className={styles.newsFeedContent}>
-    //     {events.map((event, index) => (
-    //       <div key={index} className={styles.newfeedItem}>
-    //         {event.isDonation === 0 && `🎉 ${event.user} 님이 팔로우했습니다.`}
-    //         {event.isDonation !== 0 && `🍫 ${event.user} 님이 ${event.choco} 초코를 후원했습니다.`}
-    //       </div>
-    //     ))}
-    //   </div>
-    // </div>
     <div className={styles.newsFeedContainer}>
-      <div className={styles.title}>
-        뉴스피드
-      </div>
+      <div className={styles.title}>뉴스피드</div>
       <hr className={line} />
       <div className={styles.newsFeedContent}>
+      {/* <div className={styles.newfeedItemBox}>🎉 <span className={styles.newfeedItemNickname}>바보</span> 님이 팔로우했습니다.</div>
+      <div className={styles.newfeedItemBox}>🎉 <span className={styles.newfeedItemNickname}>바보</span> 님이 팔로우했습니다.</div>
+      <div className={styles.newfeedItemBox}>🍫 <span className={styles.newfeedItemNickname}>sdfsfsfdsfdsfsf보</span> 님이 <span className={styles.newfeedItemNickname}>10399348892398398234 초코</span>를 후원했습니다.</div> */}
         {events.map((event, index) => (
-          <div key={index} className={styles.newfeedItem}>
-            {event.isDonation === 0 && `🎉 ${event.user} 님이 팔로우했습니다.`}
-            {event.isDonation !== 0 && `🍫 ${event.user} 님이 ${event.choco} 초코를 후원했습니다.`}
+          <div key={index} className={styles.newfeedItemBox}>
+            {event.isDonation ?
+              <div>🍫 <span className={styles.newfeedItemNickname}>{event.nickname}</span> 님이 <span className={styles.newfeedItemNickname}>{event.choco} 초코</span>를 후원했습니다.</div>
+               :
+              <div>🎉 <span className={styles.newfeedItemNickname}>{event.nickname}</span> 님이 팔로우했습니다.</div>
+            }
           </div>
         ))}
       </div>

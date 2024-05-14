@@ -36,7 +36,6 @@ export const rotateAnimation = style({
 
 // 버튼 효과
 export const buttonEffect = style({
-  padding: `${vars.space['1x']} ${vars.space['1x']}`,
   // transition: 'background-color 0.3s ease', 
   transition: vars.transition.default,
   ':hover': {

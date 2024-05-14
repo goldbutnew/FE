@@ -7,7 +7,7 @@ import useModal from "@/hooks/useModal";
 import { IoIosClose, IoMdRefresh } from "react-icons/io";
 import * as styles from './index.css'
 import useNotiferStore from "./Store";
-import { lighLine, line, plainButton } from "@/styles/common.css";
+import { lightLine, line, plainButton } from "@/styles/common.css";
 import { rotateAnimation } from "@/styles/animation.css";
 
 export default function Notifer() {
@@ -66,7 +66,7 @@ export default function Notifer() {
                     <span key={index} className={styles.myAlarmItem}>
                       {message}
                     </span>
-                    {index !== myAlarm.length - 1 && <hr className={lighLine} />}
+                    {index !== myAlarm.length - 1 && <hr className={lightLine} />}
                   </div>
                 )})  
             ) : (

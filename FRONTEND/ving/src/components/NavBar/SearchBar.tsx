@@ -3,6 +3,7 @@ import * as styles from './index.css'
 import { FiSearch } from "react-icons/fi"
 import useProfileStore from '@/store/ProfileStore'
 import { useRouter } from 'next/navigation'
+import ProfileImage from '../ProfileImg'
 
 interface User {
   username: string
@@ -14,26 +15,51 @@ export default function SearchBar() {
   const [nickname, setNickname] = useState('')
   const [username, setUsername] = useState('')
   const [users, setUsers] = useState<User[]>([])
-  const autocompleteRef = useRef<HTMLDivElement>(null);
+  const autocompleteRef = useRef<HTMLDivElement>(null)
   const [message, setMessage] = useState('')
-  const { profileUserName, getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData } = useProfileStore()
+  const { getUserProfileInfo, getUserNicknameSearch, searchData } = useProfileStore()
   const router = useRouter()
 
   const filterUsers = (searchTerm: string) => {
-    const filteredUsers = searchData.filter(user => {
+    const filteredUsers = searchData.filter((user:User) => {
       return user.nickname.toLowerCase().includes(searchTerm.toLowerCase())
     })
     return filteredUsers
   }
 
+  const hasNicknameMatch = (searchTerm: string) => {
+    const filteredUsers = searchData.filter((user: User) => {
+      return user.nickname.toLowerCase() === searchTerm.toLowerCase()
+    })
+    return filteredUsers.length > 0
+  }
+
+  // 입력 시 추적 - 닉네임
   const handleInputChange = (event:any) => {
     const searchTerm = event.target.value
     setNickname(searchTerm)
+
+    const matchExists = hasNicknameMatch(searchTerm)
+
     setUsername(searchTerm)
     const filteredUsers = filterUsers(searchTerm)
+
+    if (filteredUsers.length > 0 && matchExists) {
+      if (filteredUsers.length === 1) {
+        setUsername(filteredUsers[0].username)
+      } else {
+        setUsername('')
+      }
+      setMessage('')
+    } else {
+      setMessage(`${searchTerm}`)
+      setUsername('')
+    }
+
     setUsers(filteredUsers)
   }
 
+  // 자동완성 클릭 시
   const handleAutoComplete = (selectedUser: User) => {
     setNickname(selectedUser.nickname)
     setUsername(selectedUser.username)
@@ -56,28 +82,19 @@ export default function SearchBar() {
   useEffect(() => {
     getUserNicknameSearch()
   }, [getUserNicknameSearch])
+  
 
   const moveSearchUser = (username:string) => {
-    getUserProfileInfo(username)
-    console.log('이동 전에 데이터 담는다')
-    router.push(`/profile/${btoa(username)}`)
+    console.log('이동 전에 데이터 담는다', username)
+    if (message) {
+      router.push(`/tmp2?message=${message}`)
+    } else {
+      getUserProfileInfo(username)
+      router.push(`/profile/${btoa(username)}`)
+    }
+    setNickname('')
+    setMessage('')
   }
-
-  //   try {
-  //     const response = await axios.post('/api/search/nickname', { nickname })
-  //     // setUsers(response.data.data.users)
-  //     // setUsers({
-  //     //   userid: 1,
-  //     //   nickname: '발루',
-  //     //   photo: 'https://picsum.photos/id/1/200/300'
-  //     // })
-  //     setMessage(response.data.message)
-  //     console.log(nickname, '성공')
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error)
-  //     setMessage('Failed to fetch data')
-  //   }
-  // }
 
   return (
     <div>
@@ -86,7 +103,7 @@ export default function SearchBar() {
           <input
             type="text"
             placeholder="지금 스트리머를 검색해 보세요!"
-            className={styles.input}
+            className={styles.searchInput}
             value={nickname}
             onChange={handleInputChange}
           />
@@ -101,8 +118,12 @@ export default function SearchBar() {
             <div key={user.username} onClick={() => handleAutoComplete(user)}>
               <div className={styles.autocompleteItem}>
                 {/* 이미지가 null이라서 width를 줄 수 없어 에러가 뜨니 잠시 Image 말고 img 쓰겠슴다 */}
-                <img className={styles.searchUserImage} src={user.thumbnail} alt={user.nickname} />
-                <span>{user.nickname}</span>
+                <ProfileImage 
+                  url={user.thumbnail}
+                  width={40}
+                  alt={user.nickname}
+                />
+                <span className={styles.searchUserName}>{user.nickname}</span>
               </div>
             </div>
           ))}

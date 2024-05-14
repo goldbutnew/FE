@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { RiNumber1, RiNumber2, RiNumber3, RiNumber4, RiNumber5 } from "react-icons/ri"
 import ProfileImage from '../ProfileImg'
+import { vars } from '@/styles/vars.css'
+import SideBar from '../SideBar/SideBar'
 
 interface User {
   username: string
@@ -13,14 +15,11 @@ interface User {
   thumbnail: string
 }
 
-interface RankingUserProps {
-  initOpen: boolean
-}
-
-export default function RankingUser({ initOpen }: RankingUserProps) {
+export default function Ranking() {
   const { getCurrentTopViewers, currentTopViewersData, getUserProfileInfo, getUserNicknameSearch, searchData } = useProfileStore()
   const [users, setUsers] = useState<User[]>(currentTopViewersData || [])
   const router = useRouter()
+  const [isOpen, setIsOpen] = useState(true)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -35,7 +34,6 @@ export default function RankingUser({ initOpen }: RankingUserProps) {
     if (currentTopViewersData) {
       setUsers(currentTopViewersData || [])
     }
-    console.log('뭔데---------')
     setLoading(true)
   }, [currentTopViewersData])
   
@@ -47,28 +45,32 @@ export default function RankingUser({ initOpen }: RankingUserProps) {
   }
 
   console.log(currentTopViewersData)
+  
   return (
-    <div className={styles.autocompleteList}>
-      {users.map((user: User) => (
-        <div key={user.username} onClick={() => moveSearchUser(user.username)}>
-          {initOpen ? (
-            <div className={styles.autocompleteItem}>
-              <ProfileImage 
-                url={user.thumbnail} 
-                width={45}
-                alt="User profile" 
-              />
-              <div className={styles.rankingUserName}>{user.nickname}</div>
-            </div>
-          ) : (
-            <ProfileImage 
-                url={user.thumbnail} 
-                width={45}
-                alt="User profile" 
-              />
-          )}
-        </div>
-      ))}
-    </div>
+    <SideBar
+      title="랭킹"
+      side="left"
+      initOpen={true}
+      isOpen={isOpen}
+      width={200}
+      onToggle={() => setIsOpen(!isOpen)}
+    >
+      <div className={styles.rankingList}>
+        {users.map((user: User) => (
+          <div key={user.username} onClick={() => moveSearchUser(user.username)}>
+            {isOpen ? (
+              <div className={styles.openRankingListItem}>
+                <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
+                <div className={styles.rankingUserName}>{user.nickname}</div>
+              </div>
+            ) : (
+              <div className={styles.closeRankingListItem}>
+                <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </ SideBar>
   )
 }

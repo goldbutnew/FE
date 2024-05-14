@@ -42,6 +42,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/auth/Oauth2/KakaoLogin").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/api/stream/findAll").permitAll()
+                        .requestMatchers("/api/search/**").permitAll()
                         .requestMatchers("/api/auth/login", "/api/auth/signup", "/api/auth/isRegistered")
                         .permitAll().anyRequest().authenticated());
         return http.build();
@@ -73,6 +74,7 @@ public class WebSecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3000");  // 프론트엔드 호스트
+        config.addAllowedOrigin("https://k10a203.p.ssafy.io");  // 프론트엔드 호스트
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -16,13 +16,43 @@ import { IoIosSettings } from "react-icons/io"
 import { MdPictureInPictureAlt } from "react-icons/md"
 
 
-const VideoPlayer = ({ videoRef, setUrl }) => {
-  const [isPlaying, setIsPlaying] = useState(true)
-  const [volume, setVolume] = useState(0.5)
-  const [storedVolume, setStoredVolume] = useState(0.5)
-  const [isMuted, setIsMuted] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
+const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
+  const [ isPlaying, setIsPlaying ] = useState(true)
+  const [ volume, setVolume ] = useState(0)
+  const [ storedVolume, setStoredVolume ] = useState(0.5)
+  const [ isMuted, setIsMuted ] = useState(true)
+  const [ isHovering, setIsHovering ] = useState(false)
+  const [ currentTime, setCurrentTime ] = useState(0)
+  const [ duration, setDuration ] = useState(0)
+  const [ isFull, setIsFull ] = useState(false)
 
+  useEffect(() => {
+    const video = videoRef.current
+    if (video) {
+      const handleLoadedMetadata = () => {
+        setDuration(video.duration)
+      }
+      const handleTimeUpdate = () => {
+        setCurrentTime(video.currentTime)
+      }
+      video.addEventListener('loadedmetadata', handleLoadedMetadata)
+      video.addEventListener('timeupdate', handleTimeUpdate)
+
+      return () => {
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata)
+        video.removeEventListener('timeupdate', handleTimeUpdate)
+      }
+    }
+  }, [videoRef])
+
+  const handleSeekChange = (event) => {
+    const video = videoRef.current
+    const newTime = parseFloat(event.target.value)
+    if (video) {
+      video.currentTime = newTime
+      setCurrentTime(newTime)
+    }
+  }
   const togglePlayPause = () => {
     const video = videoRef.current
     if (!video) return
@@ -38,6 +68,7 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
 
   const toggleMute = () => {
     const video = videoRef.current
+    video.muted = false
     if (!video) return
 
     if (!isMuted) {
@@ -67,14 +98,16 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
   }
 
   const toggleFullscreen = () => {
-    const videoContainer = videoRef.current?.parentNode
-    if (!videoContainer) return
+    const video = containerRef.current
+    if (!video) return
 
     if (!document.fullscreenElement) {
-      videoContainer.requestFullscreen().catch(err => {
+      setIsFull(true)
+      video.requestFullscreen().catch(err => {
         alert(`Cannot enable fullscreen mode: ${err.message}`)
       })
-    } else {
+    } else if (document.fullscreenElement === video) {
+      setIsFull(false)
       document.exitFullscreen()
     }
   }
@@ -100,72 +133,90 @@ const VideoPlayer = ({ videoRef, setUrl }) => {
   const handleSetQuality = (quality: string) => {
     switch (quality) {
       case 'AUTO':
-        console.log('auto로 바꿈')
-        setUrl('720p')
+        setResolution('auto')
         break
-      case '360p':
-        console.log('360으로 바꿈')
-        setUrl('360p')
+      case '480p':
+        setResolution(2)
         break
       case '720p':
         console.log('720으로 바꿈')
-        setUrl('720p')
+        setResolution(1)
         break
-      case '480p':
-        console.log('480으로 바꿈')
-        setUrl('1080p')
-        // setUrl('480p')
+      case '1080p':
+        console.log('1080으로 바꿈')
+        setResolution(0)
         break
       default:
-        setUrl('720p')
+        setResolution('auto')
     }
   }
 
   return (
-      <div className={styles.controls}>
-        <button className={styles.button} onClick={togglePlayPause}>{isPlaying ? <IoStop color="Black" size={20}/> : <IoPlay color="Black" size={20}/>}</button>
-        <button 
-          className={styles.button}
-          onClick={toggleMute}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
-          {isMuted ? <RiVolumeMuteFill color="Black" size={20}/> : <RiVolumeUpFill color="Black" size={20}/>}
-        </button>
+    <div className={styles.player}>
+      <div className={styles.playBarContainer}>
         <input
           type="range"
           min="0"
-          max="1"
-          step="0.01"
-          value={volume}
-          onChange={handleVolumeChange}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-          className={styles.slider}
-          style={{ display: isHovering ? 'block' : 'none' }}
+          max={duration}
+          step="1"
+          value={currentTime}
+          onChange={handleSeekChange}
+          className={styles.videoSlider}
         />
-        <button className={styles.button} onClick={toggleFullscreen}><MdOutlineFullscreen color="Black" size={20}/></button>
-        <button className={styles.button} onClick={togglePip}><MdPictureInPictureAlt color="Black" size={20}/></button>
-
-        <div>
-          <DropdownMenu 
-            button={<button className={styles.button}><IoIosSettings color="Black" size={20}/></button>}
+      </div>
+      <div className={styles.controls}>
+        <div className={styles.justify}>
+          <button onClick={togglePlayPause}>{isPlaying ? <IoStop color="white" size={20}/> : <IoPlay color="white" size={20}/>}</button>
+          <button 
+            onClick={toggleMute}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
           >
-            <MenuItem>
-              <button onClick={() => handleSetQuality('AUTO')}>AUTO</button>
-            </MenuItem>
-            <MenuItem>
-              <button onClick={() => handleSetQuality('480p')}>480p</button>
-            </MenuItem>
-            <MenuItem>
-              <button onClick={() => handleSetQuality('720p')}>720p</button>
-            </MenuItem>
-            <MenuItem>
-              <button onClick={() => handleSetQuality('360p')}>360p</button>
-            </MenuItem>
-          </DropdownMenu>
+            {isMuted ? <RiVolumeMuteFill color="white" size={20}/> : <RiVolumeUpFill color="white" size={20}/>}
+          </button>
+
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={handleVolumeChange}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            className={styles.volumeSlider}
+            style={{ display: isHovering ? 'block' : 'none' }}
+          />
+        </div>
+        <div className={styles.justify}>
+          <button 
+            onClick={toggleFullscreen}
+          >
+            {isFull ? <MdOutlineFullscreenExit color="white" size={20}/> : <MdOutlineFullscreen color="white" size={20}/>}
+          </button>
+          <button onClick={togglePip}><MdPictureInPictureAlt color="white" size={20}/></button>
+
+          <div>
+            <DropdownMenu 
+              button={<button><IoIosSettings color="white" size={20}/></button>}
+            >
+              <MenuItem>
+                <button onClick={() => handleSetQuality('AUTO')}>AUTO</button>
+              </MenuItem>
+              <MenuItem>
+                <button onClick={() => handleSetQuality('480p')}>480p</button>
+              </MenuItem>
+              <MenuItem>
+                <button onClick={() => handleSetQuality('720p')}>720p</button>
+              </MenuItem>
+              <MenuItem>
+                <button onClick={() => handleSetQuality('1080p')}>1080p</button>
+              </MenuItem>
+            </DropdownMenu>
+          </div>
         </div>
       </div>
+    </div>
   )
 }
 

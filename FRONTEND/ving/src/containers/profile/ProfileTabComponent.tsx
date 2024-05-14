@@ -62,8 +62,8 @@ export default function ProfileTabComponent() {
   const params = useParams()
 
   const { profileData, getUserProfileInfo } = useProfileStore()
-  const profileUserName = params.username
   const [links, setLinks] = useState(profileData.links || [])
+  const [loading, setLoading] = useState(false)
 
   // useEffect(() => {
   //   const initData = async () => {
@@ -73,27 +73,29 @@ export default function ProfileTabComponent() {
   //   console.log(profileData)
   // }, [getUserProfileInfo])
 
-  // useEffect(() => {
-  //   if (profileData) {
-  //     setLinks(profileData.links || [])
-  //   }
-  // }, [profileData])
-
+  useEffect(() => {
+    if (profileData) {
+      setLoading(true)
+    }
+    console.log('hi')
+  }, [profileData])
+  
+  if (loading) {
   return (
     <div>
       <Card>
           <div className={styles.profileTabItemTitleBox}>
-            <BsFillPinAngleFill size={24} />
+            <BsFillPinAngleFill size={16} />
             <span className={styles.profileTabItemTitle}>소셜링크</span>
           </div>
-          {links.map((link) => (
+          {links.map((link:SocialLinkProps) => (
             <SocialLink key={link.title} {...link} />
           ))}
       </Card>
 
       <Card>
         <div className={styles.profileTabItemTitleBox}>
-          <BsFillPinAngleFill size={24} />
+          <BsFillPinAngleFill size={16} />
           <span className={styles.profileTabItemTitle}>대표영상</span>
         </div>
         {representativeVideoInfo.map(video => (
@@ -108,4 +110,5 @@ export default function ProfileTabComponent() {
       </Card>
     </div>
   )
+}
 }

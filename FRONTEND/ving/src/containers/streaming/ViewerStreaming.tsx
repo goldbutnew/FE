@@ -10,12 +10,13 @@ import useProfileStore from "@/store/ProfileStore";
 import ProfileImage from "@/components/ProfileImg";
 import { vars } from "@/styles/vars.css";
 import StreamingVideo from "@/components/StreamingVideo";
+import VideoContainer from "@/components/Container/VideoContainer";
 
 export default function ViewerStreaming() {
 
   const [loading, setLoading] = useState(false)
   const { userData } = useAuthStore()
-  const { streamRoomData } = useStreamingStore()
+  const { streamRoomData, setIsStreamerFollowed, isStreamerFollowed } = useStreamingStore()
   const { streamerProfileData, streamerUserName, getStreamerProfileInfo, doFollowUser, unDoFollowUser } = useProfileStore()
   const [subscriberCount, setSubscriberCount] = useState(streamerProfileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(streamerProfileData.isFollowed)
@@ -32,10 +33,12 @@ export default function ViewerStreaming() {
 
     if (isFollowed) {
       setIsFollowed(false)
+      setIsStreamerFollowed(false)
       setSubscriberCount(subscriberCount - 1)
       unDoFollowUser(streamerUserName)
     } else {
       setIsFollowed(true)
+      setIsStreamerFollowed(true)
       setSubscriberCount(subscriberCount + 1)
       doFollowUser(streamerUserName)
     }
@@ -61,16 +64,38 @@ export default function ViewerStreaming() {
     setLoading(true)
     if (streamerProfileData) {
       setIsFollowed(streamerProfileData.isFollowed || false)
+      setIsStreamerFollowed(streamerProfileData.isFollowed || false)
       // 팔로우가 된 상태라면
       // 맨 처음에 팔로우 안 되어 있으면 자동으로 false
     }
   }, [streamerProfileData])
 
-  console.log(streamerProfileData)
+  const [timeElapsed, setTimeElapsed] = useState("")
+
+  useEffect(() => {
+    const calculateTimeElapsed = () => {
+      const createdTime = new Date(streamRoomData.createdAt).getTime()
+      const now = new Date().getTime()
+      const secondsDifference = Math.floor((now - createdTime) / 1000)
+      
+      const hours = Math.floor(secondsDifference / 3600).toString().padStart(2, '0')
+      const minutes = Math.floor((secondsDifference % 3600) / 60).toString().padStart(2, '0')
+      const seconds = (secondsDifference % 60).toString().padStart(2, '0')
+
+      const formattedTime = `${hours}:${minutes}:${seconds}`
+      setTimeElapsed(formattedTime)
+    }
+
+    calculateTimeElapsed()
+    const intervalId = setInterval(calculateTimeElapsed, 1000)
+
+    return () => clearInterval(intervalId)
+  }, [streamRoomData.createdAt])
+
   return (
-    <div className={styles.container}>
+    <VideoContainer>
       <div className={styles.videoPlayer}>
-        {/* <StreamingVideo /> */}
+        <StreamingVideo />
       </div>
       <div className={styles.streamerInfoContainer}>
         <div className={styles.leftBoxContainer}>
@@ -92,15 +117,15 @@ export default function ViewerStreaming() {
                   <SmallButton
                     text={isFollowed ? '팔로잉' : '팔로우'}
                     color={isFollowed ? 'lightGray' : 'black'}
-                    onClick={() => toggleFollow()}
+                    onClick={() => {toggleFollow()}}
                   />
             )}
           </div>
           <div className={styles.rightBoxItme}>
-            <div className={styles.stremingInfo}>1,549명 시청 중 03:43:14 스트리밍 중</div>
+            <div className={styles.stremingInfo}>{streamRoomData.viewers}명 시청 중 {timeElapsed}스트리밍 중</div>
           </div>
         </div>
       </div>
-    </div>
+    </VideoContainer>
   )
 }

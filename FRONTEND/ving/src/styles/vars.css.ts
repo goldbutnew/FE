@@ -24,6 +24,7 @@ export const vars = createGlobalTheme(':root', {
     red: '#F00000',
     gray: '#CFCFCF',
     lightGray: '#F2F2F2',
+    superLightGray: '#FAFAFA',
     pink: '#D16D6A',
   },
 

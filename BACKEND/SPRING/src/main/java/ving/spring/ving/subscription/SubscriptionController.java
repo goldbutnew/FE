@@ -28,7 +28,6 @@ public class SubscriptionController {
     private final SubscriptionService subscriptionService;
     private final StreamRoomService streamRoomService;
     private final DateTimeFormmer dateTimeFormmer;
-
     private final MessageController messageController;
     @PostMapping("/subscript")
     public  ResponseEntity<?> subscript(@RequestBody SubscriptionDto.SubscriptRequest subscriptRequest)
@@ -157,8 +156,6 @@ public class SubscriptionController {
         }
 
         SubscriptionModel subscriptionModel = subscriptionService.findByStreamerAndFollower(streamer, follower);
-
-
         subscriptionModel.setNotification(Math.abs(subscriptionModel.getNotification() - 1));
         subscriptionService.create(subscriptionModel);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
