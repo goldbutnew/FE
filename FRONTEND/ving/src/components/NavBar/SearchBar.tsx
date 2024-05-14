@@ -15,30 +15,57 @@ export default function SearchBar() {
   const [nickname, setNickname] = useState('')
   const [username, setUsername] = useState('')
   const [users, setUsers] = useState<User[]>([])
-  const autocompleteRef = useRef<HTMLDivElement>(null);
-  const [message, setMessage] = useState('')
-  const { profileUserName, getUserProfileInfo, doFollowUser, unDoFollowUser, getUserNicknameSearch, searchData } = useProfileStore()
+  const autocompleteRef = useRef<HTMLDivElement>(null)
+  const [searchQeury, setSearchQeury] = useState('')
+  const { getUserProfileInfo, getUserNicknameSearch, searchData } = useProfileStore()
   const router = useRouter()
 
   const filterUsers = (searchTerm: string) => {
-    const filteredUsers = searchData.filter(user => {
+    const filteredUsers = searchData.filter((user:User) => {
       return user.nickname.toLowerCase().includes(searchTerm.toLowerCase())
     })
     return filteredUsers
   }
 
+  const hasNicknameMatch = (searchTerm: string) => {
+    const filteredUsers = searchData.filter((user: User) => {
+      return user.nickname.toLowerCase() === searchTerm.toLowerCase()
+    })
+    return filteredUsers.length > 0
+  }
+
+  // 입력 시 추적 - 닉네임
   const handleInputChange = (event:any) => {
     const searchTerm = event.target.value
     setNickname(searchTerm)
+
+    const matchExists = hasNicknameMatch(searchTerm)
+
     setUsername(searchTerm)
     const filteredUsers = filterUsers(searchTerm)
+
+    if (filteredUsers.length > 0 && matchExists) {
+      if (filteredUsers.length === 1) {
+        setUsername(filteredUsers[0].username)
+      } else {
+        setUsername('')
+      }
+      setSearchQeury('')
+    } else {
+      setSearchQeury(`${searchTerm}`)
+      setUsername('')
+    }
+
     setUsers(filteredUsers)
   }
 
+  // 자동완성 클릭 시
   const handleAutoComplete = (selectedUser: User) => {
     setNickname(selectedUser.nickname)
     setUsername(selectedUser.username)
     setUsers([])
+
+    setSearchQeury('')
   }
 
   // 검색어 자동완성 외 부분 마우스 클릭하면 자동완성리스트 사라지는 로직
@@ -57,11 +84,18 @@ export default function SearchBar() {
   useEffect(() => {
     getUserNicknameSearch()
   }, [getUserNicknameSearch])
+  
 
   const moveSearchUser = (username:string) => {
-    getUserProfileInfo(username)
-    console.log('이동 전에 데이터 담는다')
-    router.push(`/profile/${btoa(username)}`)
+    console.log('이동 전에 데이터 담는다', username)
+    if (searchQeury) {
+      router.push(`/tmp2?searchQeury=${searchQeury}`)
+    } else {
+      getUserProfileInfo(username)
+      router.push(`/profile/${btoa(username)}`)
+    }
+    setNickname('')
+    setSearchQeury('')
   }
 
   return (

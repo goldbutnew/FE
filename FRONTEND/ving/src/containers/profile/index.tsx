@@ -1,5 +1,6 @@
 'use client'
 
+import { useSearchParams } from 'next/navigation'
 import ProfileUserInfoBox from './ProfileUserInfoBox'
 import TabsComponent from './TabsComponent'
 import Container from '@/components/Container'

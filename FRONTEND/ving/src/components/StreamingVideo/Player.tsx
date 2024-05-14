@@ -135,20 +135,19 @@ const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
       case 'AUTO':
         setResolution('auto')
         break
-      case '360p':
-        console.log('360으로 바꿈')
-        setResolution('360p')
+      case '480p':
+        setResolution(2)
         break
       case '720p':
         console.log('720으로 바꿈')
-        setResolution('720p')
+        setResolution(1)
         break
-      case '480p':
+      case '1080p':
         console.log('1080으로 바꿈')
-        setResolution('1080p')
+        setResolution(0)
         break
       default:
-        setResolution('720p')
+        setResolution('auto')
     }
   }
 
@@ -211,7 +210,7 @@ const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
                 <button onClick={() => handleSetQuality('720p')}>720p</button>
               </MenuItem>
               <MenuItem>
-                <button onClick={() => handleSetQuality('1080')}>1080p</button>
+                <button onClick={() => handleSetQuality('1080p')}>1080p</button>
               </MenuItem>
             </DropdownMenu>
           </div>

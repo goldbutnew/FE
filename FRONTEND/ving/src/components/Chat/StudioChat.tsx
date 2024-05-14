@@ -16,6 +16,10 @@ import { line } from "@/styles/common.css";
 import useStreamingStore from "@/store/StreamingStore";
 import ChatProfile from "./ChatProfile";
 import useModal from "@/hooks/useModal";
+import DropdownMenu from "../DropdownMenu/DropdownMenu";
+import ProfileImage from "../ProfileImg";
+import MenuItem from "../DropdownMenu/MenuItem";
+import css from "styled-jsx/css";
 
 interface Message {
   userName: string;
@@ -30,7 +34,8 @@ export default function StudioChat() {
   const { userData } = useAuthStore()
   const { streamRoomData } = useStreamingStore()
   const { getChatProfile, selectedUserData } = useChatStore()
-  const [stompClient, setStompClient] = useState(null);
+  const stompSubscription  = useRef<StompSubscription | null>(null)
+  const stompClient = useRef<CompatClient | null>(null)
   const [connected, setConnected] = useState(false);
   const messages = useChatStore(state => state.messages)
   const addMessage = useChatStore(state => state.addMessage)
@@ -39,6 +44,7 @@ export default function StudioChat() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBoxRef = useRef(null);
   const { open, close, isOpen } = useModal()
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   
   const roomId = btoa(userData.username);
 
@@ -59,6 +65,11 @@ export default function StudioChat() {
   };
 
   const connect = () => {
+    if (connected) {
+      console.log("이미 WebSocket에 연결되어 있습니다. 연결 상태:", connected);
+      return; // 이미 연결된 경우 추가 연결 방지
+    }  
+
     console.log("WebSocket 연결 시도 중...");
     const client = Stomp.over(() => new SockJS('https://k10a203.p.ssafy.io/ws'));
 
@@ -83,19 +94,35 @@ export default function StudioChat() {
 
     client.activate();
     stompClient.current = client;
-    // setStompClient(client);
   };
+
   
   useEffect(() => {
-    connect();
-    return () => {
-      if (stompClient) {
+    function unSub() {
+      console.log("WebSocket 연결 해제 시도 중...");
+      console.log(stompSubscription)
+      if (stompSubscription.current !== null)
+      {
+        stompSubscription.current.unsubscribe()
+      }
+      else
+      {
+        console.log("사실 난 없는사람이야", stompSubscription.current)
+      }
+      if (stompClient.current) {
+        // stompClient.unsubscribe(stompSubscription)
         console.log("WebSocket 연결 해제 시도 중...");
-        stompClient.deactivate();
+        stompClient.current.deactivate();
       }
     }
-  }, []);
+    
+    connect();
+    return () => {
+      unSub()
+    };
+  }, [roomId]);
 
+  
   const handleChange = (event) => {
     setMessageInput(event.target.value);
   };
@@ -113,17 +140,15 @@ export default function StudioChat() {
     const formattedTimestamp = getFormattedTimestamp()
 
     if (stompClient && messageInput.trim() && connected) {
-    // const color = getRandomColor()
-    const message = {
-      userName: userData.username,
-      nickname: userData.nickname,
-      timeStamp: formattedTimestamp,
-      donation: 0,
-      isTts: false,
-      text: messageInput,
-      // color: color
-    };
-      stompClient.publish({
+      const message = {
+        userName: userData.username,
+        nickname: userData.nickname,
+        timeStamp: formattedTimestamp,
+        donation: 0,
+        isTts: false,
+        text: messageInput,
+      };
+      stompClient.current.publish({
         destination: `/pub/channel/${roomId}`,
         body: JSON.stringify(message)
       });
@@ -145,6 +170,8 @@ export default function StudioChat() {
   const handleNicknameClick = async (user: string) => {
     const streamer = streamRoomData.username;
     const viewer = user;
+    setDropdownOpen(true);
+    console.log("드롭다운 버튼 여는 중")
     try {
       const profileData = await getChatProfile(streamer, viewer);
       if (profileData) {
@@ -167,43 +194,45 @@ export default function StudioChat() {
       <hr className={line} />
       <div className={styles.studioChatContent}>
         <div className={styles.studioChatBox} ref={chatBoxRef}>
-          {messages.map((msg, index) => (
+        {messages.map((msg, index) => (
             <div 
               key={index} 
               className={styles.chatItem}
             >
               {msg.donation ? 
                 <div className={styles.donationChatItem}>
-                <button 
-                  style={{ color: getNicknameColor(msg.userName) }}
-                  className={styles.dontaionChatNickname}
-                  onClick={msg.nickname !== "익명의 후원자" ? () => handleNicknameClick(msg.userName) : undefined}
-                >
-                  {msg.nickname}
-                </button>
-                <div>{msg.text}</div>
-                <hr className={line} />
-                <div className={styles.donationChatItemChoco}>🍫 {msg.donation}</div>
-              </div>
+                  <button 
+                    style={{ color: getNicknameColor(msg.userName) }}
+                    className={styles.dontaionChatNickname}
+                  >
+                    {msg.nickname}
+                  </button>
+                  <div>{msg.text}</div>
+                  <hr className={line} />
+                  <div className={styles.donationChatItemChoco}>🍫 {msg.donation}</div>
+                </div>
               : 
-              <div>
-                <button
-                  style={{ color: getNicknameColor(msg.nickname) }}
-                  className={styles.chatNickname}
-                  onClick={() => handleNicknameClick(msg.userName)}
-                >
-                  {streamRoomData.username === msg.userName ? "👑 " : ""}{msg.nickname}
-                </button>: <span>{msg.text}</span>
-              </div>
+                <div>
+                  <DropdownMenu
+                    button={
+                      <button
+                        style={{ color: getNicknameColor(msg.nickname) }}
+                        className={styles.chatNickname}
+                      >
+                        {userData.username === msg.userName ? "👑 " : ""}{msg.nickname}
+                      </button>
+                    }
+                  >
+                    <MenuItem onClick={() => console.log("프로필 보기")}>프로필 보기</MenuItem>
+                    <MenuItem onClick={() => console.log("채팅 내역 보기")}>채팅 내역 보기</MenuItem>
+                    <MenuItem onClick={() => console.log("차단하기")}>차단하기</MenuItem>
+                  </DropdownMenu>
+                  <span>: {msg.text}</span>
+                </div>
               }
             </div>
           ))}
         </div>
-        <ChatProfile 
-          isOpen={isOpen} 
-          onClose={close} 
-          userData={selectedUserData} 
-        />
         <form className={styles.inputBox} onSubmit={handleSendMessage}>     
           <div className={styles.emojiBox}>
             {showEmojiPicker && (

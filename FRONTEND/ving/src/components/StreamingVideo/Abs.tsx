@@ -8,7 +8,7 @@ interface AbsProps {
 }
 
 
-export default function Abs({setSpeed}: AbsProps) {
+export default function Abs({setSpeed}: Readonly<AbsProps>) {
   const url : string = "https://vingving.s3.ap-northeast-2.amazonaws.com/10MB.txt"
 
   async function fetchSegmentWithAxios(url: string): Promise<void> {
@@ -52,6 +52,6 @@ export default function Abs({setSpeed}: AbsProps) {
     return () => clearInterval(interval) // 컴포넌트 언마운트 시 인터벌 정리
   }, [])
   return (
-    <h1>ㅇㅇㅇ</h1>
+    <span></span>
   )
 }

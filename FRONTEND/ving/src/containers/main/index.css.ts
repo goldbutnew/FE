@@ -15,7 +15,7 @@ export const mainVideoGridBox = style({
 export const mainVideoGrid = style({
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))',
-  margin: `${vars.space['2x']} 0`,
+  margin: `${vars.space['2x']} 0 ${vars.space['4x']} 0`,
   gap: vars.space['2x'],
 })
 
@@ -115,7 +115,11 @@ export const streamingTitle = style([
 ])
 
 export const streamerName = style({
-  fontSize: vars.fontSize['0.5x']
+  fontSize: vars.fontSize['0.5x'],
+  ':hover': {
+    backgroundColor: vars.colors.gray,
+    borderRadius: vars.borderRadius['0.5x']
+  },
 })
 
 export const showMoreContainer= style([
