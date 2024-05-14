@@ -82,7 +82,8 @@ export default function StudioChat() {
     };
 
     client.activate();
-    setStompClient(client);
+    stompClient.current = client;
+    // setStompClient(client);
   };
   
   useEffect(() => {

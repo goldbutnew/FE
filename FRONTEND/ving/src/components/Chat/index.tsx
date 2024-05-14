@@ -110,7 +110,8 @@ export default function Chat() {
     };
 
     client.activate();
-    setStompClient(client);
+    stompClient.current = client;
+    // setStompClient(client);
   };
 
   useEffect(() => {
