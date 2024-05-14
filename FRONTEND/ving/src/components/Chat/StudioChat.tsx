@@ -66,8 +66,7 @@ export default function StudioChat() {
     }  
 
     console.log("WebSocket 연결 시도 중...");
-    const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
-    // const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
+    const client = Stomp.over(() => new SockJS('https://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
     client.debug = function(str) {
@@ -88,8 +87,6 @@ export default function StudioChat() {
       setConnected(false);
     };
 
-    // client.activate();
-    // setStompClient(client);
     client.activate();
     stompClient.current = client;
     // setStompClient(client);
@@ -150,17 +147,15 @@ export default function StudioChat() {
     const formattedTimestamp = getFormattedTimestamp()
 
     if (stompClient && messageInput.trim() && connected) {
-    // const color = getRandomColor()
-    const message = {
-      userName: userData.username,
-      nickname: userData.nickname,
-      timeStamp: formattedTimestamp,
-      donation: 0,
-      isTts: false,
-      text: messageInput,
-      // color: color
-    };
-      stompClient.publish({
+      const message = {
+        userName: userData.username,
+        nickname: userData.nickname,
+        timeStamp: formattedTimestamp,
+        donation: 0,
+        isTts: false,
+        text: messageInput,
+      };
+      stompClient.current.publish({
         destination: `/pub/channel/${roomId}`,
         body: JSON.stringify(message)
       });
@@ -229,7 +224,7 @@ export default function StudioChat() {
                   className={styles.chatNickname}
                   onClick={() => handleNicknameClick(msg.userName)}
                 >
-                  {streamRoomData.username === msg.userName ? "👑 " : ""}{msg.nickname}
+                  {userData.username === msg.userName ? "👑 " : ""}{msg.nickname}
                 </button>: <span>{msg.text}</span>
               </div>
               }
