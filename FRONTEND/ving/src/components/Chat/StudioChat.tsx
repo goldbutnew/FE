@@ -88,8 +88,10 @@ export default function StudioChat() {
       setConnected(false);
     };
 
+    // client.activate();
+    // setStompClient(client);
     client.activate();
-    setStompClient(client);
+    stompClient.current = client;
   };
 
   
