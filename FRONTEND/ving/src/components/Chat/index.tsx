@@ -23,11 +23,9 @@ import useModal from "@/hooks/useModal";
 
 export default function Chat() {
   const { userData } = useAuthStore()
-  const [profileKey, setProfileKey] = useState(0)
-  const [stompClient, setStompClient] = useState(null);
   const [connected, setConnected] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-  const { getChatProfile, selectedUserData } = useChatStore()
+  const { getChatProfile, selectedUserData, clearMessages } = useChatStore()
   const messages = useChatStore(state => state.messages)
   const addMessage = useChatStore(state => state.addMessage)
   const [messageInput, setMessageInput] = useState('');
@@ -38,6 +36,16 @@ export default function Chat() {
   const { getStreamerProfileInfo, streamerProfileData } = useProfileStore()
   const [isFollowed, setIsFollowed] = useState(false)
   const { open, close, isOpen } = useModal()
+  // const [stompSubscription, setStompSubscription] = useState<StompSubscription | null | void >(null)
+  const stompSubscription  = useRef<StompSubscription | null>(null)
+  const stompClient = useRef<CompatClient | null>(null)
+
+  const getRandomColor = () => {
+    const hue = Math.floor(Math.random() * 360)
+    const saturation = Math.floor(Math.random() * 10) + 70
+    const lightness = Math.floor(Math.random() * 20) + 70
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`
+  }
 
   const getNicknameColor = (nickname: string) => {
     if (nicknameColors.has(nickname)) {
@@ -64,18 +72,23 @@ export default function Chat() {
     return () => clearInterval(interval);
   }, [getStreamerProfileInfo, streamRoomData.username, streamerProfileData.isFollowed]);
   
-  const roomId = btoa(streamRoomData.username);
+  let roomId = btoa(streamRoomData.username);
 
-  const onMessageReceived = (msg) => {
+  const onMessageReceived = (msg: string) => {
     const newMessage = JSON.parse(msg.body);
-    console.log(newMessage);
+    console.log("Received new message:", newMessage); // 로그 추가
     addMessage(newMessage);
   };
 
   const connect = () => {
+    if (connected) {
+      console.log("이미 WebSocket에 연결되어 있습니다. 연결 상태:", connected);
+      return; // 이미 연결된 경우 추가 연결 방지
+    }  
+
     console.log("WebSocket 연결 시도 중...");
-    // const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
-    const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
+    const client = Stomp.over(() => new SockJS('http://localhost:8080/ws'));
+    // const client = Stomp.over(() => new SockJS('http://k10a203.p.ssafy.io/ws'));
 
     client.reconnect_delay = 5000;
     client.debug = function(str) {
@@ -97,18 +110,35 @@ export default function Chat() {
     };
 
     client.activate();
-    setStompClient(client);
+    stompClient.current = client;
+    // setStompClient(client);
   };
 
   useEffect(() => {
+    function unSub() {
+      console.log("WebSocket 연결 해제 시도 중...");
+      console.log(stompSubscription)
+      if (stompSubscription.current !== null)
+      {
+        stompSubscription.current.unsubscribe()
+      }
+      else
+      {
+        console.log("사실 난 없는사람이야", stompSubscription.current)
+      }
+      if (stompClient.current) {
+        // stompClient.unsubscribe(stompSubscription)
+        console.log("WebSocket 연결 해제 시도 중...");
+        stompClient.current.deactivate();
+      }
+    }
+    
     connect();
     return () => {
-      if (stompClient) {
-        console.log("WebSocket 연결 해제 시도 중...");
-        stompClient.deactivate();
-      }
+      unSub()
+      roomId = ""
     };
-  }, []);
+  }, [roomId]);
 
   const handleChange = (event) => {
     setMessageInput(event.target.value);
@@ -118,15 +148,15 @@ export default function Chat() {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
-  const handleEmojiClick = (emoji) => {
+  const handleEmojiClick = (emoji: any) => {
     setMessageInput(prev => prev + emoji.emoji);
   }
 
-const handleSendMessage = (event) => {
-  event.preventDefault();
-  const formattedTimestamp = getFormattedTimestamp();
+  const handleSendMessage = (event) => {
+    event.preventDefault();
+    const formattedTimestamp = getFormattedTimestamp();
 
-  if (stompClient && messageInput.trim() && connected) {
+  if (stompClient.current && messageInput.trim() && connected) {
     // const color = getRandomColor()
     const message = {
       userName: userData.username,
@@ -137,7 +167,8 @@ const handleSendMessage = (event) => {
       text: messageInput,
       // color: color
     };
-    stompClient.publish({
+  
+    stompClient.current.publish({
       destination: `/pub/channel/${roomId}`,
       body: JSON.stringify(message)
     });
@@ -156,7 +187,6 @@ const handleSendMessage = (event) => {
     }
   }, [messages]);
 
-
   const handleNicknameClick = async (user: string) => {
     const streamer = streamRoomData.username;
     const viewer = user;
@@ -172,7 +202,7 @@ const handleSendMessage = (event) => {
       console.error("프로필 정보 가져오기 실패", error);
     }
   };
-
+  
   return (
     <SideBar 
       title="채팅" 

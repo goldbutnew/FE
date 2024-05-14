@@ -38,6 +38,8 @@ const useChatStore = create<ChatStore>((set, get) => ({
   messages: [],
   selectedUserData: null,
   addMessage: (message: Message) => set(state => ({ messages: [...state.messages, message] })),
+  clearMessages: () => set({ messages: [] }), 
+  
   sendDonation: async (donationData) => {
     const token = localStorage.getItem('accessToken');
     if (!token) {

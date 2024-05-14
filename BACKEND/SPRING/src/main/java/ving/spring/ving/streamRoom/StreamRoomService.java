@@ -21,8 +21,6 @@ public class StreamRoomService {
         return streamRoomRepository.findStreamRoomModelsByIsEnd(false);
     }
 
-
-
     public StreamRoomModel save(StreamRoomModel streamRoomModel)
     {
         return streamRoomRepository.save(streamRoomModel);

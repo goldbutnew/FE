@@ -28,7 +28,7 @@ export default function NewsFeed() {
   };
 
   const connect = () => {
-    const socket = new SockJS('http://k10a203.p.ssafy.io/ws');
+    const socket = new SockJS('https://k10a203.p.ssafy.io/ws');
     const client = Stomp.over(socket);
 
     client.reconnect_delay = 5000;

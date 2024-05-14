@@ -3,6 +3,7 @@ import * as styles from './index.css'
 import { FiSearch } from "react-icons/fi"
 import useProfileStore from '@/store/ProfileStore'
 import { useRouter } from 'next/navigation'
+import ProfileImage from '../ProfileImg'
 
 interface User {
   username: string
@@ -92,22 +93,6 @@ export default function SearchBar() {
     }
   }
 
-  //   try {
-  //     const response = await axios.post('/api/search/nickname', { nickname })
-  //     // setUsers(response.data.data.users)
-  //     // setUsers({
-  //     //   userid: 1,
-  //     //   nickname: '발루',
-  //     //   photo: 'https://picsum.photos/id/1/200/300'
-  //     // })
-  //     setMessage(response.data.message)
-  //     console.log(nickname, '성공')
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error)
-  //     setMessage('Failed to fetch data')
-  //   }
-  // }
-
   return (
     <div>
       <div className={styles.SearchBarContainer}>
@@ -115,7 +100,7 @@ export default function SearchBar() {
           <input
             type="text"
             placeholder="지금 스트리머를 검색해 보세요!"
-            className={styles.input}
+            className={styles.searchInput}
             value={nickname}
             onChange={handleInputChange}
           />
@@ -130,7 +115,11 @@ export default function SearchBar() {
             <div key={user.username} onClick={() => handleAutoComplete(user)}>
               <div className={styles.autocompleteItem}>
                 {/* 이미지가 null이라서 width를 줄 수 없어 에러가 뜨니 잠시 Image 말고 img 쓰겠슴다 */}
-                <img className={styles.searchUserImage} src={user.thumbnail} alt={user.nickname} />
+                <ProfileImage 
+                  url={user.thumbnail}
+                  width={40}
+                  alt={user.nickname}
+                />
                 <span className={styles.searchUserName}>{user.nickname}</span>
               </div>
             </div>

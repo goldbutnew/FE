@@ -1,14 +1,14 @@
 'use client'
 
 import axios from "axios"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
-interface BumsangProps {
+interface AbsProps {
   setSpeed: (speed: number) => void
 }
 
 
-export default function Bumsang({setSpeed}: BumsangProps) {
+export default function Abs({setSpeed}: AbsProps) {
   const url : string = "https://vingving.s3.ap-northeast-2.amazonaws.com/10MB.txt"
 
   async function fetchSegmentWithAxios(url: string): Promise<void> {
