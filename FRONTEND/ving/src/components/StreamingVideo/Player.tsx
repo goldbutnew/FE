@@ -15,7 +15,6 @@ import { MdOutlineFullscreenExit } from "react-icons/md"
 import { IoIosSettings } from "react-icons/io"
 import { MdPictureInPictureAlt } from "react-icons/md"
 
-
 const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
   const [ isPlaying, setIsPlaying ] = useState(true)
   const [ volume, setVolume ] = useState(0)
@@ -96,6 +95,13 @@ const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
       }
     }
   }
+  
+  const formatTime = (seconds: number): string => {
+    const hrs = Math.floor(seconds / 3600)
+    const mins = Math.floor((seconds % 3600) / 60)
+    const secs = Math.floor(seconds % 60)
+    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+  }
 
   const toggleFullscreen = () => {
     const video = containerRef.current
@@ -111,6 +117,20 @@ const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
       document.exitFullscreen()
     }
   }
+
+  // esc로 전체 화면 나갈 시 체크용
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setIsFull(false)
+      }
+    }
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange)
+    }
+  }, [])
 
   const togglePip = () => {
     const video = videoRef.current
@@ -165,40 +185,46 @@ const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
         />
       </div>
       <div className={styles.controls}>
-        <div className={styles.justify}>
-          <button onClick={togglePlayPause}>{isPlaying ? <IoStop color="white" size={20}/> : <IoPlay color="white" size={20}/>}</button>
+        <div className={styles.justifyControls}>
           <button 
-            onClick={toggleMute}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
+            onClick={togglePlayPause}
           >
-            {isMuted ? <RiVolumeMuteFill color="white" size={20}/> : <RiVolumeUpFill color="white" size={20}/>}
+            {isPlaying ? <IoStop color="white" size={25}/> : <IoPlay color="white" size={25}/>}
           </button>
+          <div className={styles.justifyVolume} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <button 
+              onClick={toggleMute}
+            >
+              {isMuted ? <RiVolumeMuteFill color="white" size={25}/> : <RiVolumeUpFill color="white" size={25}/>}
+            </button>
 
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-            className={styles.volumeSlider}
-            style={{ display: isHovering ? 'block' : 'none' }}
-          />
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={handleVolumeChange}
+              className={styles.volumeSlider}
+              style={{ display: isHovering ? 'block' : 'none' }}
+            />
+          </div>
+          <div>
+            <span className={styles.timeText}>{formatTime(currentTime)}</span>
+            <span className={styles.durationText}> | {formatTime(duration)}</span>
+          </div>
         </div>
-        <div className={styles.justify}>
+        <div className={styles.justifyControls}>
           <button 
             onClick={toggleFullscreen}
           >
-            {isFull ? <MdOutlineFullscreenExit color="white" size={20}/> : <MdOutlineFullscreen color="white" size={20}/>}
+            {isFull ? <MdOutlineFullscreenExit color="white" size={25}/> : <MdOutlineFullscreen color="white" size={25}/>}
           </button>
-          <button onClick={togglePip}><MdPictureInPictureAlt color="white" size={20}/></button>
+          <button onClick={togglePip}><MdPictureInPictureAlt color="white" size={25}/></button>
 
           <div>
             <DropdownMenu 
-              button={<button><IoIosSettings color="white" size={20}/></button>}
+              button={<button><IoIosSettings color="white" size={25}/></button>}
             >
               <MenuItem>
                 <button onClick={() => handleSetQuality('AUTO')}>AUTO</button>
