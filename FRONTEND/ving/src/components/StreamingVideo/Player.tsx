@@ -157,6 +157,7 @@ const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
         setResolution('auto')
         break
       case '480p':
+        console.log('480으로 바꿈')
         setResolution(2)
         break
       case '720p':
