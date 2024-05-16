@@ -8,11 +8,25 @@ export const videoResize = style({
   aspectRatio: '16/9',
 })
 
+
+// 화면에 호버시만 플레이어 div 등장
+export const playerHover = style({
+  opacity: 0,
+  visibility: 'hidden',
+  transition: 'opacity 0.5s ease-in-out, visibility 0.5s ease-in-out'
+})
+
+export const playerHoverVisible = style({
+  opacity: 1,
+  visibility: 'visible',
+  transition: 'opacity 0.5s ease-in-out, visibility 0.5s ease-in-out'
+})
+
 // 재생바와 컨트롤러 같이
 export const player = style({
   position: 'absolute',
   width: '100%',
-  top: '95%',
+  top: '90%',
   zIndex: 1,
 })
 
@@ -24,15 +38,39 @@ export const playBarContainer = style({
 
 // 컨트롤러 패널 스타일
 export const controls = style({
-  width: '100%',
+  width: '95%',
+  marginTop: '1%',
+  marginLeft: '2.5%',
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   zIndex: 1,
 })
 
-export const justify = style({
+// 컨트롤러 정렬 (재생/볼륨/글자 ||| pip/전체화면/화질설정)
+export const justifyControls = style({
   display: 'flex',
   flexDirection: 'row',
+  gap: '10px'
+})
+
+// 볼륨 버튼과 볼륨바를 묶음
+export const justifyVolume = style({
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '10px'
+})
+
+// 현재 시간 표시 스타일
+export const timeText = style({
+  color: 'white',
+  fontWeight: 'bold',
+})
+
+// 전체 시간 표시 스타일
+export const durationText = style({
+  color: 'silver',
+  fontWeight: 'bold',
 })
 
 

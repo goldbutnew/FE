@@ -215,16 +215,18 @@ export default function StudioChat() {
                 <div>
                   <DropdownMenu
                     button={
-                      <button
-                        style={{ color: getNicknameColor(msg.nickname) }}
-                        className={styles.chatNickname}
-                      >
-                        {userData.username === msg.userName ? "👑 " : ""}{msg.nickname}
-                      </button>
+                      <div>
+                        <button
+                          style={{ color: getNicknameColor(msg.nickname) }}
+                          className={styles.chatNickname}
+                        >
+                          {userData.username === msg.userName ? "👑" : ""}{msg.nickname}
+                        </button>
+                      </div>
                     }
+                    position="left"
                   >
                     <MenuItem onClick={() => console.log("프로필 보기")}>프로필 보기</MenuItem>
-                    <MenuItem onClick={() => console.log("채팅 내역 보기")}>채팅 내역 보기</MenuItem>
                     <MenuItem onClick={() => console.log("차단하기")}>차단하기</MenuItem>
                   </DropdownMenu>
                   <span>: {msg.text}</span>
