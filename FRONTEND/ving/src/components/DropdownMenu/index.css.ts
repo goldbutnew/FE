@@ -4,6 +4,7 @@ import { defaultWrapper } from '@/styles/wrapper.css';
 
 export const dropdownMenuConatiner = style({
   display: 'inline-block',
+  position: 'relative',
 })
 
 export const dropdownButton = style({
