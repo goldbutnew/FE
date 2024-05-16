@@ -3,13 +3,15 @@ import * as styles from './index.css';
 
 type ChoiceChipProps = {
   label: string;
+  onChange: (label: string) => void;
 }
 
-export default function ChoiceChip({ label }: ChoiceChipProps) {
+export default function ChoiceChip({ label, onChange }: ChoiceChipProps) {
   const [isSelected, setIsSelected] = useState(false);
 
   const toggleSelection = () => {
-  setIsSelected(!isSelected);
+    setIsSelected(!isSelected);
+    onChange(label);
   };
 
   return (
