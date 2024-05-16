@@ -8,12 +8,10 @@ import useProfileStore from '@/store/ProfileStore'
 
 type TabsComponentProps = {
   where: string
-  setLoading: (loading: boolean) => void
-  setLoadingProfileTab: (loading: boolean) => void
-  setLoadingVideoTab: (loading: boolean) => void
+  userProfileData: any
 }
 
-const TabsComponent = ({ where }: TabsComponentProps) =>  {
+const TabsComponent = ({ where, userProfileData }: TabsComponentProps) =>  {
   const [activeTab, setActiveTab] = useState(where)
   const router = useRouter()
   const params = useParams()
@@ -54,8 +52,8 @@ const TabsComponent = ({ where }: TabsComponentProps) =>  {
       </ul>
       <hr className={line} />
       <div className={styles.tabPanel}>
-        {activeTab === 'home' && <ProfileTabComponent userProfileData={profileData} />}
-        {activeTab === 'video' && <VideoTabComponent userProfileData={profileData} />}
+        {activeTab === 'home' && <ProfileTabComponent userProfileData={userProfileData} />}
+        {activeTab === 'video' && <VideoTabComponent userProfileData={userProfileData} />}
       </div>
     </div>
   )

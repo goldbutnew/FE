@@ -34,7 +34,8 @@ export default function Profile() {
       <Container>
         <ProfileUserInfoBox userProfileData={profileData} />
         <TabsComponent 
-          where='home' 
+          where='home'
+          userProfileData={profileData} 
         />
       </Container>
     )
