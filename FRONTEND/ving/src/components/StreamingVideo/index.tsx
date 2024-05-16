@@ -9,7 +9,7 @@ import Abs from './Abs'
 import * as styles from './index.css'
 
 
-export default function StreamingVideo() {
+export default function StreamingVideo({ streamKey }) {
   const { isPlaying, setIsPlaying } = useStreamingStore()
   const [ resolution, setResolution ] = useState<'auto' | number>('auto')
   const [ speed, setSpeed ] = useState<number>(0)
@@ -90,7 +90,7 @@ export default function StreamingVideo() {
 
     if (Hls.isSupported()) {
       hls.current = new Hls()
-      hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/files//master_skdbrodrodrodrod.m3u8')
+      hls.current.loadSource(`https://vingving.s3.ap-northeast-2.amazonaws.com/files//master_${streamKey}.m3u8`)
       hls.current.attachMedia(videoElement)
       hls.current.on(Hls.Events.MANIFEST_PARSED, () => videoElement.play())
 
