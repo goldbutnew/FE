@@ -34,7 +34,7 @@ export default function Donation() {
   const [isAnonym, setIsAnonym] = useState(false);
   const [isTTS, setIsTTS] = useState(false);
   const initChoco = streamerProfileData.choco;
-  const [dummyChoco, setDummyChoco] = useState(initChoco);
+  const [dummyChoco, setDummyChoco] = useState(0);
   const [warning, setWarning] = useState('');
   const [name, setName] = useState('');
   const { streamRoomData } = useStreamingStore();
@@ -44,6 +44,12 @@ export default function Donation() {
       setName(userData.nickname);
     }
   }, [userData.nickname]);
+
+  useEffect(() => {
+    if (streamerProfileData.choco) {
+      setDummyChoco(streamerProfileData.choco);
+    }
+  }, [streamerProfileData.choco]);
 
   const sendChoco = (value) => () => {
     setChoco(value);
