@@ -31,6 +31,7 @@ public class WebSocketConfigurer implements WebSocketMessageBrokerConfigurer, Ch
         // 받는 지점을 말하는건듯
         // ws요청을 받게 해놨고 origin은 전부다 허용함
         registry.addEndpoint("/ws")
+                .setAllowedOrigins("https://k10a203.p.ssafy.io/")
                 .setAllowedOrigins("http://localhost:3000")
                 .withSockJS();
     }
