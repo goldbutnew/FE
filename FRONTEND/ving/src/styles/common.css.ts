@@ -12,6 +12,7 @@ export const topContainer = style({
 })
 
 export const line = style({
+  width: '100%',
   margin: `${vars.space['1x']} 0 ${vars.space['1x']} 0`,
   padding: 0,
   border: 'none',
@@ -19,6 +20,7 @@ export const line = style({
 })
 
 export const lightLine = style({  
+  width: '100%',
   margin: `${vars.space['1x']} 0 ${vars.space['1x']} 0`,
   padding: 0,
   border: 'none',
@@ -26,6 +28,7 @@ export const lightLine = style({
 })
 
 export const boldLinve = style({
+  width: '100%',
   margin: `${vars.space['1x']} 0 ${vars.space['1x']} 0`,
   padding: 0,
   border: 'none',
