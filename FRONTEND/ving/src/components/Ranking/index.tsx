@@ -56,6 +56,25 @@ export default function Ranking() {
       onToggle={() => setIsOpen(!isOpen)}
     >
       <div className={styles.rankingList}>
+        <div className={styles.subscriberCountTitle}>구독자 수</div>
+        {users.map((user: User) => (
+          <div key={user.username} onClick={() => moveSearchUser(user.username)}>
+            {isOpen ? (
+              <div className={styles.openRankingListItem}>
+                <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
+                <div className={styles.rankingUserName}>{user.nickname}</div>
+              </div>
+            ) : (
+              <div className={styles.closeRankingListItem}>
+                <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className={styles.rankingList}>
+        <div className={styles.currentViewerCountTitle}>현재 시청자 수</div>
         {users.map((user: User) => (
           <div key={user.username} onClick={() => moveSearchUser(user.username)}>
             {isOpen ? (

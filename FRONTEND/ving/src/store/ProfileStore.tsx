@@ -106,6 +106,21 @@ const useProfileStore = create(persist((set, get) => ({
       console.error(error)
     }
   },
+  // getCurrentTopViewers: async () => {
+  //   const token = localStorage.getItem('accessToken')
+  //   try {
+  //     const response = await axios.get(`search/streamers`, {
+  //       params: {
+  //         start: 0,
+  //         size: 5
+  //       }
+  //     })
+  //     set({ currentTopViewersData: response.data.users })
+  //     console.log('-------------', response.data)
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // },
   // 유저 프로필 수정
   patchUserProfileInfo: async (formData: FormData) => {
     const token = localStorage.getItem('accessToken')

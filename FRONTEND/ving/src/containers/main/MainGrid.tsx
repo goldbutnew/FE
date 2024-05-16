@@ -63,7 +63,6 @@ export default function MainGrid() {
   if (loading) {
   return (
       <div className={styles.mainVideoGridBox}>
-        <h3>{userData.nickname} 님 ving에 오신 걸 환영합니다.</h3>
         {/* <div className={styles.carouselContainer}>
           <button className={styles.prev} onClick={() => moveSlide(-1)}><GrPrevious size={30}/></button>
           <div className={styles.carouselSlide} style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
@@ -92,7 +91,7 @@ export default function MainGrid() {
                 <div className={styles.videoThumnailContainer} onClick={() => router.push(`/streaming/${btoa(data.username)}`)}>
                   <div className={styles.LiveTextBadge}>Live</div>
                   <div className={styles.viewerCounterTextBadge}>{data.viewers}명 시청 중</div>
-                  <img 
+                  <img
                     src={data.thumbnail} 
                     alt="비디오 썸네일"
                     className={styles.imageStyle}
@@ -111,7 +110,7 @@ export default function MainGrid() {
                       <div className={styles.streamingTitle} onClick={() => router.push(`/streaming/${btoa(data.username)}`)}>{data.title}</div>
                     </div>
                     <div className={styles.leftBoxItem}>
-                      <div className={styles.streamerName} onClick={() => {router.push(`/profile/${btoa(data.username)}`), getUserProfileInfo(data.username)}}>{data.username}</div>    
+                      <div className={styles.streamerName} onClick={() => {router.push(`/profile/${btoa(data.username)}`), getUserProfileInfo(data.username)}}>{data.nickname}</div>    
                     </div>  
                   </div>
                 </div>
