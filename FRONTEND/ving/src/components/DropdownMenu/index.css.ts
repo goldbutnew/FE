@@ -2,10 +2,18 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '../../styles/vars.css';
 import { defaultWrapper } from '@/styles/wrapper.css';
 
+export const dropdownMenuConatiner = style({
+  display: 'inline-block',
+})
+
+export const dropdownButton = style({
+  position: 'relative',
+})
+
 export const dropdownMenu = style({
   position: 'absolute',
   top: '100%',
-  right: '0',
+  right: 0,
   backgroundColor: vars.colors.white,
   boxShadow: vars.boxShadow['2x'],
   borderRadius: vars.borderRadius['1x'],
@@ -14,9 +22,20 @@ export const dropdownMenu = style({
   zIndex: 100,
 });
 
-export const dropdownMenuTop = style({
+export const dropdownMenuLeft = style({
   position: 'absolute',
-  bottom: 0,  // top이 true일 때 드롭다운을 버튼 위로 위치시킴
+  top: '100%',
+  left: 4,
+  backgroundColor: vars.colors.white,
+  boxShadow: vars.boxShadow['2x'],
+  borderRadius: vars.borderRadius['1x'],
+  padding: vars.space['1x'],
+  zIndex: 100,
+});
+
+export const dropdownMenuRight = style({
+  position: 'absolute',
+  top: '100%',
   right: 0,
   backgroundColor: vars.colors.white,
   boxShadow: vars.boxShadow['2x'],
@@ -32,6 +51,7 @@ export const dropdownItem = style([
     padding: vars.space['1x'],
     display: 'block',
     whiteSpace: 'nowrap',
+    fontSize: vars.fontSize['1x'],
     ':hover': {
       backgroundColor: vars.colors.lightGray
     }
