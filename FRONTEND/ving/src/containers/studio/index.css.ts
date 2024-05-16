@@ -310,4 +310,9 @@ export const chocoChoiceChipBox = style([
 
 export const errorBox = style({
   color: vars.colors.red,
+  fontSize: vars.fontSize['0.75x']
 });
+
+export const chargeButtonBox = style({
+  margin: `${vars.space['3x']} 0 0 0`
+})
