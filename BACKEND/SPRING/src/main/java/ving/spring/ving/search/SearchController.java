@@ -61,4 +61,23 @@ public class SearchController {
                 .users(semiProfiles)
                 .build());
     }
+
+    @GetMapping("/streamer")
+    public ResponseEntity<?> streamer(@RequestParam int start, @RequestParam int size)
+    {
+        List<SearchDto.SemiProfile> semiProfiles = new ArrayList<>();
+        List<UserModel> userModels = userService.findAllByOrderByUserSubscriberCount(start, size);
+        userModels.forEach( x ->
+                semiProfiles.add(
+                        SearchDto.SemiProfile.builder()
+                                .username(x.getUserUsername())
+                                .nickname(x.getUserNickname())
+                                .thumbnail(x.getUserPhoto())
+                                .build()
+                )
+        );
+        return ResponseEntity.ok(SearchDto.SearchAll.builder()
+                .users(semiProfiles)
+                .build());
+    }
 }

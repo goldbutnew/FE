@@ -15,6 +15,9 @@ export default function StreamingVideo() {
   const [ speed, setSpeed ] = useState<number>(0)
   const [ chunk, setChunk ] = useState(0)
   const [ buffer, setBuffer ] = useState(0)
+  const [ isHovering, setIsHovering ] = useState(false)
+  const [ isMouseMoving, setIsMouseMoving ] = useState(true)
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
   const videoRef: React.RefObject<HTMLVideoElement> = useRef(null)
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null)
   const hls = useRef<Hls | null>(null)
@@ -87,7 +90,7 @@ export default function StreamingVideo() {
 
     if (Hls.isSupported()) {
       hls.current = new Hls()
-      hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/master.m3u8')
+      hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/files//master_sangbum.m3u8')
       hls.current.attachMedia(videoElement)
       hls.current.on(Hls.Events.MANIFEST_PARSED, () => videoElement.play())
 
@@ -101,8 +104,56 @@ export default function StreamingVideo() {
     }
   }, [])
 
+  // hover timer 코드
+  const handleMouseEnter = () => {
+    setIsHovering(true)
+    resetHideControlsTimer()
+  }
+
+  const handleMouseLeave = () => setIsHovering(false)
+
+  const handleMouseMove = () => {
+    setIsMouseMoving(true)
+    resetHideControlsTimer()
+  }
+
+  const resetHideControlsTimer = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+    }
+    timerRef.current = setTimeout(() => {
+      setIsMouseMoving(false)
+    }, 3000)
+  }
+
+  const handleFullscreenChange = () => {
+    const fullscreenElement = document.fullscreenElement
+    if (fullscreenElement) {
+      setIsHovering(false)
+    }
+  }
+
+  useEffect(() => {
+    const videoContainer = containerRef.current
+    if (videoContainer) {
+      videoContainer.addEventListener('mousemove', handleMouseMove)
+    }
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
+    return () => {
+      if (videoContainer) {
+        videoContainer.removeEventListener('mousemove', handleMouseMove)
+      }
+      document.removeEventListener('fullscreenchange', handleFullscreenChange)
+      if (timerRef.current) {
+        clearTimeout(timerRef.current)
+      }
+    }
+  }, [])
+
+
   return (
-    <div className={styles.videoResize} ref={containerRef}>
+    // videoResize 하나로 줄여보기
+    <div className={styles.videoResize} ref={containerRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <video
         className={styles.videoResize}
         ref={videoRef}
@@ -111,8 +162,9 @@ export default function StreamingVideo() {
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
-
-      <VideoPlayer containerRef={containerRef} videoRef={videoRef} setResolution={setResolution} />
+      <div className={(isHovering || isMouseMoving) ? styles.playerHoverVisible : styles.playerHover}>
+        <VideoPlayer containerRef={containerRef} videoRef={videoRef} setResolution={setResolution}/>
+      </div>
       <Abs setSpeed = {setSpeed}/>
     </div>
   )

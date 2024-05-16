@@ -12,12 +12,74 @@ from django.conf import settings
 import os
 from watchdog.observers import Observer
 from pathlib import Path
+from threading import Thread
+# FFM_BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent.parent.parent.parent.parent
+# FFMPEG_ROOT = FFM_BASE_DIR
 
-FFM_BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent.parent
+# # print(FFM_BASE_DIR)
+# class S3Uploader(FileSystemEventHandler):
+#     def __init__(self, bucket_name, s3_address):
+#         self.s3 = boto3.client(
+#             's3',
+#             aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+#             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+#         )
+#         self.bucket_name = bucket_name
+#         self.s3_address = s3_address
+
+#     def on_modified(self, event):
+#         if not event.is_directory:
+#             self.handle_upload(event.src_path)
+
+#     def on_created(self, event):
+#         if not event.is_directory:
+#             self.handle_upload(event.src_path)
+
+#     def on_moved(self, event):
+#         if isinstance(event, FileMovedEvent):
+#             print(f"File moved from {event.src_path} to {event.dest_path}")
+#             if event.dest_path.endswith('.m3u8'):
+#                 self.handle_upload(event.dest_path)
+
+#     def handle_upload(self, file_path):
+#         file_name = os.path.basename(file_path)
+#         if file_name.endswith('.tmp'):
+#             print(f"Skipping temporary file: {file_name}")
+#             return
+#         s3_key = f'{self.s3_address}/{file_name}'
+#         print(f"Uploading {file_name} to S3...")
+#         # self.s3.upload_file(file_path, self.bucket_name, f'{self.s3_address}{file_name}')
+#         self.s3.upload_file(file_path, self.bucket_name, s3_key)
+#         print(f"Uploaded {file_name} to S3 successfully.")
+
+# @shared_task
+# def start_monitoring(directory_path, bucket_name,s3_address):
+#     print('start_monitoring222')
+#     event_handler = S3Uploader(bucket_name,s3_address)
+#     print('start_monitoring333')
+
+#     observer = Observer()
+#     print('start_monitoring444')
+
+#     observer.schedule(event_handler, directory_path, recursive=True)
+#     print('start_monitoring555')
+
+#     observer.start()
+#     try:
+#         # Run indefinitely
+#         while True:
+
+#             # print('true')
+#             observer.join(1)
+#     except KeyboardInterrupt:
+#         observer.stop()
+#     observer.join()
+
+# start_monitoring(FFMPEG_ROOT/'files', 'vingving','files/')
+FFM_BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent.parent.parent.parent.parent
 FFMPEG_ROOT = FFM_BASE_DIR
-
 class S3Uploader(FileSystemEventHandler):
-    def __init__(self, bucket_name, s3_address):
+    def __init__(self, bucket_name, s3_address, base_dir):
         self.s3 = boto3.client(
             's3',
             aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
@@ -25,6 +87,7 @@ class S3Uploader(FileSystemEventHandler):
         )
         self.bucket_name = bucket_name
         self.s3_address = s3_address
+        self.base_dir = base_dir
 
     def on_modified(self, event):
         if not event.is_directory:
@@ -45,34 +108,47 @@ class S3Uploader(FileSystemEventHandler):
         if file_name.endswith('.tmp'):
             print(f"Skipping temporary file: {file_name}")
             return
-        print(f"Uploading {file_name} to S3...")
-        self.s3.upload_file(file_path, self.bucket_name, f'{self.s3_address}{file_name}')
+        relative_path = Path(file_path).relative_to(self.base_dir).as_posix()
+        s3_key = f'{self.s3_address}/{relative_path}'
+        print(f"Uploading {relative_path} to S3...")
+        self.s3.upload_file(file_path, self.bucket_name, s3_key)
         print(f"Uploaded {file_name} to S3 successfully.")
 
+# @shared_task
+# def start_monitoring(directory_path, bucket_name, s3_address):
+#     base_dir = Path(directory_path)
+#     print('Starting monitoring')
+#     event_handler = S3Uploader(bucket_name, s3_address, base_dir)
+#     observer = Observer()
+#     observer.schedule(event_handler, directory_path, recursive=True)
+#     observer.start()
+#     try:
+#         while True:
+#             observer.join(1)
+#     except KeyboardInterrupt:
+#         observer.stop()
+#     observer.join()
+
 @shared_task
-def start_monitoring(directory_path, bucket_name,s3_address):
-    print('start_monitoring222')
-    event_handler = S3Uploader(bucket_name,s3_address)
-    print('start_monitoring333')
+def start_monitoring(directory_path, bucket_name, s3_address):
+    def run_observer():
+        base_dir = Path(directory_path)
+        event_handler = S3Uploader(bucket_name, s3_address, base_dir)
+        observer = Observer()
+        observer.schedule(event_handler, directory_path, recursive=True)
+        observer.start()
+        try:
+            while True:
+                observer.join(1)
+        except KeyboardInterrupt:
+            observer.stop()
+        observer.join()
 
-    observer = Observer()
-    print('start_monitoring444')
-
-    observer.schedule(event_handler, directory_path, recursive=True)
-    print('start_monitoring555')
-
-    observer.start()
-    try:
-        # Run indefinitely
-        while True:
-
-            # print('true')
-            observer.join(1)
-    except KeyboardInterrupt:
-        observer.stop()
-    observer.join()
-
-start_monitoring(FFMPEG_ROOT, 'vingving',FFMPEG_ROOT/'files')
+    thread = Thread(target=run_observer)
+    thread.start()
+    print('Monitoring task started on a new thread.')
+# Start the monitoring
+start_monitoring(FFMPEG_ROOT/'files', 'vingving', 'files/')
 def s3_connection():
     try:
         # S3 클라이언트 생성

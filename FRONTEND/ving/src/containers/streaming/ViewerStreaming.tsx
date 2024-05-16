@@ -92,6 +92,7 @@ export default function ViewerStreaming() {
     return () => clearInterval(intervalId)
   }, [streamRoomData.createdAt])
 
+  if (loading) {
   return (
     <VideoContainer>
       <div className={styles.videoPlayer}>
@@ -128,4 +129,5 @@ export default function ViewerStreaming() {
       </div>
     </VideoContainer>
   )
+  }
 }

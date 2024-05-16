@@ -3,6 +3,9 @@ package ving.spring.ving.user;
 import com.fasterxml.jackson.databind.RuntimeJsonMappingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -73,5 +76,12 @@ public class UserService {
             user = userOptional.get();
         }
         return user;
+    }
+
+    public List<UserModel> findAllByOrderByUserSubscriberCount(int start, int size)
+    {
+        Pageable pageable = PageRequest.of(start, size);
+        Page<UserModel> page = userRepository.findAllByOrderByUserSubscriberCountDesc(pageable);
+        return page.getContent();
     }
 }
