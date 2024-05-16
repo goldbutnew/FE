@@ -118,7 +118,8 @@ export const streamerName = style({
   fontSize: vars.fontSize['0.5x'],
   ':hover': {
     backgroundColor: vars.colors.gray,
-    borderRadius: vars.borderRadius['0.5x']
+    borderRadius: vars.borderRadius['0.5x'],
+    padding: `0 ${vars.space['0.5x']}`
   },
 })
 
