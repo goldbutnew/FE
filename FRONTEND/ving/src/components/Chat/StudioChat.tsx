@@ -176,7 +176,6 @@ export default function StudioChat() {
       const profileData = await getChatProfile(streamer, viewer);
       if (profileData) {
         console.log("내 프로필 정보", profileData);  // 데이터 확인
-        open();  // 모달 열기
       } else {
         console.log("프로필 데이터가 없습니다.");
       }

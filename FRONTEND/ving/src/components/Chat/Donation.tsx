@@ -16,6 +16,7 @@ import useAuthStore from '@/store/AuthStore';
 import useStreamingStore from '@/store/StreamingStore';
 import useModal from '@/hooks/useModal';
 import useProfileStore from '@/store/ProfileStore';
+import { formatNumber } from '@/utils/formatNumber';
 
 const speak = (text) => {
   const synth = window.speechSynthesis;
@@ -45,7 +46,12 @@ export default function Donation() {
   }, [userData.nickname]);
 
   useEffect(() => {
-    getUserProfileInfo(userData.username)
+    if (userData.username) {
+      getUserProfileInfo(userData.username)
+    }
+  }, [getUserProfileInfo, userData.username])
+
+  useEffect(() => {
     if (profileData.choco) {
       setInitChoco(profileData.choco);
     }
@@ -113,6 +119,8 @@ export default function Donation() {
     close();
   };
 
+  const formattedChoco = formatNumber(initChoco);
+
   return (
     <div>
       <SmallButton text="🍫" color={vars.colors.lightGray} onClick={open} />
@@ -121,7 +129,7 @@ export default function Donation() {
           <div className={styles.topContainer}>
             <span className={bold}>후원</span>
             <hr className={line} />
-            <p>🍫 내 초코: {initChoco}</p>
+            <p>🍫 보유 초코: {formattedChoco}</p>
             <hr className={line} />
             <div className={styles.selectedChocoBox}>
               <span>🍫</span>
