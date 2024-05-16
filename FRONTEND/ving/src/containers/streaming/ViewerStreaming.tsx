@@ -24,6 +24,7 @@ export default function ViewerStreaming() {
   const router = useRouter()
   const params = useParams()
 
+  const streamKey = `${streamRoomData.username}_${streamRoomData.roomId}`
   console.log('-------여기는 스트리머 방 페이지 팔로잉 팔로우 확인용')
 
   const loginUserName = userData.username
@@ -96,7 +97,7 @@ export default function ViewerStreaming() {
   return (
     <VideoContainer>
       <div className={styles.videoPlayer}>
-        <StreamingVideo />
+        <StreamingVideo streamKey={streamKey}/>
       </div>
       <div className={styles.streamerInfoContainer}>
         <div className={styles.leftBoxContainer}>

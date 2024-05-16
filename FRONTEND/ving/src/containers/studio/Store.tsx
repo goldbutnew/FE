@@ -5,6 +5,7 @@ import useProfileStore from '@/store/ProfileStore'
 const useStudioStore = create((set) => ({
 
   isOnAir: false,
+  streamKey: '',
 
   startStreaming: async (formData: FormData) => {
     console.log(formData, '방정보완성')
@@ -18,6 +19,7 @@ const useStudioStore = create((set) => ({
       })
       console.log('방송 시작 요청 성공', response.data)
       set({ isOnAir: true })
+      set({ streamKey: response.data.streamKey })
 
     } catch (error) {
       console.error('방송 시작 요청 실패:', error)

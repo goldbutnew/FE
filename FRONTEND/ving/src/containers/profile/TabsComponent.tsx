@@ -8,23 +8,20 @@ import useProfileStore from '@/store/ProfileStore'
 
 type TabsComponentProps = {
   where: string
+  userProfileData: any
 }
 
-const TabsComponent = ({ where }: TabsComponentProps) =>  {
+const TabsComponent = ({ where, userProfileData }: TabsComponentProps) =>  {
   const [activeTab, setActiveTab] = useState(where)
   const router = useRouter()
   const params = useParams()
   const { profileData } = useProfileStore()
-  const [loading, setLoading] = useState(false)
 
-  const move = (tabName:string) => {
-    if ((tabName) === 'video' ) {
-      console.log('hiiiiii', (tabName))
+  const move = (tabName: string) => {
+    if (tabName === 'video') {
       setActiveTab('video')
       router.push(`/profile/${params.username}/video`)
-    } 
-    else {
-      console.log('hi', (tabName))
+    } else {
       setActiveTab('home')
       router.push(`/profile/${params.username}`)
     }
@@ -32,42 +29,34 @@ const TabsComponent = ({ where }: TabsComponentProps) =>  {
 
   useEffect(() => {
     if (profileData) {
-      setLoading(true)
     }
-    console.log("홈동영상 탭 페이지 디버깅----")
-  }, [setLoading])
-  
-  if (loading) {
+  }, [profileData])
+
   return (
     <div>
       <ul className={styles.tabList}>
         <li 
           className={styles.tab} 
           data-active={activeTab === 'home'} 
-          onClick={() => {
-            move('home')
-          }}
+          onClick={() => move('home')}
         >
           홈
         </li>
         <li 
           className={styles.tab} 
           data-active={activeTab === 'video'} 
-          onClick={() => {
-            move('video')
-          }}
+          onClick={() => move('video')}
         >
           동영상
         </li>
       </ul>
       <hr className={line} />
       <div className={styles.tabPanel}>
-        {activeTab === 'home' && <ProfileTabComponent />}
-        {activeTab === 'video' && <VideoTabComponent />}
+        {activeTab === 'home' && <ProfileTabComponent userProfileData={userProfileData} />}
+        {activeTab === 'video' && <VideoTabComponent userProfileData={userProfileData} />}
       </div>
     </div>
   )
-}
 }
 
 export default TabsComponent
