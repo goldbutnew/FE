@@ -8,6 +8,7 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.sockjs.transport.handler.DefaultSockJsService;
 
 // Socket 메세지 브로커의 설정을 담당하는 내용
 // messageController 의 Bean인 simpMessageSendingOperations가 영향을 받을듯
@@ -31,9 +32,9 @@ public class WebSocketConfigurer implements WebSocketMessageBrokerConfigurer, Ch
         // 받는 지점을 말하는건듯
         // ws요청을 받게 해놨고 origin은 전부다 허용함
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("https://k10a203.p.ssafy.io/")
-                .setAllowedOrigins("http://localhost:3000")
-                .withSockJS();
+                .setAllowedOrigins("https://k10a203.p.ssafy.io/", "http://localhost:3000")
+                .withSockJS()
+                .setSuppressCors(true);
     }
 
     @Override
@@ -42,4 +43,20 @@ public class WebSocketConfigurer implements WebSocketMessageBrokerConfigurer, Ch
         registration.interceptors(stompHandler);
 
     }
+
+
+//    private static class TransportHandlerOverride extends DefaultSockJsService {
+//        public TransportHandlerOverride() {
+//            // 기본 SockJS 전송 설정을 그대로 사용
+//            super(new org.springframework.web.socket.server.standard.ServerEndpointRegistration("/ws", null));
+//        }
+//
+//        @Override
+//        protected void handleRawWebSocketTransportRequest(org.springframework.web.socket.WebSocketSession session) {
+//            // 여기서 JSONP를 비활성화
+//            session.getTransportHandlers().remove("jsonp-polling");
+//            super.handleRawWebSocketTransportRequest(session);
+//        }
+//    }
+
 }
