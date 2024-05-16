@@ -112,6 +112,7 @@ export const chatProfileNickanme = style([
 
 export const chatProfileIntroduction = style([
   {
+    margin: `${vars.space['1x']} 0`,
     fontSize: vars.fontSize['0.75x']
   }
 ])

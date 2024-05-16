@@ -7,17 +7,17 @@ import useModal from '@/hooks/useModal';
 interface DropdownMenuProps {
   button: React.ReactNode;
   children: React.ReactNode;
-  top?: boolean;
+  position?: 'right' | 'left';
 }
 
-const DropdownMenu: React.FC<DropdownMenuProps> = ({ children, button, top }) => {
+const DropdownMenu: React.FC<DropdownMenuProps> = ({ children, button, position }) => {
   const { isOpen, open, modalRef } = useModal();
 
   return (
-    <div ref={modalRef}>
-      <div onClick={open}>{button}</div>
+    <div ref={modalRef} className={styles.dropdownMenuConatiner}>
+      <div onClick={open} className={styles.dropdownButton}>{button}</div>
       {isOpen && (
-        <div className={top ? styles.dropdownMenuTop : styles.dropdownMenu}>
+        <div className={`${position === "left" ? styles.dropdownMenuLeft : styles.dropdownMenuRight}`}>
           {children}
         </div>
       )}

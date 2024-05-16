@@ -49,16 +49,15 @@ export default function ChatProfile({ isOpen, onClose, userData }: ChatProfilePr
                 width={50}
                 alt="프로필 이미지"
               />
-              <div className={styles.chatProfileItemBox}>
+              {/* <div className={styles.chatProfileItemBox}> */}
                 <div className={styles.chatProfileNickanme}>
-                  {userData.nickname}
+                <Link href={`/profile/${code}`}>{userData.nickname}</Link>
                 </div>
-                <div className={styles.chatProfileIntroduction}>
-                  {userData.introduction}
-                </div>
-              </div>
+              {/* </div> */}
             </div>
-
+            <div className={styles.chatProfileIntroduction}>
+              {userData.introduction}
+            </div>
             <hr className={line}/>
             <div className={rowWrapper}>
               <FaHeart
@@ -67,21 +66,21 @@ export default function ChatProfile({ isOpen, onClose, userData }: ChatProfilePr
               />
               <span className={styles.dateBox}>{formatDate(userData.timeStamp)}</span>
             </div>
-            <hr className={line}/>
+            {/* <hr className={line}/>
             <div className={styles.chatProfileItemBox}>
               <div className={styles.userFunctionItem}>
                 <FaRegUser 
                   size={16}
                 />
                 <Link href={`/profile/${code}`}>프로필 보기</Link>
-              </div>
+              </div> */}
               {/* <div className={styles.userFunctionItem} onClick={handleBlock}>
                 <MdBlock 
                   size={16}
                 />
                 <span>사용자 차단</span>
               </div> */}
-            </div>
+            {/* </div> */}
           </div>
         </BottomSheet>
       )}
