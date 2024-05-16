@@ -8,12 +8,15 @@ import SmallButton from '@/components/Button/SmallButton'
 import DropdownMenu from '@/components/DropdownMenu/DropdownMenu'
 import MenuItem from '@/components/DropdownMenu/MenuItem'
 
-export default function VideoTabComponent() {
+interface ProfileTabComponentProps {
+  setLoading: (loading: boolean) => void
+}
+
+export default function ProfileTabComponent({ userProfileData }) {
 
   const params = useParams()
   const { profileUserName, profileData, getUserProfileInfo, doFixVideo, unDoFixVideo, doDeleteVideo } = useProfileStore()
   const [isOpen, setIsOpen] = useState({})
-  const [loading, setLoading] = useState(false)
 
   const toggleMenu = (videoId:number) => {
     setIsOpen(prev => ({
@@ -111,11 +114,10 @@ export default function VideoTabComponent() {
 
   useEffect(() => {
     if (profileData) {
-      setLoading(true)
     }
+    console.log('hhhhhhhhhhhhhhhhhhh')
   }, [profileData])
   
-  if (loading) {
   return (
     <div>
       {videos && videos.length > 0 ? (
@@ -153,5 +155,4 @@ export default function VideoTabComponent() {
       )}
     </div>
   )
-}
 }
