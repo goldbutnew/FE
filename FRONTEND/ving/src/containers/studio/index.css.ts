@@ -255,4 +255,18 @@ export const SummuryItemBox = style([
 ])
 
 
+// ChargeChoco.tsx
+export const chargeContainer = style([
+  columnWrapper,
+  {
+    width: 400,
+    gap: vars.space['1x']
+  }
+]);
 
+export const chargeInputBox = style({
+})
+
+export const errorBox = style({
+  color: vars.colors.red,
+});
