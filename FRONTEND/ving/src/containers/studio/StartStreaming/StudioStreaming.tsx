@@ -43,7 +43,6 @@ export default function StudioStreaming() {
       console.log(key, value)
     }
     startStreaming(formData)
-    openPort()
   }
   
   const handleEndStream = () => {

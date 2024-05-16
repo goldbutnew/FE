@@ -25,17 +25,17 @@ const useStudioStore = create((set) => ({
     }
   },
 
-  openPort: async () => {
-    try {
-      const response = await axios.get('media_pipeline/main')
-      console.log('포트 개방 성공', response.data)
-      set({ isOnAir: true })
+  // openPort: async () => {
+  //   try {
+  //     const response = await axios.get('media_pipeline/main')
+  //     console.log('포트 개방 성공', response.data)
+  //     set({ isOnAir: true })
 
-    } catch (error) {
-      console.error('포트 개방 실패:', error)
-      set({ isOnAir: false })
-    }
-  },
+  //   } catch (error) {
+  //     console.error('포트 개방 실패:', error)
+  //     set({ isOnAir: false })
+  //   }
+  // },
 
   closePort: async () => {
     const token = localStorage.getItem('accessToken')

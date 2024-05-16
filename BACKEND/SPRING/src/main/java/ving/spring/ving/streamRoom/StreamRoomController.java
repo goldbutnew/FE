@@ -138,7 +138,11 @@ public class StreamRoomController {
                         .build();
                 alarmService.save(alarmModel);
             }
-            return ResponseEntity.ok(HttpStatus.CREATED);
+
+            return ResponseEntity.ok().body(StreamRoomDto.CreateResponse.builder()
+                            .streamKey(streamer.getUserUsername() + "_" + streamRoomModel.getRoomId().toString())
+                            .build()
+            );
         }
         catch (Exception e)
         {
@@ -185,6 +189,7 @@ public class StreamRoomController {
                                 .title(streamRoomModel.getRoomName())
                                 .username(streamRoomModel.getStreamer().getUserUsername())
                                 .viewers(roomModel.getViewers())
+                                .roomId(streamRoomModel.getRoomId())
                                 .nickname(streamRoomModel.getStreamer().getUserNickname())
                                 .thumbnail(streamRoomModel.getRoomThumbnail())
                                 .streamerThumbnail(streamRoomModel.getStreamer().getUserPhoto())
@@ -200,6 +205,7 @@ public class StreamRoomController {
                                 .title(streamRoomModel.getRoomName())
                                 .username(streamRoomModel.getStreamer().getUserUsername())
                                 .viewers(-1)
+                                .roomId(streamRoomModel.getRoomId())
                                 .thumbnail(streamRoomModel.getRoomThumbnail())
                                 .streamerThumbnail(streamRoomModel.getStreamer().getUserPhoto())
                                 .createdAt(dateTimeFormmer.transform(LocalDateTime.now()))
