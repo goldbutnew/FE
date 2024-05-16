@@ -8,6 +8,7 @@ import { RiNumber1, RiNumber2, RiNumber3, RiNumber4, RiNumber5 } from "react-ico
 import ProfileImage from '../ProfileImg'
 import { vars } from '@/styles/vars.css'
 import SideBar from '../SideBar/SideBar'
+import { lightLine, line } from '@/styles/common.css'
 
 interface User {
   username: string
@@ -56,7 +57,8 @@ export default function Ranking() {
       onToggle={() => setIsOpen(!isOpen)}
     >
       <div className={styles.rankingList}>
-        <div className={styles.subscriberCountTitle}>구독자 수</div>
+        <div className={styles.rankingTitle}>구독자 수</div>
+        {/* <hr className={lightLine} /> */}
         {users.map((user: User) => (
           <div key={user.username} onClick={() => moveSearchUser(user.username)}>
             {isOpen ? (
@@ -74,7 +76,7 @@ export default function Ranking() {
       </div>
 
       <div className={styles.rankingList}>
-        <div className={styles.currentViewerCountTitle}>현재 시청자 수</div>
+        <div className={styles.rankingTitle}>현재 시청자 수</div>
         {users.map((user: User) => (
           <div key={user.username} onClick={() => moveSearchUser(user.username)}>
             {isOpen ? (
