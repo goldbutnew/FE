@@ -90,7 +90,7 @@ export default function StreamingVideo() {
 
     if (Hls.isSupported()) {
       hls.current = new Hls()
-      hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/files//master_dhaakslqksapgha.m3u8')
+      hls.current.loadSource('https://vingving.s3.ap-northeast-2.amazonaws.com/files//master_skdbrodrodrodrod.m3u8')
       hls.current.attachMedia(videoElement)
       hls.current.on(Hls.Events.MANIFEST_PARSED, () => videoElement.play())
 

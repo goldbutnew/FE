@@ -3,7 +3,6 @@ import { globalStyle } from '@vanilla-extract/css'
 import { vars } from '../../styles/vars.css'
 import { defaultWrapper } from '@/styles/wrapper.css'
 
-
 export const videoResize = style({
   position: 'relative',
   width: '100%',
@@ -14,13 +13,13 @@ export const videoResize = style({
 export const playerHover = style({
   opacity: 0,
   visibility: 'hidden',
-  transition: 'opacity 0.5s ease-in-out, visibility 0.5s ease-in-out'
+  transition: `opacity ${vars.transition.default}, visibility ${vars.transition.default}`,
 })
 
 export const playerHoverVisible = style({
   opacity: 1,
   visibility: 'visible',
-  transition: 'opacity 0.5s ease-in-out, visibility 0.5s ease-in-out'
+  transition: `opacity ${vars.transition.default}, visibility ${vars.transition.default}`,
 })
 
 // 재생바와 컨트롤러 같이
@@ -28,7 +27,7 @@ export const player = style({
   position: 'absolute',
   width: '100%',
   top: '90%',
-  zIndex: 1,
+  zIndex: vars.zIndex.sticky,
 })
 
 // 재생바
@@ -40,63 +39,62 @@ export const playBarContainer = style({
 // 컨트롤러 패널 스타일
 export const controls = style({
   width: '95%',
-  marginTop: '1%',
+  marginTop: vars.space['1x'],
   marginLeft: '2.5%',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  zIndex: 1,
+  zIndex: vars.zIndex.sticky,
 })
 
 // 컨트롤러 정렬 (재생/볼륨/글자 ||| pip/전체화면/화질설정)
 export const justifyControls = style({
   display: 'flex',
   flexDirection: 'row',
-  gap: '10px'
+  gap: vars.space['1x'],
 })
 
 // 볼륨 버튼과 볼륨바를 묶음
 export const justifyVolume = style({
   display: 'flex',
   flexDirection: 'row',
-  gap: '10px'
+  gap: vars.space['1x'],
 })
 
 // 현재 시간 표시 스타일
 export const timeText = style({
-  color: 'white',
+  color: vars.colors.white,
   fontWeight: 'bold',
 })
 
 // 전체 시간 표시 스타일
 export const durationText = style({
-  color: 'silver',
+  color: vars.colors.gray,
   fontWeight: 'bold',
 })
-
 
 // 볼륨 슬라이더 스타일
 export const volumeSlider = style({
   width: '95%',
-  height: '4px',
+  height: vars.space['0.5x'],
   cursor: 'pointer',
-  borderRadius: '2px',
+  borderRadius: vars.borderRadius['0.5x'],
   alignSelf: 'center',
   display: 'none',
-  backgroundColor: vars.colors.lightGray,
+  backgroundColor: vars.colors.gray,
   '::-webkit-slider-thumb': {
     appearance: 'none',
-    backgroundColor: vars.colors.lightGray,
-    width: '12px',
-    height: '12px',
-    borderRadius: '6px',
+    backgroundColor: vars.colors.white,
+    width: vars.space['1.5x'],
+    height: vars.space['1.5x'],
+    borderRadius: vars.borderRadius.full,
     cursor: 'pointer',
   },
   '::-moz-range-thumb': {
-    backgroundColor: vars.colors.lightGray,
-    width: '12px',
-    height: '12px',
-    borderRadius: '6px',
+    backgroundColor: vars.colors.white,
+    width: vars.space['1.5x'],
+    height: vars.space['1.5x'],
+    borderRadius: vars.borderRadius.full,
     cursor: 'pointer',
   },
 })
@@ -104,23 +102,23 @@ export const volumeSlider = style({
 // 재생 슬라이더 스타일
 export const videoSlider = style({
   width: '95%',
-  height: '4px',
+  height: vars.space['0.5x'],
   cursor: 'pointer',
-  borderRadius: '2px',
-  backgroundColor: vars.colors.lightGray,
+  borderRadius: vars.borderRadius['0.5x'],
+  backgroundColor: vars.colors.gray,
   '::-webkit-slider-thumb': {
     appearance: 'none',
-    backgroundColor: vars.colors.lightGray,
-    width: '12px',
-    height: '12px',
-    borderRadius: '6px',
+    backgroundColor: vars.colors.white,
+    width: vars.space['1.5x'],
+    height: vars.space['1.5x'],
+    borderRadius: vars.borderRadius.full,
     cursor: 'pointer',
   },
   '::-moz-range-thumb': {
-    backgroundColor: vars.colors.lightGray,
-    width: '12px',
-    height: '12px',
-    borderRadius: '6px',
+    backgroundColor: vars.colors.white,
+    width: vars.space['1.5x'],
+    height: vars.space['1.5x'],
+    borderRadius: vars.borderRadius.full,
     cursor: 'pointer',
   },
 })
@@ -133,7 +131,6 @@ globalStyle('video::-webkit-media-controls', {
 globalStyle('video::-moz-fullscreen-video-controls', {
   display: 'none !important',
 })
-
 
 // dropdown 내부
 export const dropdownMenuConatiner = style({
@@ -152,42 +149,34 @@ export const dropdownMenu = style({
   boxShadow: vars.boxShadow['2x'],
   borderRadius: vars.borderRadius['1x'],
   padding: vars.space['1x'],
-  // opacity: 0.8,
   zIndex: 100,
-})
+});
 
-export const dropdownMenuLeft = style({
+export const dropdownMenuTop = style({
   position: 'absolute',
-  top: '100%',
-  left: 4,
-  backgroundColor: vars.colors.white,
+  bottom: '1%',
+  right: '2%',
+  width: '15%', 
+  backgroundColor: 'rgba(80, 80, 80, 0.8)',
+  color: vars.colors.white,
   boxShadow: vars.boxShadow['2x'],
-  borderRadius: vars.borderRadius['1x'],
+  borderRadius: vars.borderRadius['0.5x'],
   padding: vars.space['1x'],
-  zIndex: 100,
-})
-
-export const dropdownMenuRight = style({
-  position: 'absolute',
-  top: '100%',
-  right: 0,
-  backgroundColor: vars.colors.white,
-  boxShadow: vars.boxShadow['2x'],
-  borderRadius: vars.borderRadius['1x'],
-  padding: vars.space['1x'],
-  zIndex: 100,
+  zIndex: vars.zIndex.dropdown,
+  transform: 'translateY(-50%)', 
 })
 
 export const dropdownItem = style([
   defaultWrapper,
   {
+    color: vars.colors.white,
     width: '100%',
     padding: vars.space['1x'],
     display: 'block',
     whiteSpace: 'nowrap',
     fontSize: vars.fontSize['1x'],
     ':hover': {
-      backgroundColor: vars.colors.lightGray
-    }
-  }
+      backgroundColor: 'rgba(80, 80, 80, 0.5)',
+    },
+  },
 ])
