@@ -3,8 +3,7 @@
 import { useRef, useState, useEffect } from 'react'
 
 import * as styles from './index.css'
-import DropdownMenu from '../DropdownMenu/DropdownMenu'
-import MenuItem from '../DropdownMenu/MenuItem'
+import useModal from '@/hooks/useModal'
 
 import { IoPlay } from "react-icons/io5"
 import { IoStop } from "react-icons/io5"
@@ -17,6 +16,7 @@ import { MdPictureInPictureAlt } from "react-icons/md"
 
 
 const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
+  const { isOpen, open, modalRef } = useModal()
   const [ isPlaying, setIsPlaying ] = useState(true)
   const [ volume, setVolume ] = useState(0)
   const [ storedVolume, setStoredVolume ] = useState(0.5)
@@ -25,6 +25,7 @@ const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
   const [ currentTime, setCurrentTime ] = useState(0)
   const [ duration, setDuration ] = useState(0)
   const [ isFull, setIsFull ] = useState(false)
+
 
   useEffect(() => {
     const video = videoRef.current
@@ -154,11 +155,12 @@ const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
   const handleSetQuality = (quality: string) => {
     switch (quality) {
       case 'AUTO':
+        console.log('auto로 바꿈')
         setResolution('auto')
         break
       case '480p':
         console.log('480으로 바꿈')
-        setResolution(2)
+        setResolution(0)
         break
       case '720p':
         console.log('720으로 바꿈')
@@ -166,7 +168,7 @@ const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
         break
       case '1080p':
         console.log('1080으로 바꿈')
-        setResolution(0)
+        setResolution(2)
         break
       default:
         setResolution('auto')
@@ -224,23 +226,38 @@ const VideoPlayer = ({ containerRef, videoRef, setResolution }) => {
           </button>
           <button onClick={togglePip}><MdPictureInPictureAlt color="white" size={25}/></button>
 
-          <div>
-            <DropdownMenu 
-              button={<button><IoIosSettings color="white" size={25}/></button>}
-            >
-              <MenuItem>
-                <button onClick={() => handleSetQuality('AUTO')}>AUTO</button>
-              </MenuItem>
-              <MenuItem>
-                <button onClick={() => handleSetQuality('480p')}>480p</button>
-              </MenuItem>
-              <MenuItem>
-                <button onClick={() => handleSetQuality('720p')}>720p</button>
-              </MenuItem>
-              <MenuItem>
-                <button onClick={() => handleSetQuality('1080p')}>1080p</button>
-              </MenuItem>
-            </DropdownMenu>
+          <div ref={modalRef}>
+            <div onClick={open}>
+              <IoIosSettings color="white" size={25}/>
+            </div>
+            {isOpen && (
+              <div className={styles.dropdownMenuTop}>
+                <button 
+                  className={styles.dropdownItem}
+                  onClick={() => handleSetQuality('AUTO')}
+                >
+                  AUTO
+                </button>
+                <button 
+                  className={styles.dropdownItem}
+                  onClick={() => handleSetQuality('480p')}
+                >
+                  480p
+                </button>
+                <button 
+                  className={styles.dropdownItem}
+                  onClick={() => handleSetQuality('720p')}
+                >
+                  720p
+                </button>
+                <button 
+                  className={styles.dropdownItem}
+                  onClick={() => handleSetQuality('1080p')}
+                >
+                  1080p
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

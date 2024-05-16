@@ -25,6 +25,11 @@ export default function StudioMenu() {
           통계/분석
         </div>
       </Link>
+      <Link href={`/studio/${params.username}/charge`}>
+        <div className={styles.menuItem}>
+          초코 충전
+        </div>
+      </Link>
     </div>
   )
 }

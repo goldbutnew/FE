@@ -26,15 +26,14 @@ const speak = (text) => {
 
 export default function Donation() {
   const { userData } = useAuthStore();
-  const { streamerProfileData } = useProfileStore();
+  const { getUserProfileInfo, profileData } = useProfileStore();
   const [messageInput, setMessageInput] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const { close, open, isOpen, modalRef } = useModal();
   const [choco, setChoco] = useState(0);
   const [isAnonym, setIsAnonym] = useState(false);
   const [isTTS, setIsTTS] = useState(false);
-  const initChoco = streamerProfileData.choco;
-  const [dummyChoco, setDummyChoco] = useState(initChoco);
+  const [initChoco, setInitChoco] = useState(0);
   const [warning, setWarning] = useState('');
   const [name, setName] = useState('');
   const { streamRoomData } = useStreamingStore();
@@ -44,6 +43,13 @@ export default function Donation() {
       setName(userData.nickname);
     }
   }, [userData.nickname]);
+
+  useEffect(() => {
+    getUserProfileInfo(userData.username)
+    if (profileData.choco) {
+      setInitChoco(profileData.choco);
+    }
+  }, [profileData.choco]);
 
   const sendChoco = (value) => () => {
     setChoco(value);
@@ -55,7 +61,7 @@ export default function Donation() {
       setWarning('초코가 부족합니다!');
     } else {
       setWarning('');
-      setDummyChoco(initChoco - choco);
+      setInitChoco(initChoco - choco);
     }
   }, [choco]);
 
@@ -115,7 +121,7 @@ export default function Donation() {
           <div className={styles.topContainer}>
             <span className={bold}>후원</span>
             <hr className={line} />
-            <p>🍫 내 초코: {dummyChoco}</p>
+            <p>🍫 내 초코: {initChoco}</p>
             <hr className={line} />
             <div className={styles.selectedChocoBox}>
               <span>🍫</span>

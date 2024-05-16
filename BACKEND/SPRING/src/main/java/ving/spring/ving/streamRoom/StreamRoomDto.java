@@ -49,6 +49,16 @@ public class StreamRoomDto {
         List<StreamRoom> streamRooms;
     }
 
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CreateResponse
+    {
+        String streamKey;
+    }
+
     @Builder
     @Getter
     @AllArgsConstructor
@@ -56,6 +66,7 @@ public class StreamRoomDto {
     public static class StreamRoom
     {
         private String thumbnail;
+        private Integer roomId;
         private String username;
         private String title;
         private Integer viewers;

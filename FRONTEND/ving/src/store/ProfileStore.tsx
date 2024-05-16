@@ -58,6 +58,13 @@ const useProfileStore = create(persist((set, get) => ({
       console.error(error)
     }
   },
+  // 초코 충전하기 
+  setProfileDataChoco: (choco) => set((state) => ({
+    profileData: {
+      ...state.profileData,
+      choco,
+    },
+  })),
   // 스트리머 프로필 가져오기
   getStreamerProfileInfo: async (username:string) => {
     const token = localStorage.getItem('accessToken')
