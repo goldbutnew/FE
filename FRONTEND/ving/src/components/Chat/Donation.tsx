@@ -1,42 +1,55 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect } from "react";
-import BottomSheet from "../BottomSheet";
-import { line } from "@/styles/common.css";
-import EmojiPicker from "emoji-picker-react";
-import * as styles from './index.css'
-import { bold } from "@/styles/fonts.css";
-import SmallButton from "../Button/SmallButton";
-import { vars } from "@/styles/vars.css";
-import DefaultInput from "../Input/DefaultInput";
-import ToggleButton from "../Button/ToggleButton";
-import { betweenWrapper } from "@/styles/wrapper.css";
-import useChatStore from "@/components/Chat/Store";
-import useAuthStore from "@/store/AuthStore";
-import useStreamingStore from "@/store/StreamingStore";
-import useModal from "@/hooks/useModal";
-import useProfileStore from "@/store/ProfileStore";
+import React, { useState, useEffect } from 'react';
+import BottomSheet from '../BottomSheet';
+import { line } from '@/styles/common.css';
+import EmojiPicker from 'emoji-picker-react';
+import * as styles from './index.css';
+import { bold } from '@/styles/fonts.css';
+import SmallButton from '../Button/SmallButton';
+import { vars } from '@/styles/vars.css';
+import DefaultInput from '../Input/DefaultInput';
+import ToggleButton from '../Button/ToggleButton';
+import { betweenWrapper } from '@/styles/wrapper.css';
+import useChatStore from '@/components/Chat/Store';
+import useAuthStore from '@/store/AuthStore';
+import useStreamingStore from '@/store/StreamingStore';
+import useModal from '@/hooks/useModal';
+import useProfileStore from '@/store/ProfileStore';
+
+const speak = (text) => {
+  const synth = window.speechSynthesis;
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'ko-KR'; // 한국어 설정
+  synth.speak(utterance);
+};
 
 export default function Donation() {
-  const { userData } = useAuthStore()
-  const { streamerProfileData } = useProfileStore()
+  const { userData } = useAuthStore();
+  const { streamerProfileData } = useProfileStore();
   const [messageInput, setMessageInput] = useState('');
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
-  const { close, open, isOpen, modalRef } = useModal()
-  const [choco, setChoco] = useState(0)
-  const [isAnonym, setIsAnonym] = useState(false)
-  const [isTTS, setIsTTS] = useState(false)
-  const initChoco = streamerProfileData.choco
-  const [dummyChoco, setDummyChoco] = useState(initChoco)
-  const [warning, setWarning] = useState('')
-  const [name, setName] = useState('')
-  const { streamRoomData } = useStreamingStore()
-  
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const { close, open, isOpen, modalRef } = useModal();
+  const [choco, setChoco] = useState(0);
+  const [isAnonym, setIsAnonym] = useState(false);
+  const [isTTS, setIsTTS] = useState(false);
+  const initChoco = streamerProfileData.choco;
+  const [dummyChoco, setDummyChoco] = useState(0);
+  const [warning, setWarning] = useState('');
+  const [name, setName] = useState('');
+  const { streamRoomData } = useStreamingStore();
+
   useEffect(() => {
     if (userData.nickname) {
       setName(userData.nickname);
     }
   }, [userData.nickname]);
+
+  useEffect(() => {
+    if (streamerProfileData.choco) {
+      setDummyChoco(streamerProfileData.choco);
+    }
+  }, [streamerProfileData.choco]);
 
   const sendChoco = (value) => () => {
     setChoco(value);
@@ -44,77 +57,78 @@ export default function Donation() {
   };
 
   useEffect(() => {
-    if ((initChoco - choco) < 0) {
-      setWarning("초코가 부족합니다!")
+    if (initChoco - choco < 0) {
+      setWarning('초코가 부족합니다!');
     } else {
-      setWarning("")
-      setDummyChoco(initChoco - choco)
+      setWarning('');
+      setDummyChoco(initChoco - choco);
     }
   }, [choco]);
 
-  const handleAnonym = (newState: boolean) => {
+  const handleAnonym = (newState) => {
     setIsAnonym(newState);
     if (newState) {
-      setName("익명의 후원자")
+      setName('익명의 후원자');
     } else {
-      setName(userData.nickname)
+      setName(userData.nickname);
     }
   };
 
-  const handleTTS = (newState: boolean) => {
+  const handleTTS = (newState) => {
     setIsTTS(newState);
   };
 
   const handleChange = (e) => {
-    setMessageInput(e.target.value)
+    setMessageInput(e.target.value);
   };
 
   const openEmojiPicker = () => {
-    setShowEmojiPicker(!showEmojiPicker)
-  }
+    setShowEmojiPicker(!showEmojiPicker);
+  };
 
   const handleEmojiClick = (e) => {
-    const emoji = e.emoji
-    setMessageInput((prevMessage) => prevMessage + emoji)
-  }  
+    const emoji = e.emoji;
+    setMessageInput((prevMessage) => prevMessage + emoji);
+  };
 
   const handleSendMessageWithChoco = async (e) => {
-    console.log(streamRoomData)
+    console.log(streamRoomData);
     e.preventDefault();
     const donationRequest = {
-      streamer: streamRoomData.username, 
+      streamer: streamRoomData.username,
       nickname: name,
       choco: choco,
       isTts: isTTS,
       message: messageInput,
     };
-  
+
     await useChatStore.getState().sendDonation(donationRequest);
+
+    if (isTTS) {
+      speak(messageInput); // 메시지 전송 시 TTS 호출
+    }
+    
     setMessageInput('');
     setChoco(0);
     close();
   };
-  
+
   return (
     <div>
-      <SmallButton
-        text="🍫" 
-        color={vars.colors.lightGray}
-        onClick={open}
-      />
+      <SmallButton text="🍫" color={vars.colors.lightGray} onClick={open} />
       {isOpen && (
         <BottomSheet isOpen={isOpen} onClose={close}>
           <div className={styles.topContainer}>
             <span className={bold}>후원</span>
-            <hr className={line}/>
+            <hr className={line} />
             <p>🍫 내 초코: {dummyChoco}</p>
-            <hr className={line}/>
+            <hr className={line} />
             <div className={styles.selectedChocoBox}>
               <span>🍫</span>
               <input
                 type="number"
                 value={choco}
-                onChange={(e) => setChoco(e.target.value)}
+                onChange={(e) => setChoco(Number(e.target.value))}
                 placeholder="초코를 입력하세요"
                 className={styles.chocoInputBox}
               />
@@ -124,81 +138,71 @@ export default function Donation() {
                 text="1,000"
                 color={vars.colors.lightGray}
                 fontColor={vars.colors.black}
-                onClick={sendChoco(1000)}   
+                onClick={sendChoco(1000)}
               />
-              <SmallButton 
+              <SmallButton
                 text="5,000"
                 color={vars.colors.lightGray}
                 fontColor={vars.colors.black}
-                onClick={sendChoco(5000)}  
+                onClick={sendChoco(5000)}
               />
               <SmallButton
                 text="10,000"
                 color={vars.colors.lightGray}
                 fontColor={vars.colors.black}
-                onClick={sendChoco(10000)}    
+                onClick={sendChoco(10000)}
               />
               <SmallButton
                 text="50,000"
                 color={vars.colors.lightGray}
                 fontColor={vars.colors.black}
-                onClick={sendChoco(50000)}   
+                onClick={sendChoco(50000)}
               />
             </div>
-            <div className={styles.warningBox}>
-              {warning}
-            </div>
+            <div className={styles.warningBox}>{warning}</div>
             <hr className={line} />
             <div className={styles.toggleBox}>
               <div className={betweenWrapper}>
                 채팅 읽어 주기
-                <ToggleButton
-                  isActive={isTTS}
-                  onChange={handleTTS}
-                />
+                <ToggleButton isActive={isTTS} onChange={handleTTS} />
               </div>
               <div className={betweenWrapper}>
                 익명으로 후원하기
-                <ToggleButton
-                  isActive={isAnonym}
-                  onChange={handleAnonym}
-                />
+                <ToggleButton isActive={isAnonym} onChange={handleAnonym} />
               </div>
             </div>
-            <hr className={line}/>
+            <hr className={line} />
             {showEmojiPicker && (
               <div className={styles.donationEmojiPicker}>
                 <EmojiPicker
                   width="100%"
                   height={200}
-                  searchDisabled={true} 
+                  searchDisabled={true}
                   previewConfig={{
-                    defaultEmoji: "1f60a",
+                    defaultEmoji: '1f60a',
                     defaultCaption: "What's your mood?",
-                    showPreview: false
+                    showPreview: false,
                   }}
                   onEmojiClick={handleEmojiClick}
                 />
               </div>
             )}
             <div className={styles.donationInputBox}>
-              <span className={styles.donatorName}>
-                {name}
-              </span>
-              <DefaultInput 
-                  type="text"
-                  value={messageInput} 
-                  onEmojiClick={openEmojiPicker}
-                  onChange={handleChange}
-                  placeholder="채팅을 입력해 주세요"
-                />
+              <span className={styles.donatorName}>{name}</span>
+              <DefaultInput
+                type="text"
+                value={messageInput}
+                onEmojiClick={openEmojiPicker}
+                onChange={handleChange}
+                placeholder="채팅을 입력해 주세요"
+              />
             </div>
             <div className={styles.donationSendButtonBox}>
-              <SmallButton 
+              <SmallButton
                 text="전송"
                 color={vars.colors.gray}
                 onClick={handleSendMessageWithChoco}
-              />  
+              />
             </div>
           </div>
         </BottomSheet>
