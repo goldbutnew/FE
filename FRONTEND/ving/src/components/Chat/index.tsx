@@ -202,13 +202,6 @@ export default function Chat() {
     }
   };
   
-  // 팔로우 상태 변화를 감지
-  useEffect(() => {
-    // isFollowed 값이 변경될 때마다 콘솔에 로그 출력
-    console.log("isFollowed 상태 변경:", isFollowed);
-  }, [isFollowed]);
-
-    
   return (
     <SideBar 
       title="채팅" 
