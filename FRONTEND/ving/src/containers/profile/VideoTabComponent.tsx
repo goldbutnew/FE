@@ -60,6 +60,7 @@ export default function ProfileTabComponent({ userProfileData }) {
   }
 
   const goRecordedVideo = (videoSerial: number, username: string) => {
+    console.log(videoSerial, username)
     router.push(`/streaming/${btoa(username)}/${videoSerial}`)
   }
 

@@ -79,6 +79,7 @@ export const imageStyle = style({
 export const roomInfoBox = style([
   rowWrapper, 
   {
+    width: '100%'
   }
 ])
 
@@ -86,6 +87,7 @@ export const leftBox = style([
   columnWrapper,
   {
     // gap: vars.space['0.5x']
+    width: '100%',
     margin: `0 0 0 ${vars.space['0.5x']}`
   }
 ])
@@ -100,17 +102,21 @@ export const rightBox = style([
 export const leftBoxItem = style([
   startWrapper,
   {
+    display: 'flex',
     height: '100%',
+    width: '100%',
   }
 ])
 
 export const streamingTitle = style([
   bold,
   {
+    width: '100%',
     fontSize: vars.fontSize['1x'],
     overflow: 'hidden', 
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
+    flex: '1',
   }
 ])
 

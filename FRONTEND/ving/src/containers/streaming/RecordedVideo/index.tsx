@@ -12,112 +12,115 @@ import useAuthStore from '@/store/AuthStore'
 import { useParams, useRouter } from 'next/navigation'
 import { vars } from '@/styles/vars.css'
 import useProfileStore from '@/store/ProfileStore'
+import StreamingVideo from '@/components/StreamingVideo'
 
 export default function RecordedVideo() {
-  const { isPlaying, setIsPlaying } = useStreamingStore()
-  const [chunk, setChunk] = useState(0)
-  const [resolution, setResolution] = useState<'auto' | number>('auto')
-  const videoRef: React.RefObject<HTMLVideoElement> = useRef(null)
-  const hls = useRef<Hls | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  // const { isPlaying, setIsPlaying } = useStreamingStore()
+  // const [chunk, setChunk] = useState(0)
+  // const [resolution, setResolution] = useState<'auto' | number>('auto')
+  // const videoRef: React.RefObject<HTMLVideoElement> = useRef(null)
+  // const hls = useRef<Hls | null>(null)
+  // const [error, setError] = useState<string | null>(null)
 
   const router = useRouter()
   const params = useParams()
 
-  const encodedUsername = String(params.username).replace(/%3D/g, '')
+  // const encodedUsername = String(params.username).replace(/%3D/g, '')
   const videoSerial = params.videoSerial
 
-  const syncPlayPause = () => {
-    const videoElement = videoRef.current
-    if (!videoElement) return
+  // const syncPlayPause = () => {
+  //   const videoElement = videoRef.current
+  //   if (!videoElement) return
 
-    if (isPlaying) {
-      videoElement.play()
-    } else {
-      videoElement.pause()
-    }
-  }
+  //   if (isPlaying) {
+  //     videoElement.play()
+  //   } else {
+  //     videoElement.pause()
+  //   }
+  // }
 
-  useEffect(() => {
-    syncPlayPause()
-  }, [isPlaying])
+  // useEffect(() => {
+  //   syncPlayPause()
 
-  const loadStream = (resolution: 'auto' | number) => {
-    const videoElement = videoRef.current
-    if (!videoElement) return
+  //   console.log(`https://vingving.s3.ap-northeast-2.amazonaws.com/files//master_${encodedUsername}_${videoSerial}.m3u8`)
+  // }, [isPlaying])
 
-    if (hls.current) {
-      hls.current.destroy()
-    }
+  // const loadStream = (resolution: 'auto' | number) => {
+  //   const videoElement = videoRef.current
+  //   if (!videoElement) return
 
-    hls.current = new Hls({
-      maxBufferLength: 30,
-      maxMaxBufferLength: 60,
-      maxBufferSize: 60 * 1000 * 1000, // 60MB
-      maxBufferHole: 0.5,
-      startFragPrefetch: true,
-      enableWorker: true,
-      startLevel: resolution === 'auto' ? -1 : resolution,
-    })
+  //   if (hls.current) {
+  //     hls.current.destroy()
+  //   }
 
-    hls.current.loadSource(`https://vingving.s3.ap-northeast-2.amazonaws.com/files//master_${encodedUsername}_${videoSerial}.m3u8`)
-    hls.current.attachMedia(videoElement)
+  //   hls.current = new Hls({
+  //     maxBufferLength: 30,
+  //     maxMaxBufferLength: 60,
+  //     maxBufferSize: 60 * 1000 * 1000, // 60MB
+  //     maxBufferHole: 0.5,
+  //     startFragPrefetch: true,
+  //     enableWorker: true,
+  //     startLevel: resolution === 'auto' ? -1 : resolution,
+  //   })
 
-    hls.current.on(Hls.Events.MANIFEST_PARSED, () => {
-      videoElement.play()
-    })
+  //   hls.current.loadSource(`https://vingving.s3.ap-northeast-2.amazonaws.com/files//master_${streamRoomData.username}_${videoSerial}.m3u8`)
+  //   hls.current.attachMedia(videoElement)
 
-    hls.current.on(Hls.Events.FRAG_LOADED, (event, data) => {
-      setChunk(data.frag.stats.total)
-      if (data.frag.sn === 0) { // 첫 번째 프래그먼트가 로드되었을 때
-        videoElement.currentTime = 0 // 비디오를 처음부터 재생
-      }
-    })
+  //   hls.current.on(Hls.Events.MANIFEST_PARSED, () => {
+  //     videoElement.play()
+  //   })
 
-    hls.current.on(Hls.Events.ERROR, (event, data) => {
-      console.error('Hls.js 오류 발생:', data)
-      setError(`Hls.js 오류 발생: ${data.details}`)
-      if (data.fatal) {
-        switch (data.type) {
-          case Hls.ErrorTypes.NETWORK_ERROR:
-            console.error('네트워크 오류 발생 - 재시도')
-            hls.current.startLoad()
-            break
-          case Hls.ErrorTypes.MEDIA_ERROR:
-            console.error('미디어 오류 발생 - 복구 시도')
-            hls.current.recoverMediaError()
-            break
-          default:
-            hls.current.destroy()
-            break
-        }
-      }
-    })
+  //   hls.current.on(Hls.Events.FRAG_LOADED, (event, data) => {
+  //     setChunk(data.frag.stats.total)
+  //     if (data.frag.sn === 0) { // 첫 번째 프래그먼트가 로드되었을 때
+  //       videoElement.currentTime = 0 // 비디오를 처음부터 재생
+  //     }
+  //   })
 
-    if (resolution !== 'auto') {
-      hls.current.on(Hls.Events.MANIFEST_PARSED, () => {
-        hls.current.currentLevel = resolution
-      })
-    }
+  //   hls.current.on(Hls.Events.ERROR, (event, data) => {
+  //     console.error('Hls.js 오류 발생:', data)
+  //     setError(`Hls.js 오류 발생: ${data.details}`)
+  //     if (data.fatal) {
+  //       switch (data.type) {
+  //         case Hls.ErrorTypes.NETWORK_ERROR:
+  //           console.error('네트워크 오류 발생 - 재시도')
+  //           hls.current.startLoad()
+  //           break
+  //         case Hls.ErrorTypes.MEDIA_ERROR:
+  //           console.error('미디어 오류 발생 - 복구 시도')
+  //           hls.current.recoverMediaError()
+  //           break
+  //         default:
+  //           hls.current.destroy()
+  //           break
+  //       }
+  //     }
+  //   })
 
-    videoElement.onloadedmetadata = () => {
-      videoElement.currentTime = 0
-    }
-  }
+  //   if (resolution !== 'auto') {
+  //     hls.current.on(Hls.Events.MANIFEST_PARSED, () => {
+  //       hls.current.currentLevel = resolution
+  //     })
+  //   }
 
-  useEffect(() => {
-    loadStream(resolution)
-  }, [resolution])
+  //   videoElement.onloadedmetadata = () => {
+  //     videoElement.currentTime = 0
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   loadStream(resolution)
+  // }, [resolution])
 
   const [loading, setLoading] = useState(false)
   const { userData } = useAuthStore()
-  const { streamRoomData, setIsStreamerFollowed, isStreamerFollowed } = useStreamingStore()
+  const { streamRoomData, setIsStreamerFollowed } = useStreamingStore()
   const { streamerProfileData, streamerUserName, getStreamerProfileInfo, doFollowUser, unDoFollowUser } = useProfileStore()
   const [subscriberCount, setSubscriberCount] = useState(streamerProfileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(streamerProfileData.isFollowed)
 
-  const streamKey = `${streamRoomData.username}_${streamRoomData.roomId}`
-  console.log('-------여기는 스트리머 방 페이지 팔로잉 팔로우 확인용')
+  const streamKey = `${streamerUserName}_${videoSerial}`
+  console.log(streamKey, '-------여기는 스트리머 방 페이지 팔로잉 팔로우 확인용')
 
   const loginUserName = userData.username
 
@@ -165,23 +168,7 @@ export default function RecordedVideo() {
 
   return (
     <Container>
-      <video
-        className={styles.videoResize}
-        ref={videoRef}
-        autoPlay={true}
-        muted={true}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        controls
-      />
-      <div>
-        <button onClick={() => setResolution('auto')}>Auto</button>
-        <button onClick={() => setResolution(0)}>240p</button>
-        <button onClick={() => setResolution(1)}>360p</button>
-        <button onClick={() => setResolution(2)}>480p</button>
-        <button onClick={() => setResolution(3)}>720p</button>
-        <button onClick={() => setResolution(4)}>1080p</button>
-      </div>
+      <StreamingVideo streamKey={streamKey}/>
       <div className={styles.streamerInfoContainer}>
         <div className={styles.leftBoxContainer}>
           <ProfileImage url={streamerProfileData.photoUrl} width={80} alt={"User profile"}/>
