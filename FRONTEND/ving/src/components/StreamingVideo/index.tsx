@@ -1,4 +1,4 @@
-'use client'
+ 'use client'
 
 import { MutableRefObject, useEffect, useRef, useState } from 'react'
 import Hls from 'hls.js'
