@@ -220,6 +220,8 @@ public class UserController {
                             .videoId(videoModel.getVideoId())
                             .thumbnail(videoModel.getThumbnail())
                             .videoPlay(videoModel.getVideoplay())
+                            .videoSerial(videoModel.getVideoSerial())
+                            .videoLength(videoModel.getVideoLength())
                             .createdAt(dateTimeFormmer.transform(videoModel.getCreatedAt()))
                             .isFixed(fixedVideoService.existsByVideoModel(videoModel))
                             .build()

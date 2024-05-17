@@ -1,4 +1,4 @@
-'use client'
+ 'use client'
 
 import { MutableRefObject, useEffect, useRef, useState } from 'react'
 import Hls from 'hls.js'
@@ -8,15 +8,14 @@ import VideoPlayer from '@/components/StreamingVideo/Player'
 import Abs from './Abs'
 import * as styles from './index.css'
 
-
 export default function StreamingVideo({ streamKey }) {
   const { isPlaying, setIsPlaying } = useStreamingStore()
-  const [ resolution, setResolution ] = useState<'auto' | number>('auto')
-  const [ speed, setSpeed ] = useState<number>(0)
-  const [ chunk, setChunk ] = useState(0)
-  const [ buffer, setBuffer ] = useState(0)
-  const [ isHovering, setIsHovering ] = useState(false)
-  const [ isMouseMoving, setIsMouseMoving ] = useState(true)
+  const [resolution, setResolution] = useState<'auto' | number>('auto')
+  const [speed, setSpeed] = useState<number>(0)
+  const [chunk, setChunk] = useState(0)
+  const [buffer, setBuffer] = useState(0)
+  const [isHovering, setIsHovering] = useState(false)
+  const [isMouseMoving, setIsMouseMoving] = useState(true)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const videoRef: React.RefObject<HTMLVideoElement> = useRef(null)
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null)
@@ -36,6 +35,57 @@ export default function StreamingVideo({ streamKey }) {
   useEffect(() => {
     syncPlayPause()
   }, [isPlaying])
+
+  const loadStream = (resolution: 'auto' | number) => {
+    const videoElement = videoRef.current
+    if (!videoElement) return
+
+    if (hls.current) {
+      hls.current.destroy()
+    }
+
+    hls.current = new Hls()
+    hls.current.loadSource(`https://vingving.s3.ap-northeast-2.amazonaws.com/files//master_${streamKey}.m3u8`)
+    hls.current.attachMedia(videoElement)
+
+    hls.current.on(Hls.Events.MANIFEST_PARSED, () => videoElement.play())
+
+    hls.current.on(Hls.Events.FRAG_LOADED, (event, data) => {
+      setChunk(data.frag.stats.total)
+    })
+
+    hls.current.on(Hls.Events.ERROR, (event, data) => {
+      console.error('Hls.js 오류 발생:', data)
+    })
+
+    if (resolution !== 'auto') {
+      hls.current.on(Hls.Events.MANIFEST_PARSED, () => {
+        hls.current.currentLevel = resolution
+      })
+    }
+  }
+
+  const definePosition = () => {
+    if (!hls.current) return
+    let evaluateThisRate = chunk / speed
+    const currentLevel = hls.current.currentLevel
+    const maxLevel = hls.current.levels.length - 1
+    if (evaluateThisRate < buffer && currentLevel < maxLevel) {
+      hls.current.currentLevel = currentLevel + 1
+    } else if (evaluateThisRate > buffer && currentLevel > 0) {
+      hls.current.currentLevel = currentLevel - 1
+    }
+  }
+
+  useEffect(() => {
+    loadStream(resolution)
+  }, [resolution, streamKey])
+
+  useEffect(() => {
+    if (resolution === 'auto') {
+      definePosition()
+    }
+  }, [speed, resolution])
 
   useEffect(() => {
     const checkBufferStatus = () => {
@@ -62,47 +112,7 @@ export default function StreamingVideo({ streamKey }) {
     }
 
     setBuffer(checkBufferStatus())
-
-    const definePosition = () => {
-      if (!hls.current) return
-      let evaluateThisRate = chunk / speed
-      const currentLevel = hls.current.currentLevel
-      const maxLevel = hls.current.levels.length - 1
-      if (evaluateThisRate < buffer && currentLevel < maxLevel) {
-        hls.current.currentLevel = currentLevel + 1
-      } else if (evaluateThisRate > buffer && currentLevel > 0) {
-        hls.current.currentLevel = currentLevel - 1
-      }
-    }
-
-    if (resolution === 'auto') {
-      definePosition()
-    } else {
-      if (hls.current) {
-        hls.current.currentLevel = resolution
-      }
-    }
   }, [speed])
-
-  useEffect (() => {
-    const videoElement = videoRef.current
-    if (!videoElement) return
-
-    if (Hls.isSupported()) {
-      hls.current = new Hls()
-      hls.current.loadSource(`https://vingving.s3.ap-northeast-2.amazonaws.com/files//master_${streamKey}.m3u8`)
-      hls.current.attachMedia(videoElement)
-      hls.current.on(Hls.Events.MANIFEST_PARSED, () => videoElement.play())
-
-      hls.current.on(Hls.Events.FRAG_LOADED, (event, data) => {
-        setChunk(data.frag.stats.total)
-      })
-
-      hls.current.on(Hls.Events.ERROR, (event, data) => {
-        console.error('Hls.js 오류 발생:', data)
-      })
-    }
-  }, [])
 
   // hover timer 코드
   const handleMouseEnter = () => {
@@ -150,9 +160,7 @@ export default function StreamingVideo({ streamKey }) {
     }
   }, [])
 
-
   return (
-    // videoResize 하나로 줄여보기
     <div className={styles.videoResize} ref={containerRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <video
         className={styles.videoResize}
@@ -165,7 +173,7 @@ export default function StreamingVideo({ streamKey }) {
       <div className={(isHovering || isMouseMoving) ? styles.playerHoverVisible : styles.playerHover}>
         <VideoPlayer containerRef={containerRef} videoRef={videoRef} setResolution={setResolution}/>
       </div>
-      <Abs setSpeed = {setSpeed}/>
+      <Abs setSpeed={setSpeed}/>
     </div>
   )
 }

@@ -35,6 +35,8 @@ public class VideoDto {
         private Integer videoId;
         private String title;
         private Integer videoPlay;
+        private Integer videoLength;
+        private Integer videoSerial;
         private Boolean isFixed;
         private String createdAt;
     }
