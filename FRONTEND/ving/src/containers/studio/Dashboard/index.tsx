@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation'
 import useAuthStore from '@/store/AuthStore'
 import Container from '@/components/Container'
 import { vars } from '@/styles/vars.css'
-import { lightLine } from '@/styles/common.css'
+import { lightLine, plainButton } from '@/styles/common.css'
 
 export default function Dashboard() {
   const { userData } = useAuthStore()
@@ -64,11 +64,11 @@ export default function Dashboard() {
               <div className={styles.dashboardBox}>
                 <div className={styles.title}>공지사항</div>
                 <div>
-                  <span>후원 메시지 읽어 주기 기능 추가 (24/05/17)</span>
+                  <span className={plainButton}>후원 메시지 읽어 주기 기능 추가 (24/05/17)</span>
                   <hr className={lightLine} />
-                  <span>Ving 업데이트 안내 (24/05/12)</span>
+                  <span className={plainButton}>Ving 업데이트 안내 (24/05/12)</span>
                   <hr className={lightLine} />
-                  <span>개인 사업자라면 정산 정보를 등록해 주세요!</span>
+                  <span className={plainButton}>개인 사업자라면 정산 정보를 등록해 주세요!</span>
                 </div>
               </div>
             </div>
