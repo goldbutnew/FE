@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from "react";
-import Chat from "@/components/Chat";
 import StudioStreaming from "./StudioStreaming";
 import * as styles from '../index.css'
 import NewsFeed from "@/containers/studio/StartStreaming/NewsFeed";
