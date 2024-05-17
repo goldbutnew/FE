@@ -128,6 +128,20 @@ export const dashboardOrderCf = style({
   color: vars.colors.darkGray,
 })
 
+export const streamingGuideSubtitle = style([
+  bold,
+  {
+    display: 'block',
+    fontSize: vars.fontSize['1x'],
+  }
+])
+
+export const streamingGuideItem = style({
+  display: 'block',
+  fontSize: vars.fontSize['0.75x'],
+  color: vars.colors.darkGray,
+})
+
 
 // StartStreaming.tsx
 
