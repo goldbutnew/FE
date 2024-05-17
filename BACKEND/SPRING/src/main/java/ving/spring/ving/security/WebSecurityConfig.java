@@ -40,6 +40,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/auth/Oauth2/KakaoToken").permitAll()
                         .requestMatchers("/auth/Oauth2/KakaoLogin").permitAll()
+                        .requestMatchers("/api/sse/**").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/api/stream/findAll").permitAll()
                         .requestMatchers("/api/search/**").permitAll()

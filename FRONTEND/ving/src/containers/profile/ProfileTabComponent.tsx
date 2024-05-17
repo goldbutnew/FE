@@ -59,13 +59,16 @@ const SocialLink: React.FC<SocialLinkProps> = ({ url }) => {
 export default function ProfileTabComponent({ userProfileData }) {
   const { profileData } = useProfileStore()
   const [links, setLinks] = useState(profileData.links || [])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (profileData) {
+      setLoading(true)
     }
-    console.log('------------------------gsggdgsg')
+    console.log(profileData, '------------------------gsggdgsg')
   }, [profileData, userProfileData])
 
+  if (loading) {
   return (
     <div>
       <Card>
@@ -95,4 +98,5 @@ export default function ProfileTabComponent({ userProfileData }) {
       </Card>
     </div>
   )
+}
 }

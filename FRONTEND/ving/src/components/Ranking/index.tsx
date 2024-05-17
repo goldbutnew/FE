@@ -9,34 +9,68 @@ import ProfileImage from '../ProfileImg'
 import { vars } from '@/styles/vars.css'
 import SideBar from '../SideBar/SideBar'
 import { lightLine, line } from '@/styles/common.css'
+import useStreamingStore from '@/store/StreamingStore'
 
 interface User {
   username: string
   nickname: string
   thumbnail: string
+  streamerThumbnail: string
 }
 
 export default function Ranking() {
-  const { getCurrentTopViewers, currentTopViewersData, getUserProfileInfo, getUserNicknameSearch, searchData } = useProfileStore()
-  const [users, setUsers] = useState<User[]>(currentTopViewersData || [])
+  const { getCurrentTopSubscribers, currentTopSubscribersData, getUserProfileInfo, getUserNicknameSearch, searchData } = useProfileStore()
+  const { streamRoomsData, currentTopViewersStreamer, setCurrentTopViewersStreamer } = useStreamingStore()
+  const [users, setUsers] = useState<User[]>(currentTopSubscribersData || [])
+  const [viewerUsers, setViewerUsers] = useState<User[]>(currentTopViewersStreamer|| [])
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(true)
   const [loading, setLoading] = useState(false)
 
+  type StreamData = {
+    createdAt: string
+    nickname: string
+    roomId: number
+    streamerThumbnail: string
+    thumbnail: string
+    title: string
+    username: string
+    viewers: number
+  }
+
+  useEffect(() => {
+    if (streamRoomsData.length > 0) {
+      const topStreams = getTopStreams(streamRoomsData, 5)
+      setViewerUsers(topStreams)
+      setCurrentTopViewersStreamer(topStreams)
+      setLoading(false)
+    }
+  }, [streamRoomsData])
+
+  function getTopStreams(streamRoomsData: StreamData[], count: number): StreamData[] {
+    return [...streamRoomsData]
+      .sort((a, b) => b.viewers - a.viewers)
+      .slice(0, count)
+  }
+
   useEffect(() => {
     const initData = async () => {
-      await getCurrentTopViewers()
+      await getCurrentTopSubscribers()
     }
     initData()
     console.log('유저 랭킹 가져오기')
-  }, [getCurrentTopViewers])
+  }, [getCurrentTopSubscribers])
 
   useEffect(() => {
-    if (currentTopViewersData) {
-      setUsers(currentTopViewersData || [])
+    if (currentTopSubscribersData) {
+      setUsers(currentTopSubscribersData || [])
+    }
+
+    if (currentTopViewersStreamer) {
+      setViewerUsers(currentTopViewersStreamer || [])
     }
     setLoading(true)
-  }, [currentTopViewersData])
+  }, [currentTopSubscribersData, currentTopViewersStreamer])
   
 
   const moveSearchUser = (username: string) => {
@@ -45,7 +79,7 @@ export default function Ranking() {
     router.push(`/profile/${btoa(username)}`)
   }
 
-  console.log(currentTopViewersData)
+  console.log(currentTopViewersStreamer, viewerUsers, streamRoomsData)
   
   return (
     <SideBar
@@ -77,16 +111,16 @@ export default function Ranking() {
 
       <div className={styles.rankingList}>
         <div className={styles.rankingTitle}>현재 시청자 수</div>
-        {users.map((user: User) => (
+        {viewerUsers.map((user: User) => (
           <div key={user.username} onClick={() => moveSearchUser(user.username)}>
             {isOpen ? (
               <div className={styles.openRankingListItem}>
-                <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
+                <ProfileImage url={user.streamerThumbnail} width={40} alt="User profile" />
                 <div className={styles.rankingUserName}>{user.nickname}</div>
               </div>
             ) : (
               <div className={styles.closeRankingListItem}>
-                <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
+                <ProfileImage url={user.streamerThumbnail} width={40} alt="User profile" />
               </div>
             )}
           </div>

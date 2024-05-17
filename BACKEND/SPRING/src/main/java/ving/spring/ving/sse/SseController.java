@@ -3,6 +3,8 @@ package ving.spring.ving.sse;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -16,18 +18,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RequestMapping("/api/sse")
 public class SseController {
     private final Map<String, CopyOnWriteArrayList<SseEmitter>> emittersMap = new ConcurrentHashMap<>();
-    @GetMapping("/start-stream")
-    public void startStream(@RequestParam String name, @RequestParam String addr, @RequestParam String clientid) {
+    @PostMapping("/start-stream")
+    public ResponseEntity<?> startStream(@RequestParam String name, @RequestParam String addr, @RequestParam String clientid) {
         updateStreamStatus(name, "live");
         log.info(name + " 의 방송 시작 " +addr + " 주소 " + clientid + " 클라이언트 id" );
         notifyClients(name, "start");
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/stop-stream")
-    public void stopStream(@RequestParam String name, @RequestParam String addr, @RequestParam String clientid) {
+    @PostMapping("/stop-stream")
+    public ResponseEntity<?> stopStream(@RequestParam String name, @RequestParam String addr, @RequestParam String clientid) {
         updateStreamStatus(name, "stopped");
         log.info(name + " 의 방송 종료 " +addr + " 주소 " + clientid + " 클라이언트 id" );
         notifyClients(name, "stop");
+        return ResponseEntity.ok(HttpStatus.OK);
     }
     @GetMapping("/stream-status/{streamKey}")
     public SseEmitter streamStatus(@PathVariable String streamKey)
