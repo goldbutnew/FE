@@ -33,12 +33,8 @@ export default function Chat() {
   const chatBoxRef = useRef(null);
   const { streamRoomData } = useStreamingStore()
   const [nicknameColors, setNicknameColors] = useState(new Map());
-  const { getStreamerProfileInfo, streamerProfileData, isFollowed } = useProfileStore(state => ({
-    getStreamerProfileInfo: state.getStreamerProfileInfo,
-    streamerProfileData: state.streamerProfileData,
-    isFollowed: state.isFollowed
-  }));
-
+  const { getStreamerProfileInfo, streamerProfileData, isFollowed } = useProfileStore()
+  // const [isFollowed, setIsFollowed] = useState(false)
   const { open, close, isOpen } = useModal()
   const stompSubscription  = useRef<StompSubscription | null>(null)
   const stompClient = useRef<CompatClient | null>(null)
@@ -65,11 +61,21 @@ export default function Chat() {
     const fetchProfile = async () => {
       await getStreamerProfileInfo(streamRoomData.username);
     };
-
-    fetchProfile();
-  }, [getStreamerProfileInfo, streamRoomData.username]);
-
   
+    fetchProfile();
+
+  }, [getStreamerProfileInfo, streamRoomData.username]);
+  
+  // // 팔로우 상태 변화를 감지
+  // useEffect(() => {
+  //   // isFollowed 값이 변경될 때마다 콘솔에 로그 출력
+  //   console.log("isFollowed 상태 변경:", isFollowed);
+  // }, [isFollowed]);
+
+  useEffect(() => {
+    setRoomId(btoa(streamRoomData.username)); // Update room ID when streamRoomData changes
+  }, [streamRoomData.username]);
+
   const onMessageReceived = (msg: string) => {
     const newMessage = JSON.parse(msg.body);
     console.log("Received new message:", newMessage); // 로그 추가
@@ -195,12 +201,6 @@ export default function Chat() {
       console.error("프로필 정보 가져오기 실패", error);
     }
   };
-
-  // 팔로우 상태 변화를 감지
-  useEffect(() => {
-    // isFollowed 값이 변경될 때마다 콘솔에 로그 출력
-    console.log("isFollowed 상태 변경:", isFollowed);
-  }, [isFollowed]);
   
   return (
     <SideBar 
