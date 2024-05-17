@@ -1,1 +1,1 @@
-export { default } from '@/containers/studio/Static'
+export { default } from '@/containers/studio/static'

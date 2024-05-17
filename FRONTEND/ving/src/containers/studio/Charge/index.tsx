@@ -88,7 +88,7 @@ export default function Charge() {
       </div>
       <div className={styles.chargeContainer}>
         <div>
-          🍫 보유 초코: {formattedChoco}
+          🍫 보유 초코: {formattedChoco}초코
         </div>
         <div className={styles.chargeInputBox}>
           <DefaultInput

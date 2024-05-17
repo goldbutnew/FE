@@ -154,6 +154,7 @@ const useProfileStore = create(persist((set, get) => ({
           Authorization: `Bearer ${token}`,
         },
       })
+      set({ isFollowed: true })
       console.log(response, '팔로우 신청 성공')
     } catch (error) {
       console.error(error)
@@ -170,6 +171,7 @@ const useProfileStore = create(persist((set, get) => ({
         },
         data: { username: username }
       })
+      set({ isFollowed: false })
       console.log(response, '팔로우 취소 성공')
     } catch (error) {
       console.error(error)
