@@ -1,9 +1,11 @@
 import { create } from 'zustand'
 import axios from '../../api/axios'
+import useProfileStore from '@/store/ProfileStore'
 
 const useStudioStore = create((set) => ({
 
   isOnAir: false,
+  streamKey: '',
 
   startStreaming: async (formData: FormData) => {
     console.log(formData, '방정보완성')
@@ -17,6 +19,7 @@ const useStudioStore = create((set) => ({
       })
       console.log('방송 시작 요청 성공', response.data)
       set({ isOnAir: true })
+      set({ streamKey: response.data.streamKey })
 
     } catch (error) {
       console.error('방송 시작 요청 실패:', error)
@@ -24,17 +27,17 @@ const useStudioStore = create((set) => ({
     }
   },
 
-  openPort: async () => {
-    try {
-      const response = await axios.get('media_pipeline/main')
-      console.log('포트 개방 성공', response.data)
-      set({ isOnAir: true })
+  // openPort: async () => {
+  //   try {
+  //     const response = await axios.get('media_pipeline/main')
+  //     console.log('포트 개방 성공', response.data)
+  //     set({ isOnAir: true })
 
-    } catch (error) {
-      console.error('포트 개방 실패:', error)
-      set({ isOnAir: false })
-    }
-  },
+  //   } catch (error) {
+  //     console.error('포트 개방 실패:', error)
+  //     set({ isOnAir: false })
+  //   }
+  // },
 
   closePort: async () => {
     const token = localStorage.getItem('accessToken')
@@ -106,6 +109,7 @@ const useStudioStore = create((set) => ({
     averageViewer: 0,
     maxViewer: 0,
   },
+
   // 유저 프로필 가져오기
   getStaticPlayCount: async (userName: string) => {
     const token = localStorage.getItem('accessToken')
@@ -118,6 +122,7 @@ const useStudioStore = create((set) => ({
       console.error(error)
     }
   },
+
   getStaticTotalViewer: async (userName: string) => {
     const token = localStorage.getItem('accessToken')
     try {
@@ -129,6 +134,7 @@ const useStudioStore = create((set) => ({
       console.error(error)
     }
   },
+
   getStaticAverageViewer: async (userName: string) => {
     const token = localStorage.getItem('accessToken')
     try {
@@ -140,6 +146,7 @@ const useStudioStore = create((set) => ({
       console.error(error)
     }
   },
+
   getStaticMaxViewer: async (userName: string) => {
     const token = localStorage.getItem('accessToken')
     try {
@@ -150,7 +157,37 @@ const useStudioStore = create((set) => ({
     } catch (error) {
       console.error(error)
     }
-  }
+  },
+
+  chargeChoco: async (amount) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const response = await axios.patch('auth/choco', { 
+        "choco" : amount 
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const newChocoAmount = response.data.newChocoAmount;
+
+      set((state) => ({
+        userData: {
+          ...state.userData,
+          choco: newChocoAmount,
+        },
+      }));
+      
+      const { setProfileDataChoco } = useProfileStore.getState();
+      setProfileDataChoco(response.data.newChocoAmount);  // 새로 충전된 초코 양으로 업데이트
+
+      return response.data;
+    } catch (error) {
+      console.error('Error charging choco:', error);
+      throw error;
+    }
+  },
 }))
 
 export default useStudioStore

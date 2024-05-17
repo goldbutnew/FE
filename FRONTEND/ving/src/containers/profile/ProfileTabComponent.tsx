@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import * as styles from './index.css'
 import { BsFillPinAngleFill, BsYoutube, BsInstagram } from "react-icons/bs"
 import useProfileStore from '@/store/ProfileStore'
-import { useParams } from 'next/navigation'
 import { FiLink } from "react-icons/fi"
 import Card from '@/components/Card'
 
@@ -27,7 +26,7 @@ const representativeVideoInfo: representativeVideoProps[] = [
   },
 ]
 
-const SocialLink:React.FC<SocialLinkProps> = ({ url }) => {
+const SocialLink: React.FC<SocialLinkProps> = ({ url }) => {
   const renderIcon = () => {
     if (url.toLowerCase().includes('www.instagram.com')) {
       return <BsInstagram size={16} />
@@ -57,40 +56,26 @@ const SocialLink:React.FC<SocialLinkProps> = ({ url }) => {
   )
 }
 
-export default function ProfileTabComponent() {
-
-  const params = useParams()
-
-  const { profileData, getUserProfileInfo } = useProfileStore()
+export default function ProfileTabComponent({ userProfileData }) {
+  const { profileData } = useProfileStore()
   const [links, setLinks] = useState(profileData.links || [])
-  const [loading, setLoading] = useState(false)
-
-  // useEffect(() => {
-  //   const initData = async () => {
-  //     await getUserProfileInfo(atob(profileUserName))
-  //   }
-  //   initData()
-  //   console.log(profileData)
-  // }, [getUserProfileInfo])
 
   useEffect(() => {
     if (profileData) {
-      setLoading(true)
     }
-    console.log('hi')
-  }, [profileData])
-  
-  if (loading) {
+    console.log('------------------------gsggdgsg')
+  }, [profileData, userProfileData])
+
   return (
     <div>
       <Card>
-          <div className={styles.profileTabItemTitleBox}>
-            <BsFillPinAngleFill size={16} />
-            <span className={styles.profileTabItemTitle}>소셜링크</span>
-          </div>
-          {links.map((link:SocialLinkProps) => (
-            <SocialLink key={link.title} {...link} />
-          ))}
+        <div className={styles.profileTabItemTitleBox}>
+          <BsFillPinAngleFill size={16} />
+          <span className={styles.profileTabItemTitle}>소셜링크</span>
+        </div>
+        {links.map((link: SocialLinkProps) => (
+          <SocialLink key={link.title} {...link} />
+        ))}
       </Card>
 
       <Card>
@@ -103,12 +88,11 @@ export default function ProfileTabComponent() {
             <img src={video.videoThumbnail} className={styles.representativevideoThumnail}></img>
             <div className={styles.representativevideoInfoBox}>
               <span>{video.title}</span>
-              <span className={styles.videoInfoText} >조회수 {video.viewCount}회 · {video.day}일 전</span>
+              <span className={styles.videoInfoText}>조회수 {video.viewCount}회 · {video.day}일 전</span>
             </div>
           </div>
-            ))}
+        ))}
       </Card>
     </div>
   )
-}
 }

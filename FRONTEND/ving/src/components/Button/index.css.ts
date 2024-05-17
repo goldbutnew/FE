@@ -83,8 +83,7 @@ export const toggleButtonKnobActive = style({
 export const chip = style({
   display: 'inline',
   padding: `${vars.space['0.5x']} ${vars.space['1x']}`,
-  margin: vars.space['0.5x'],
-  fontSize: vars.fontSize['0.5x'],
+  fontSize: vars.fontSize['0.75x'],
   borderRadius: vars.borderRadius['2x'],
   cursor: 'pointer',
   backgroundColor: vars.colors.lightGray,

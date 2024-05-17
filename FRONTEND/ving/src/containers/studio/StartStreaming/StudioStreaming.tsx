@@ -15,7 +15,7 @@ import VideoContainer from '@/components/Container/VideoContainer'
 
 export default function StudioStreaming() {
   const { userData } = useAuthStore()
-  const { openPort, closePort, startStreaming, sendStreamTitle, sendStreamThumbnail, sendStreamLimit, isOnAir } = useStudioStore()
+  const { streamKey, closePort, startStreaming, sendStreamTitle, sendStreamThumbnail, sendStreamLimit, isOnAir } = useStudioStore()
   const [ title, setTitle ] = useState('')
   const [ limit, setLimit ] = useState(false)
   const [ thumbnail, setThumbnail ] = useState('')
@@ -43,7 +43,6 @@ export default function StudioStreaming() {
       console.log(key, value)
     }
     startStreaming(formData)
-    openPort()
   }
   
   const handleEndStream = () => {
@@ -74,7 +73,7 @@ export default function StudioStreaming() {
     <VideoContainer>
       <div>
         {isOnAir ?
-          <StreamingVideo /> 
+          <StreamingVideo streamKey={streamKey} /> 
           :
           <div className={styles.videolaceholder}>
             <div className={styles.videolaceholderText}>

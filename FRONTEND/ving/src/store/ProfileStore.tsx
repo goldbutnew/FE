@@ -58,6 +58,13 @@ const useProfileStore = create(persist((set, get) => ({
       console.error(error)
     }
   },
+  // 초코 충전하기 
+  setProfileDataChoco: (choco) => set((state) => ({
+    profileData: {
+      ...state.profileData,
+      choco,
+    },
+  })),
   // 스트리머 프로필 가져오기
   getStreamerProfileInfo: async (username:string) => {
     const token = localStorage.getItem('accessToken')
@@ -92,27 +99,12 @@ const useProfileStore = create(persist((set, get) => ({
     }
   },
   // 현재 시청자 수 랭킹 가져오기
-  getCurrentTopViewers: async () => {
-    const token = localStorage.getItem('accessToken')
-    try {
-      const response = await axios.get(`search/all`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      })
-      set({ currentTopViewersData: response.data.users })
-      console.log('-------------', response.data)
-    } catch (error) {
-      console.error(error)
-    }
-  },
   // getCurrentTopViewers: async () => {
   //   const token = localStorage.getItem('accessToken')
   //   try {
-  //     const response = await axios.get(`search/streamers`, {
-  //       params: {
-  //         start: 0,
-  //         size: 5
+  //     const response = await axios.get(`search/all`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
   //       }
   //     })
   //     set({ currentTopViewersData: response.data.users })
@@ -121,6 +113,20 @@ const useProfileStore = create(persist((set, get) => ({
   //     console.error(error)
   //   }
   // },
+  getCurrentTopViewers: async () => {
+    try {
+      const response = await axios.get(`search/streamer`, {
+        params: {
+          start: 0,
+          size: 5
+        }
+      })
+      set({ currentTopViewersData: response.data.users })
+      console.log('-------------', response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  },
   // 유저 프로필 수정
   patchUserProfileInfo: async (formData: FormData) => {
     const token = localStorage.getItem('accessToken')

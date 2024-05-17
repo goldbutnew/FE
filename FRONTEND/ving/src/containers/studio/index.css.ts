@@ -148,6 +148,8 @@ export const startStreamingRightBox = style([
     padding: `${vars.space['8x']} 0 0 0`,
     margin: vars.space.none,
     boxShadow: vars.boxShadow['2x'],
+    overflow: 'hidden',
+    // transform: 'translateX(100%)',
   }
 ])
 
@@ -240,6 +242,31 @@ export const updateButtonBox = style([
   }
 ])
 
+export const streamKeyBox = style([
+  {
+    width: '100%',
+    padding: `0 ${vars.space['1x']} ${vars.space['1x']} ${vars.space['1x']}`,
+    backgroundColor: vars.colors.white,
+    overflow: 'hidden',
+  }
+])
+
+export const streamKeyBoxTitle = style([
+  bold,
+  {
+    fontSize: vars.fontSize['0.5x'],
+    backgroundColor: vars.colors.gray,
+    borderRadius: vars.borderRadius['0.5x'],
+    padding: `0 ${vars.space['0.5x']}`
+  }
+])
+
+export const streamKeyBoxContent = style([
+  {
+    fontSize: vars.fontSize['0.75x'],
+  }
+])
+
 // Static.tsx
 
 export const SummuryContainer = style([
@@ -255,4 +282,37 @@ export const SummuryItemBox = style([
 ])
 
 
+// ChargeChoco.tsx
+export const chargeContainer = style([
+  columnWrapper,
+  {
+    width: 400,
+    gap: vars.space['1x']
+  }
+]);
 
+export const myChoco = style({
+  backgroundColor: vars.colors.pink,
+  padding: `0 ${vars.space['0.5x']}`,
+  color: vars.colors.white,
+  borderRadius: vars.borderRadius['0.5x']
+})
+
+export const chargeInputBox = style({
+})
+
+export const chocoChoiceChipBox = style([
+  rowWrapper,
+  {
+    gap: vars.space['1x']
+  }
+])
+
+export const errorBox = style({
+  color: vars.colors.red,
+  fontSize: vars.fontSize['0.75x']
+});
+
+export const chargeButtonBox = style({
+  margin: `${vars.space['3x']} 0 0 0`
+})
