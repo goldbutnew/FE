@@ -18,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RequestMapping("/api/sse")
 public class SseController {
     private final Map<String, CopyOnWriteArrayList<SseEmitter>> emittersMap = new ConcurrentHashMap<>();
-    @GetMapping("/start-stream")
+    @PostMapping("/start-stream")
     public ResponseEntity<?> startStream(@RequestParam String name, @RequestParam String addr, @RequestParam String clientid) {
         updateStreamStatus(name, "live");
         log.info(name + " 의 방송 시작 " +addr + " 주소 " + clientid + " 클라이언트 id" );
@@ -26,7 +26,7 @@ public class SseController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/stop-stream")
+    @PostMapping("/stop-stream")
     public ResponseEntity<?> stopStream(@RequestParam String name, @RequestParam String addr, @RequestParam String clientid) {
         updateStreamStatus(name, "stopped");
         log.info(name + " 의 방송 종료 " +addr + " 주소 " + clientid + " 클라이언트 id" );
