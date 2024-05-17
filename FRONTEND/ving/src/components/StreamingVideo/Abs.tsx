@@ -1,6 +1,7 @@
 'use client'
 
 import axios from "axios"
+import { headers } from "next/headers"
 import React, { useEffect } from 'react'
 
 interface AbsProps {
@@ -9,23 +10,28 @@ interface AbsProps {
 
 
 export default function Abs({setSpeed}: Readonly<AbsProps>) {
-  const url : string = "https://vingving.s3.ap-northeast-2.amazonaws.com/10MB.txt"
+  const url : string = "https://vingving.s3.ap-northeast-2.amazonaws.com/1MB.txt"
 
   async function fetchSegmentWithAxios(url: string): Promise<void> {
     const startTime = performance.now() // 요청 시작 시간을 기록
     try {
-        const response = await axios.get(url, { responseType: 'arraybuffer' }) // 세그먼트 요청
-        const data = response.data // `axios`는 `arrayBuffer`를 직접 `data`로 반환합니다.
-        const endTime = performance.now() // 요청 완료 시간을 기록
+      const response = await axios.get(url, {
+        responseType: 'arraybuffer',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
+        }
+      }) // 세그먼트 요청
+      const data = response.data // `axios`는 `arrayBuffer`를 직접 `data`로 반환합니다.
+      const endTime = performance.now() // 요청 완료 시간을 기록
 
-        const fetchTime = endTime - startTime // 세그먼트 패치 타임 계산
-        const dataSize = data.byteLength // 다운로드된 데이터 크기
-        const throughput = dataSize / fetchTime * 1000 // 스루풋 계산 (바이트/초)
+      const fetchTime = endTime - startTime // 세그먼트 패치 타임 계산
+      const dataSize = data.byteLength // 다운로드된 데이터 크기
+      const throughput = dataSize / fetchTime * 1000 // 스루풋 계산 (바이트/초)
 
-        console.log(`Fetch Time: ${fetchTime} ms`)
-        console.log(`Data Size: ${dataSize} bytes`)
-        console.log(`Throughput: ${throughput.toFixed(2)} bytes/sec`)
-        setSpeed(throughput)
+      // console.log(`Fetch Time: ${fetchTime} ms`)
+      // console.log(`Data Size: ${dataSize} bytes`)
+      // console.log(`Throughput: ${throughput.toFixed(2)} bytes/sec`)
+      setSpeed(throughput)
 
     } catch (error : any) {
         console.error("Error fetching segment:", error)

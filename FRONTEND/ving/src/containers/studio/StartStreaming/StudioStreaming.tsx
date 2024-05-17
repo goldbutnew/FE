@@ -22,8 +22,10 @@ export default function StudioStreaming() {
   const [ photoUrl, setPhotoUrl ] = useState('')
 
   useEffect (() => {
-    console.log('방송 상태 변경')
-  }, [isOnAir])
+    return () => {
+      closePort()
+    }
+  }, [])
 
   const submitStreamSetting = () => {
     const username = userData.username
@@ -129,7 +131,7 @@ export default function StudioStreaming() {
               <SmallButton text="방송종료" onClick={handleEndStream}/>
             </div>)
              :
-            (<SmallButton text="방송시작" onClick={handleStartStream}/>)
+            (<SmallButton text="스트리밍키 받기" onClick={handleStartStream}/>)
           }
         </div>
       </div>

@@ -1,25 +1,34 @@
- 'use client'
+'use client'
 
 import { MutableRefObject, useEffect, useRef, useState } from 'react'
-import Hls from 'hls.js'
+import Hls, { HlsConfig, ErrorData, ErrorDetails } from 'hls.js'
 import useStreamingStore from '@/store/StreamingStore'
 
 import VideoPlayer from '@/components/StreamingVideo/Player'
 import Abs from './Abs'
 import * as styles from './index.css'
 
-export default function StreamingVideo({ streamKey }) {
+interface StreamingVideoProps {
+  streamKey: string
+}
+
+const StreamingVideo: React.FC<StreamingVideoProps> = ({ streamKey }) => {
   const { isPlaying, setIsPlaying } = useStreamingStore()
-  const [resolution, setResolution] = useState<'auto' | number>('auto')
-  const [speed, setSpeed] = useState<number>(0)
-  const [chunk, setChunk] = useState(0)
-  const [buffer, setBuffer] = useState(0)
-  const [isHovering, setIsHovering] = useState(false)
-  const [isMouseMoving, setIsMouseMoving] = useState(true)
+  const [ resolution, setResolution ] = useState<'auto' | number>('auto')
+  const [ speed, setSpeed ] = useState<number>(0)
+  const [ chunk, setChunk ] = useState<number>(0)
+  const [ buffer, setBuffer ] = useState<number>(0)
+  const [ isHovering, setIsHovering ] = useState<boolean>(false)
+  const [ isMouseMoving, setIsMouseMoving ] = useState<boolean>(true)
+  const [ isStreamLoaded, setIsStreamLoaded ] = useState<boolean>(false)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const videoRef: React.RefObject<HTMLVideoElement> = useRef(null)
   const containerRef: MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null)
   const hls = useRef<Hls | null>(null)
+
+  useEffect(() => {
+    console.log(isStreamLoaded, 'dasdadssadadsdsda')
+  }, [isStreamLoaded])
 
   const syncPlayPause = () => {
     const videoElement = videoRef.current
@@ -44,23 +53,34 @@ export default function StreamingVideo({ streamKey }) {
       hls.current.destroy()
     }
 
-    hls.current = new Hls()
+    const hlsConfig: Partial<HlsConfig> = {}
+    hls.current = new Hls(hlsConfig)
     hls.current.loadSource(`https://vingving.s3.ap-northeast-2.amazonaws.com/files//master_${streamKey}.m3u8`)
     hls.current.attachMedia(videoElement)
 
-    hls.current.on(Hls.Events.MANIFEST_PARSED, () => videoElement.play())
+    hls.current.on(Hls.Events.MANIFEST_PARSED, () => {
+      videoElement.play()
+      setIsStreamLoaded(true)
+    })
 
-    hls.current.on(Hls.Events.FRAG_LOADED, (event, data) => {
+    hls.current.on(Hls.Events.FRAG_LOADED, (_event, data) => {
       setChunk(data.frag.stats.total)
     })
 
-    hls.current.on(Hls.Events.ERROR, (event, data) => {
-      console.error('Hls.js 오류 발생:', data)
+    hls.current.on(Hls.Events.ERROR, (_event, data: ErrorData) => {
+      if (data.details === ErrorDetails.MANIFEST_LOAD_ERROR || data.details === ErrorDetails.MANIFEST_LOAD_TIMEOUT) {
+        console.error('M3U8 파일을 로드할 수 없습니다. 스트림이 아직 생성되지 않았을 수 있습니다.')
+        setIsStreamLoaded(false)
+      } else {
+        console.error('Hls.js 오류 발생:', data)
+      }
     })
 
     if (resolution !== 'auto') {
       hls.current.on(Hls.Events.MANIFEST_PARSED, () => {
-        hls.current.currentLevel = resolution
+        if (hls.current) {
+          hls.current.currentLevel = resolution
+        }
       })
     }
   }
@@ -88,7 +108,7 @@ export default function StreamingVideo({ streamKey }) {
   }, [speed, resolution])
 
   useEffect(() => {
-    const checkBufferStatus = () => {
+    const checkBufferStatus = (): number => {
       if (videoRef.current === null) {
         return 0
       } else {
@@ -159,21 +179,44 @@ export default function StreamingVideo({ streamKey }) {
       }
     }
   }, [])
+  
+const intervalRef = useRef<NodeJS.Timeout | null>(null)
+
+useEffect(() => {
+  intervalRef.current = setInterval(() => {
+    loadStream('auto') // 필요한 경우 'auto' 대신 원하는 resolution을 전달
+  }, 5000) // 5초 주기로 loadStream 함수를 호출
+
+  return () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current); // 컴포넌트 언마운트 시 반복 중지
+    }
+  }
+}, []) // 빈 배열로 한 번만 설정
+
+useEffect(() => {
+  if (isStreamLoaded && intervalRef.current) {
+    clearInterval(intervalRef.current) // isStreamLoaded가 true가 되면 반복 중지
+  }
+}, [isStreamLoaded])
+
 
   return (
     <div className={styles.videoResize} ref={containerRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <video
         className={styles.videoResize}
         ref={videoRef}
-        autoPlay={true}
-        muted={true}
+        autoPlay
+        muted
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
       <div className={(isHovering || isMouseMoving) ? styles.playerHoverVisible : styles.playerHover}>
-        <VideoPlayer containerRef={containerRef} videoRef={videoRef} setResolution={setResolution}/>
+        <VideoPlayer containerRef={containerRef} videoRef={videoRef} setResolution={setResolution} />
       </div>
       <Abs setSpeed={setSpeed}/>
     </div>
   )
 }
+
+export default StreamingVideo
