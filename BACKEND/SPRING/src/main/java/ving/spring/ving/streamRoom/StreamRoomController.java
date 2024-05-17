@@ -1,5 +1,6 @@
 package ving.spring.ving.streamRoom;
 
+import com.sun.tools.jconsole.JConsoleContext;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,8 @@ import ving.spring.ving.subscription.SubscriptionService;
 import ving.spring.ving.user.UserModel;
 import ving.spring.ving.user.UserService;
 import ving.spring.ving.video.VideoDto;
+import ving.spring.ving.video.VideoModel;
+import ving.spring.ving.video.VideoService;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -46,6 +49,7 @@ public class StreamRoomController {
     private final AlarmService alarmService;
     private final DateTimeFormmer dateTimeFormmer;
     private final RoomModelService roomModelService;
+    private final VideoService videoService;
     @GetMapping("/chatting")
     List<Message.RecordedChat> getChatting(@RequestParam("videoName") String videoName,@RequestParam("timeStamp") String timeStamp)
     {
@@ -65,6 +69,21 @@ public class StreamRoomController {
         try {
             UserModel streamer = userService.findCurrentUser();
             StreamRoomModel streamRoomModel = streamRoomService.findStreamRoomModelByStreamerAndIsEnd(streamer);
+
+            Duration duration = Duration.between(LocalDateTime.now(), streamRoomModel.getCreatedAt());
+            Integer seconds =  Long.valueOf(duration.toSeconds()).intValue();
+            VideoModel videoModel = VideoModel.builder()
+                    .videoName(streamRoomModel.getRoomName())
+                    .videoSerial(streamRoomModel.getRoomId())
+                    .videoplay(0)
+                    .videoIsPublic(1)
+                    .user(streamer)
+                    .thumbnail(streamRoomModel.getRoomThumbnail())
+                    .videoLength(seconds)
+                    .videoLength(0)
+                    .build();
+            videoService.create(videoModel);
+            log.info("비디오 저장 성공");
             streamRoomModel.setIsEnd(true);
             try
             {
@@ -75,8 +94,18 @@ public class StreamRoomController {
             {
                 log.info("레전드 상황 발생");
             }
+
             streamRoomService.save(streamRoomModel);
-            return ResponseEntity.ok(HttpStatus.ACCEPTED);
+            return ResponseEntity.ok().body(VideoDto.VideoEntity.builder()
+                            .videoLength(videoModel.getVideoLength())
+                            .videoSerial(videoModel.getVideoSerial())
+                            .videoId(videoModel.getVideoId())
+                            .title(videoModel.getVideoName())
+                            .videoPlay(videoModel.getVideoplay())
+                            .thumbnail(videoModel.getThumbnail())
+                            .createdAt(dateTimeFormmer.transform(videoModel.getCreatedAt()))
+                    .build()
+            );
         } catch (Exception e)
         {
             return ResponseEntity.badRequest().body(e.getMessage());
