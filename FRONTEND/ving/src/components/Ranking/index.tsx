@@ -15,6 +15,7 @@ interface User {
   username: string
   nickname: string
   thumbnail: string
+  streamerThumbnail: string
 }
 
 export default function Ranking() {
@@ -114,12 +115,12 @@ export default function Ranking() {
           <div key={user.username} onClick={() => moveSearchUser(user.username)}>
             {isOpen ? (
               <div className={styles.openRankingListItem}>
-                <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
+                <ProfileImage url={user.streamerThumbnail} width={40} alt="User profile" />
                 <div className={styles.rankingUserName}>{user.nickname}</div>
               </div>
             ) : (
               <div className={styles.closeRankingListItem}>
-                <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
+                <ProfileImage url={user.streamerThumbnail} width={40} alt="User profile" />
               </div>
             )}
           </div>

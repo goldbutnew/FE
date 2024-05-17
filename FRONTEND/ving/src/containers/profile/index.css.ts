@@ -216,7 +216,7 @@ export const pinIcon = style({
   position: 'absolute',
   top: 10,
   left: 10,
-  color: vars.colors.white,
+  color: vars.colors.black,
 })
 
 export const videoThumbnail = style({
