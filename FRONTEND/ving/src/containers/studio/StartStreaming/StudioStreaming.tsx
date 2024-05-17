@@ -9,7 +9,6 @@ import SmallButton from '@/components/Button/SmallButton'
 import StreamingVideo from '@/components/StreamingVideo'
 import * as styles from '../index.css'
 import useAuthStore from '@/store/AuthStore'
-import { rowWrapper } from '@/styles/wrapper.css'
 import VideoContainer from '@/components/Container/VideoContainer'
 
 

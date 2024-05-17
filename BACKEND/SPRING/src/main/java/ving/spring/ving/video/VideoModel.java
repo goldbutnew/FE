@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "recorded_video")
-public class VideoModel {
+public class  VideoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,9 @@ public class VideoModel {
 
     private String videoName;
 
+    private Integer videoLength;
 
+    private Integer videoSerial;
 
     @Column(nullable = true, updatable = false) // 변경 불가능하도록 설정
     private LocalDateTime createdAt;

@@ -1,138 +1,107 @@
+'use client'
+
 import useProfileStore from '@/store/ProfileStore'
 import { useParams, useRouter } from 'next/navigation'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as styles from './index.css'
 import { BsFillPinAngleFill  } from "react-icons/bs"
 import { HiEllipsisVertical } from "react-icons/hi2"
 import SmallButton from '@/components/Button/SmallButton'
 import DropdownMenu from '@/components/DropdownMenu/DropdownMenu'
 import MenuItem from '@/components/DropdownMenu/MenuItem'
+import useAuthStore from '@/store/AuthStore'
 
 interface ProfileTabComponentProps {
   setLoading: (loading: boolean) => void
 }
 
-export default function ProfileTabComponent({ userProfileData }) {
+interface VideoData {
+  createdAt: string
+  isFixed: boolean
+  thumbnail: string
+  title: string
+  videoId: number
+  videoLength: number
+  videoPlay: number
+  videoSerial: number
+}
 
+export default function ProfileTabComponent({ userProfileData }) {
   const params = useParams()
+  const { userData } = useAuthStore()
   const { profileUserName, profileData, getUserProfileInfo, doFixVideo, unDoFixVideo, doDeleteVideo } = useProfileStore()
   const [isOpen, setIsOpen] = useState({})
+  const loginUserName = userData.username
+  const [videos, setVideos] = useState<VideoData[]>([])
+  const router = useRouter()
 
-  const toggleMenu = (videoId:number) => {
+  const toggleMenu = (videoId: number) => {
     setIsOpen(prev => ({
       ...prev,
       [videoId]: !prev[videoId]
     }))
   }
 
-  // 비디오 삭제 함수
-  const handleDelete = (videoId:number) => {
+  const handleDelete = (videoId: number) => {
     doDeleteVideo(videoId)
   }
 
-  const [videos, setVideos] = useState([{
-    "videoId": 1,
-    "thumbnail" : "https://picsum.photos/id/1/200/300",
-    "title" : "동영상동영상동영상동영상1",
-    "videoPlay" : 3,
-    "isFixed" : false,
-    },
-    {
-      "videoId": 2,
-      "thumbnail" : "https://picsum.photos/id/1/200/300",
-      "title" : "동영상동영상동영상2",
-      "videoPlay" : 5,
-      "isFixed" : true,
-    },
-    {
-      "videoId": 3,
-      "thumbnail" : "https://picsum.photos/id/1/200/300",
-      "title" : "동영상동영상동영상동영상3",
-      "videoPlay" : 3,
-      "isFixed" : false,
-    },
-    {
-      "videoId": 4,
-      "thumbnail" : "https://picsum.photos/id/1/200/300",
-      "title" : "동영상동영상동영상4",
-      "videoPlay" : 3,
-      "isFixed" : false,
-    },  
-  ])
-
-  // const togglePin = (videoId:number) => {
-  //   setVideos(videos.map(video => {
-  //     // 클릭한 비디오일 경우, 상단 고정 반대로 함.
-  //     if (video.videoId === videoId) {
-  //       if (video.isFixed) {
-  //         unDoFixVideo(videoId)
-  //         console.log('상단고정해제')
-  //       } 
-  //       else {
-  //         doFixVideo(videoId)
-  //         console.log('상단 고정')
-  //       }
-  //       return { ...video, isFixed: !video.isFixed }
-  //     }
-  //     // 클릭한 비디오가 아닐 경우, 만약 상단 고정된 비디오일 경우,
-  //     // false로 한다.
-  //     else if (video.isFixed) {
-  //       console.log('다른 비디오 상단 고정 해제')
-  //       return { ...video, isFixed: false }
-  //     }
-  //     return video
-  //   }))
-  // }
-
-  const togglePin = async (videoId:number) => {
+  const togglePin = async (videoId: number) => {
     setVideos(prevVideos => {
       const updatedVideos = prevVideos.map(video => {
         if (video.videoId === videoId) {
           video.isFixed ? unDoFixVideo(videoId) : doFixVideo(videoId)
           return { ...video, isFixed: !video.isFixed }
         }
-        return video;
+        return video
       })
       return updatedVideos.sort((a, b) => Number(b.isFixed) - Number(a.isFixed))
     })
   }
 
-  useEffect(() => {
-  //   let encodedUsername = params.username
-  //   encodedUsername = String(encodedUsername).replace(/%3D/g, '')
-  //   const decodedUsername = atob(encodedUsername)
-  //   if (!profileUserName) {
-  //   const initData = async () => {
-  //     await getUserProfileInfo(decodedUsername)
-  //     // setLoading(true)
-  //   }
-  //   initData()
-  // }
-    const sortedVideos = [...videos].sort((a, b) => b.isFixed - a.isFixed)
-    setVideos(sortedVideos)
-  }, [getUserProfileInfo. videos])
+  const goRecordedVideo = (videoSerial: number, username: string) => {
+    router.push(`/streaming/${btoa(username)}/${videoSerial}`)
+  }
 
   useEffect(() => {
-    if (profileData) {
+    if (profileData && profileData.videos) {
+      const sortedVideos = [...profileData.videos].sort((a, b) => Number(b.isFixed) - Number(a.isFixed))
+      setVideos(sortedVideos)
     }
-    console.log('hhhhhhhhhhhhhhhhhhh')
   }, [profileData])
-  
+
+  useEffect(() => {
+    let encodedUsername = params.username
+    encodedUsername = String(encodedUsername).replace(/%3D/g, '')
+    const decodedUsername = atob(encodedUsername)
+
+    const initData = async () => {
+      await getUserProfileInfo(decodedUsername)
+    }
+
+    console.log('-------------')
+    if (!profileUserName) {
+      initData()
+    }
+  }, [params.username, getUserProfileInfo, profileUserName])
+
   return (
     <div>
       {videos && videos.length > 0 ? (
         <div className={styles.videoGrid}>
-          {videos.map((video, index) => (
-            <div key={video.title} className={styles.videoItem}>
+          {videos.map((video: VideoData) => (
+            <div key={video.videoId} className={styles.videoItem}>
               <div className={styles.pinIcon}>
-                {video.isFixed && <BsFillPinAngleFill color='white' size={24} />}
+                {video.isFixed && <BsFillPinAngleFill color='black' size={24} />}
               </div>
-              <img src={video.thumbnail} alt={video.title} className={styles.videoThumbnail} />
+              <img src={video.thumbnail} alt={video.title} className={styles.videoThumbnail}
+                  onClick={() => goRecordedVideo(video.videoSerial, profileUserName)} />
               <div className={styles.videoInfoContainer}>
                 <div className={styles.videoInfoBox}>
                   <span>{video.title}</span>
                   <span className={styles.videoInfoText}>조회수 {video.videoPlay}회</span>
                 </div>
+                {`${profileUserName}` === loginUserName &&
                   <DropdownMenu 
                     button={<button onClick={() => toggleMenu(video.videoId)} className={styles.videoItemellipsisButton}>
                       <HiEllipsisVertical size={20} />
@@ -146,6 +115,7 @@ export default function ProfileTabComponent({ userProfileData }) {
                         <span>삭제</span>
                     </MenuItem>
                   </DropdownMenu>
+                }
                 </div>
               </div>
           ))}

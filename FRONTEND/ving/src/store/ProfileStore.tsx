@@ -16,7 +16,7 @@ const useProfileStore = create(persist((set, get) => ({
   profileData: {},
   streamerProfileData: {},
   searchData: [],
-  currentTopViewersData: [],
+  currentTopSubscribersData: [],
   profileUserName: '',
   streamerUserName: '',
   loginUserName: '',
@@ -99,7 +99,7 @@ const useProfileStore = create(persist((set, get) => ({
     }
   },
   // 현재 시청자 수 랭킹 가져오기
-  // getCurrentTopViewers: async () => {
+  // getcurrentTopSubscribers: async () => {
   //   const token = localStorage.getItem('accessToken')
   //   try {
   //     const response = await axios.get(`search/all`, {
@@ -107,13 +107,13 @@ const useProfileStore = create(persist((set, get) => ({
   //         Authorization: `Bearer ${token}`,
   //       }
   //     })
-  //     set({ currentTopViewersData: response.data.users })
+  //     set({ currentTopSubscribersData: response.data.users })
   //     console.log('-------------', response.data)
   //   } catch (error) {
   //     console.error(error)
   //   }
   // },
-  getCurrentTopViewers: async () => {
+  getCurrentTopSubscribers: async () => {
     try {
       const response = await axios.get(`search/streamer`, {
         params: {
@@ -121,7 +121,7 @@ const useProfileStore = create(persist((set, get) => ({
           size: 5
         }
       })
-      set({ currentTopViewersData: response.data.users })
+      set({ currentTopSubscribersData: response.data.users })
       console.log('-------------', response.data)
     } catch (error) {
       console.error(error)
@@ -154,6 +154,7 @@ const useProfileStore = create(persist((set, get) => ({
           Authorization: `Bearer ${token}`,
         },
       })
+      set({ isFollowed: true })
       console.log(response, '팔로우 신청 성공')
     } catch (error) {
       console.error(error)
@@ -170,6 +171,7 @@ const useProfileStore = create(persist((set, get) => ({
         },
         data: { username: username }
       })
+      set({ isFollowed: false })
       console.log(response, '팔로우 취소 성공')
     } catch (error) {
       console.error(error)

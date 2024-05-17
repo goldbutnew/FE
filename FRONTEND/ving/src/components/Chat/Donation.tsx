@@ -129,7 +129,7 @@ export default function Donation() {
           <div className={styles.topContainer}>
             <span className={bold}>후원</span>
             <hr className={line} />
-            <p>🍫 보유 초코: {formattedChoco}</p>
+            <p>🍫 보유 초코: {formattedChoco}초코</p>
             <hr className={line} />
             <div className={styles.selectedChocoBox}>
               <span>🍫</span>

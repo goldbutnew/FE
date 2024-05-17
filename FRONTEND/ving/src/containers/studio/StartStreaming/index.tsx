@@ -1,10 +1,9 @@
 'use client'
 
 import React, { useState } from "react";
-import Chat from "@/components/Chat";
 import StudioStreaming from "./StudioStreaming";
 import * as styles from '../index.css'
-import NewsFeed from "@/components/NewsFeed";
+import NewsFeed from "@/containers/studio/StartStreaming/NewsFeed";
 import StudioChat from "@/components/Chat/StudioChat";
 import { lightLine, line } from "@/styles/common.css";
 

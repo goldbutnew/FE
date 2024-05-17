@@ -19,7 +19,7 @@ import useProfileStore from "@/store/ProfileStore"
 
 export default function Login({ onLoginSuccess }) {
   const { Token, login, userData } = useAuthStore()
-  const { getLoginUserInfo, getCurrentTopViewers } = useProfileStore()
+  const { getLoginUserInfo, getCurrentTopSubscribers } = useProfileStore()
 
   const router = useRouter()
   const [userID, setUserID] = useState('')
@@ -49,7 +49,7 @@ export default function Login({ onLoginSuccess }) {
     console.log(Token)
     if (Token) {
       getLoginUserInfo(userData.username)
-      getCurrentTopViewers()
+      getCurrentTopSubscribers()
       router.push('/')
       onLoginSuccess()
       close()

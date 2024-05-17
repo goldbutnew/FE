@@ -18,6 +18,7 @@ export default function ProfileUserInfoBox({ userProfileData }) {
   const [isAlarmed, setIsAlarmed] = useState(false)
   const alarmText = isAlarmed ? "알림 켜기" : "알림 끄기"
   const loginUserName = userData.username
+  const [loading, setLoading] = useState(false)
 
   const toggleFollow = () => {
     if (isFollowed) {
@@ -47,7 +48,8 @@ export default function ProfileUserInfoBox({ userProfileData }) {
       await getUserProfileInfo(decodedUsername)
     }
     initData()
-  }, [getUserProfileInfo, params.username])
+    setLoading(true)
+  }, [getUserProfileInfo, params.username, setLoading])
 
   useEffect(() => {
     if (profileData) {
@@ -57,18 +59,26 @@ export default function ProfileUserInfoBox({ userProfileData }) {
     }
   }, [profileData])
 
+  useEffect(() => {
+  if (userProfileData) {
+    setLoading(true)
+  }
+  }, [setLoading])
+  
+
+  if (loading && userProfileData ) {
   return (
     <div className={styles.userInfoBox}>
       <div className={styles.userImageNameInfoBox}>
         <ProfileImage 
-          url={profileData.photoUrl} 
+          url={userProfileData.photoUrl} 
           width={80}
           alt="User profile" 
         />
         <div className={styles.userTextInfoBox}>
-          <span className={styles.userName}>{profileData.nickname}</span>
+          <span className={styles.userName}>{userProfileData.nickname}</span>
           <span className={styles.followerText}>팔로워 {subscriberCount}명</span>
-          <span className={styles.userIntroduce}>{profileData.introduction || '자기 소개를 입력해 주세요!'}</span>
+          <span className={styles.userIntroduce}>{userProfileData.introduction || '자기 소개를 입력해 주세요!'}</span>
         </div>
       </div>
       {`${profileUserName}` === loginUserName ? (
@@ -91,4 +101,5 @@ export default function ProfileUserInfoBox({ userProfileData }) {
       )}
     </div>
   )
-} 
+}
+}
