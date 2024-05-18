@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import * as styles from './index.css'
@@ -8,7 +10,7 @@ import { vars } from '@/styles/vars.css'
 import ProfileImage from '@/components/ProfileImg'
 import SmallButton from '@/components/Button/SmallButton'
 
-export default function ProfileUserInfoBox({ userProfileData }) {
+export default function ProfileUserInfoBox() {
   const router = useRouter()
   const params = useParams()
   const { profileData, profileUserName, getUserProfileInfo, doFollowUser, unDoFollowUser, doChangeAlarm } = useProfileStore()
@@ -59,26 +61,19 @@ export default function ProfileUserInfoBox({ userProfileData }) {
     }
   }, [profileData])
 
-  useEffect(() => {
-  if (userProfileData) {
-    setLoading(true)
-  }
-  }, [setLoading])
-  
-
-  if (loading && userProfileData ) {
+  if (loading) {
   return (
     <div className={styles.userInfoBox}>
       <div className={styles.userImageNameInfoBox}>
         <ProfileImage 
-          url={userProfileData.photoUrl} 
+          url={profileData.photoUrl} 
           width={80}
           alt="User profile" 
         />
         <div className={styles.userTextInfoBox}>
-          <span className={styles.userName}>{userProfileData.nickname}</span>
+          <span className={styles.userName}>{profileData.nickname}</span>
           <span className={styles.followerText}>팔로워 {subscriberCount}명</span>
-          <span className={styles.userIntroduce}>{userProfileData.introduction || '자기 소개를 입력해 주세요!'}</span>
+          <span className={styles.userIntroduce}>{profileData.introduction || '자기 소개를 입력해 주세요!'}</span>
         </div>
       </div>
       {`${profileUserName}` === loginUserName ? (

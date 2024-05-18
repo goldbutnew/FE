@@ -32,10 +32,9 @@ export default function ProfileVideo() {
   if (loading) {
     return (
       <Container>
-        <ProfileUserInfoBox userProfileData={profileData} />
+        <ProfileUserInfoBox />
         <TabsComponent 
           where='video'
-          userProfileData={profileData} 
         />
       </Container>
     )

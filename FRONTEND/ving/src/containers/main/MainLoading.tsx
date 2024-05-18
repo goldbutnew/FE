@@ -5,7 +5,6 @@ import * as styles from './index.css'
 export default function MainLoading() {
   return (
     <div className={styles.mainVideoGridBox}>
-      <div className={styles.loadingHeader}></div>
       <div className={styles.loadingGrid}>
         {Array.from({ length: 4 }).map((_, index) => (
           <div key={index} className={styles.loadingCard}>

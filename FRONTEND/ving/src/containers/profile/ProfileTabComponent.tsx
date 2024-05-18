@@ -10,21 +10,13 @@ interface SocialLinkProps {
   url: string
 }
 
-interface representativeVideoProps {
+interface VideoProps {
   videoThumbnail: string
   title: string
   viewCount: number
   day: number
+  isFixed: boolean
 }
-
-const representativeVideoInfo: representativeVideoProps[] = [
-  {
-    videoThumbnail: 'https://picsum.photos/id/1/200/300',
-    title: '석촌호수 사람 짱많음 ㅋ',
-    viewCount: 70,
-    day: 3,
-  },
-]
 
 const SocialLink: React.FC<SocialLinkProps> = ({ url }) => {
   const renderIcon = () => {
@@ -56,17 +48,27 @@ const SocialLink: React.FC<SocialLinkProps> = ({ url }) => {
   )
 }
 
-export default function ProfileTabComponent({ userProfileData }) {
+export default function ProfileTabComponent() {
   const { profileData } = useProfileStore()
   const [links, setLinks] = useState(profileData.links || [])
   const [loading, setLoading] = useState(false)
+  const [representativeVideoInfo, setRepresentativeVideoInfo] = useState<VideoProps[]>([])
 
   useEffect(() => {
     if (profileData) {
       setLoading(true)
+      const fixedVideos = (profileData.videos || [])
+        .filter((video: VideoProps) => video.isFixed)
+        .map(video => ({
+          videoThumbnail: video.thumbnail,
+          title: video.title,
+          viewCount: video.videoPlay,
+          day: Math.ceil((new Date().getTime() - new Date(video.createdAt).getTime()) / (1000 * 60 * 60 * 24)),
+        }))
+      setRepresentativeVideoInfo(fixedVideos)
     }
     console.log(profileData, '------------------------gsggdgsg')
-  }, [profileData, userProfileData])
+  }, [profileData])
 
   if (loading) {
   return (
@@ -87,14 +89,14 @@ export default function ProfileTabComponent({ userProfileData }) {
           <span className={styles.profileTabItemTitle}>대표영상</span>
         </div>
         {representativeVideoInfo.map(video => (
-          <div key={video.title} className={styles.representativeVideoInfo}>
-            <img src={video.videoThumbnail} className={styles.representativevideoThumnail}></img>
-            <div className={styles.representativevideoInfoBox}>
-              <span>{video.title}</span>
-              <span className={styles.videoInfoText}>조회수 {video.viewCount}회 · {video.day}일 전</span>
+            <div key={video.title} className={styles.representativeVideoInfo}>
+              <img src={video.videoThumbnail} className={styles.representativevideoThumnail}></img>
+              <div className={styles.representativevideoInfoBox}>
+                <span>{video.title}</span>
+                <span className={styles.videoInfoText}>조회수 {video.viewCount}회 · {video.day}일 전</span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </Card>
     </div>
   )

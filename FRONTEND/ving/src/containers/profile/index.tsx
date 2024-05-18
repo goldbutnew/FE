@@ -32,10 +32,9 @@ export default function Profile() {
   if (loading) {
     return (
       <Container>
-        <ProfileUserInfoBox userProfileData={profileData} />
+        <ProfileUserInfoBox/>
         <TabsComponent 
           where='home'
-          userProfileData={profileData} 
         />
       </Container>
     )

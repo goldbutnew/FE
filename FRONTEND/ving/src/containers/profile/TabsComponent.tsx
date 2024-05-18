@@ -11,7 +11,7 @@ type TabsComponentProps = {
   userProfileData: any
 }
 
-const TabsComponent = ({ where, userProfileData }: TabsComponentProps) =>  {
+const TabsComponent = ({ where }: TabsComponentProps) =>  {
   const [activeTab, setActiveTab] = useState(where)
   const router = useRouter()
   const params = useParams()
@@ -52,8 +52,8 @@ const TabsComponent = ({ where, userProfileData }: TabsComponentProps) =>  {
       </ul>
       <hr className={line} />
       <div className={styles.tabPanel}>
-        {activeTab === 'home' && <ProfileTabComponent userProfileData={userProfileData} />}
-        {activeTab === 'video' && <VideoTabComponent userProfileData={userProfileData} />}
+        {activeTab === 'home' && <ProfileTabComponent />}
+        {activeTab === 'video' && <VideoTabComponent />}
       </div>
     </div>
   )

@@ -26,7 +26,7 @@ interface VideoData {
   videoSerial: number
 }
 
-export default function ProfileTabComponent({ userProfileData }) {
+export default function ProfileTabComponent() {
   const params = useParams()
   const { userData } = useAuthStore()
   const { profileUserName, profileData, getUserProfileInfo, doFixVideo, unDoFixVideo, doDeleteVideo } = useProfileStore()
