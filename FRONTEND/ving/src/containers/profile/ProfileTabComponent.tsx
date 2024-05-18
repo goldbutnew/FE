@@ -87,7 +87,7 @@ export default function ProfileTabComponent() {
         }))
       setRepresentativeVideoInfo(fixedVideos)
     }
-    console.log(profileData, '------------------------gsggdgsg')
+    // console.log(profileData, '------------------------gsggdgsg')
   }, [profileData])
 
   if (loading) {
