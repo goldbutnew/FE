@@ -21,11 +21,15 @@ interface VideoData {
   videoSerial: number
 }
 
+interface IsOpenState {
+  [key: number]: boolean
+}
+
 export default function ProfileTabComponent() {
   const params = useParams()
   const { userData } = useAuthStore()
   const { profileUserName, profileData, getUserProfileInfo, doFixVideo, unDoFixVideo, doDeleteVideo } = useProfileStore()
-  const [isOpen, setIsOpen] = useState({})
+  const [isOpen, setIsOpen] = useState<IsOpenState>({})
   const loginUserName = userData.username
   const [videos, setVideos] = useState<VideoData[]>([])
   const router = useRouter()

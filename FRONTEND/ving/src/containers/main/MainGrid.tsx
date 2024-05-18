@@ -14,8 +14,18 @@ import useProfileStore from "@/store/ProfileStore"
 import MainLoading from "./MainLoading"
 import Container from "@/components/Container"
 
+interface StreamData {
+  createdAt: string
+  nickname: string
+  roomId: number
+  streamerThumbnail: string
+  thumbnail: string
+  title: string
+  username: string
+  viewers: number
+}
+
 export default function MainGrid() {
-  const { userData, code } = useAuthStore()
   const { streamRoomsData, getStreamInfo, setStreamRoomData } = useStreamingStore()
   const { getUserProfileInfo } = useProfileStore()
   const router = useRouter()
@@ -37,6 +47,7 @@ export default function MainGrid() {
     if (streamRoomsData) {
       setLoading(true)
     }
+    console.log(streamRoomsData)
   }, [])
   
 
@@ -81,7 +92,7 @@ export default function MainGrid() {
         </div> */}
 
         <div className={styles.mainVideoGrid}>
-        {streamRoomsData.slice(0, visibleCount).map((data, index) => {
+        {streamRoomsData.slice(0, visibleCount).map((data: StreamData, index: number) => {
             return (
               <div 
                 key={index} 

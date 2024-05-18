@@ -4,6 +4,7 @@ import { BsFillPinAngleFill, BsYoutube, BsInstagram } from "react-icons/bs"
 import useProfileStore from '@/store/ProfileStore'
 import { FiLink } from "react-icons/fi"
 import Card from '@/components/Card'
+import { useRouter } from 'next/navigation'
 
 interface SocialLinkProps {
   title: string
@@ -16,6 +17,7 @@ interface VideoProps {
   viewCount: number
   day: number
   isFixed: boolean
+  videoSerial: number
 }
 
 interface VideoData {
@@ -60,10 +62,16 @@ const SocialLink: React.FC<SocialLinkProps> = ({ url }) => {
 }
 
 export default function ProfileTabComponent() {
-  const { profileData } = useProfileStore()
+  const { profileData, profileUserName } = useProfileStore()
   const [links, setLinks] = useState(profileData.links || [])
   const [loading, setLoading] = useState(false)
   const [representativeVideoInfo, setRepresentativeVideoInfo] = useState<VideoProps[]>([])
+  const router = useRouter()
+
+  const goRepresentativeVideo = (videoSerial: number, username: string) => {
+    // console.log(videoSerial, username)
+    router.push(`/streaming/${btoa(username)}/${videoSerial}`)
+  }
 
   useEffect(() => {
     if (profileData) {
@@ -75,10 +83,11 @@ export default function ProfileTabComponent() {
           title: video.title,
           viewCount: video.videoPlay,
           day: Math.ceil((new Date().getTime() - new Date(video.createdAt).getTime()) / (1000 * 60 * 60 * 24)),
+          videoSerial: video.videoSerial
         }))
       setRepresentativeVideoInfo(fixedVideos)
     }
-    // console.log(profileData, '------------------------gsggdgsg')
+    console.log(profileData, '------------------------gsggdgsg')
   }, [profileData])
 
   if (loading) {
@@ -101,7 +110,8 @@ export default function ProfileTabComponent() {
         </div>
         {representativeVideoInfo.map(video => (
             <div key={video.title} className={styles.representativeVideoInfo}>
-              <img src={video.videoThumbnail} className={styles.representativevideoThumnail}></img>
+              <img src={video.videoThumbnail} className={styles.representativevideoThumnail} 
+              onClick={() => goRepresentativeVideo(video.videoSerial, profileUserName)} />
               <div className={styles.representativevideoInfoBox}>
                 <span>{video.title}</span>
                 <span className={styles.videoInfoText}>조회수 {video.viewCount}회 · {video.day}일 전</span>
