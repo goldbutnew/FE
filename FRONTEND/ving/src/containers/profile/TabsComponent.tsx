@@ -8,7 +8,6 @@ import useProfileStore from '@/store/ProfileStore'
 
 type TabsComponentProps = {
   where: string
-  userProfileData: any
 }
 
 const TabsComponent = ({ where }: TabsComponentProps) =>  {

@@ -6,14 +6,9 @@ import React, { useEffect, useState } from 'react'
 import * as styles from './index.css'
 import { BsFillPinAngleFill  } from "react-icons/bs"
 import { HiEllipsisVertical } from "react-icons/hi2"
-import SmallButton from '@/components/Button/SmallButton'
 import DropdownMenu from '@/components/DropdownMenu/DropdownMenu'
 import MenuItem from '@/components/DropdownMenu/MenuItem'
 import useAuthStore from '@/store/AuthStore'
-
-interface ProfileTabComponentProps {
-  setLoading: (loading: boolean) => void
-}
 
 interface VideoData {
   createdAt: string
@@ -60,7 +55,7 @@ export default function ProfileTabComponent() {
   }
 
   const goRecordedVideo = (videoSerial: number, username: string) => {
-    console.log(videoSerial, username)
+    // console.log(videoSerial, username)
     router.push(`/streaming/${btoa(username)}/${videoSerial}`)
   }
 
@@ -80,7 +75,7 @@ export default function ProfileTabComponent() {
       await getUserProfileInfo(decodedUsername)
     }
 
-    console.log('-------------')
+    // console.log('-------------')
     if (!profileUserName) {
       initData()
     }
@@ -93,7 +88,7 @@ export default function ProfileTabComponent() {
           {videos.map((video: VideoData) => (
             <div key={video.videoId} className={styles.videoItem}>
               <div className={styles.pinIcon}>
-                {video.isFixed && <BsFillPinAngleFill color='black' size={24} />}
+                {video.isFixed && <BsFillPinAngleFill color='white' size={24} />}
               </div>
               <img src={video.thumbnail} alt={video.title} className={styles.videoThumbnail}
                   onClick={() => goRecordedVideo(video.videoSerial, profileUserName)} />

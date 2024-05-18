@@ -19,12 +19,12 @@ export default function ProfileMenu({ onLogout }) {
 
   const handleMyChannel = () => {
     getUserProfileInfo(userData.username)
-    console.log(userData.username)
+    // console.log(userData.username)
     router.push(`/profile/${username}`)
   }
 
   useEffect(() => {
-    console.log('sdfsdfsdsdsdfsdfsdsdfdsffs')
+    // console.log('sdfsdfsdsdsdfsdfsdsdfdsffs')
   }, [loginUserProfileData])
   
 

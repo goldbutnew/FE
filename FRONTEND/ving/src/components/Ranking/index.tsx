@@ -58,7 +58,7 @@ export default function Ranking() {
       await getCurrentTopSubscribers()
     }
     initData()
-    console.log('유저 랭킹 가져오기')
+    // console.log('유저 랭킹 가져오기')
   }, [getCurrentTopSubscribers])
 
   useEffect(() => {
@@ -75,11 +75,11 @@ export default function Ranking() {
 
   const moveSearchUser = (username: string) => {
     getUserProfileInfo(username)
-    console.log('이동 전에 데이터 담는다')
+    // console.log('이동 전에 데이터 담는다')
     router.push(`/profile/${btoa(username)}`)
   }
 
-  console.log(currentTopViewersStreamer, viewerUsers, streamRoomsData)
+  // console.log(currentTopViewersStreamer, viewerUsers, streamRoomsData)
   
   return (
     <SideBar

@@ -11,9 +11,7 @@ export default function ProfileVideo() {
   const [loadingUserInfo, setLoadingUserInfo] = useState(false)
   const [loadingTabs, setLoadingTabs] = useState(false)
   const [loadingProfileTab, setLoadingProfileTab] = useState(false)
-  const [loadingVideoTab, setLoadingVideoTab] = useState(false)
   const { profileData } = useProfileStore()
-  const [links, setLinks] = useState(profileData.links || [])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -25,7 +23,7 @@ export default function ProfileVideo() {
   const allLoaded = loadingUserInfo && loadingTabs && loadingProfileTab
 
   useEffect(() => {
-    console.log('Loading states:', loadingUserInfo, loadingTabs, loadingProfileTab, allLoaded)
+    // console.log('Loading states:', loadingUserInfo, loadingTabs, loadingProfileTab, allLoaded)
   }, [allLoaded, loadingUserInfo, loadingTabs, loadingProfileTab])
 
   // true 일 경우,

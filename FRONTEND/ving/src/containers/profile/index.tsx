@@ -25,7 +25,7 @@ export default function Profile() {
   const allLoaded = loadingUserInfo && loadingTabs && loadingProfileTab
 
   useEffect(() => {
-    console.log('Loading states:', loadingUserInfo, loadingTabs, loadingProfileTab, allLoaded)
+    // console.log('Loading states:', loadingUserInfo, loadingTabs, loadingProfileTab, allLoaded)
   }, [allLoaded, loadingUserInfo, loadingTabs, loadingProfileTab])
 
   // true 일 경우,

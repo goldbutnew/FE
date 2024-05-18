@@ -11,7 +11,7 @@ const useSettingStore = create<SettingStoreState>((set, get) => ({
   // 링크 추가
   doAddLink: async (url:string, title: string) => {
     const token = localStorage.getItem('accessToken')
-    console.log(url)
+    // console.log(url)
     try {
       const response = await axios.post(`auth/postLink`, 
       { url, title },

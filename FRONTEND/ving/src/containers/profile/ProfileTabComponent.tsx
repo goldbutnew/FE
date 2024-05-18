@@ -18,6 +18,17 @@ interface VideoProps {
   isFixed: boolean
 }
 
+interface VideoData {
+  createdAt: string
+  isFixed: boolean
+  thumbnail: string
+  title: string
+  videoId: number
+  videoLength: number
+  videoPlay: number
+  videoSerial: number
+}
+
 const SocialLink: React.FC<SocialLinkProps> = ({ url }) => {
   const renderIcon = () => {
     if (url.toLowerCase().includes('www.instagram.com')) {
@@ -59,7 +70,7 @@ export default function ProfileTabComponent() {
       setLoading(true)
       const fixedVideos = (profileData.videos || [])
         .filter((video: VideoProps) => video.isFixed)
-        .map(video => ({
+        .map((video: VideoData) => ({
           videoThumbnail: video.thumbnail,
           title: video.title,
           viewCount: video.videoPlay,
@@ -67,7 +78,7 @@ export default function ProfileTabComponent() {
         }))
       setRepresentativeVideoInfo(fixedVideos)
     }
-    console.log(profileData, '------------------------gsggdgsg')
+    // console.log(profileData, '------------------------gsggdgsg')
   }, [profileData])
 
   if (loading) {

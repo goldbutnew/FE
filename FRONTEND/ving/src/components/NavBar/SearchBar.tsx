@@ -87,7 +87,7 @@ export default function SearchBar() {
   
 
   const moveSearchUser = (username:string) => {
-    console.log('이동 전에 데이터 담는다', username)
+    // console.log('이동 전에 데이터 담는다', username)
     if (searchQeury) {
       router.push(`/tmp2?searchQeury=${searchQeury}`)
     } else {

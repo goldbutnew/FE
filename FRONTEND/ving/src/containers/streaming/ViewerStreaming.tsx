@@ -25,7 +25,7 @@ export default function ViewerStreaming() {
   const params = useParams()
 
   const streamKey = `${streamRoomData.username}_${streamRoomData.roomId}`
-  console.log('-------여기는 스트리머 방 페이지 팔로잉 팔로우 확인용')
+  // console.log('-------여기는 스트리머 방 페이지 팔로잉 팔로우 확인용')
 
   const loginUserName = userData.username
 
@@ -48,17 +48,17 @@ export default function ViewerStreaming() {
 
   useEffect(() => {
     let encodedUsername = params.username
-    console.log(encodedUsername)
+    // console.log(encodedUsername)
     encodedUsername = String(encodedUsername).replace(/%3D/g, '')
     const decodedUsername = atob(encodedUsername)
       // decodedUsername이 null인 경우만 initData를 호출
       const initData = async () => {
-        console.log('스트리머 방 관련 정보 가져오기', decodedUsername)
+        // console.log('스트리머 방 관련 정보 가져오기', decodedUsername)
         await getStreamerProfileInfo(decodedUsername)
         setLoading(true)
       }
       initData()
-    console.log(streamerUserName, decodedUsername, '의 방입니다^^^^^^^^')
+    // console.log(streamerUserName, decodedUsername, '의 방입니다^^^^^^^^')
   }, [getStreamerProfileInfo])
 
   useEffect(() => {

@@ -25,7 +25,7 @@ export default function MainGrid() {
   const [visibleCount, setVisibleCount] = useState(8)
 
   const handleStreamDataChange = (data: Object) => {
-    console.log(data)
+    // console.log(data)
     setStreamRoomData(data)
   }
   

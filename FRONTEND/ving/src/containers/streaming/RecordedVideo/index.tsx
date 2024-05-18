@@ -120,7 +120,7 @@ export default function RecordedVideo() {
   const [isFollowed, setIsFollowed] = useState(streamerProfileData.isFollowed)
 
   const streamKey = `${streamerUserName}_${videoSerial}`
-  console.log(streamKey, '-------여기는 스트리머 방 페이지 팔로잉 팔로우 확인용')
+  // console.log(streamKey, '-------여기는 스트리머 방 페이지 팔로잉 팔로우 확인용')
 
   const loginUserName = userData.username
 
@@ -143,7 +143,7 @@ export default function RecordedVideo() {
 
   useEffect(() => {
     let encodedUsername = params.username
-    console.log(encodedUsername)
+    // console.log(encodedUsername)
     encodedUsername = String(encodedUsername).replace(/%3D/g, '')
     const decodedUsername = atob(encodedUsername)
       // decodedUsername이 null인 경우만 initData를 호출
@@ -153,7 +153,7 @@ export default function RecordedVideo() {
         setLoading(true)
       }
       initData()
-    console.log(streamerUserName, decodedUsername, '의 방입니다^^^^^^^^')
+    // console.log(streamerUserName, decodedUsername, '의 방입니다^^^^^^^^')
   }, [getStreamerProfileInfo])
 
   useEffect(() => {

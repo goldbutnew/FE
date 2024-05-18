@@ -283,7 +283,7 @@ export const streamKeyBoxContent = style([
 
 // Static.tsx
 
-export const SummuryContainer = style([
+export const SummaryContainer = style([
   card,
   betweenWrapper,
   {
@@ -291,9 +291,85 @@ export const SummuryContainer = style([
   }
 ])
 
-export const SummuryItemBox = style([
-  columnWrapper,
+export const SummaryItemBox = style([
+  columnWrapper, {
+    width: '100%',
+    selectors: {
+      '&:not(:last-child)': {
+        borderRight: `2px solid ${vars.colors.gray}`,
+        margin: `0 ${vars.space['2x']} 0 0`
+      }
+    }
+  }
 ])
+
+export const streamingContainer = style([
+  columnWrapper, {
+    selectors: {
+      '&:last-child': {
+        margin: `0 0 ${vars.space['6x']} 0`,
+      }
+    }
+}])
+
+export const streamingTableContainer = style([
+  {
+  
+}])
+
+export const streamingTableLeftRow = style([
+  rowWrapper, {
+    padding: `${vars.space['1.5x']} 0`,
+}])
+
+export const streamingTableRightItem = style({
+  height: 114,
+  padding: `${vars.space['5x']} 0 0 0`
+})
+
+export const streamingTitleContentBox = style([
+  rowWrapper, {
+  }
+])
+
+export const streamingContentRowItem = style([
+  rowWrapper, {
+  }
+])
+
+export const streamingTableHeader = style({
+  display: 'flex',
+  backgroundColor: vars.colors.lightGray,
+  fontWeight: 'bold',
+})
+
+export const streamingTableRow = style([
+  columnWrapper, {
+    width: '100%',
+    selectors: {
+      '&:not(:last-child)': {
+        borderRight: `2px solid ${vars.colors.gray}`,
+        margin: `0 ${vars.space['2x']} 0 0`
+      }
+    }
+  }
+])
+
+export const streamingContentBox = style({
+
+})
+
+export const videoThumbnail = style({
+  width: 160,
+  height: 90,
+  marginRight: 16,
+  objectFit: 'cover',
+})
+
+export const videoInfo = style({
+  display: 'flex',
+  flexDirection: 'column',
+})
 
 
 // ChargeChoco.tsx

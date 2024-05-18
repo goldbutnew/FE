@@ -40,7 +40,7 @@ export default function SettingForm() {
     }
     initData()
     setIsLoading(true)
-    console.log(profileData)
+    // console.log(profileData)
   }, [getUserProfileInfo, loginUserName])
 
   useEffect(() => {
@@ -84,28 +84,28 @@ export default function SettingForm() {
       formData.append('photo', file)
     } else if (profileData.photoUrl) {
       // 사진은 수정 안 하고 닉네임이랑 채널 소개만 할 경우
-      console.log(profileData.photoUrl)
+      // console.log(profileData.photoUrl)
       try {
         const response = await fetch(profileData.photoUrl)
         if (!response.ok) {
           throw new Error('네트워크 오류')
         }
         const imageBlob = await response.blob()
-        console.log(imageBlob, '이미지 블롭화~~~~~~')
+        // console.log(imageBlob, '이미지 블롭화~~~~~~')
         formData.append('photo', imageBlob, 'image.jpg')
       } catch (error) {
-        console.error('이미지 블롭화 실패', error)
+        // console.error('이미지 블롭화 실패', error)
       }
     }
 
-    for (let [key, value] of formData) {
-      console.log(key, value)
-    }
+    // for (let [key, value] of formData) {
+    //   console.log(key, value)
+    // }
 
     try {
       // 프로필 업데이트 API 호출
       await patchUserProfileInfo(formData)
-      console.log(loginUserName, '프로필 수정하면 우측 상단 사진도 바뀌어야지. 그래야지. 왜 안돼----------')
+      // console.log(loginUserName, '프로필 수정하면 우측 상단 사진도 바뀌어야지. 그래야지. 왜 안돼----------')
       
       // 로그인 사용자 정보 갱신
       await getLoginUserInfo(loginUserName)

@@ -93,7 +93,7 @@ const useProfileStore = create(persist((set, get) => ({
         }
       })
       set({ searchData: response.data.users })
-      console.log('-------------', response.data)
+      // console.log('-------------', response.data)
     } catch (error) {
       console.error(error)
     }
@@ -122,7 +122,7 @@ const useProfileStore = create(persist((set, get) => ({
         }
       })
       set({ currentTopSubscribersData: response.data.users })
-      console.log('-------------', response.data)
+      // console.log('-------------', response.data)
     } catch (error) {
       console.error(error)
     }
