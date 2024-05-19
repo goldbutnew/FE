@@ -78,7 +78,7 @@ export default function Static() {
 
         {/* Streaming list */}
     
-        <div className={styles.contentBox}>
+        <div className={`${styles.contentBox} ${styles.tmpMargin}`}>
           <div className={styles.subtitle}>스트리밍</div>
           <Card>
             <div className={styles.streamingTitleContentBox}>

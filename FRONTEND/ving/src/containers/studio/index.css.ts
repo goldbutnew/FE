@@ -378,6 +378,10 @@ export const videoBonusInfo = style({
   color: vars.colors.darkGray
 })
 
+export const tmpMargin = style({
+  margin: `0 0 ${vars.space['8x']} 0`
+})
+
 
 // ChargeChoco.tsx
 export const chargeContainer = style([
