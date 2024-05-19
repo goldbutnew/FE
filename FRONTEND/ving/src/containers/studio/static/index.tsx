@@ -6,6 +6,7 @@ import Container from '@/components/Container'
 import { useEffect, useState } from 'react'
 import useAuthStore from '@/store/AuthStore'
 import useProfileStore from '@/store/ProfileStore'
+import Card from '@/components/Card'
 
 interface VideoData {
   createdAt: string
@@ -79,7 +80,7 @@ export default function Static() {
     
         <div className={styles.contentBox}>
           <div className={styles.subtitle}>스트리밍</div>
-          <div className={styles.streamingContainer}>
+          <Card>
             <div className={styles.streamingTitleContentBox}>
               <div className={styles.streamingTableRow}>
                 <div className={styles.itemTitle}>영상</div>
@@ -99,7 +100,7 @@ export default function Static() {
                         <img src={video.thumbnail} alt={video.title} className={styles.videoThumbnail} />
                         <div className={styles.videoInfo}>
                           <div>{video.title}</div>
-                          <div>조회수 {video.videoPlay}회 · {Math.ceil((new Date().getTime() - new Date(video.createdAt).getTime()) / (1000 * 60 * 60 * 24))}일 전</div>
+                          <div className={styles.videoBonusInfo}>조회수 {video.videoPlay}회 · {Math.ceil((new Date().getTime() - new Date(video.createdAt).getTime()) / (1000 * 60 * 60 * 24))}일 전</div>
                         </div>
                       </div>
                     </div>
@@ -112,7 +113,7 @@ export default function Static() {
                   </div>
               ))}
             </div>
-          </div>
+          </Card>
         </div>
       </div>
     </Container>
