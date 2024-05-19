@@ -186,6 +186,7 @@ export const representativeVideoInfo = style([
 export const representativevideoThumnail = style({
   width: 200,
   aspectRatio: "4/3",
+  cursor: 'pointer',
 })
 
 export const representativevideoInfoBox = style([
@@ -193,6 +194,7 @@ export const representativevideoInfoBox = style([
   {
     gap: vars.space['1x'],
     margin: `0 0 0 ${vars.space['1x']}`,
+    cursor: 'pointer',
   }
 ])
 
@@ -222,13 +224,14 @@ export const pinIcon = style({
 export const videoThumbnail = style({
   width: "100%",
   aspectRatio: "16/9",
-  objectFit: 'cover'
+  objectFit: 'cover',
+  cursor: 'pointer',
 })
 
 export const videoInfoContainer = style([
   rowWrapper,
   {
-
+    cursor: 'pointer',
   }
 ])
 
