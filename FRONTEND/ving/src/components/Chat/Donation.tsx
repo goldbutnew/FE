@@ -18,12 +18,12 @@ import useModal from '@/hooks/useModal';
 import useProfileStore from '@/store/ProfileStore';
 import { formatNumber } from '@/utils/formatNumber';
 
-const speak = (text) => {
-  const synth = window.speechSynthesis;
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'ko-KR'; // 한국어 설정
-  synth.speak(utterance);
-};
+// const speak = (text) => {
+//   const synth = window.speechSynthesis;
+//   const utterance = new SpeechSynthesisUtterance(text);
+//   utterance.lang = 'ko-KR'; // 한국어 설정
+//   synth.speak(utterance);
+// };
 
 export default function Donation() {
   const { userData } = useAuthStore();
@@ -111,7 +111,7 @@ export default function Donation() {
     await useChatStore.getState().sendDonation(donationRequest);
 
     if (isTTS) {
-      speak(messageInput); // 메시지 전송 시 TTS 호출
+      // speak(messageInput); // 메시지 전송 시 TTS 호출
     }
     
     setMessageInput('');
