@@ -5,6 +5,7 @@ import useProfileStore from '@/store/ProfileStore'
 import { FiLink } from "react-icons/fi"
 import Card from '@/components/Card'
 import { useRouter } from 'next/navigation'
+import useStreamingStore from '@/store/StreamingStore'
 
 interface SocialLinkProps {
   title: string
@@ -66,11 +67,13 @@ export default function ProfileTabComponent() {
   const [links, setLinks] = useState(profileData.links || [])
   const [loading, setLoading] = useState(false)
   const [representativeVideoInfo, setRepresentativeVideoInfo] = useState<VideoProps[]>([])
+  const { setRecordedVideoTitle } = useStreamingStore()
   const router = useRouter()
 
-  const goRepresentativeVideo = (videoSerial: number, username: string) => {
+  const goRepresentativeVideo = (videoSerial: number, username: string, videoTitle: string) => {
     // console.log(videoSerial, username)
     router.push(`/streaming/${btoa(username)}/${videoSerial}`)
+    setRecordedVideoTitle(videoTitle)
   }
 
   useEffect(() => {
@@ -111,7 +114,7 @@ export default function ProfileTabComponent() {
         {representativeVideoInfo.map(video => (
             <div key={video.title} className={styles.representativeVideoInfo}>
               <img src={video.videoThumbnail} className={styles.representativevideoThumnail} 
-              onClick={() => goRepresentativeVideo(video.videoSerial, profileUserName)} />
+              onClick={() => goRepresentativeVideo(video.videoSerial, profileUserName, video.title)} />
               <div className={styles.representativevideoInfoBox}>
                 <span>{video.title}</span>
                 <span className={styles.videoInfoText}>조회수 {video.viewCount}회 · {video.day}일 전</span>

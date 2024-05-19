@@ -5,8 +5,10 @@ import { persist } from 'zustand/middleware'
 const useStreamingStore = create(persist((set, get) => ({
   streamRoomsData: [],
   streamRoomData: '',
+  recordedVideoTitle: '',
   currentTopViewersStreamer: [],
   isStreamerFollowed: true,
+  setRecordedVideoTitle: (title: string) => set({ recordedVideoTitle: title }),
   setIsStreamerFollowed: (isFollowed:boolean) => set({ isFollowed: isFollowed }),
   setStreamRoomData: (data: Object) => set({ streamRoomData: data }),
   setCurrentTopViewersStreamer: (data: Object[]) => set({ currentTopViewersStreamer: data }),
@@ -25,7 +27,7 @@ const useStreamingStore = create(persist((set, get) => ({
   setIsPlaying: (bool:boolean) => set({ isPlaying: bool }),
 }), {
   name: 'streaming-store',
-  partialize: (state: any) => ({ streamRoomData: state.streamRoomData, currentTopViewersStreamer: state.currentTopViewersStreamer })
+  partialize: (state: any) => ({ streamRoomData: state.streamRoomData, currentTopViewersStreamer: state.currentTopViewersStreamer, recordedVideoTitle: state.recordedVideoTitle })
 }))
 
 export default useStreamingStore

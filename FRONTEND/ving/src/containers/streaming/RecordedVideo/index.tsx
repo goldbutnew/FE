@@ -114,11 +114,10 @@ export default function RecordedVideo() {
 
   const [loading, setLoading] = useState(false)
   const { userData } = useAuthStore()
-  const { streamRoomData, setIsStreamerFollowed } = useStreamingStore()
+  const { recordedVideoTitle, setIsStreamerFollowed } = useStreamingStore()
   const { streamerProfileData, streamerUserName, getStreamerProfileInfo, doFollowUser, unDoFollowUser } = useProfileStore()
   const [subscriberCount, setSubscriberCount] = useState(streamerProfileData.followers || 0)
   const [isFollowed, setIsFollowed] = useState(streamerProfileData.isFollowed)
-
   const streamKey = `${streamerUserName}_${videoSerial}`
   // console.log(streamKey, '-------여기는 스트리머 방 페이지 팔로잉 팔로우 확인용')
 
@@ -174,7 +173,7 @@ export default function RecordedVideo() {
           <ProfileImage url={streamerProfileData.photoUrl} width={80} alt={"User profile"}/>
           <div className={styles.leftBox}>
             <div className={styles.leftBoxItem}>
-              <div className={styles.streamingTitle}>{streamRoomData.title}</div>
+              <div className={styles.streamingTitle}>{recordedVideoTitle}</div>
             </div>
             <div className={styles.leftBoxItem}>
               <div className={styles.streamerName}>{streamerProfileData.nickname}</div>    
