@@ -108,7 +108,7 @@ export default function Ranking() {
           </div>
         ))}
       </div>
-
+      <hr className={lightLine} />
       <div className={styles.rankingList}>
         <div className={styles.rankingTitle}>현재 시청자 수</div>
         {viewerUsers.map((user: User) => (

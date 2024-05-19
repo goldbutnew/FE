@@ -374,7 +374,8 @@ export const videoInfo = style({
 })
 
 export const videoBonusInfo = style({
-  fontSize: vars.fontSize['0.75x']
+  fontSize: vars.fontSize['0.75x'],
+  color: vars.colors.darkGray
 })
 
 
