@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import StudioStreaming from "./StudioStreaming";
 import * as styles from '../index.css'
-import NewsFeed from "@/containers/studio/StartStreaming/NewsFeed";
+import NewsFeed from "@/components/NewsFeed";
 import StudioChat from "@/components/Chat/StudioChat";
 import { lightLine, line } from "@/styles/common.css";
 

@@ -20,6 +20,12 @@ import useStreamingStore from "@/store/StreamingStore";
 import useProfileStore from "@/store/ProfileStore";
 import useModal from "@/hooks/useModal";
 
+const speak = (text: string) => {
+  const synth = window.speechSynthesis;
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'ko-KR'; // 한국어 설정
+  synth.speak(utterance);
+};
 
 export default function Chat() {
   const { userData } = useAuthStore()
@@ -76,10 +82,19 @@ export default function Chat() {
     setRoomId(btoa(streamRoomData.username)); // Update room ID when streamRoomData changes
   }, [streamRoomData.username]);
 
-  const onMessageReceived = (msg: string) => {
+  // const onMessageReceived = (msg: string) => {
+  //   const newMessage = JSON.parse(msg.body);
+  //   console.log("Received new message:", newMessage); // 로그 추가
+  //   addMessage(newMessage);
+  // };
+
+  const onMessageReceived = (msg: any) => {
     const newMessage = JSON.parse(msg.body);
-    console.log("Received new message:", newMessage); // 로그 추가
+    console.log("Received new message:", newMessage);
     addMessage(newMessage);
+    if (newMessage.donation > 0) {
+      speak(newMessage.text); // TTS 호출
+    }
   };
 
   const connect = () => {

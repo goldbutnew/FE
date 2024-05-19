@@ -303,14 +303,14 @@ export const SummaryItemBox = style([
   }
 ])
 
-export const streamingContainer = style([
-  columnWrapper, {
-    selectors: {
-      '&:last-child': {
-        margin: `0 0 ${vars.space['6x']} 0`,
-      }
-    }
-}])
+// export const streamingContainer = style([
+//   columnWrapper, {
+//     selectors: {
+//       '&:last-child': {
+//         margin: `0 0 ${vars.space['6x']} 0`,
+//       }
+//     }
+// }])
 
 export const streamingTableContainer = style([
   {
@@ -320,6 +320,8 @@ export const streamingTableContainer = style([
 export const streamingTableLeftRow = style([
   rowWrapper, {
     padding: `${vars.space['1.5x']} 0`,
+    // whiteSpace: 'nowrap'
+    // flex: 2,
 }])
 
 export const streamingTableRightItem = style({
@@ -369,6 +371,15 @@ export const videoThumbnail = style({
 export const videoInfo = style({
   display: 'flex',
   flexDirection: 'column',
+})
+
+export const videoBonusInfo = style({
+  fontSize: vars.fontSize['0.75x'],
+  color: vars.colors.darkGray
+})
+
+export const tmpMargin = style({
+  margin: `0 0 ${vars.space['8x']} 0`
 })
 
 
