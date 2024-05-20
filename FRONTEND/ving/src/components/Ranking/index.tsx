@@ -91,14 +91,17 @@ export default function Ranking() {
       onToggle={() => setIsOpen(!isOpen)}
     >
       <div className={styles.rankingList}>
-        <div className={styles.rankingTitle}>구독자 수</div>
+        
         {/* <hr className={lightLine} /> */}
         {users.map((user: User) => (
           <div key={user.username} onClick={() => moveSearchUser(user.username)}>
             {isOpen ? (
-              <div className={styles.openRankingListItem}>
-                <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
-                <div className={styles.rankingUserName}>{user.nickname}</div>
+              <div>
+                <div className={styles.rankingTitle}>구독자 수</div>
+                <div className={styles.openRankingListItem}>
+                  <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
+                  <div className={styles.rankingUserName}>{user.nickname}</div>
+                </div>
               </div>
             ) : (
               <div className={styles.closeRankingListItem}>
@@ -110,13 +113,15 @@ export default function Ranking() {
       </div>
       <hr className={lightLine} />
       <div className={styles.rankingList}>
-        <div className={styles.rankingTitle}>현재 시청자 수</div>
         {viewerUsers.map((user: User) => (
           <div key={user.username} onClick={() => moveSearchUser(user.username)}>
             {isOpen ? (
-              <div className={styles.openRankingListItem}>
-                <ProfileImage url={user.streamerThumbnail} width={40} alt="User profile" />
-                <div className={styles.rankingUserName}>{user.nickname}</div>
+              <div>
+                <div className={styles.rankingTitle}>현재 시청자 수</div>
+                <div className={styles.openRankingListItem}>
+                  <ProfileImage url={user.streamerThumbnail} width={40} alt="User profile" />
+                  <div className={styles.rankingUserName}>{user.nickname}</div>
+                </div>
               </div>
             ) : (
               <div className={styles.closeRankingListItem}>
