@@ -9,6 +9,7 @@ import { HiEllipsisVertical } from "react-icons/hi2"
 import DropdownMenu from '@/components/DropdownMenu/DropdownMenu'
 import MenuItem from '@/components/DropdownMenu/MenuItem'
 import useAuthStore from '@/store/AuthStore'
+import useStreamingStore from '@/store/StreamingStore'
 
 interface VideoData {
   createdAt: string
@@ -28,6 +29,7 @@ interface IsOpenState {
 export default function ProfileTabComponent() {
   const params = useParams()
   const { userData } = useAuthStore()
+  const { setRecordedVideoTitle } = useStreamingStore()
   const { profileUserName, profileData, getUserProfileInfo, doFixVideo, unDoFixVideo, doDeleteVideo } = useProfileStore()
   const [isOpen, setIsOpen] = useState<IsOpenState>({})
   const loginUserName = userData.username
@@ -58,8 +60,9 @@ export default function ProfileTabComponent() {
     })
   }
 
-  const goRecordedVideo = (videoSerial: number, username: string) => {
+  const goRecordedVideo = (videoSerial: number, username: string, videoTitle: string) => {
     // console.log(videoSerial, username)
+    setRecordedVideoTitle(videoTitle)
     router.push(`/streaming/${btoa(username)}/${videoSerial}`)
   }
 
@@ -95,7 +98,7 @@ export default function ProfileTabComponent() {
                 {video.isFixed && <BsFillPinAngleFill color='white' size={24} />}
               </div>
               <img src={video.thumbnail} alt={video.title} className={styles.videoThumbnail}
-                  onClick={() => goRecordedVideo(video.videoSerial, profileUserName)} />
+                  onClick={() => goRecordedVideo(video.videoSerial, profileUserName, video.title)} />
               <div className={styles.videoInfoContainer}>
                 <div className={styles.videoInfoBox}>
                   <span>{video.title}</span>
