@@ -91,37 +91,41 @@ export default function Ranking() {
       onToggle={() => setIsOpen(!isOpen)}
     >
       <div className={styles.rankingList}>
-        
+        {isOpen ? ( 
+          <div className={styles.rankingTitle}>구독자 수</div>
+        ) : (
+          <div></div>
+        )}
         {/* <hr className={lightLine} /> */}
         {users.map((user: User) => (
           <div key={user.username} onClick={() => moveSearchUser(user.username)}>
             {isOpen ? (
-              <div>
-                <div className={styles.rankingTitle}>구독자 수</div>
-                <div className={styles.openRankingListItem}>
-                  <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
-                  <div className={styles.rankingUserName}>{user.nickname}</div>
-                </div>
+              <div className={styles.openRankingListItem}>
+                <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
+                <div className={styles.rankingUserName}>{user.nickname}</div>
               </div>
             ) : (
               <div className={styles.closeRankingListItem}>
+                <div className={styles.rankingUserName}></div>
                 <ProfileImage url={user.thumbnail} width={40} alt="User profile" />
               </div>
             )}
           </div>
         ))}
       </div>
-      <hr className={lightLine} />
+      {isOpen ? (<hr className={lightLine} />) : (<hr className={lightLine} />)}
       <div className={styles.rankingList}>
+        {isOpen ? ( 
+          <div className={styles.rankingTitle}>현재 시청자 수</div>
+        ) : (
+          <div></div>
+        )}
         {viewerUsers.map((user: User) => (
           <div key={user.username} onClick={() => moveSearchUser(user.username)}>
             {isOpen ? (
-              <div>
-                <div className={styles.rankingTitle}>현재 시청자 수</div>
-                <div className={styles.openRankingListItem}>
-                  <ProfileImage url={user.streamerThumbnail} width={40} alt="User profile" />
-                  <div className={styles.rankingUserName}>{user.nickname}</div>
-                </div>
+              <div className={styles.openRankingListItem}>
+                <ProfileImage url={user.streamerThumbnail} width={40} alt="User profile" />
+                <div className={styles.rankingUserName}>{user.nickname}</div>
               </div>
             ) : (
               <div className={styles.closeRankingListItem}>

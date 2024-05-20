@@ -47,10 +47,15 @@ export const openRankingListItem = style([
 
 export const closeRankingListItem = style([
   plainButton,
-  rowWrapper,
+  // rowWrapper,
   {
     margin: `2px 0`,
     width: '100%',
+    padding: `${vars.space['0.5x']} 0`,
+    ':hover': {
+      backgroundColor: vars.colors.lightGray,
+      // borderRadius: vars.borderRadius['0.5x']
+    },
   }
 ])
 
