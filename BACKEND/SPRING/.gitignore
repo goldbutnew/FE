@@ -7,6 +7,8 @@ build/
 
 .yaml
 # !**/src/main/java/resources/application.yml
+application-db.yml
+
 ### STS ###
 .apt_generated
 .classpath
